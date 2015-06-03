@@ -1,0 +1,65 @@
+.row-padding {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.pagination-table{
+    margin: 10px 0 10px 100px;
+    border:none;
+}
+.pagination-table td{
+    padding:0 2px !important;
+    border:none;
+}
+.pagination-table td a,.pagination-table td span, .btn-search{
+    border-radius:3px;
+    color:#fff;
+    padding:5px 10px;
+    background:#01bfc4;
+    text-decoration:none;
+    -webkit-transition: background 0.5s ease-in-out;
+    -moz-transition: background 0.5s ease-in-out;
+    transition: background 0.5s ease-in-out;
+}
+.pagination-table td span{
+    background:#0184a9;
+}
+.pagination-table td a:hover, .btn-search:hover{
+    background:#0184a9;
+    cursor:pointer;
+}
+.btn-search{
+    padding:10px;
+    border:none;
+}
+.form-control{
+    padding:5px;
+    width:500px;
+    margin-bottom:15px;
+    border:1px solid #01bfc4;
+}
+.navbar-brand{
+    font-size: 60px;
+    text-decoration:none;
+    color:#0184a9;
+}
+.nav-header{
+    width:100%;
+    padding-top:120px;
+    height:100px;
+    margin-top:80px
+}
+.col-lg-12{min-height: 650px !important;}
+.table td, th{border:none !important;}
+.art-desc{color:#999; font-size:14px;}
+
+.navbar-default{
+    background: #a9e8db !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+.fileInfo{
+    max-width:600px;
+    margin-left:65px;
+}
