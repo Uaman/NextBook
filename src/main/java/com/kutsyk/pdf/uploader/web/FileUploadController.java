@@ -17,19 +17,23 @@ public class FileUploadController {
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     public @ResponseBody
-    String uploadFileHandler(@RequestParam("name") String name,
-                             @RequestParam("file") MultipartFile file) {
-
+    String uploadFileHandler(@RequestParam("file") MultipartFile file) {
+        String name = "none";
         if (!file.isEmpty()) {
             try {
+                name = file.getOriginalFilename();
+
+                if(!name.endsWith("pdf"))
+                    return "You failed to upload " + name
+                            + " because the file was empty.";
+
                 byte[] bytes = file.getBytes();
 
                 // Creating the directory to store file
                 String rootPath = System.getProperty("catalina.home");
-                File dir = new File(rootPath + File.separator + "tmpFiles");
+                File dir = new File(rootPath + File.separator + "pdfFiles");
                 if (!dir.exists())
                     dir.mkdirs();
-
                 // Create the file on server
                 File serverFile = new File(dir.getAbsolutePath()
                         + File.separator + name);
