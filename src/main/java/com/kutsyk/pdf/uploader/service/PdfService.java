@@ -7,6 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface PdfService {
     String downloadPdf(MultipartFile file);
-    void setPasswordToPdfFile(String fileName);
+    void setPasswordToPdfFile(String result);
     void sendFileToStorage(String fileName);
 }

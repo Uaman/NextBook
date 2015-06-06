@@ -21,11 +21,10 @@ public class FileUploadController {
     private PdfService pdfService;
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-    public @ResponseBody
-    String uploadFileHandler(@RequestParam("file") MultipartFile file) {
+    public String uploadFileHandler(@RequestParam("file") MultipartFile file) {
         String result = pdfService.downloadPdf(file);
-        pdfService.setPasswordToPdfFile(file.getOriginalFilename());
-        return result;
+        pdfService.setPasswordToPdfFile(result);
+        return "redirect:/";
     }
 
     @RequestMapping("/")

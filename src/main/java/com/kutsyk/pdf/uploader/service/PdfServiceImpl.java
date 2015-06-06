@@ -2,17 +2,23 @@ package com.kutsyk.pdf.uploader.service;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 /**
  * Created by KutsykV on 06.06.2015.
  */
 public class PdfServiceImpl implements PdfService {
+
+    String rootPath = System.getProperty("catalina.home");
+    File dir;
 
     @Override
     public String downloadPdf(MultipartFile file) {
@@ -27,21 +33,18 @@ public class PdfServiceImpl implements PdfService {
                 byte[] bytes = file.getBytes();
                 // Creating the directory to store file
                 String rootPath = System.getProperty("catalina.home");
-                File dir = new File(rootPath + File.separator + "pdfFiles");
+                dir = new File(rootPath + File.separator + "pdfFiles");
                 if (!dir.exists())
                     dir.mkdirs();
                 // Create the file on server
                 File serverFile = new File(dir.getAbsolutePath()
-                        + File.separator + name);
+                        + File.separator + "temp.pdf");
                 BufferedOutputStream stream = new BufferedOutputStream(
                         new FileOutputStream(serverFile));
                 stream.write(bytes);
                 stream.close();
-
-                System.out.println("Server File Location="
-                        + serverFile.getAbsolutePath());
-
-                return "You successfully uploaded file=" + name;
+                return dir.getAbsolutePath()
+                        + File.separator+name;
             } catch (Exception e) {
                 return "You failed to upload " + name + " => " + e.getMessage();
             }
@@ -52,15 +55,15 @@ public class PdfServiceImpl implements PdfService {
     }
 
     @Override
-    public void setPasswordToPdfFile(String fileName) {
+    public void setPasswordToPdfFile(String result) {
         try {
-            Document document = new Document();
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fileName));
-            writer.setEncryption("userpass".getBytes(), "cp123".getBytes(), PdfWriter.ALLOW_COPY, PdfWriter.STANDARD_ENCRYPTION_40);
-            writer.createXmpMetadata();
-            document.open();
-            document.add(new Paragraph("This is create PDF with Password demo."));
-            document.close();
+            PdfReader reader = new PdfReader(dir.getAbsolutePath()
+                    + File.separator + "temp.pdf");
+            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(result));
+            stamper.setEncryption("user".getBytes(), "owner".getBytes(),
+                    PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
+            stamper.close();
+            reader.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
