@@ -17,7 +17,6 @@
         http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
         ">
 
-
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="defaultEncoding" value="UTF-8" />
@@ -40,5 +39,7 @@
 			<value>.jsp</value>
 		</property>
 	</bean>
+
+    <bean id="pdfService" class="com.kutsyk.pdf.uploader.service.PdfServiceImpl"></bean>
 
 </beans>
