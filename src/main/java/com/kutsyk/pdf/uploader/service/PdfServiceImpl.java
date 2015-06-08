@@ -38,11 +38,15 @@ import java.util.Scanner;
 public class PdfServiceImpl implements PdfService {
 
     String rootPath = System.getProperty("catalina.home");
-    File dir;
+    String dir;
     public static final String storageConnectionString =
             "DefaultEndpointsProtocol=http;" +
                     "AccountName=nextbookpdfstorage;" +
                     "AccountKey=mOiuuhUrSiKRkPJAbBhXcujcxdkcf2qM36j22hjUnq3Zu88sH9yRW0OMClPB1jnIV0nn3+E+obCIV3pxLK/Mzw==";
+
+    public PdfServiceImpl() {
+        dir = rootPath + File.separator + "pdfFiles";
+    }
 
     @Override
     public List<String> getAllFiles() {
@@ -62,36 +66,37 @@ public class PdfServiceImpl implements PdfService {
 
     @Override
     public String downloadPdf(MultipartFile file) {
-        String name = "none";
-        if (!file.isEmpty()) {
-            try {
-                name = file.getOriginalFilename();
-
-                if (!name.toLowerCase().endsWith("pdf"))
-                    return "You failed to upload " + name
-                            + " because the file was empty.";
-                byte[] bytes = file.getBytes();
-                // Creating the directory to store file
-                String rootPath = System.getProperty("catalina.home");
-                dir = new File(rootPath + File.separator + "pdfFiles");
-                if (!dir.exists())
-                    dir.mkdirs();
-                // Create the file on server
-                File serverFile = new File(dir.getAbsolutePath()
-                        + File.separator + "temp.pdf");
-                BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream(serverFile));
-                stream.write(bytes);
-                stream.close();
-                return dir.getAbsolutePath()
-                        + File.separator + name;
-            } catch (Exception e) {
-                return "You failed to upload " + name + " => " + e.getMessage();
-            }
-        } else {
-            return "You failed to upload " + name
-                    + " because the file was empty.";
-        }
+//        String name = "none";
+//        if (!file.isEmpty()) {
+//            try {
+//                name = file.getOriginalFilename();
+//
+//                if (!name.toLowerCase().endsWith("pdf"))
+//                    return "You failed to upload " + name
+//                            + " because the file was empty.";
+//                byte[] bytes = file.getBytes();
+//                // Creating the directory to store file
+//                String rootPath = System.getProperty("catalina.home");
+//                dir = new File(rootPath + File.separator + "pdfFiles");
+//                if (!dir.exists())
+//                    dir.mkdirs();
+//                // Create the file on server
+//                File serverFile = new File(dir.getAbsolutePath()
+//                        + File.separator + "temp.pdf");
+//                BufferedOutputStream stream = new BufferedOutputStream(
+//                        new FileOutputStream(serverFile));
+//                stream.write(bytes);
+//                stream.close();
+//                return dir.getAbsolutePath()
+//                        + File.separator + name;
+//            } catch (Exception e) {
+//                return "You failed to upload " + name + " => " + e.getMessage();
+//            }
+//        } else {
+//            return "You failed to upload " + name
+//                    + " because the file was empty.";
+//        }
+        return "";
     }
 
     @Override
@@ -115,8 +120,7 @@ public class PdfServiceImpl implements PdfService {
     @Override
     public void setPasswordToPdfFile(String result) {
         try {
-            PdfReader reader = new PdfReader(dir.getAbsolutePath()
-                    + File.separator + "temp.pdf");
+            PdfReader reader = new PdfReader(dir + File.separator + "temp.pdf");
             PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(result));
             stamper.setEncryption("user".getBytes(), "owner".getBytes(),
                     PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
@@ -144,10 +148,8 @@ public class PdfServiceImpl implements PdfService {
     public void changeFileMetaData() throws IOException {
         String strToFind = "%PDF";
         String message = "%KDF";
-        String result = dir.getAbsolutePath()
-                + File.separator + "temp.pdf";
-        String outputFile = dir.getAbsolutePath()
-                + File.separator + "modyfied.pdf";
+        String result = dir + File.separator + "temp.pdf";
+        String outputFile = dir + File.separator + "modyfied.pdf";
         File file = new File(result);
         Scanner input = new Scanner(new FileReader(file));
         while (input.hasNextLine()) {
