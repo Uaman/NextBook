@@ -69,21 +69,15 @@ public class PdfServiceImpl implements PdfService {
     @Override
     public void downloadFile(MultipartHttpServletRequest request) {
         FileMeta fileMeta = null;
-        //1. build an iterator
         Iterator<String> itr = request.getFileNames();
         MultipartFile mpf = null;
 
-        //2. get each file
         while (itr.hasNext()) {
-            //2.1 get next MultipartFile
             mpf = request.getFile(itr.next());
-
-            //2.3 create new fileMeta
             fileMeta = new FileMeta();
             fileMeta.setFileName(mpf.getOriginalFilename());
             fileMeta.setFileSize(mpf.getSize() / 1024 + " Kb");
             fileMeta.setFileType(mpf.getContentType());
-
             try {
                 fileMeta.setBytes(mpf.getBytes());
                 String rootPath = System.getProperty("catalina.home");

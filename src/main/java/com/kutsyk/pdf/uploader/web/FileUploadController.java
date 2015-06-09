@@ -24,41 +24,17 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-//@Controller
-//public class FileUploadController {
-//
-//    @Autowired
-//    private PdfService pdfService;
-//
-//    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-//    public String uploadFileHandler(@RequestParam("file") MultipartFile file) {
-//        String result = pdfService.downloadPdf(file);
-//        pdfService.setPasswordToPdfFile(result);
-//        pdfService.loadFileToStorage(result);
-//        return "redirect:/";
-//    }
-//
-//    @RequestMapping("/")
-//    public ModelAndView showDocuments() {
-//        ModelAndView model = new ModelAndView("upload");
-//        List<String> files = pdfService.getAllFiles();
-//        return model;
-//    }
-//
-//}
-
 @Controller
 public class FileUploadController {
 
     @Autowired
     private PdfService pdfService;
-
     LinkedList<FileMeta> files = new LinkedList<FileMeta>();
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public String upload(MultipartHttpServletRequest request, HttpServletResponse response) {
+    public @ResponseBody LinkedList<FileMeta> upload(MultipartHttpServletRequest request, HttpServletResponse response) {
         pdfService.downloadFile(request);
-        return "redirect:/";
+        return files;
     }
 
     @RequestMapping("/")
