@@ -6,11 +6,9 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.PdfContentStreamProcessor;
 import com.itextpdf.text.pdf.parser.RenderListener;
+import com.kutsyk.pdf.uploader.domain.FileMeta;
 import com.microsoft.azure.storage.CloudStorageAccount;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import com.microsoft.azure.storage.blob.ListBlobItem;
+import com.microsoft.azure.storage.blob.*;
 import com.snowtide.pdf.OutputTarget;
 import com.snowtide.pdf.PDFTextStream;
 import com.sun.org.apache.xpath.internal.SourceTree;
@@ -23,14 +21,14 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDStream;
 import org.apache.pdfbox.util.PDFOperator;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.activation.FileDataSource;
 import java.io.*;
 import java.nio.CharBuffer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by KutsykV on 06.06.2015.
@@ -49,54 +47,57 @@ public class PdfServiceImpl implements PdfService {
     }
 
     @Override
-    public List<String> getAllFiles() {
+    public List<CloudBlob> getAllFiles() {
+        List<CloudBlob> result = new LinkedList<CloudBlob>();
         try {
             CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
             CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
             CloudBlobContainer container = blobClient.getContainerReference("pdffiles");
+
             for (ListBlobItem blobItem : container.listBlobs()) {
-                System.out.println(blobItem.getUri().toURL());
+                if (blobItem instanceof CloudBlockBlob) {
+                    CloudBlob retrievedBlob = (CloudBlob) blobItem;
+                    result.add(retrievedBlob);
+                }
             }
         } catch (Exception e) {
-            // Output the stack trace.
             e.printStackTrace();
         }
-        return null;
+        return result;
     }
 
     @Override
-    public String downloadPdf(MultipartFile file) {
-//        String name = "none";
-//        if (!file.isEmpty()) {
-//            try {
-//                name = file.getOriginalFilename();
-//
-//                if (!name.toLowerCase().endsWith("pdf"))
-//                    return "You failed to upload " + name
-//                            + " because the file was empty.";
-//                byte[] bytes = file.getBytes();
-//                // Creating the directory to store file
-//                String rootPath = System.getProperty("catalina.home");
-//                dir = new File(rootPath + File.separator + "pdfFiles");
-//                if (!dir.exists())
-//                    dir.mkdirs();
-//                // Create the file on server
-//                File serverFile = new File(dir.getAbsolutePath()
-//                        + File.separator + "temp.pdf");
-//                BufferedOutputStream stream = new BufferedOutputStream(
-//                        new FileOutputStream(serverFile));
-//                stream.write(bytes);
-//                stream.close();
-//                return dir.getAbsolutePath()
-//                        + File.separator + name;
-//            } catch (Exception e) {
-//                return "You failed to upload " + name + " => " + e.getMessage();
-//            }
-//        } else {
-//            return "You failed to upload " + name
-//                    + " because the file was empty.";
-//        }
-        return "";
+    public void downloadFile(MultipartHttpServletRequest request) {
+        FileMeta fileMeta = null;
+        //1. build an iterator
+        Iterator<String> itr = request.getFileNames();
+        MultipartFile mpf = null;
+
+        //2. get each file
+        while (itr.hasNext()) {
+            //2.1 get next MultipartFile
+            mpf = request.getFile(itr.next());
+
+            //2.3 create new fileMeta
+            fileMeta = new FileMeta();
+            fileMeta.setFileName(mpf.getOriginalFilename());
+            fileMeta.setFileSize(mpf.getSize() / 1024 + " Kb");
+            fileMeta.setFileType(mpf.getContentType());
+
+            try {
+                fileMeta.setBytes(mpf.getBytes());
+                String rootPath = System.getProperty("catalina.home");
+                File dir = new File(rootPath + File.separator + "pdffiles");
+                if (!dir.exists())
+                    dir.mkdirs();
+                String resultFile = rootPath + File.separator + "pdffiles" + File.separator + mpf.getOriginalFilename();
+                FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(rootPath + File.separator + "pdffiles" + File.separator + "temp.pdf"));
+                setPasswordToPdfFile(resultFile);
+                loadFileToStorage(resultFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -106,6 +107,10 @@ public class PdfServiceImpl implements PdfService {
             CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
             CloudBlobContainer container = blobClient.getContainerReference("pdffiles");
             container.createIfNotExists();
+            BlobContainerPermissions containerPermissions = new BlobContainerPermissions();
+            containerPermissions.setPublicAccess(BlobContainerPublicAccessType.CONTAINER);
+            container.uploadPermissions(containerPermissions);
+
             final String fileNameOnBlob = result.substring(result.lastIndexOf("\\") + 1);
             CloudBlockBlob blob = container.getBlockBlobReference(fileNameOnBlob);
             if (!blob.exists()) {
