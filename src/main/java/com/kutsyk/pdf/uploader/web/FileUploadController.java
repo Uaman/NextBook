@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -33,7 +34,7 @@ public class FileUploadController {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody LinkedList<FileMeta> upload(MultipartHttpServletRequest request, HttpServletResponse response) {
-        pdfService.downloadFile(request);
+        pdfService.uploadFile(request);
         return files;
     }
 
@@ -48,6 +49,12 @@ public class FileUploadController {
                 fileMeta.setFileName(file.getName());
                 fileMeta.setFileSize(file.getProperties().getLength() / 1024 + " Kb");
                 fileMeta.setFileType("pdf");
+
+                try {
+                    fileMeta.setUrl(file.getUri().toURL().toString());
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
                 files.add(fileMeta);
             } catch (URISyntaxException e) {
                 e.printStackTrace();

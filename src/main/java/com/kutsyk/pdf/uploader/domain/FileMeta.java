@@ -8,6 +8,8 @@ public class FileMeta {
     private String fileName;
     private String fileSize;
     private String fileType;
+    private String url;
+
 
     private byte[] bytes;
 
@@ -29,6 +31,8 @@ public class FileMeta {
     public void setFileType(String fileType) {
         this.fileType = fileType;
     }
+    public String getUrl() { return this.url; }
+    public void setUrl(String url) { this.url = url; }
     public byte[] getBytes() {
         return bytes;
     }

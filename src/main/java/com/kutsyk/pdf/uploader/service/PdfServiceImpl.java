@@ -7,7 +7,7 @@ import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.PdfContentStreamProcessor;
 import com.itextpdf.text.pdf.parser.RenderListener;
 import com.kutsyk.pdf.uploader.domain.FileMeta;
-import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.*;
 import com.microsoft.azure.storage.blob.*;
 import com.snowtide.pdf.OutputTarget;
 import com.snowtide.pdf.PDFTextStream;
@@ -42,6 +42,7 @@ public class PdfServiceImpl implements PdfService {
                     "AccountName=nextbookpdfstorage;" +
                     "AccountKey=mOiuuhUrSiKRkPJAbBhXcujcxdkcf2qM36j22hjUnq3Zu88sH9yRW0OMClPB1jnIV0nn3+E+obCIV3pxLK/Mzw==";
 
+
     public PdfServiceImpl() {
         dir = rootPath + File.separator + "pdfFiles";
     }
@@ -67,7 +68,7 @@ public class PdfServiceImpl implements PdfService {
     }
 
     @Override
-    public void downloadFile(MultipartHttpServletRequest request) {
+    public void uploadFile(MultipartHttpServletRequest request) {
         FileMeta fileMeta = null;
         Iterator<String> itr = request.getFileNames();
         MultipartFile mpf = null;

@@ -12,7 +12,7 @@ import java.util.List;
  * Created by KutsykV on 06.06.2015.
  */
 public interface PdfService {
-    void downloadFile(MultipartHttpServletRequest request);
+    void uploadFile(MultipartHttpServletRequest request);
     List<CloudBlob> getAllFiles();
 
     void setPasswordToPdfFile(String result);
