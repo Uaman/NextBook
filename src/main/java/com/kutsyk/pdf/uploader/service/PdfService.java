@@ -15,8 +15,8 @@ public interface PdfService {
     void uploadFile(MultipartHttpServletRequest request);
     List<CloudBlob> getAllFiles();
 
-    void setPasswordToPdfFile(String result);
+    void setPasswordToPdfFile();
     void loadFileToStorage(String result);
-    void changeFileMetaData() throws IOException;
+    void changeFileMetaData(String outputFile) throws IOException;
     void sendFileToStorage(String fileName);
 }

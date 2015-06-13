@@ -35,16 +35,17 @@ import java.util.*;
  */
 public class PdfServiceImpl implements PdfService {
 
-    String rootPath = System.getProperty("catalina.home");
-    String dir;
+    private String rootPath;
+    private String dir;
     public static final String storageConnectionString =
             "DefaultEndpointsProtocol=http;" +
                     "AccountName=nextbookpdfstorage;" +
                     "AccountKey=mOiuuhUrSiKRkPJAbBhXcujcxdkcf2qM36j22hjUnq3Zu88sH9yRW0OMClPB1jnIV0nn3+E+obCIV3pxLK/Mzw==";
-
+private long time;
 
     public PdfServiceImpl() {
-        dir = rootPath + File.separator + "pdfFiles";
+        this.rootPath = System.getProperty("catalina.home");
+        this.dir = this.rootPath + File.separator + "pdfFiles";
     }
 
     @Override
@@ -69,29 +70,25 @@ public class PdfServiceImpl implements PdfService {
 
     @Override
     public void uploadFile(MultipartHttpServletRequest request) {
-        FileMeta fileMeta = null;
         Iterator<String> itr = request.getFileNames();
         MultipartFile mpf = null;
 
         while (itr.hasNext()) {
+            time = System.currentTimeMillis();
             mpf = request.getFile(itr.next());
-            fileMeta = new FileMeta();
-            fileMeta.setFileName(mpf.getOriginalFilename());
-            fileMeta.setFileSize(mpf.getSize() / 1024 + " Kb");
-            fileMeta.setFileType(mpf.getContentType());
             try {
-                fileMeta.setBytes(mpf.getBytes());
-                String rootPath = System.getProperty("catalina.home");
                 File dir = new File(rootPath + File.separator + "pdffiles");
                 if (!dir.exists())
                     dir.mkdirs();
                 String resultFile = rootPath + File.separator + "pdffiles" + File.separator + mpf.getOriginalFilename();
-                FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(rootPath + File.separator + "pdffiles" + File.separator + "temp.pdf"));
-                setPasswordToPdfFile(resultFile);
+                FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(rootPath + File.separator + "pdffiles" + File.separator + "modified.pdf"));
+                setPasswordToPdfFile();
+                changeFileMetaData(resultFile);
                 loadFileToStorage(resultFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            System.out.println("time: " + (System.currentTimeMillis() - time));
         }
     }
 
@@ -118,10 +115,10 @@ public class PdfServiceImpl implements PdfService {
     }
 
     @Override
-    public void setPasswordToPdfFile(String result) {
+    public void setPasswordToPdfFile() {
         try {
-            PdfReader reader = new PdfReader(dir + File.separator + "temp.pdf");
-            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(result));
+            PdfReader reader = new PdfReader(dir + File.separator + "modified.pdf");
+            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dir + File.separator + "temp.pdf"));
             stamper.setEncryption("user".getBytes(), "owner".getBytes(),
                     PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
             stamper.close();
@@ -130,7 +127,7 @@ public class PdfServiceImpl implements PdfService {
             e.printStackTrace();
         }
     }
-
+/*
     public StringBuffer getPDFText(File pdfFile) throws IOException {
         PDFTextStream stream = new PDFTextStream(pdfFile);
         StringBuffer sb = new StringBuffer(1024);
@@ -140,39 +137,38 @@ public class PdfServiceImpl implements PdfService {
         stream.close();
         return sb;
     }
-
-    List<String> lines = new ArrayList<String>();
+*/
+    StringBuilder lines = new StringBuilder();
     String line = null;
 
     @Override
-    public void changeFileMetaData() throws IOException {
+    public void changeFileMetaData(String outputFile) throws IOException {
         String strToFind = "%PDF";
         String message = "%KDF";
-        String result = dir + File.separator + "temp.pdf";
-        String outputFile = dir + File.separator + "modyfied.pdf";
-        File file = new File(result);
+        String source = dir + File.separator + "temp.pdf";
+        File file = new File(source);
         Scanner input = new Scanner(new FileReader(file));
         while (input.hasNextLine()) {
             final String checkline = input.nextLine();
-            if (checkline.contains("%PDF-")) {
+            //if (checkline.contains("%PDF-")) {
                 checkline.replace(strToFind, message);
-            }
-            lines.add(checkline);
+            //}
+            lines.append(checkline);
         }
         input.close();
 
         FileWriter fw = new FileWriter(outputFile);
         BufferedWriter out = new BufferedWriter(fw);
-        for (String s : lines)
-            out.write(s);
+        out.write(lines.toString());
         out.flush();
         out.close();
-
+/*
         input = new Scanner(new FileReader(file));
         while (input.hasNextLine()) {
             final String checkline = input.nextLine();
             System.out.println(checkline);
         }
+*/
         input.close();
     }
 
