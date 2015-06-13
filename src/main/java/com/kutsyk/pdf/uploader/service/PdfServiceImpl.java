@@ -150,9 +150,9 @@ private long time;
         Scanner input = new Scanner(new FileReader(file));
         while (input.hasNextLine()) {
             final String checkline = input.nextLine();
-            //if (checkline.contains("%PDF-")) {
+            if (checkline.contains("%PDF-")) {
                 checkline.replace(strToFind, message);
-            //}
+            }
             lines.append(checkline);
         }
         input.close();
