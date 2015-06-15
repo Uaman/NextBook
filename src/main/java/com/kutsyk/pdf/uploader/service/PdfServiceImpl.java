@@ -27,7 +27,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.activation.FileDataSource;
 import java.io.*;
+import java.net.URI;
 import java.nio.CharBuffer;
+import java.nio.file.*;
 import java.util.*;
 
 /**
@@ -41,7 +43,8 @@ public class PdfServiceImpl implements PdfService {
             "DefaultEndpointsProtocol=http;" +
                     "AccountName=nextbookpdfstorage;" +
                     "AccountKey=mOiuuhUrSiKRkPJAbBhXcujcxdkcf2qM36j22hjUnq3Zu88sH9yRW0OMClPB1jnIV0nn3+E+obCIV3pxLK/Mzw==";
-private long time;
+    private long time;
+
 
     public PdfServiceImpl() {
         this.rootPath = System.getProperty("catalina.home");
@@ -77,14 +80,22 @@ private long time;
             time = System.currentTimeMillis();
             mpf = request.getFile(itr.next());
             try {
-                File dir = new File(rootPath + File.separator + "pdffiles");
-                if (!dir.exists())
-                    dir.mkdirs();
-                String resultFile = rootPath + File.separator + "pdffiles" + File.separator + mpf.getOriginalFilename();
-                FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(rootPath + File.separator + "pdffiles" + File.separator + "modified.pdf"));
-                setPasswordToPdfFile();
-                changeFileMetaData(resultFile);
+                File folder = new File(dir);
+                if (!folder.exists())
+                    folder.mkdirs();
+
+                File resultFile = new File(dir + File.separator + mpf.getOriginalFilename());
+                File tempFile = new File(dir + File.separator + "temp.pdf");
+                File encodedFile = new File(dir + File.separator + "encoded.pdf");
+
+                FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(tempFile));
+                setPasswordToPdfFile(tempFile, encodedFile);
+                changeFileMetaData(encodedFile, resultFile);
                 loadFileToStorage(resultFile);
+
+                deleteFile(resultFile);
+                deleteFile(tempFile);
+                deleteFile(encodedFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -92,8 +103,13 @@ private long time;
         }
     }
 
-    @Override
-    public void loadFileToStorage(String result) {
+    private void deleteFile(File f){
+        try{
+            f.delete();
+        } catch(Exception e){}
+    }
+
+    public void loadFileToStorage(File result) {
         try {
             CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
             CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
@@ -103,22 +119,21 @@ private long time;
             containerPermissions.setPublicAccess(BlobContainerPublicAccessType.CONTAINER);
             container.uploadPermissions(containerPermissions);
 
-            final String fileNameOnBlob = result.substring(result.lastIndexOf("\\") + 1);
+            String absolutePath = result.getAbsolutePath();
+            final String fileNameOnBlob = absolutePath.substring(absolutePath.lastIndexOf("\\") + 1);
             CloudBlockBlob blob = container.getBlockBlobReference(fileNameOnBlob);
             if (!blob.exists()) {
-                File source = new File(result);
-                blob.upload(new FileInputStream(source), source.length());
+                blob.upload(new FileInputStream(result), result.length());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void setPasswordToPdfFile() {
+    public void setPasswordToPdfFile(File source, File result) {
         try {
-            PdfReader reader = new PdfReader(dir + File.separator + "modified.pdf");
-            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dir + File.separator + "temp.pdf"));
+            PdfReader reader = new PdfReader(source.getAbsolutePath());
+            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(result));
             stamper.setEncryption("user".getBytes(), "owner".getBytes(),
                     PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
             stamper.close();
@@ -138,42 +153,36 @@ private long time;
         return sb;
     }
 */
-    StringBuilder lines = new StringBuilder();
-    String line = null;
 
     @Override
-    public void changeFileMetaData(String outputFile) throws IOException {
+    public void changeFileMetaData(File source, File result) throws IOException {
         String strToFind = "%PDF";
         String message = "%KDF";
-        String source = dir + File.separator + "temp.pdf";
-        File file = new File(source);
-        Scanner input = new Scanner(new FileReader(file));
+        StringBuilder lines = new StringBuilder();
+        String line = null;
+        Scanner input = new Scanner(new FileReader(source));
         while (input.hasNextLine()) {
             final String checkline = input.nextLine();
             if (checkline.contains("%PDF-")) {
+                System.out.println(checkline);
                 checkline.replace(strToFind, message);
             }
             lines.append(checkline);
         }
         input.close();
 
-        FileWriter fw = new FileWriter(outputFile);
+        FileWriter fw = new FileWriter(result);
         BufferedWriter out = new BufferedWriter(fw);
         out.write(lines.toString());
         out.flush();
         out.close();
-/*
-        input = new Scanner(new FileReader(file));
-        while (input.hasNextLine()) {
-            final String checkline = input.nextLine();
-            System.out.println(checkline);
-        }
-*/
+
         input.close();
     }
-
+/*
     @Override
     public void sendFileToStorage(String fileName) {
 
     }
+    */
 }
