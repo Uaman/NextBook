@@ -12,6 +12,7 @@ import com.microsoft.azure.storage.blob.*;
 import com.snowtide.pdf.OutputTarget;
 import com.snowtide.pdf.PDFTextStream;
 import com.sun.org.apache.xpath.internal.SourceTree;
+import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.cos.COSArray;
 import org.apache.pdfbox.cos.COSString;
 import org.apache.pdfbox.exceptions.COSVisitorException;
@@ -92,13 +93,13 @@ public class PdfServiceImpl implements PdfService {
                 File encodedFile = new File(dir + File.separator + "encoded.pdf");
 
                 FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(tempFile));
-                setPasswordToPdfFile(tempFile, resultFile);
-                //changeFileMetaData(encodedFile, resultFile);
+                setPasswordToPdfFile(tempFile, encodedFile);
+                changeFileMetaData(encodedFile, resultFile);
                 loadFileToStorage(resultFile);
 
                 deleteFile(resultFile);
-                deleteFile(tempFile);
-                deleteFile(encodedFile);
+                //deleteFile(tempFile);
+                //deleteFile(encodedFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -145,47 +146,13 @@ public class PdfServiceImpl implements PdfService {
             e.printStackTrace();
         }
     }
-/*
-    public StringBuffer getPDFText(File pdfFile) throws IOException {
-        PDFTextStream stream = new PDFTextStream(pdfFile);
-        StringBuffer sb = new StringBuffer(1024);
-        // get OutputTarget configured to pipe text to the provided StringBuffer
-        OutputTarget tgt = OutputTarget.forBuffer(sb);
-        stream.pipe(tgt);
-        stream.close();
-        return sb;
-    }
-*/
 
     @Override
     public void changeFileMetaData(File source, File result) throws IOException {
-        String strToFind = "%PDF";
-        String message = "%KDF";
-        StringBuilder lines = new StringBuilder();
-        String line = null;
-        Scanner input = new Scanner(new FileReader(source));
-        while (input.hasNextLine()) {
-            final String checkline = input.nextLine();
-            if (checkline.contains("%PDF-")) {
-                System.out.println(checkline);
-                checkline.replace(strToFind, message);
-            }
-            lines.append(checkline);
-        }
-        input.close();
-
-        FileWriter fw = new FileWriter(result);
-        BufferedWriter out = new BufferedWriter(fw);
-        out.write(lines.toString());
-        out.flush();
-        out.close();
-
+        FileInputStream input = new FileInputStream(source);
+        byte[] array = IOUtils.toByteArray(input);
+        array[1] = 0;
+        FileCopyUtils.copy(array, new FileOutputStream(result));
         input.close();
     }
-/*
-    @Override
-    public void sendFileToStorage(String fileName) {
-
-    }
-    */
 }

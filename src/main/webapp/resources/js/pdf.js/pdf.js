@@ -2850,7 +2850,7 @@ var WorkerTransport = (function WorkerTransportClosure() {
 
     fetchDocument: function WorkerTransport_fetchDocument(loadingTask, source) {
       this.loadingTask = loadingTask;
-        source.password = 'user';
+        source.password = PASSWORD;
       source.disableAutoFetch = PDFJS.disableAutoFetch;
       source.disableStream = PDFJS.disableStream;
       source.chunkedViewerLoading = !!this.pdfDataRangeTransport;

@@ -46,11 +46,11 @@ var UNKNOWN_SCALE = 0;
 var MAX_AUTO_SCALE = 1.25;
 var SCROLLBAR_PADDING = 40;
 var VERTICAL_PADDING = 5;
-
+/*
 PDFJS.imageResourcesPath = '../images/';
 PDFJS.cMapUrl = '../cmaps/';
 PDFJS.cMapPacked = true;
-
+*/
 // optimised CSS custom property getter/setter
 var CustomStyle = (function CustomStyleClosure() {
 
@@ -781,6 +781,7 @@ var DownloadManager = (function DownloadManagerClosure() {
 
   DownloadManager.prototype = {
     downloadUrl: function DownloadManager_downloadUrl(url, filename) {
+        console.log('d');
       if (!PDFJS.isValidUrl(url, true)) {
         return; // restricted/invalid URL
       }
@@ -790,6 +791,7 @@ var DownloadManager = (function DownloadManagerClosure() {
 
     downloadData: function DownloadManager_downloadData(data, filename,
                                                         contentType) {
+        console.log('d');
       if (navigator.msSaveBlob) { // IE10 and above
         return navigator.msSaveBlob(new Blob([data], { type: contentType }),
                                     filename);
@@ -3059,16 +3061,15 @@ var PasswordPrompt = {
     this.passwordCancel = options.passwordCancel;
 
     // Attach the event listeners.
-    //this.passwordSubmit.addEventListener('click', this.verifyPassword.bind(this));
+   this.passwordSubmit.addEventListener('click', this.verifyPassword.bind(this));
 
-    //this.passwordCancel.addEventListener('click', this.close.bind(this));
-/*
+    this.passwordCancel.addEventListener('click', this.close.bind(this));
     this.passwordField.addEventListener('keydown', function (e) {
       if (e.keyCode === 13) { // Enter key
         this.verifyPassword();
       }
     }.bind(this));
-*/
+
     OverlayManager.register(this.overlayName, this.close.bind(this), true);
   },
 
@@ -3316,7 +3317,7 @@ var PresentationModeState = {
   UNKNOWN: 0,
   NORMAL: 1,
   CHANGING: 2,
-  FULLSCREEN: 3,
+  FULLSCREEN: 3
 };
 
 var IGNORE_CURRENT_POSITION_ON_ZOOM = false;
@@ -5273,7 +5274,7 @@ var PDFViewer = (function pdfViewer() {
 
     setFindController: function (findController) {
       this.findController = findController;
-    },
+    }
   };
 
   return PDFViewer;
@@ -6097,7 +6098,7 @@ var PDFViewerApplication = {
     });
 
     this.pdfDocumentProperties = new PDFDocumentProperties({
-      //overlayName: 'documentPropertiesOverlay',
+      overlayName: 'documentPropertiesOverlay',
       //closeButton: document.getElementById('documentPropertiesClose'),
       fields: {
         'fileName': document.getElementById('fileNameField'),
@@ -6340,7 +6341,7 @@ var PDFViewerApplication = {
       Preferences.reload();
     }
     this.close();
-    var parameters = {password: password};
+    var parameters = {};
     if (typeof file === 'string') { // URL
       this.setTitleUsingUrl(file);
       parameters.url = file;
@@ -6355,13 +6356,13 @@ var PDFViewerApplication = {
         parameters[prop] = args[prop];
       }
     }
-
+      parameters.password = PASSWORD;
     var self = this;
     self.loading = true;
     self.downloadComplete = false;
 
     var passwordNeeded = function passwordNeeded(updatePassword, reason) {
-      PasswordPrompt.updatePassword = updatePassword;
+      PasswordPrompt.updatePassword = PASSWORD;
       PasswordPrompt.reason = reason;
       PasswordPrompt.open();
     };
@@ -6408,6 +6409,7 @@ var PDFViewerApplication = {
   },
 
   download: function pdfViewDownload() {
+      console.log('d');
     function downloadByUrl() {
       downloadManager.downloadUrl(url, filename);
     }
@@ -7182,7 +7184,6 @@ function webViewerInitialized() {
   document.getElementById('download').addEventListener('click',
     SecondaryToolbar.downloadClick.bind(SecondaryToolbar));
 */
-
   if (file && file.lastIndexOf('file:', 0) === 0) {
     // file:-scheme. Load the contents in the main thread because QtWebKit
     // cannot load file:-URLs in a Web Worker. file:-URLs are usually loaded

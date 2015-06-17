@@ -38,14 +38,86 @@ http://sourceforge.net/adobe/cmap/wiki/License/
     <script>
         PDFJS.imageResourcesPath = '<c:url value="../../resources/css/images/" />';
         PDFJS.workerSrc = '<c:url value="/resources/js/pdf.js/pdf.worker.js" />';
+        PDFJS.disableWorker = true;
         PDFJS.cMapUrl = '<c:url value="../../resources/cmaps/" />';
         PDFJS.cMapPacked = true;
         var url = '${urlToFile}';
-        console.log('${pass}');
+        var PASSWORD = '${pass}';
+/*
+        var data;
+        var xhr = new XMLHttpRequest;
+        xhr.open("GET", url);
+        xhr.addEventListener("load", function () {
+            var ret = [];
+            var len = this.responseText.length;
+            var byte;
+            for (var i = 0; i < len; i++) {
+                byte = (this.responseText.charCodeAt(i) & 0xFF) >>> 0;
+                ret.push(String.fromCharCode(byte));
+            }
+            data = ret.join('');
+            data = btoa(data);
+            data = new Uint8Array(decode(data));
+            //data = decode(data);
+            //data[1] = 80;
+            PDFJS.getDocument({data: data, password: '${pass}'}).then(function(doc){
+                console.log(doc);
+            });
+        }, false);
+
+
+        var BASE64_MARKER = ';base64,';
+
+        function convertDataURIToBinary(dataURI) {
+            var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+            var base64 = dataURI.substring(base64Index);
+            var raw = window.atob(base64);
+            var rawLength = raw.length;
+            var array = new Uint8Array(new ArrayBuffer(rawLength));
+
+            for(var i = 0; i < rawLength; i++) {
+                array[i] = raw.charCodeAt(i);
+            }
+            return array;
+        }
+
+
+
+        xhr.overrideMimeType("octet-stream; charset=x-user-defined;");
+        xhr.send(null);
+
+        var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+
+        function decode(base64) {
+            var bufferLength = base64.length * 0.75,
+                    len = base64.length, i, p = 0,
+                    encoded1, encoded2, encoded3, encoded4;
+
+            if (base64[base64.length - 1] === "=") {
+                bufferLength--;
+                if (base64[base64.length - 2] === "=") {
+                    bufferLength--;
+                }
+            }
+
+            var arraybuffer = new ArrayBuffer(bufferLength),
+                    bytes = new Uint8Array(arraybuffer);
+
+            for (i = 0; i < len; i+=4) {
+                encoded1 = chars.indexOf(base64[i]);
+                encoded2 = chars.indexOf(base64[i+1]);
+                encoded3 = chars.indexOf(base64[i+2]);
+                encoded4 = chars.indexOf(base64[i+3]);
+
+                bytes[p++] = (encoded1 << 2) | (encoded2 >> 4);
+                bytes[p++] = ((encoded2 & 15) << 4) | (encoded3 >> 2);
+                bytes[p++] = ((encoded3 & 3) << 6) | (encoded4 & 63);
+            }
+            return arraybuffer;
+        }
+*/
     </script>
-    <script>
-        <jsp:include page="js.jsp/pdf.min.js.jsp" />
-    </script>
+    <script src="<c:url value='/resources/js/pdf.js/pdf.js' />"></script>
     <script src="<c:url value='/resources/js/pdf.js/debugger.js' />"></script>
     <script src="<c:url value='/resources/js/pdf.js/viewer.js' />"></script>
 </head>
@@ -246,7 +318,7 @@ http://sourceforge.net/adobe/cmap/wiki/License/
         <textarea id="errorMoreInfo" hidden='true' readonly="readonly"></textarea>
     </div>
 </div> <!-- mainContainer -->
-<!--
+
 <div id="overlayContainer" class="hidden">
     <div id="passwordOverlay" class="container hidden">
         <div class="dialog">
@@ -308,7 +380,7 @@ http://sourceforge.net/adobe/cmap/wiki/License/
         </div>
     </div>
 </div>  <!-- overlayContainer -->
--->
+
 </div> <!-- outerContainer -->
 <div id="mozPrintCallback-shim" hidden>
     <style>
