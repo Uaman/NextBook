@@ -98,8 +98,8 @@ public class PdfServiceImpl implements PdfService {
                 loadFileToStorage(resultFile);
 
                 deleteFile(resultFile);
-                //deleteFile(tempFile);
-                //deleteFile(encodedFile);
+                deleteFile(tempFile);
+                deleteFile(encodedFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
