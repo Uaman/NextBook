@@ -1,6 +1,7 @@
 package com.kutsyk.pdf.uploader.web;
 
 import com.itextpdf.text.pdf.PdfReader;
+import com.kutsyk.pdf.uploader.domain.Constants;
 import com.kutsyk.pdf.uploader.domain.FileMeta;
 import com.kutsyk.pdf.uploader.service.PdfService;
 import com.microsoft.azure.storage.blob.CloudBlob;
@@ -31,13 +32,12 @@ public class ViewController {
     @Autowired
     private PdfService pdfService;
 
-    private static final String DEFAULT_PASSWORD = "user";
 
     @RequestMapping(value = "/view", method = RequestMethod.POST)
     public String onLoad(@RequestParam("url") final String url, Model model, HttpServletResponse response){
         model.addAttribute("title", "View - " + url);
         model.addAttribute("urlToFile", url);
-        model.addAttribute("pass", DEFAULT_PASSWORD);
+        model.addAttribute("pass", Constants.USER_PASSWORD);
         return "view";
     }
 

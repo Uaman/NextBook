@@ -32,6 +32,8 @@ import java.nio.CharBuffer;
 import java.nio.file.*;
 import java.util.*;
 
+import com.kutsyk.pdf.uploader.domain.Constants;
+
 /**
  * Created by KutsykV on 06.06.2015.
  */
@@ -44,6 +46,7 @@ public class PdfServiceImpl implements PdfService {
                     "AccountName=nextbookpdfstorage;" +
                     "AccountKey=mOiuuhUrSiKRkPJAbBhXcujcxdkcf2qM36j22hjUnq3Zu88sH9yRW0OMClPB1jnIV0nn3+E+obCIV3pxLK/Mzw==";
     private long time;
+
 
 
     public PdfServiceImpl() {
@@ -89,8 +92,8 @@ public class PdfServiceImpl implements PdfService {
                 File encodedFile = new File(dir + File.separator + "encoded.pdf");
 
                 FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(tempFile));
-                setPasswordToPdfFile(tempFile, encodedFile);
-                changeFileMetaData(encodedFile, resultFile);
+                setPasswordToPdfFile(tempFile, resultFile);
+                //changeFileMetaData(encodedFile, resultFile);
                 loadFileToStorage(resultFile);
 
                 deleteFile(resultFile);
@@ -134,7 +137,7 @@ public class PdfServiceImpl implements PdfService {
         try {
             PdfReader reader = new PdfReader(source.getAbsolutePath());
             PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(result));
-            stamper.setEncryption("user".getBytes(), "owner".getBytes(),
+            stamper.setEncryption(Constants.USER_PASSWORD.getBytes(), Constants.OWNER_PASSWORD.getBytes(),
                     PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
             stamper.close();
             reader.close();
