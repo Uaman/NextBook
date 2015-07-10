@@ -10,9 +10,9 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
     <!--<http access-denied-page="/error403.jsp">-->
         <!--<intercept-url pattern="/documents*" access="ROLE_ADMIN"/>-->
 
-        <!--<form-login login-page="/login.jsp" default-target-url="/documents"-->
-                    <!--authentication-failure-url="/login.jsp?error=true"/>-->
-        <!--<logout logout-url="/logout" logout-success-url="/login.jsp"/>-->
+        <!--<form-login login-page="/signin.jsp" default-target-url="/documents"-->
+                    <!--authentication-failure-url="/signin.jsp?error=true"/>-->
+        <!--<logout logout-url="/logout" logout-success-url="/signin.jsp"/>-->
 
         <!--<anonymous username="guest" granted-authority="ROLE_ANONYMOUS"/>-->
         <!--<remember-me/>-->
