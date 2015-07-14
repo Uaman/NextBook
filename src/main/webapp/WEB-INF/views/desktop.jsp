@@ -7,29 +7,27 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
-<c:set scope="session" var="USER" value="0"></c:set>
-<c:set scope="session" var="AUTHOR" value="1"></c:set>
-<c:set scope="session" var="PUBLISHER" value="2"></c:set>
-<c:set scope="session" var="ADMIN" value="3"></c:set>
-
-<c:set scope="session" var="ROLE" value="3"></c:set>
 <html>
 <head>
     <title></title>
 </head>
 <body>
   <ul>
-    <li><a href="/profile">Профайл</a></li>
 
-    <c:if test="${ROLE==AUTHOR}">
+    <security:authorize access="isAuthenticated()">
+      <li><a href="/profile">Профайл</a></li>
+    </security:authorize>
+
+    <security:authorize url="/book/add/**">
       <li><a href="">Додати книгу</a></li>
-    </c:if>
+    </security:authorize>
 
-    <c:if test="${ROLE==ADMIN}">
+    <security:authorize url="/admin/**">
       <li><a href="">Модерація</a></li>
       <li><a href="/users">Керування користувачами</a></li>
-    </c:if>
+    </security:authorize>
 
   </ul>
 

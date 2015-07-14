@@ -23,7 +23,7 @@ public class IndexController {
 
     @RequestMapping(value = "/user/{id}/update")
     public String updateUser(@PathVariable("id") long id) {
-        return "update_profile";
+        return "users/update_profile";
     }
 
     @RequestMapping(value = "/user/{id}/ban")
@@ -33,7 +33,7 @@ public class IndexController {
 
     @RequestMapping(value = "/user/{id}")
     public String getUser(@PathVariable("id") long id) {
-        return "profile";
+        return "users/profile";
     }
 
     @RequestMapping(value = "/desktop")
@@ -43,16 +43,16 @@ public class IndexController {
 
     @RequestMapping(value = "/profile")
     public String profile() {
-        return "profile";
+        return "users/profile";
     }
 
     @RequestMapping(value = "/profile/update")
     public String editProfile() {
-        return "update_profile";
+        return "users/update_profile";
     }
 
     @RequestMapping(value = "/users")
     public String users() {
-        return "users";
+        return "users/users";
     }
 }

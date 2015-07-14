@@ -14,9 +14,11 @@
 </head>
 <body>
 
-  <form:form action="/signin" method="POST">
-    Login:<input type="text" name="login"/><br />
-    Pass:<input type="password"  name="password"/><br />
+  <form:form action="static/j_spring_security_check" method="POST">
+    Login:<input type="text" name="j_username"/><br />
+    Pass:<input type="password"  name="j_password"/><br />
+    <input id="remember_me" name="_spring_security_remember_me" type="checkbox"/>
+    <label for="remember_me" class="inline">Запам'ятати мене</label><br />
     <input type="submit" /><br />
   </form:form>
 

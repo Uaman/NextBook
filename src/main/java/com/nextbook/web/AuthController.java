@@ -15,20 +15,12 @@ public class AuthController {
 
     @RequestMapping(value = "/signin")
     public String login(Model model){
-
-        return "/signin";
-    }
-
-    @RequestMapping(value = "/signin", method = RequestMethod.POST)
-    public String auth(@RequestParam(value = "login") String login,
-                       @RequestParam(value = "password") String password,
-                       Model model){
-        return "/desktop";
+        return "auth/signin";
     }
 
     @RequestMapping(value="/signup")
     public String signUp(Model model) {
-        return "/signup";
+        return "auth/signup";
     }
 
     @RequestMapping(value="/signup", method = RequestMethod.POST)
