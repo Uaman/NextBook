@@ -13,17 +13,17 @@
 <head>
     <meta charset="utf-8">
     <title>Upload File Request Page</title>
-    <script src="<c:url value="../../resources/js/jquery.min.js" />"></script>
+    <script src="<c:url value="/resources/js/jquery.min.js" />"></script>
 
-    <script src="<c:url value="../../resources/js/jquery.ui.widget.js" />"></script>
-    <script src="<c:url value="../../resources/js/jquery.iframe-transport.js" />"></script>
-    <script src="<c:url value="../../resources/js/jquery.fileupload.js" />"></script>
-    <script src="<c:url value="../../resources/bootstrap-3.3.2-dist/js/bootstrap.min.js" />"></script>
+    <script src="<c:url value="/resources/js/jquery.ui.widget.js" />"></script>
+    <script src="<c:url value="/resources/js/jquery.iframe-transport.js" />"></script>
+    <script src="<c:url value="/resources/js/jquery.fileupload.js" />"></script>
+    <script src="<c:url value="/resources/bootstrap-3.3.2-dist/js/bootstrap.min.js" />"></script>
     <link rel="stylesheet" type="text/css"
-          href="<c:url value="../../resources/bootstrap-3.3.2-dist/css/bootstrap.css"/>">
+          href="<c:url value="/resources/bootstrap-3.3.2-dist/css/bootstrap.css"/>">
 
-    <link rel="stylesheet" type="text/css" href="<c:url value="../../resources/css/dropzone.css"/>">
-    <script src="<c:url value="../../resources/js/myuploadfunction.js" />"></script>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/dropzone.css"/>">
+    <script src="<c:url value="/resources/js/myuploadfunction.js" />"></script>
 </head>
 <body>
 <div class="container">
