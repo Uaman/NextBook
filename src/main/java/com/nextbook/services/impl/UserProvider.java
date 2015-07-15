@@ -6,7 +6,9 @@ import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -15,9 +17,11 @@ import java.util.List;
  * Date: 7/13/2015
  * Time: 10:28 PM
  */
+@Service
 public class UserProvider implements IUserProvider{
 
-    private IUserDao userDao = new UserDAO();
+    @Inject
+    private IUserDao userDao;
 
     @Override
     public User getById(int userId) {

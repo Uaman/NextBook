@@ -12,10 +12,9 @@
 </head>
 <body>
   <a href="/user/1/update">Редагувати профіль</a><br />
-  Ім'я<br />
-  Логін<br />
-  Ел. пошта<br />
-  Роль<br />
+  Ім'я: ${userName}<br />
+  Ел. пошта: ${pageContext.request.userPrincipal}<br />
+  Роль: ${pageContext.request.userPrincipal.authorities}<br />
 
 </body>
 </html>

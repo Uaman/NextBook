@@ -14,19 +14,26 @@
     <title></title>
 </head>
 <body>
+
+<%--${pageContext.request.userPrincipal.authorities}--%>
+
   <ul>
+
+    <security:authorize access="isAnonymous()">
+      <li><a href="/signin">Вхід</a></li>
+      <li><a href="/signup">Реєстрація</a></li>
+    </security:authorize>
 
     <security:authorize access="isAuthenticated()">
       <li><a href="/profile">Профайл</a></li>
     </security:authorize>
 
-    <security:authorize url="/book/add/**">
-      <li><a href="">Додати книгу</a></li>
-    </security:authorize>
-
-    <security:authorize url="/admin/**">
-      <li><a href="">Модерація</a></li>
+    <%--<security:authorize access="hasRole('ROLE_ADMIN')">--%>
       <li><a href="/users">Керування користувачами</a></li>
+    <%--</security:authorize>--%>
+
+    <security:authorize access="isAuthenticated()">
+      <li><a href="/static/j_spring_security_logout">Вийти</a></li>
     </security:authorize>
 
   </ul>

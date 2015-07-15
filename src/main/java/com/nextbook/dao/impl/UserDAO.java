@@ -7,7 +7,7 @@ import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +18,11 @@ import java.util.List;
  * Date: 7/13/2015
  * Time: 10:58 PM
  */
+@Repository
 public class UserDAO implements IUserDao{
 
     @Override
-    public User getById(int userId) {
+         public User getById(int userId) {
         User result = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {

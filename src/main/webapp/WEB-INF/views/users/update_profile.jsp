@@ -14,14 +14,13 @@
 
   <form:form action="/profile" method="POST">
     Ім'я:<input type="text" name="name"/><br />
-    Логін:<input type="text" name="login"/><br />
     Eл. пошта:<input type="email" name="email"/><br />
     Роль:
     <select name="role">
-      <option value="user">Читач</option>
-      <option value="author">Автор</option>
-      <option value="publisher">Видавець</option>
-      <option value="admin">Адмін</option>
+      <option value="1">Читач</option>
+      <option value="2">Автор</option>
+      <option value="3">Видавець</option>
+      <option value="4">Адмін</option>
     </select>
     <br />
     Новий пароль:<input type="password"  name="password"/><br />
