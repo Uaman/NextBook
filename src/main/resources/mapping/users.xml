@@ -29,9 +29,5 @@
             <a>roleId</a>
             <b>roleId</b>
         </field>
-        <field>
-            <a>userCol</a>
-            <b>userCol</b>
-        </field>
     </mapping>
 </mappings>

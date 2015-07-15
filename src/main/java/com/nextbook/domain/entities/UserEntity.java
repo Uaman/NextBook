@@ -37,9 +37,6 @@ public class UserEntity {
     @Column(name = "ROLE_ID")
     private Integer roleId;
 
-    @Column(name = "USERCOL")
-    private String userCol;
-
     public Integer getId() {
         return id;
     }
@@ -88,13 +85,6 @@ public class UserEntity {
         this.roleId = roleId;
     }
 
-    public String getUserCol() {
-        return userCol;
-    }
-
-    public void setUserCol(String userCol) {
-        this.userCol = userCol;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -109,7 +99,6 @@ public class UserEntity {
         if (name != null ? !name.equals(userEntity.name) : userEntity.name != null) return false;
         if (password != null ? !password.equals(userEntity.password) : userEntity.password != null) return false;
         if (roleId != null ? !roleId.equals(userEntity.roleId) : userEntity.roleId != null) return false;
-        if (userCol != null ? !userCol.equals(userEntity.userCol) : userEntity.userCol != null) return false;
 
         return true;
     }
@@ -122,7 +111,6 @@ public class UserEntity {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (active ? 1 : 0);
         result = 31 * result + (roleId != null ? roleId.hashCode() : 0);
-        result = 31 * result + (userCol != null ? userCol.hashCode() : 0);
         return result;
     }
 
@@ -135,7 +123,6 @@ public class UserEntity {
                 ", name='" + name + '\'' +
                 ", active=" + active +
                 ", roleId=" + roleId +
-                ", userCol='" + userCol + '\'' +
                 '}';
     }
 }

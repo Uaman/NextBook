@@ -512,6 +512,9 @@
                     <schemas>
                         <schema>nextbook</schema>
                     </schemas>
+                    <locations>
+                        <location>filesystem:src/main/resources/db/migration</location>
+                    </locations>
                 </configuration>
                 <dependencies>
                     <dependency>

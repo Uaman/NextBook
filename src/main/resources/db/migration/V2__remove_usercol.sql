@@ -1,0 +1,1 @@
+ALTER TABLE `nextbook`.`user` DROP COLUMN `Usercol`;
