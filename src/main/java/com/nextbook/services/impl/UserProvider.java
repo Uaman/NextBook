@@ -43,4 +43,9 @@ public class UserProvider implements IUserProvider{
     public List<User> getAll() {
         return userDao.getAll(0, 0);
     }
+
+    @Override
+    public boolean delete(int userId) {
+        return userDao.delete(userId);
+    }
 }

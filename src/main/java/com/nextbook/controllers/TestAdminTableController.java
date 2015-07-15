@@ -62,4 +62,17 @@ public class TestAdminTableController {
         return "redirect:/";
     }
 
+    @RequestMapping(value = "/delete-user", method = RequestMethod.POST)
+    public String deleteUser(HttpServletRequest request){
+        try{
+            int userId = Integer.valueOf(request.getParameter("id"));
+            if(userId >= 0){
+                boolean status = userProvider.delete(userId);
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return "redirect:/";
+    }
+
 }

@@ -114,5 +114,26 @@ public class UserDAO implements IUserDao{
         return result;
     }
 
+    @Override
+    public boolean delete(int userId) {
+        boolean deleted = false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session.beginTransaction();
+            UserEntity toDelete = (UserEntity)session.load(UserEntity.class, userId);
+            if(toDelete != null){
+                session.delete(toDelete);
+            }
+            session.getTransaction().commit();
+            deleted = true;
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return deleted;
+    }
+
 
 }

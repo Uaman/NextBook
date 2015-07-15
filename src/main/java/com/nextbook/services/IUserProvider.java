@@ -21,6 +21,7 @@ public interface IUserProvider {
 
     User update(User user);
 
-
     List<User> getAll();
+
+    boolean delete(int userId);
 }

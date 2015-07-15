@@ -27,12 +27,13 @@
     <table style="border-collapse:collapse;">
         <tr>
             <th width="10%">id</th>
-            <th width="20%">name</th>
-            <th width="20%">email</th>
+            <th width="15%">name</th>
+            <th width="15%">email</th>
             <th width="20%">password</th>
             <th width="10%">active</th>
             <th width="10%">role id</th>
-            <th width="10%">action</th>
+            <th width="10%">update</th>
+            <th width="10%">delete</th>
         </tr>
         <tbody>
             <c:forEach var="user" items="${users}">
@@ -42,10 +43,10 @@
                         <td width="10%">
                             ${user.id}
                         </td>
-                        <td width="20%">
+                        <td width="15%">
                             <input type="text" value="${user.name}" name="name"/>
                         </td>
-                        <td width="20%">
+                        <td width="15%">
                             <input type="text" value="${user.email}" name="email"/>
                         </td>
                         <td width="20%">
@@ -57,14 +58,23 @@
                         <td width="10%">
                             <input type="text" value="${user.roleId}" name="roleId"/>
                         </td>
-                        <th width="10%"><input type="submit" value="Update"/></th>
+                        <td width="10%">
+                            <input type="submit" value="Update"/>
+                        </td>
                     </form>
+                    <td>
+                        <form action="/delete-user" method="POST">
+                            <input type="hidden" value="${user.id}" name="id"/>
+                            <td width="10%">
+                                <input type="submit" value="Delete"/>
+                            </td>
+                        </form>
+                    </td>
                 </tr>
             </c:forEach>
             <tr>
                 <form action="/add-user" method="POST">
-                    <td width="10%">
-                    </td>
+                    <td width="10%"></td>
                     <td width="20%">
                         <input type="text" value="" name="name"/>
                     </td>
@@ -82,6 +92,7 @@
                     </td>
                     <th width="10%"><input type="submit" value="Add new"/></th>
                 </form>
+                <td width="10%"></td>
             </tr>
         </tbody>
     </table>

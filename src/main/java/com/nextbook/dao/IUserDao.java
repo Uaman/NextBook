@@ -26,4 +26,6 @@ public interface IUserDao {
      * @return
      */
     List<User> getAll(int from, int max);
+
+    boolean delete(int userId);
 }
