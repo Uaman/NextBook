@@ -11,6 +11,8 @@
 <html>
 <head>
   <title>Users</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/resources/js/user-table/filter.js"></script>
   <style>
     table{
       width: 100%;
@@ -25,6 +27,14 @@
   </style>
 </head>
 <body>
+Filters: <br />
+<label>name:<input type="text" id="name"/></label> <br />
+<label>email:<input type="text" id="email"/></label> <br />
+<label>all:<input type="checkbox" id="all"></label> <label>active:<input type="checkbox" id="active"></label> <br />
+<label>role id:<input type="text" id="roleId"/></label> <br />
+<label>from:<input type="text" id="from"/></label> <br />
+<label>max:<input type="text" id="max"/></label> <br />
+<input value="Search" type="submit" id="send-filter">
 <table style="border-collapse:collapse;">
   <tr>
     <th width="10%">id</th>
@@ -36,6 +46,7 @@
     <th width="10%">action</th>
   </tr>
   <tbody>
+  <div id="added">
   <c:forEach var="user" items="${users}">
     <tr>
       <form>
@@ -69,6 +80,7 @@
       </form>
     </tr>
   </c:forEach>
+  </div>
   <tr>
     <form action="/users/add" method="POST">
       <td width="10%">

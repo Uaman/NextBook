@@ -1,6 +1,7 @@
 package com.nextbook.dao;
 
 import com.nextbook.domain.entities.UserEntity;
+import com.nextbook.domain.filters.UserCriterion;
 import com.nextbook.domain.pojo.User;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface IUserDao {
     List<User> getAll(int from, int max);
 
     boolean delete(int userId);
+
+    public List<User> getUsersByCriterion(UserCriterion criterion);
 }

@@ -1,19 +1,20 @@
 package com.nextbook.controllers;
 
+import com.nextbook.domain.filters.UserCriterion;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -108,5 +109,15 @@ public class IndexController {
         List<User> users = userProvider.getAll();
         model.addAttribute("users", users);
         return "users/users";
+    }
+
+    @RequestMapping(value = "/filters", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<User> filter(@RequestBody UserCriterion userCriterion,
+                                           HttpServletResponse response){
+        List<User> result = userProvider.getUsersByCriterion(userCriterion);
+        response.setStatus(HttpServletResponse.SC_OK);
+        if(result == null)
+            result = new ArrayList<User>();
+        return result;
     }
 }

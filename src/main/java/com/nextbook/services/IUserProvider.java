@@ -1,6 +1,6 @@
 package com.nextbook.services;
 
-import com.nextbook.domain.entities.UserEntity;
+import com.nextbook.domain.filters.UserCriterion;
 import com.nextbook.domain.pojo.User;
 
 import java.util.List;
@@ -24,4 +24,6 @@ public interface IUserProvider {
     List<User> getAll();
 
     boolean delete(int userId);
+
+    List<User> getUsersByCriterion(UserCriterion criterion);
 }

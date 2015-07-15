@@ -3,6 +3,7 @@ package com.nextbook.services.impl;
 import com.nextbook.dao.IUserDao;
 import com.nextbook.dao.impl.UserDAO;
 import com.nextbook.domain.entities.UserEntity;
+import com.nextbook.domain.filters.UserCriterion;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,10 @@ public class UserProvider implements IUserProvider{
     @Override
     public boolean delete(int userId) {
         return userDao.delete(userId);
+    }
+
+    @Override
+    public List<User> getUsersByCriterion(UserCriterion criterion) {
+        return userDao.getUsersByCriterion(criterion);
     }
 }
