@@ -11,11 +11,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user")
 @NamedQueries({
-        @NamedQuery(name = UserEntity.getAllUsers, query = "SELECT user FROM UserEntity user")
+        @NamedQuery(name = UserEntity.getAllUsers, query = "SELECT user FROM UserEntity user"),
+        @NamedQuery(name = UserEntity.getUserByEmail, query = "SELECT user FROM UserEntity user WHERE user.email=:email")
         })
 public class UserEntity {
 
     public static final String getAllUsers = "getAllUsers";
+    public static final String getUserByEmail = "getUserByEmail";
 
     @Id
     @GeneratedValue

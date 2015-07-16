@@ -26,4 +26,6 @@ public interface IUserProvider {
     boolean delete(int userId);
 
     List<User> getUsersByCriterion(UserCriterion criterion);
+
+    public User getUserByEmail(String email);
 }

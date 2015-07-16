@@ -26,7 +26,7 @@ import java.util.Map;
 public class UserDAO implements IUserDao{
 
     @Override
-         public User getById(int userId) {
+    public User getById(int userId) {
         User result = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -167,6 +167,30 @@ public class UserDAO implements IUserDao{
                     }
                 }
             }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        User result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query query = session.getNamedQuery(UserEntity.getUserByEmail);
+            query.setParameter("email", email);
+            List<Object> list = query.list();
+
+            if(list != null && list.size() > 0) {
+                UserEntity entity = (UserEntity) list.get(0);
+                result = DozerMapperFactory.getDozerBeanMapper().map(entity, User.class);
+            }
+            session.getTransaction().commit();
         } catch (Exception e){
             e.printStackTrace();
         } finally {

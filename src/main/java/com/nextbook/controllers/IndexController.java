@@ -114,6 +114,7 @@ public class IndexController {
     @RequestMapping(value = "/filters", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<User> filter(@RequestBody UserCriterion userCriterion,
                                            HttpServletResponse response){
+        User user = userProvider.getUserByEmail(userCriterion.getEmail());
         List<User> result = userProvider.getUsersByCriterion(userCriterion);
         response.setStatus(HttpServletResponse.SC_OK);
         if(result == null)

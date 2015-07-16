@@ -31,4 +31,6 @@ public interface IUserDao {
     boolean delete(int userId);
 
     public List<User> getUsersByCriterion(UserCriterion criterion);
+
+    public User getUserByEmail(String email);
 }

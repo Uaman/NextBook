@@ -58,4 +58,9 @@ public class UserProvider implements IUserProvider{
     public List<User> getUsersByCriterion(UserCriterion criterion) {
         return userDao.getUsersByCriterion(criterion);
     }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userDao.getUserByEmail(email);
+    }
 }
