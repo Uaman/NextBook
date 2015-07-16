@@ -7,6 +7,8 @@
 --%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <html>
 <head>
     <title>Sign up</title>
@@ -15,19 +17,19 @@
 
 
 <form action="/users/add" method="POST">
-  Ім'я:<input type="text" name="name"/><br />
-  Eл. пошта:<input type="email" name="email"/><br />
-  Роль:
+  <spring:message code="user.info.name" />:<input type="text" name="name"/><br />
+  <spring:message code="user.info.email" />:<input type="email" name="email"/><br />
+  <spring:message code="user.info.role" />:
   <select name="roleId">
-    <option value="1">Читач</option>
-    <option value="2">Автор</option>
-    <option value="3">Видавець</option>
-    <option value="4">Адмін</option>
+    <option value="1"><spring:message code="role.user" /></option>
+    <option value="2"><spring:message code="role.author" /></option>
+    <option value="3"><spring:message code="role.publisher" /></option>
+    <option value="4"><spring:message code="role.admin" /></option>
   </select>
   <br />
-  Новий пароль:<input type="password"  name="password"/><br />
-  Підтвердіть пароль:<input type="password"  name="confirm_pass"/><br />
-  <input type="submit" value="Приєднатись"/><br />
+  <spring:message code="user.info.password" />:<input type="password"  name="password"/><br />
+  <spring:message code="user.info.confPass" />:<input type="password"  name="confirm_pass"/><br />
+  <input type="submit" value='<spring:message code="global.signUp" />'/><br />
 </form>
 
 </body>

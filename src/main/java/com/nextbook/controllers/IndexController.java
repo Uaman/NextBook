@@ -3,8 +3,10 @@ package com.nextbook.controllers;
 import com.nextbook.domain.filters.UserCriterion;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
+import com.nextbook.utils.SessionUtils;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,19 +27,23 @@ import java.util.List;
 public class IndexController {
 
     @Inject
-    IUserProvider userProvider;
+    private IUserProvider userProvider;
+    @Inject
+    private SessionUtils sessionUtils;
+    @Inject
+    private Md5PasswordEncoder md5PasswordEncoder;
 
     @RequestMapping(value = "/users/add", method = RequestMethod.POST)
     public String addUser (@RequestParam("name") String name,
-                @RequestParam ("email") String email,
-                @RequestParam ("password") String pass,
-                @RequestParam (value = "active", required = false) Boolean active,
-                @RequestParam ("roleId") int roleId,
-                Model model){
+                           @RequestParam ("email") String email,
+                           @RequestParam ("password") String pass,
+                           @RequestParam (value = "active", required = false, defaultValue = "true") Boolean active,
+                           @RequestParam ("roleId") int roleId,
+                           Model model){
         User user = new User();
         user.setName(name);
         user.setEmail(email);
-        user.setPassword(pass);
+        user.setPassword(md5PasswordEncoder.encodePassword(pass, null));
         if (active !=null)
             user.setActive(active);
         user.setRoleId(roleId);
@@ -57,24 +63,21 @@ public class IndexController {
             @RequestParam("name") String name,
             @RequestParam ("email") String email,
             @RequestParam ("password") String pass,
-            @RequestParam ("active") Boolean active,
+            @RequestParam (value = "active", required = false) Boolean active,
             @RequestParam ("roleId") int roleId,
             @PathVariable("id") int id) {
 
         User user = userProvider.getById(id);
         user.setName(name);
         user.setEmail(email);
-        user.setPassword(pass);
-        user.setActive(active);
+        if (pass.length() != 0 && !pass.equals(user.getPassword()))
+            user.setPassword(md5PasswordEncoder.encodePassword(pass, null));
+        if (active !=null)
+            user.setActive(active);
         user.setRoleId(roleId);
         userProvider.update(user);
         return "redirect:/users";
         //return "users/update_profile";
-    }
-
-    @RequestMapping(value = "/user/{id}/ban")
-    public String banUser(@PathVariable("id") long id) {
-        return "desktop";
     }
 
     @RequestMapping(value = "/user/{id}")
@@ -89,18 +92,24 @@ public class IndexController {
 
     @RequestMapping(value = "/profile")
     public String profile(Model model) {
-        UserDetails userDetails;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
-            userDetails = (UserDetails) auth.getPrincipal();
-            model.addAttribute("userName", userDetails.getUsername());
+        User user = sessionUtils.getCurrentUser();
+        if (user!=null) {
+            model.addAttribute("userEmail", user.getEmail());
+            model.addAttribute("userName", user.getName());
+            model.addAttribute("userRole", user.getRoleId());
         }
-
         return "users/profile";
     }
 
     @RequestMapping(value = "/profile/update")
-    public String editProfile() {
+    public String editProfile(Model model) {
+        User user = sessionUtils.getCurrentUser();
+        if (user!=null) {
+            model.addAttribute("userId", user.getId());
+            model.addAttribute("userEmail", user.getEmail());
+            model.addAttribute("userName", user.getName());
+            model.addAttribute("userRole", user.getRoleId());
+        }
         return "users/update_profile";
     }
 
@@ -114,7 +123,6 @@ public class IndexController {
     @RequestMapping(value = "/filters", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<User> filter(@RequestBody UserCriterion userCriterion,
                                            HttpServletResponse response){
-        User user = userProvider.getUserByEmail(userCriterion.getEmail());
         List<User> result = userProvider.getUsersByCriterion(userCriterion);
         response.setStatus(HttpServletResponse.SC_OK);
         if(result == null)

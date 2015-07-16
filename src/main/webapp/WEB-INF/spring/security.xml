@@ -34,10 +34,14 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
                        authorities-by-username-query=
                                "select email as username,'ROLE_PUBLISHER' from user where email=?" />
 
+
     <authentication-manager>
         <authentication-provider user-service-ref="userService">
-            <password-encoder hash="plaintext" />
+            <password-encoder hash="md5"/>
+            <!--<password-encoder hash="plaintext" />-->
         </authentication-provider>
     </authentication-manager>
+
+    <beans:bean id="md5PasswordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
 
 </beans:beans>

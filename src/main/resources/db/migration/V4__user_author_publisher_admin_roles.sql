@@ -1,0 +1,15 @@
+INSERT INTO `nextbook`.`role` (`name`) VALUES ('user');
+INSERT INTO `nextbook`.`role` (`name`) VALUES ('author');
+INSERT INTO `nextbook`.`role` (`name`) VALUES ('publisher');
+INSERT INTO `nextbook`.`role` (`name`) VALUES ('moderator');
+INSERT INTO `nextbook`.`role` (`name`) VALUES ('admin');
+INSERT INTO `nextbook`.`permissions` (`name`) VALUES ('ROLE_USER');
+INSERT INTO `nextbook`.`permissions` (`name`) VALUES ('ROLE_AUTHOR');
+INSERT INTO `nextbook`.`permissions` (`name`) VALUES ('ROLE_PUBLISHER');
+INSERT INTO `nextbook`.`permissions` (`name`) VALUES ('ROLE_MODERATOR');
+INSERT INTO `nextbook`.`permissions` (`name`) VALUES ('ROLE_ADMIN');
+INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('1', '1');
+INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('2', '2');
+INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('3', '3');
+INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('4', '4');
+INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('5', '5');

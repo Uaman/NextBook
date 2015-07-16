@@ -30,7 +30,7 @@
 Filters: <br />
 <label>name:<input type="text" id="name"/></label> <br />
 <label>email:<input type="text" id="email"/></label> <br />
-<label>all:<input type="checkbox" id="all"></label> <label>active:<input type="checkbox" id="active"></label> <br />
+<label>all:<input type="checkbox" id="all"></label> <label>active:<input type="checkbox" id="active" checked></label> <br />
 <label>role id:<input type="text" id="roleId"/></label> <br />
 <label>from:<input type="text" id="from"/></label> <br />
 <label>max:<input type="text" id="max"/></label> <br />
@@ -45,11 +45,10 @@ Filters: <br />
     <th width="10%">role id</th>
     <th width="10%">action</th>
   </tr>
-  <tbody>
-  <div id="added">
+  <tbody id="added">
   <c:forEach var="user" items="${users}">
     <tr>
-      <form>
+      <form action="/user/${user.id}/update" method="POST">
         <input type="hidden" value="${user.id}" name="id"/>
         <td width="10%">
           ${user.id}
@@ -64,23 +63,24 @@ Filters: <br />
           <input type="text" value="${user.password}" name="password"/>
         </td>
         <td width="10%">
-          <input type="text" value="${user.active}" name="active"/>
+          <select name="active">
+            <option ${user.active?"selected":""} value="true">true</option>
+            <option ${user.active?"":"selected"} value="false">false</option>
+          </select>
         </td>
         <td width="10%">
           <input type="text" value="${user.roleId}" name="roleId"/>
         </td>
         <th width="10%">
-          <input type="submit" value="Update"
-                 onclick="this.form.action='/user/'+this.form.id.value+'/update';
-                                   this.form.method='POST';" />
-          <input type="submit" value="Delete"
-                 onclick="this.form.action='/user/'+this.form.id.value+'/delete';
-                                   this.form.method='GET';" />
+          <input type="submit" value="Update" />
+      </form>
+      <form action="/user/${user.id}/delete" method="GET">
+          <input type="submit" value="Delete" />
         </th>
       </form>
     </tr>
   </c:forEach>
-  </div>
+  </tbody>
   <tr>
     <form action="/users/add" method="POST">
       <td width="10%">
@@ -95,7 +95,10 @@ Filters: <br />
         <input type="text" value="" name="password"/>
       </td>
       <td width="10%">
-        <input type="text" value="" name="active"/>
+        <select name="active">
+          <option selected value="true">true</option>
+          <option value="false">false</option>
+        </select>
       </td>
       <td width="10%">
         <input type="text" value="" name="roleId"/>
@@ -105,7 +108,6 @@ Filters: <br />
       </th>
     </form>
   </tr>
-  </tbody>
 </table>
 </body>
 </html>
