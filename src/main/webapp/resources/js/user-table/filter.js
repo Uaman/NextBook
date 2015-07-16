@@ -41,7 +41,7 @@ $(document).ready(function(){
 });
 
 function formUser(item){
-    var html = '<tr><form action="/user/'+item.id+'/update" method="POST">';
+    var html = '<tr><form action="/users/update/'+item.id+'" method="POST">';
     html += '<input type="hidden" value="'+item.id+'" name="id"/>';
     html += '<td width="10%">'+item.id+'</td>';
     html += '<td width="20%"><input type="text" value="'+item.name+'" name="name"/></td>';
@@ -50,6 +50,6 @@ function formUser(item){
     html += '<td width="10%"><input type="text" value="'+item.active+'" name="active"/></td>';
     html += '<td width="10%"><input type="text" value="'+item.roleId+'" name="roleId"/></td>';
     html += '<th width="10%"><input type="submit" value="Update" /></form>';
-    html += '<form action="/user/'+item.id+'/delete" method="GET"><input type="submit" value="Delete"/></form></th></tr>';
+    html += '<form action="/users/delete/'+item.id+'" method="GET"><input type="submit" value="Delete"/></form></th></tr>';
     return html;
 }

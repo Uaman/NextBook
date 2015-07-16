@@ -17,23 +17,23 @@
 <body>
   <%--<security:authentication property="principal.authorities" />--%>
   <a href="/profile/update"><spring:message code="user.info.editProfile" /></a><br />
-  <spring:message code="user.info.name" />: ${userName}<br />
-  <spring:message code="user.info.email" />: ${userEmail}<br />
+  <spring:message code="user.info.name" />: ${user.name}<br />
+  <spring:message code="user.info.email" />: ${user.email}<br />
   <spring:message code="user.info.role" />:
   <c:choose>
-    <c:when test="${userRole==1}">
+    <c:when test="${user.roleId==1}">
       <spring:message code="role.user" />
     </c:when>
-    <c:when test="${userRole==2}">
+    <c:when test="${user.roleId==2}">
       <spring:message code="role.author" />
     </c:when>
-    <c:when test="${userRole==3}">
+    <c:when test="${user.roleId==3}">
       <spring:message code="role.publisher" />
     </c:when>
-    <c:when test="${userRole==4}">
+    <c:when test="${user.roleId==4}">
       <spring:message code="role.moderator" />
     </c:when>
-    <c:when test="${userRole==5}">
+    <c:when test="${user.roleId==5}">
       <spring:message code="role.admin" />
     </c:when>
   </c:choose><br />

@@ -55,7 +55,7 @@ public class IndexController {
         //return "desktop";
     }
 
-    @RequestMapping(value = "/user/{id}/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/delete/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteUser(@PathVariable("id") int id) {
         if (sessionUtils.getCurrentUser().getId()!=id)
@@ -63,7 +63,7 @@ public class IndexController {
         return "redirect:/users";
     }
 
-    @RequestMapping(value = "/user/{id}/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/update/{id}", method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_ADMIN') or (isAuthenticated() and #roleId <= 3)")
     public String updateUser(
             @RequestParam("name") String name,
@@ -74,7 +74,7 @@ public class IndexController {
             @PathVariable("id") int id) {
         User user = userProvider.getById(id);
         User current = sessionUtils.getCurrentUser();
-        if (current.getRoleId() == 5 || user.getId()==current.getId()) {
+        if (user.getId().equals(current.getId()) || (current.getRoleId() == 5)) {
             user.setName(name);
             user.setEmail(email);
             if (pass.length() != 0 && !pass.equals(user.getPassword()))
@@ -97,11 +97,7 @@ public class IndexController {
     @PreAuthorize("isAuthenticated()")
     public String profile(Model model) {
         User user = sessionUtils.getCurrentUser();
-        if (user!=null) {
-            model.addAttribute("userEmail", user.getEmail());
-            model.addAttribute("userName", user.getName());
-            model.addAttribute("userRole", user.getRoleId());
-        }
+        model.addAttribute("user", user);
         return "users/profile";
     }
 
@@ -109,12 +105,7 @@ public class IndexController {
     @PreAuthorize("isAuthenticated()")
     public String editProfile(Model model) {
         User user = sessionUtils.getCurrentUser();
-        if (user!=null) {
-            model.addAttribute("userId", user.getId());
-            model.addAttribute("userEmail", user.getEmail());
-            model.addAttribute("userName", user.getName());
-            model.addAttribute("userRole", user.getRoleId());
-        }
+        model.addAttribute("user", user);
         return "users/update_profile";
     }
 

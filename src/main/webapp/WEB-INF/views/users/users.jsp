@@ -49,7 +49,7 @@ Filters: <br />
   <tbody id="added">
   <c:forEach var="user" items="${users}">
     <tr>
-      <form action="/user/${user.id}/update" method="POST" id="userForm${user.id}">
+      <form action="/users/update/${user.id}" method="POST" id="userForm${user.id}">
         <input type="hidden" value="${user.id}" name="id"/>
         <td width="10%">
           ${user.id}
@@ -84,7 +84,7 @@ Filters: <br />
         <th width="10%">
           <input type="submit" value="Update" />
       </form>
-      <form action="/user/${user.id}/delete" method="GET">
+      <form action="/users/delete/${user.id}" method="GET">
           <input type="submit" value="Delete" />
         </th>
       </form>
