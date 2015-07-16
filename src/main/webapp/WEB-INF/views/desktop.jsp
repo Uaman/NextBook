@@ -29,9 +29,9 @@
       <li><a href="/profile"><spring:message code="user.info.profile" /></a></li>
     </security:authorize>
 
-    <%--<security:authorize access="hasRole('ROLE_ADMIN')">--%>
+    <security:authorize access="hasRole('ROLE_ADMIN')">
       <li><a href="/users"><spring:message code="users.manageUsers" /></a></li>
-    <%--</security:authorize>--%>
+    </security:authorize>
 
     <security:authorize access="isAuthenticated()">
       <li><a href="/static/j_spring_security_logout"><spring:message code="global.exit" /></a></li>

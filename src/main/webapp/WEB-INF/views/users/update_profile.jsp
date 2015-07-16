@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <title></title>
@@ -21,10 +22,15 @@
       <option value="1"><spring:message code="role.user" /></option>
       <option value="2"><spring:message code="role.author" /></option>
       <option value="3"><spring:message code="role.publisher" /></option>
-      <option value="4"><spring:message code="role.admin" /></option>
+      <security:authorize access="hasRole('ROLE_MODERATOR')">
+        <option value="4"><spring:message code="role.moderator" /></option>
+      </security:authorize>
+      <security:authorize access="hasRole('ROLE_ADMIN')">
+        <option value="5"><spring:message code="role.admin" /></option>
+      </security:authorize>
     </select>
     <script>
-      document.userForm.mySelect.selectedIndex = ${userRole};
+      document.userForm.roleId.selectedIndex = ${userRole-1};
     </script>
     <br />
     <spring:message code="user.info.newPass" />:<input type="password"  name="password"/><br />

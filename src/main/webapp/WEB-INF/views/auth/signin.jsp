@@ -17,7 +17,7 @@
 
   <form:form action="static/j_spring_security_check" method="POST">
     <spring:message code="user.info.email" />:<input type="text" name="j_username"/><br />
-    <spring:message code="user.info.name" />:<input type="password"  name="j_password"/><br />
+    <spring:message code="user.info.password" />:<input type="password"  name="j_password"/><br />
     <input id="remember_me" name="_spring_security_remember_me" type="checkbox"/>
     <label for="remember_me"> <spring:message code="global.rememberMe" /> </label><br />
     <input type="submit" value='<spring:message code="global.signIn" />'/><br />

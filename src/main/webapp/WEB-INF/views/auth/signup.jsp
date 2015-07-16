@@ -24,7 +24,6 @@
     <option value="1"><spring:message code="role.user" /></option>
     <option value="2"><spring:message code="role.author" /></option>
     <option value="3"><spring:message code="role.publisher" /></option>
-    <option value="4"><spring:message code="role.admin" /></option>
   </select>
   <br />
   <spring:message code="user.info.password" />:<input type="password"  name="password"/><br />

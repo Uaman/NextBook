@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <head>
@@ -48,7 +49,7 @@ Filters: <br />
   <tbody id="added">
   <c:forEach var="user" items="${users}">
     <tr>
-      <form action="/user/${user.id}/update" method="POST">
+      <form action="/user/${user.id}/update" method="POST" id="userForm${user.id}">
         <input type="hidden" value="${user.id}" name="id"/>
         <td width="10%">
           ${user.id}
@@ -69,7 +70,16 @@ Filters: <br />
           </select>
         </td>
         <td width="10%">
-          <input type="text" value="${user.roleId}" name="roleId"/>
+          <select name="roleId">
+            <option value="1"><spring:message code="role.user" /></option>
+            <option value="2"><spring:message code="role.author" /></option>
+            <option value="3"><spring:message code="role.publisher" /></option>
+            <option value="4"><spring:message code="role.moderator" /></option>
+            <option value="5"><spring:message code="role.admin" /></option>
+          </select>
+          <script>
+            document.getElementById("userForm${user.id}").roleId.selectedIndex = ${user.roleId-1};
+          </script>
         </td>
         <th width="10%">
           <input type="submit" value="Update" />
@@ -101,7 +111,13 @@ Filters: <br />
         </select>
       </td>
       <td width="10%">
-        <input type="text" value="" name="roleId"/>
+        <select name="roleId">
+          <option value="1"><spring:message code="role.user" /></option>
+          <option value="2"><spring:message code="role.author" /></option>
+          <option value="3"><spring:message code="role.publisher" /></option>
+          <option value="4"><spring:message code="role.moderator" /></option>
+          <option value="5"><spring:message code="role.admin" /></option>
+        </select>
       </td>
       <th width="10%">
         <input type="submit" value="Add new"/>

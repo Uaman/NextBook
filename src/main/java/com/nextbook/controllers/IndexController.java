@@ -5,6 +5,8 @@ import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.SessionUtils;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.Authentication;
@@ -34,6 +36,7 @@ public class IndexController {
     private Md5PasswordEncoder md5PasswordEncoder;
 
     @RequestMapping(value = "/users/add", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (isAnonymous() and #roleId <= 3)")
     public String addUser (@RequestParam("name") String name,
                            @RequestParam ("email") String email,
                            @RequestParam ("password") String pass,
@@ -48,17 +51,20 @@ public class IndexController {
             user.setActive(active);
         user.setRoleId(roleId);
         userProvider.addUser(user);
-        return "redirect:/users";
+        return "redirect:/";
         //return "desktop";
     }
 
     @RequestMapping(value = "/user/{id}/delete", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteUser(@PathVariable("id") int id) {
-        userProvider.delete(id);
+        if (sessionUtils.getCurrentUser().getId()!=id)
+            userProvider.delete(id);
         return "redirect:/users";
     }
 
     @RequestMapping(value = "/user/{id}/update", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (isAuthenticated() and #roleId <= 3)")
     public String updateUser(
             @RequestParam("name") String name,
             @RequestParam ("email") String email,
@@ -66,23 +72,20 @@ public class IndexController {
             @RequestParam (value = "active", required = false) Boolean active,
             @RequestParam ("roleId") int roleId,
             @PathVariable("id") int id) {
-
         User user = userProvider.getById(id);
-        user.setName(name);
-        user.setEmail(email);
-        if (pass.length() != 0 && !pass.equals(user.getPassword()))
-            user.setPassword(md5PasswordEncoder.encodePassword(pass, null));
-        if (active !=null)
-            user.setActive(active);
-        user.setRoleId(roleId);
-        userProvider.update(user);
-        return "redirect:/users";
+        User current = sessionUtils.getCurrentUser();
+        if (current.getRoleId() == 5 || user.getId()==current.getId()) {
+            user.setName(name);
+            user.setEmail(email);
+            if (pass.length() != 0 && !pass.equals(user.getPassword()))
+                user.setPassword(md5PasswordEncoder.encodePassword(pass, null));
+            if (active != null)
+                user.setActive(active);
+            user.setRoleId(roleId);
+            userProvider.update(user);
+        }
+        return "redirect:/";
         //return "users/update_profile";
-    }
-
-    @RequestMapping(value = "/user/{id}")
-    public String getUser(@PathVariable("id") long id) {
-        return "users/profile";
     }
 
     @RequestMapping(value = {"/desktop", "/"})
@@ -91,6 +94,7 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/profile")
+    @PreAuthorize("isAuthenticated()")
     public String profile(Model model) {
         User user = sessionUtils.getCurrentUser();
         if (user!=null) {
@@ -102,6 +106,7 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/profile/update")
+    @PreAuthorize("isAuthenticated()")
     public String editProfile(Model model) {
         User user = sessionUtils.getCurrentUser();
         if (user!=null) {
@@ -114,6 +119,7 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/users")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String users(Model model) {
         List<User> users = userProvider.getAll();
         model.addAttribute("users", users);
