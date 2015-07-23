@@ -11,7 +11,12 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "subcategory")
+@NamedQueries({
+        @NamedQuery(name = SubCategoryEntity.getAll, query = "SELECT subCategory FROM SubCategoryEntity subCategory")
+})
 public class SubCategoryEntity {
+
+    public static final String getAll = "getAll";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
