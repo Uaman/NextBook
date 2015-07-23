@@ -1,27 +1,12 @@
-package com.kutsyk.pdf.uploader.service;
+package com.nextbook.services.impl;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.*;
-import com.itextpdf.text.pdf.parser.PdfContentStreamProcessor;
-import com.itextpdf.text.pdf.parser.RenderListener;
-import com.kutsyk.pdf.uploader.domain.FileMeta;
 import com.microsoft.azure.storage.*;
+import com.nextbook.domain.upload.Constants;
 import com.microsoft.azure.storage.blob.*;
-import com.snowtide.pdf.OutputTarget;
-import com.snowtide.pdf.PDFTextStream;
-import com.sun.org.apache.xpath.internal.SourceTree;
+import com.nextbook.domain.upload.*;
+import com.nextbook.services.PdfService;
 import org.apache.commons.io.IOUtils;
-import org.apache.pdfbox.cos.COSArray;
-import org.apache.pdfbox.cos.COSString;
-import org.apache.pdfbox.exceptions.COSVisitorException;
-import org.apache.pdfbox.pdfparser.PDFStreamParser;
-import org.apache.pdfbox.pdfwriter.ContentStreamWriter;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.common.PDStream;
-import org.apache.pdfbox.util.PDFOperator;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -30,10 +15,8 @@ import javax.activation.FileDataSource;
 import java.io.*;
 import java.net.URI;
 import java.nio.CharBuffer;
-//import java.nio.file.*;
 import java.util.*;
 
-import com.kutsyk.pdf.uploader.domain.Constants;
 
 /**
  * Created by KutsykV on 06.06.2015.

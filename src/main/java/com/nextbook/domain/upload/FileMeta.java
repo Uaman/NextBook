@@ -1,4 +1,4 @@
-package com.kutsyk.pdf.uploader.domain;
+package com.nextbook.domain.upload;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
