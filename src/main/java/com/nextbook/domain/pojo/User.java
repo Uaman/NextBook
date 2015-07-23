@@ -17,7 +17,7 @@ public class User {
 
     private boolean active;
 
-    private Integer roleId;
+    private Role role;
 
 
     public Integer getId() {
@@ -60,12 +60,12 @@ public class User {
         this.active = active;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
@@ -73,14 +73,14 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User userEntity = (User) o;
+        User user = (User) o;
 
-        if (active != userEntity.active) return false;
-        if (email != null ? !email.equals(userEntity.email) : userEntity.email != null) return false;
-        if (id != null ? !id.equals(userEntity.id) : userEntity.id != null) return false;
-        if (name != null ? !name.equals(userEntity.name) : userEntity.name != null) return false;
-        if (password != null ? !password.equals(userEntity.password) : userEntity.password != null) return false;
-        if (roleId != null ? !roleId.equals(userEntity.roleId) : userEntity.roleId != null) return false;
+        if (active != user.active) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (role != null ? !role.equals(user.role) : user.role != null) return false;
 
         return true;
     }
@@ -92,7 +92,7 @@ public class User {
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (active ? 1 : 0);
-        result = 31 * result + (roleId != null ? roleId.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
         return result;
     }
 
@@ -104,7 +104,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", active=" + active +
-                ", roleId=" + roleId +
+                ", role=" + role +
                 '}';
     }
 }

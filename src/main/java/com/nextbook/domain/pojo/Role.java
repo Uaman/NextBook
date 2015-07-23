@@ -1,5 +1,10 @@
 package com.nextbook.domain.pojo;
 
+import com.nextbook.domain.entities.PermissionEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: borsch
@@ -11,6 +16,8 @@ public class Role {
     private Integer id;
 
     private String name;
+
+    private List<PermissionEntity> permissions = new ArrayList<PermissionEntity>();
 
     public Integer getId() {
         return id;
@@ -28,24 +35,12 @@ public class Role {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Role roleEntity = (Role) o;
-
-        if (id != null ? !id.equals(roleEntity.id) : roleEntity.id != null) return false;
-        if (name != null ? !name.equals(roleEntity.name) : roleEntity.name != null) return false;
-
-        return true;
+    public List<PermissionEntity> getPermissions() {
+        return permissions;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
+    public void setPermissions(List<PermissionEntity> permissions) {
+        this.permissions = permissions;
     }
 
     @Override
@@ -53,6 +48,7 @@ public class Role {
         return "Role{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", permissions=" + permissions +
                 '}';
     }
 }

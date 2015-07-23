@@ -1,6 +1,7 @@
 package com.nextbook.controllers;
 
 import com.nextbook.domain.forms.SimpleUserForm;
+import com.nextbook.domain.pojo.Role;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.SessionUtils;
@@ -53,7 +54,9 @@ public class IndexController {
         user.setEmail(form.getEmail());
         user.setPassword(md5PasswordEncoder.encodePassword(form.getPassword(), null));
         user.setActive(true);
-        user.setRoleId(form.getRoleId());
+        Role role = new Role();
+        role.setId(1);
+        user.setRole(role);
         boolean added = userProvider.addUser(user);
         return added;
     }

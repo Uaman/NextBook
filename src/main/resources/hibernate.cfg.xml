@@ -15,5 +15,7 @@
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
 
         <mapping class="com.nextbook.domain.entities.UserEntity"/>
+        <mapping class="com.nextbook.domain.entities.RoleEntity"/>
+        <mapping class="com.nextbook.domain.entities.PermissionEntity"/>
     </session-factory>
 </hibernate-configuration>

@@ -2,6 +2,7 @@ package com.nextbook.controllers;
 
 import com.nextbook.domain.filters.UserCriterion;
 import com.nextbook.domain.forms.AdminUserForm;
+import com.nextbook.domain.pojo.Role;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.SessionUtils;
@@ -39,7 +40,7 @@ public class AdminUserController {
         user.setEmail(form.getEmail());
         user.setPassword(md5PasswordEncoder.encodePassword(form.getPassword(), null));
         user.setActive(form.isActive());
-        user.setRoleId(form.getRoleId());
+        //user.setRoleId(form.getRoleId());
         userProvider.addUser(user);
         return "redirect:/";
     }
@@ -62,7 +63,9 @@ public class AdminUserController {
             if (!form.getPassword().equals(user.getPassword()))
                 user.setPassword(md5PasswordEncoder.encodePassword(form.getPassword(), null));
             user.setActive(form.isActive());
-            user.setRoleId(form.getRoleId());
+            Role role = new Role();
+            role.setId(form.getId());
+            user.setRole(role);
             userProvider.update(user);
         }
         return "redirect:/";

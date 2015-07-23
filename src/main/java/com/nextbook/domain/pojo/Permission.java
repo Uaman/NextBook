@@ -1,5 +1,10 @@
 package com.nextbook.domain.pojo;
 
+import com.nextbook.domain.entities.PermissionEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: borsch
@@ -32,10 +37,10 @@ public class Permission {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Permission permissionEntity = (Permission) o;
+        Permission that = (Permission) o;
 
-        if (id != null ? !id.equals(permissionEntity.id) : permissionEntity.id != null) return false;
-        if (name != null ? !name.equals(permissionEntity.name) : permissionEntity.name != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
         return true;
     }

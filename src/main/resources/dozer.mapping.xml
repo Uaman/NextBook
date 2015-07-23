@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.User</class-a>
+        <class-b>com.nextbook.domain.entities.UserEntity</class-b>
+        <field>
+            <a>role</a>
+            <b>roleEntity</b>
+        </field>
+    </mapping>
+
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.Role</class-a>
+        <class-b>com.nextbook.domain.entities.RoleEntity</class-b>
+    </mapping>
+
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.Permission</class-a>
+        <class-b>com.nextbook.domain.entities.PermissionEntity</class-b>
+    </mapping>
+</mappings>

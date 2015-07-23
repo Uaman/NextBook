@@ -1,5 +1,7 @@
 package com.nextbook.domain.entities;
 
+import com.nextbook.domain.pojo.Role;
+
 import javax.persistence.*;
 
 /**
@@ -20,7 +22,7 @@ public class UserEntity {
     public static final String getUserByEmail = "getUserByEmail";
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Integer id;
 
@@ -36,8 +38,9 @@ public class UserEntity {
     @Column(name = "ACTIVE")
     private boolean active;
 
-    @Column(name = "ROLE_ID")
-    private Integer roleId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ROLE_ID", nullable = false)
+    private RoleEntity roleEntity;
 
     public Integer getId() {
         return id;
@@ -79,28 +82,27 @@ public class UserEntity {
         this.active = active;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public RoleEntity getRoleEntity() {
+        return roleEntity;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRoleEntity(RoleEntity roleEntity) {
+        this.roleEntity = roleEntity;
     }
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserEntity userEntity = (UserEntity) o;
+        UserEntity entity = (UserEntity) o;
 
-        if (active != userEntity.active) return false;
-        if (email != null ? !email.equals(userEntity.email) : userEntity.email != null) return false;
-        if (id != null ? !id.equals(userEntity.id) : userEntity.id != null) return false;
-        if (name != null ? !name.equals(userEntity.name) : userEntity.name != null) return false;
-        if (password != null ? !password.equals(userEntity.password) : userEntity.password != null) return false;
-        if (roleId != null ? !roleId.equals(userEntity.roleId) : userEntity.roleId != null) return false;
+        if (active != entity.active) return false;
+        if (email != null ? !email.equals(entity.email) : entity.email != null) return false;
+        if (id != null ? !id.equals(entity.id) : entity.id != null) return false;
+        if (name != null ? !name.equals(entity.name) : entity.name != null) return false;
+        if (password != null ? !password.equals(entity.password) : entity.password != null) return false;
+        if (roleEntity != null ? !roleEntity.equals(entity.roleEntity) : entity.roleEntity != null) return false;
 
         return true;
     }
@@ -112,7 +114,7 @@ public class UserEntity {
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (active ? 1 : 0);
-        result = 31 * result + (roleId != null ? roleId.hashCode() : 0);
+        result = 31 * result + (roleEntity != null ? roleEntity.hashCode() : 0);
         return result;
     }
 
@@ -124,7 +126,7 @@ public class UserEntity {
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", active=" + active +
-                ", roleId=" + roleId +
+                ", roleEntity=" + roleEntity +
                 '}';
     }
 }

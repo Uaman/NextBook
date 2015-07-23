@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class DozerMapperFactory {
 
-    private static final List<String> mappingFile = Arrays.asList(new String[]{"mapping/users.xml"});
+    private static final List<String> mappingFile = Arrays.asList(new String[]{"dozer.mapping.xml"});
 
     private static DozerBeanMapper dozerBeanMapper;
 

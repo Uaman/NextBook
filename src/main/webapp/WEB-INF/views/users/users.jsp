@@ -70,7 +70,8 @@ Filters: <br />
           </select>
         </td>
         <td width="10%">
-          <select name="roleId">
+            <spring:message code="role.${user.role.name}" />
+          <%--<select name="roleId">
             <option value="1"><spring:message code="role.user" /></option>
             <option value="2"><spring:message code="role.author" /></option>
             <option value="3"><spring:message code="role.publisher" /></option>
@@ -79,7 +80,7 @@ Filters: <br />
           </select>
           <script>
             document.getElementById("userForm${user.id}").roleId.selectedIndex = ${user.roleId-1};
-          </script>
+          </script>--%>
         </td>
         <th width="10%">
           <input type="submit" value="Update" />

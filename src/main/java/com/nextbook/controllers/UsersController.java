@@ -57,7 +57,7 @@ public class UsersController {
             user.setEmail(form.getEmail());
             if (form.getPassword().length() != 0)
                 user.setPassword(md5PasswordEncoder.encodePassword(form.getPassword(), null));
-            user.setRoleId(user.getRoleId());
+            //user.setRoleId(user.getRoleId()); //user can not change his role
             userProvider.update(user);
         }
         return "redirect:/";
