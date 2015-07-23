@@ -20,4 +20,50 @@
         <class-a>com.nextbook.domain.pojo.Permission</class-a>
         <class-b>com.nextbook.domain.entities.PermissionEntity</class-b>
     </mapping>
+
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.Keyword</class-a>
+        <class-b>com.nextbook.domain.entities.KeywordEntity</class-b>
+    </mapping>
+
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.Category</class-a>
+        <class-b>com.nextbook.domain.entities.CategoryEntity</class-b>
+    </mapping>
+
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.SubCategory</class-a>
+        <class-b>com.nextbook.domain.entities.SubCategoryEntity</class-b>
+        <field>
+            <a>category</a>
+            <b>categoryEntity</b>
+        </field>
+    </mapping>
+
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.Publisher</class-a>
+        <class-b>com.nextbook.domain.entities.PublisherEntity</class-b>
+    </mapping>
+
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.Author</class-a>
+        <class-b>com.nextbook.domain.entities.AuthorEntity</class-b>
+    </mapping>
+
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.Book</class-a>
+        <class-b>com.nextbook.domain.entities.BookEntity</class-b>
+        <field>
+            <a>subCategory</a>
+            <b>subCategoryEntity</b>
+        </field>
+        <field>
+            <a>publisher</a>
+            <b>publisherEntity</b>
+        </field>
+        <field>
+            <a>author</a>
+            <b>authorEntity</b>
+        </field>
+    </mapping>
 </mappings>
