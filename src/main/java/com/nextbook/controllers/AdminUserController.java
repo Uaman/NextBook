@@ -21,7 +21,7 @@ import java.util.List;
  * Created by Polomani on 21.07.2015.
  */
 @Controller
-@RequestMapping ("/admin")
+@RequestMapping ("/admin/users")
 public class AdminUserController {
 
     @Inject
@@ -80,7 +80,7 @@ public class AdminUserController {
         return result;
     }
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String users(Model model) {
         List<User> users = userProvider.getAll();

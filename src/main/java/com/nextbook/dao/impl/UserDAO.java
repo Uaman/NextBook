@@ -74,6 +74,7 @@ public class UserDAO implements IUserDao{
                 UserEntity entity = DozerMapperFactory.getDozerBeanMapper().map(user, UserEntity.class);
                 session.save(entity);
                 session.getTransaction().commit();
+                added = true;
             } catch (Exception e){
                 if(session.getTransaction().isActive())
                     session.getTransaction().rollback();

@@ -7,6 +7,7 @@ import com.nextbook.utils.SessionUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -15,7 +16,7 @@ import javax.inject.Inject;
  * Created by Polomani on 21.07.2015.
  */
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/cabinet")
 public class UsersController {
 
     @Inject
@@ -25,6 +26,7 @@ public class UsersController {
     @Inject
     private Md5PasswordEncoder md5PasswordEncoder;
 
+    /*
     @RequestMapping(value = "/add", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("isAnonymous()")
     public String addUser (@RequestBody SimpleUserForm form){
@@ -36,6 +38,14 @@ public class UsersController {
         user.setRoleId(form.getRoleId());
         userProvider.addUser(user);
         return "redirect:/";
+    }
+    */
+    @RequestMapping(value = "/profile")
+    @PreAuthorize("isAuthenticated()")
+    public String profile(Model model) {
+        User user = sessionUtils.getCurrentUser();
+        model.addAttribute("user", user);
+        return "users/profile";
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, headers = "Accept=application/json")
@@ -51,6 +61,14 @@ public class UsersController {
             userProvider.update(user);
         }
         return "redirect:/";
+    }
+
+    @RequestMapping(value = "/edit")
+    @PreAuthorize("isAuthenticated()")
+    public String editProfile(Model model) {
+        User user = sessionUtils.getCurrentUser();
+        model.addAttribute("user", user);
+        return "users/update_profile";
     }
 
 }
