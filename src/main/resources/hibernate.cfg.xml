@@ -17,5 +17,11 @@
         <mapping class="com.nextbook.domain.entities.UserEntity"/>
         <mapping class="com.nextbook.domain.entities.RoleEntity"/>
         <mapping class="com.nextbook.domain.entities.PermissionEntity"/>
+        <mapping class="com.nextbook.domain.entities.BookEntity"/>
+        <mapping class="com.nextbook.domain.entities.SubCategoryEntity"/>
+        <mapping class="com.nextbook.domain.entities.CategoryEntity"/>
+        <mapping class="com.nextbook.domain.entities.PublisherEntity"/>
+        <mapping class="com.nextbook.domain.entities.KeywordEntity"/>
+        <mapping class="com.nextbook.domain.entities.AuthorEntity"/>
     </session-factory>
 </hibernate-configuration>
