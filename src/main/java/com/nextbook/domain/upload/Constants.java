@@ -1,4 +1,4 @@
-package com.kutsyk.pdf.uploader.domain;
+package com.nextbook.domain.upload;
 
 /**
  * Created by Oleh Kurpiak on 6/17/2015.

@@ -1,4 +1,4 @@
-package com.kutsyk.pdf.uploader.service;
+package com.nextbook.services;
 
 import com.microsoft.azure.storage.blob.CloudBlob;
 import org.apache.pdfbox.exceptions.COSVisitorException;

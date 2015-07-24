@@ -14,7 +14,6 @@
     <meta charset="utf-8">
     <title>Upload File Request Page</title>
     <script src="<c:url value="/resources/js/jquery.min.js" />"></script>
-
     <script src="<c:url value="/resources/js/jquery.ui.widget.js" />"></script>
     <script src="<c:url value="/resources/js/jquery.iframe-transport.js" />"></script>
     <script src="<c:url value="/resources/js/jquery.fileupload.js" />"></script>
