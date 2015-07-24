@@ -1,5 +1,7 @@
 package com.nextbook.domain.entities;
 
+import com.nextbook.domain.enums.BookTypeEnum;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +56,9 @@ public class BookEntity {
     @Column(name = "LANGUAGE", nullable = false)
     private String language;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "TYPE_OF_BOOK", nullable = false)
-    private String typeOfBook;
+    private BookTypeEnum typeOfBook;
 
     @Column(name = "PAGES_NUMBER")
     private int numberOfPages;
@@ -169,11 +172,11 @@ public class BookEntity {
         this.language = language;
     }
 
-    public String getTypeOfBook() {
+    public BookTypeEnum getTypeOfBook() {
         return typeOfBook;
     }
 
-    public void setTypeOfBook(String typeOfBook) {
+    public void setTypeOfBook(BookTypeEnum typeOfBook) {
         this.typeOfBook = typeOfBook;
     }
 

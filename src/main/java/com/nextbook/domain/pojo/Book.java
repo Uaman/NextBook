@@ -1,5 +1,7 @@
 package com.nextbook.domain.pojo;
 
+import com.nextbook.domain.enums.BookTypeEnum;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class Book {
 
     private String language;
 
-    private String typeOfBook;
+    private BookTypeEnum typeOfBook;
 
     private int numberOfPages;
 
@@ -133,11 +135,11 @@ public class Book {
         this.language = language;
     }
 
-    public String getTypeOfBook() {
+    public BookTypeEnum getTypeOfBook() {
         return typeOfBook;
     }
 
-    public void setTypeOfBook(String typeOfBook) {
+    public void setTypeOfBook(BookTypeEnum typeOfBook) {
         this.typeOfBook = typeOfBook;
     }
 
