@@ -13,7 +13,15 @@ import java.util.List;
 
 @Entity
 @Table(name = "author")
+@NamedQueries({
+        @NamedQuery(name = AuthorEntity.getById, query = "SELECT author FROM AuthorEntity author WHERE author.id=:id"),
+        @NamedQuery(name = AuthorEntity.getAllUsers, query = "SELECT author FROM AuthorEntity author")
+})
+
 public class AuthorEntity {
+
+    public static final String getById = "getAuthorById";
+    public static final String getAllUsers = "getAllAuthors";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

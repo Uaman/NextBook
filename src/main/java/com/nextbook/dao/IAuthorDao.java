@@ -1,12 +1,16 @@
-package com.nextbook.services;
+package com.nextbook.dao;
 
 import com.nextbook.domain.pojo.Author;
-import java.util.*;
+
+import java.util.List;
 
 /**
- * Created by Stacy on 7/24/15.
+ * Created with IntelliJ IDEA.
+ * User: borsch
+ * Date: 7/24/2015
+ * Time: 4:08 PM
  */
-public interface IAuthorProvider {
+public interface IAuthorDao {
 
     Author updateAuthor(Author author);
 
@@ -18,8 +22,6 @@ public interface IAuthorProvider {
     boolean deleteAuthor(int authorId);
 
     Author getById(int authorId);
-
-    List<Author> getAll();
 
     List<Author> getFromMax(int from, int max);
 
