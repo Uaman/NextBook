@@ -23,31 +23,6 @@ import java.util.List;
 @Repository
 public class BookDAO implements IBookDao {
 
-
-    @Override
-    public boolean addBook(Book book) {
-        boolean added = false;
-        if(book != null){
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            try {
-                session.beginTransaction();
-                BookEntity entity = DozerMapperFactory.getDozerBeanMapper().map(book, BookEntity.class);
-                session.save(entity);
-                session.getTransaction().commit();
-                added = true;
-            } catch (Exception e){
-                if(session.getTransaction().isActive())
-                    session.getTransaction().rollback();
-                added = false;
-                e.printStackTrace();
-            } finally {
-                if(session != null && session.isOpen())
-                    session.close();
-            }
-        }
-        return added;
-    }
-
     @Override
     public Book getBookById(int bookId) {
         Book result = null;

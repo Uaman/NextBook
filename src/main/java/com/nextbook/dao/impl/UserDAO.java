@@ -65,30 +65,6 @@ public class UserDAO implements IUserDao{
     }
 
     @Override
-    public boolean add(User user) {
-        boolean added = false;
-        if(user != null){
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            try {
-                session.beginTransaction();
-                UserEntity entity = DozerMapperFactory.getDozerBeanMapper().map(user, UserEntity.class);
-                session.save(entity);
-                session.getTransaction().commit();
-                added = true;
-            } catch (Exception e){
-                if(session.getTransaction().isActive())
-                    session.getTransaction().rollback();
-                added = false;
-                e.printStackTrace();
-            } finally {
-                if(session != null && session.isOpen())
-                    session.close();
-            }
-        }
-        return added;
-    }
-
-    @Override
     public List<User> getAll(int from, int max) {
         List<User> result = null;
         Session session = HibernateUtil.getSessionFactory().openSession();

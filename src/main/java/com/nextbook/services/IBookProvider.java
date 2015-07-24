@@ -14,8 +14,6 @@ import java.util.List;
 @Service
 public interface IBookProvider {
 
-    boolean addBook(Book book);
-
     Book getBookById(int bookId);
 
     List<Book> getAllBooks();

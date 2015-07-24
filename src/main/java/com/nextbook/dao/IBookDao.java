@@ -13,8 +13,6 @@ import java.util.List;
  */
 public interface IBookDao {
 
-    boolean addBook(Book book);
-
     Book getBookById(int bookId);
 
     List<Book> getAllBooks();

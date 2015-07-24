@@ -18,8 +18,6 @@ public interface IUserDao {
 
     User update(User user);
 
-    boolean add(User user);
-
     /**
      * pass (0, 0) to get all
      * @param from - start from

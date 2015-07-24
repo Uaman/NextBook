@@ -30,11 +30,6 @@ public class UserProvider implements IUserProvider{
     }
 
     @Override
-    public boolean addUser(User user) {
-        return userDao.add(user);
-    }
-
-    @Override
     public List<User> getFromMax(int from, int max) {
         return userDao.getAll(from, max);
     }

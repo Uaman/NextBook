@@ -19,11 +19,6 @@ public class BookProvider implements IBookProvider{
     private IBookDao bookDao = new BookDAO();
 
     @Override
-    public boolean addBook(Book book) {
-        return bookDao.addBook(book);
-    }
-
-    @Override
     public Book getBookById(int bookId) {
         return bookDao.getBookById(bookId);
     }

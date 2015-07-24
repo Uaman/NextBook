@@ -15,8 +15,6 @@ public interface IUserProvider {
 
     User getById(int userId);
 
-    boolean addUser(User user);
-
     List<User> getFromMax(int from, int max);
 
     User update(User user);

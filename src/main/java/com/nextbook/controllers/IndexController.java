@@ -57,8 +57,8 @@ public class IndexController {
         Role role = new Role();
         role.setId(1);
         user.setRole(role);
-        boolean added = userProvider.addUser(user);
-        return added;
+        user = userProvider.update(user);
+        return user != null;
     }
 /*
     @RequestMapping(value = "/profile")
