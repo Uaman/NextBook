@@ -13,7 +13,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "publisher")
+@NamedQueries({
+        @NamedQuery(name = PublisherEntity.GET_BY_ID, query = "SELECT publisher FROM PublisherEntity publisher WHERE publisher.id=:id")
+})
 public class PublisherEntity {
+
+    public static final String GET_BY_ID = "getPublisherById";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -40,7 +40,9 @@ public class AdminUserController {
         user.setEmail(form.getEmail());
         user.setPassword(md5PasswordEncoder.encodePassword(form.getPassword(), null));
         user.setActive(form.isActive());
-        //user.setRoleId(form.getRoleId());
+        Role role = new Role();
+        role.setId(form.getRoleId());
+        user.setRole(role);
         userProvider.addUser(user);
         return "redirect:/";
     }
