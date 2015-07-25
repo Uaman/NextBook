@@ -4,7 +4,9 @@ import com.nextbook.dao.IAuthorDao;
 import com.nextbook.dao.impl.AuthorDao;
 import com.nextbook.domain.pojo.Author;
 import com.nextbook.services.IAuthorProvider;
+import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -13,9 +15,11 @@ import java.util.List;
  * Date: 7/24/2015
  * Time: 3:49 PM
  */
+@Service
 public class AuthorProvider implements IAuthorProvider{
 
-    private IAuthorDao authorDao = new AuthorDao();
+    @Inject
+    private IAuthorDao authorDao;
 
     @Override
     public Author updateAuthor(Author author) {

@@ -34,6 +34,9 @@
     <security:authorize access="hasRole('ROLE_ADMIN')">
         <li><a href="/users"><spring:message code="users.manageUsers" /></a></li>
     </security:authorize>
+    <security:authorize access="hasRole('ROLE_ADMIN')">
+        <li><a href="/admin/authors/all"><spring:message code="authors.manageAuthors" /></a></li>
+    </security:authorize>
 
     <security:authorize access="isAuthenticated()">
         <li><a href="/static/j_spring_security_logout"><spring:message code="global.exit" /></a></li>
