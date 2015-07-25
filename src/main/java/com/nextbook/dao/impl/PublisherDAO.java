@@ -32,6 +32,7 @@ public class PublisherDAO implements IPublisherDao {
             try {
                 session.beginTransaction();
                 PublisherEntity entity = dozerBeanMapper.map(publisher, PublisherEntity.class);
+                session.saveOrUpdate(entity);
                 entity = (PublisherEntity) session.merge(entity);
                 result = dozerBeanMapper.map(entity, Publisher.class);
                 session.getTransaction().commit();
@@ -100,7 +101,7 @@ public class PublisherDAO implements IPublisherDao {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            Query query = session.createQuery("SELECT publisher FROM PublisherEntity publisher");
+            Query query = session.getNamedQuery(PublisherEntity.GET_ALL);
             if(from > 0)
                 query.setFirstResult(from);
             if(max > 0)
@@ -128,4 +129,6 @@ public class PublisherDAO implements IPublisherDao {
         }
         return result;
     }
+
+
 }

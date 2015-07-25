@@ -14,7 +14,7 @@
 </head>
 <body>
 
-  <form action="/users/update/${user.id}" method="POST" name="userForm">
+  <form action="/cabinet/update" method="POST" name="userForm">
     <spring:message code="user.info.name" />:<input type="text" name="name" value="${user.name}"/><br />
     <spring:message code="user.info.email" />:<input type="email" name="email" value="${user.email}" /><br />
     <spring:message code="user.info.role" />:
@@ -30,7 +30,7 @@
       </security:authorize>
     </select>
     <script>
-      document.userForm.roleId.selectedIndex = ${user.roleId-1};
+      document.userForm.roleId.selectedIndex = ${user.role.id-1};
     </script>
     <br />
     <spring:message code="user.info.newPass" />:<input type="password"  name="password"/><br />

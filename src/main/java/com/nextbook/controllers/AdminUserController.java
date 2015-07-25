@@ -43,7 +43,7 @@ public class AdminUserController {
         Role role = new Role();
         role.setId(form.getRoleId());
         user.setRole(role);
-        userProvider.addUser(user);
+        userProvider.update(user);
         return "redirect:/";
     }
 

@@ -28,7 +28,7 @@
     </security:authorize>
 
     <security:authorize access="isAuthenticated()">
-        <li><a href="/profile"><spring:message code="user.info.profile" /></a></li>
+        <li><a href="/cabinet/profile"><spring:message code="user.info.profile" /></a></li>
     </security:authorize>
 
     <security:authorize access="hasRole('ROLE_ADMIN')">

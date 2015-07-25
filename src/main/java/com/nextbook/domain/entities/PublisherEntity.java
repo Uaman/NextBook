@@ -1,5 +1,6 @@
 package com.nextbook.domain.entities;
 
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +15,13 @@ import java.util.List;
 @Entity
 @Table(name = "publisher")
 @NamedQueries({
-        @NamedQuery(name = PublisherEntity.GET_BY_ID, query = "SELECT publisher FROM PublisherEntity publisher WHERE publisher.id=:id")
+        @NamedQuery(name = PublisherEntity.GET_BY_ID, query = "SELECT publisher FROM PublisherEntity publisher WHERE publisher.id=:id"),
+        @NamedQuery(name= PublisherEntity.GET_ALL, query = "SELECT publisher FROM PublisherEntity publisher")
 })
 public class PublisherEntity {
 
     public static final String GET_BY_ID = "getPublisherById";
+    public static final String GET_ALL = "getAllPublishers";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -88,6 +91,8 @@ public class PublisherEntity {
     public void setUsers(List<UserEntity> users) {
         this.users = users;
     }
+
+
 
     @Override
     public String toString() {
