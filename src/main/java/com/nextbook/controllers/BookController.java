@@ -157,4 +157,11 @@ public class BookController {
         return success;
     }
 
+    @RequestMapping(value = "/check-isbn/{isbn}", method = RequestMethod.POST)
+    public @ResponseBody boolean isbnExist(@PathVariable("isbn") String isbn){
+        if(isbn == null)
+            return false;
+        return bookProvider.isbnExist(isbn);
+    }
+
 }

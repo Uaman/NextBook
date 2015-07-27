@@ -16,11 +16,13 @@ import java.util.List;
 @Entity
 @Table(name = "book")
 @NamedQueries({
-        @NamedQuery(name = BookEntity.getById, query = "SELECT book FROM BookEntity book WHERE book.id=:id")
+        @NamedQuery(name = BookEntity.getById, query = "SELECT book FROM BookEntity book WHERE book.id=:id"),
+        @NamedQuery(name = BookEntity.getByIsbn, query = "SELECT book FROM BookEntity book WHERE book.isbn=:isbn")
 })
 public class BookEntity {
 
-    public static final String getById = "getById";
+    public static final String getById = "getBookById";
+    public static final String getByIsbn = "getBookByIsbn";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

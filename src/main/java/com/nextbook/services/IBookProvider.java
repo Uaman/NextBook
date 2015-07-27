@@ -24,4 +24,6 @@ public interface IBookProvider {
 
     Book updateBook(Book book);
 
+    boolean isbnExist(String isbn);
+
 }

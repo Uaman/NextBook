@@ -123,4 +123,26 @@ public class BookDAO implements IBookDao {
         }
         return result;
     }
+
+    @Override
+    public boolean isbnExist(String isbn) {
+        boolean exist = false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query query = session.getNamedQuery(BookEntity.getByIsbn);
+            query.setParameter("isbn", isbn);
+            List<BookEntity> list = query.list();
+            if(list != null && list.size() > 0) {
+                exist = true;
+            }
+            session.getTransaction().commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return exist;
+    }
 }

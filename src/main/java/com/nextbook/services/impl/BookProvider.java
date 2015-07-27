@@ -46,4 +46,9 @@ public class BookProvider implements IBookProvider{
             return null;
         return bookDao.updateBook(book);
     }
+
+    @Override
+    public boolean isbnExist(String isbn) {
+        return bookDao.isbnExist(isbn);
+    }
 }

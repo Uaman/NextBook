@@ -21,4 +21,6 @@ public interface IBookDao {
 
     Book updateBook(Book book);
 
+    boolean isbnExist(String isbn);
+
 }
