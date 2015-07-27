@@ -17,7 +17,7 @@ public class Role {
 
     private String name;
 
-    private List<PermissionEntity> permissions = new ArrayList<PermissionEntity>();
+    private List<Permission> permissions = new ArrayList<Permission>();
 
     public Integer getId() {
         return id;
@@ -35,11 +35,11 @@ public class Role {
         this.name = name;
     }
 
-    public List<PermissionEntity> getPermissions() {
+    public List<Permission> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(List<PermissionEntity> permissions) {
+    public void setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
     }
 

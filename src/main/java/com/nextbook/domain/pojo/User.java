@@ -19,6 +19,7 @@ public class User {
 
     private Role role;
 
+    private Publisher publisher;
 
     public Integer getId() {
         return id;
@@ -68,6 +69,14 @@ public class User {
         this.role = role;
     }
 
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,6 +89,7 @@ public class User {
         if (id != null ? !id.equals(user.id) : user.id != null) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (publisher != null ? !publisher.equals(user.publisher) : user.publisher != null) return false;
         if (role != null ? !role.equals(user.role) : user.role != null) return false;
 
         return true;
@@ -93,6 +103,7 @@ public class User {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (active ? 1 : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (publisher != null ? publisher.hashCode() : 0);
         return result;
     }
 
@@ -105,6 +116,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", active=" + active +
                 ", role=" + role +
+                ", publisher=" + publisher +
                 '}';
     }
 }

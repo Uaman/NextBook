@@ -3,6 +3,8 @@ package com.nextbook.domain.entities;
 import com.nextbook.domain.pojo.Role;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,6 +43,10 @@ public class UserEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ROLE_ID", nullable = false)
     private RoleEntity roleEntity;
+
+    @ManyToOne
+    @JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "PUBLISHER_ID")}, inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
+    private PublisherEntity publisherEntity;
 
     public Integer getId() {
         return id;
@@ -88,6 +94,14 @@ public class UserEntity {
 
     public void setRoleEntity(RoleEntity roleEntity) {
         this.roleEntity = roleEntity;
+    }
+
+    public PublisherEntity getPublisherEntity() {
+        return publisherEntity;
+    }
+
+    public void setPublisherEntity(PublisherEntity publisherEntity) {
+        this.publisherEntity = publisherEntity;
     }
 
     @Override

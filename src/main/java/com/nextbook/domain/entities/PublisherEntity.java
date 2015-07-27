@@ -32,7 +32,7 @@ public class PublisherEntity {
     @Column(name = "NAME_RU")
     private String nameRu;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToMany
     @JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "PUBLISHER_ID")}, inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
     private List<UserEntity> users = new ArrayList<UserEntity>();
 
