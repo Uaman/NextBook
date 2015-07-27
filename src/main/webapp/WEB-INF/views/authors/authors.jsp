@@ -6,8 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>Authors</title>
@@ -46,46 +46,47 @@
     <th width="20%">Action</th>
   </tr>
   <tbody id="added">
-<c:forEach var="author" items="${authors}">
-  <tr>
-  <form action="/admin/authors/update-author" method="POST" id="authorForm${author.id}">
-  <input type="hidden" value="${author.id}" name="id"/>
-  <td width="5%">
-  ${author.id}
-  </td>
-    <td width="10%">
-      <input type="text" value="${author.firstNameUa}" name="firstNameUa"/>
-    </td>
-    <td width="10%">
-      <input type="text" value="${author.lastNameUa}" name="lastNameUa"/>
-    </td>
-    <td width="10%">
-      <input type="text" value="${author.firstNameEn}" name="firstNameEn"/>
-    </td>
-    <td width="10%">
-      <input type="text" value="${author.lastNameEn}" name="lastNameEn"/>
-    </td>
-    <td width="10%">
-      <input type="text" value="${author.firstNameRu}" name="firstNameRu"/>
-    </td>
-    <td width="10%">
-      <input type="text" value="${author.lastNameRu}" name="lastNameRu"/>
-    </td>
-    <th width="10%">
-      <input type="submit" value="Update" />
-  </form>
-    <form>
-      <input type ="submit" value ="Review books"/>
-    </form>
-    <form action="/admin/authors/delete-author/${author.id}" method="GET">
-      <input type="submit" value="Delete" />
-      </th>
-    </form>
-  </tr>
-</c:forEach>
+  <c:forEach var="author" items="${authors}">
+    <tr>
+        <form:form modelAttribute="adminAuthorForm" action="/admin/authors/update-author" method="POST" id="authorForm${author.id}">
+        <input type="hidden" value="${author.id}" name="id"/>
+        <td width="5%">
+            ${author.id}
+        </td>
+        <td width="10%">
+          <input type="text" value="${author.firstNameUa}" name="firstNameUa"/>
+        </td>
+        <td width="10%">
+          <input type="text" value="${author.lastNameUa}" name="lastNameUa"/>
+        </td>
+        <td width="10%">
+          <input type="text" value="${author.firstNameEn}" name="firstNameEn"/>
+        </td>
+        <td width="10%">
+          <input type="text" value="${author.lastNameEn}" name="lastNameEn"/>
+        </td>
+        <td width="10%">
+          <input type="text" value="${author.firstNameRu}" name="firstNameRu"/>
+        </td>
+        <td width="10%">
+          <input type="text" value="${author.lastNameRu}" name="lastNameRu"/>
+        </td>
+        <th width="10%">
+          <input type="submit" value="Update" />
+      </form:form>
+      <form>
+        <input type ="submit" value ="Review books"/>
+      </form>
+      <form action="/admin/authors/delete-author/${author.id}" method="GET">
+        <input type="submit" value="Delete" />
+        </form>
+          </th>
+    </tr>
+  </c:forEach>
   </tbody>
+
   <tr>
-    <form action="/admin/authors/add-author" method="POST">
+    <form:form modelAttribute="adminAuthorForm" action="/admin/authors/add-author" method="POST">
       <td width="10%">
       </td>
       <td width="10%">
@@ -109,7 +110,8 @@
       <th width="10%">
         <input type="submit" value="Add new"/>
       </th>
-    </form>
+
+    </form:form>
   </tr>
 </table>
 </body>
