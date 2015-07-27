@@ -71,6 +71,28 @@ public class Publisher {
         this.users = users;
     }
 
+    public void addUser(User user) {
+        if (users == null)
+            users = new ArrayList<User>();
+
+        for (User u: users)
+            if (u.getId().equals(user.getId()))
+                return;
+
+        users.add(user);
+    }
+
+    public void deleteUser(int userID) {
+        if (users != null) {
+            for (User user: users) {
+                if (user.getId().equals(userID)) {
+                    users.remove(user);
+                    return;
+                }
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "PublisherEntity{" +

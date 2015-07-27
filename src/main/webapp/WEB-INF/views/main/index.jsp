@@ -28,11 +28,14 @@
     </security:authorize>
 
     <security:authorize access="isAuthenticated()">
-        <li><a href="/profile"><spring:message code="user.info.profile" /></a></li>
+        <li><a href="/cabinet/profile"><spring:message code="user.info.profile" /></a></li>
     </security:authorize>
 
     <security:authorize access="hasRole('ROLE_ADMIN')">
         <li><a href="/users"><spring:message code="users.manageUsers" /></a></li>
+    </security:authorize>
+    <security:authorize access="hasRole('ROLE_ADMIN')">
+        <li><a href="/admin/authors/all"><spring:message code="authors.manageAuthors" /></a></li>
     </security:authorize>
 
     <security:authorize access="isAuthenticated()">

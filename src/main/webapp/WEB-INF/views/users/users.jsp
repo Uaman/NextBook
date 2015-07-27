@@ -49,7 +49,7 @@ Filters: <br />
   <tbody id="added">
   <c:forEach var="user" items="${users}">
     <tr>
-      <form action="/users/update/${user.id}" method="POST" id="userForm${user.id}">
+      <form action="/admin/users/update-user" method="POST" id="userForm${user.id}">
         <input type="hidden" value="${user.id}" name="id"/>
         <td width="10%">
           ${user.id}
@@ -70,17 +70,30 @@ Filters: <br />
           </select>
         </td>
         <td width="10%">
-            <spring:message code="role.${user.role.name}" />
-          <%--<select name="roleId">
-            <option value="1"><spring:message code="role.user" /></option>
-            <option value="2"><spring:message code="role.author" /></option>
-            <option value="3"><spring:message code="role.publisher" /></option>
-            <option value="4"><spring:message code="role.moderator" /></option>
-            <option value="5"><spring:message code="role.admin" /></option>
+            <%--<spring:message code="role.${user.role.name}" />--%>
+          <select name="roleId">
+            <c:forEach begin="1" end="5" step="1" var="index">
+              <option value="${index}" <c:if test="index==user.role.id">selected</c:if> >
+                 <c:choose>
+                   <c:when test="${index eq 1}">
+                     <spring:message code="role.user" />
+                   </c:when>
+                   <c:when test="${index eq 2}">
+                     <spring:message code="role.author" />
+                   </c:when>
+                   <c:when test="${index eq 3}">
+                     <spring:message code="role.publisher" />
+                   </c:when>
+                   <c:when test="${index eq 4}">
+                     <spring:message code="role.moderator" />
+                   </c:when>
+                   <c:when test="${index eq 5}">
+                     <spring:message code="role.admin" />
+                   </c:when>
+                 </c:choose>
+               </option>
+            </c:forEach>
           </select>
-          <script>
-            document.getElementById("userForm${user.id}").roleId.selectedIndex = ${user.roleId-1};
-          </script>--%>
         </td>
         <th width="10%">
           <input type="submit" value="Update" />

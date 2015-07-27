@@ -7,6 +7,7 @@ import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
  * Date: 7/24/2015
  * Time: 4:18 PM
  */
+@Repository
 public class AuthorDao implements IAuthorDao{
 
     @Override

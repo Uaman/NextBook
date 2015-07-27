@@ -25,6 +25,9 @@
         <security:authorize access="hasRole('ROLE_ADMIN')">
             <li><a href="/admin/users/all"><spring:message code="users.manageUsers" /></a></li>
         </security:authorize>
+        <security:authorize access="hasRole('ROLE_ADMIN')">
+            <li><a href="/admin/authors/all"><spring:message code="authors.manageAuthors" /></a></li>
+        </security:authorize>
     </ul>
   <spring:message code="user.info.name" />: ${user.name}<br />
   <spring:message code="user.info.email" />: ${user.email}<br />

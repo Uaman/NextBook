@@ -78,4 +78,6 @@
         </property>
     </bean>
 
+    <bean id="dozerBeanMapper" class="com.nextbook.utils.DozerMapperFactory" factory-method="getDozerBeanMapper" />
+
 </beans>
