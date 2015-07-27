@@ -5,6 +5,7 @@ var BOOK_ID = ${bookId};
 var firstPageUploaded = false;
 var lastPageUploaded = false;
 var bookUploaded = false;
+var isbnExist = false;
 $(document).ready(function(){
     paperBookChecked();
 
@@ -16,19 +17,6 @@ $(document).ready(function(){
                 return element.value.match(/^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$/);
             },
             '<spring:message code="book.registration.isbn.format" />'
-    );
-    $.validator.addMethod(
-            'isbnExist',
-            function(value, element){
-                $.ajax({
-                    url: '/book/check-isbn/'+element.value,
-                    type: 'POST',
-                    success: function(data){
-                        return !data;
-                    }
-                });
-            },
-            '<spring:message code="book.registration.isbn.exist" />'
     );
     $.validator.addMethod(
             'validYear',
@@ -105,7 +93,6 @@ $(document).ready(function(){
         rules: {
             isbn: {
                 required: true,
-                isbnExist: true,
                 validIsbn: true
             },
             name_ua: {
@@ -168,6 +155,10 @@ $(document).ready(function(){
         errorLabelContainer: $("div.errorblock"),
         wrapper: 'li',
         submitHandler: function(form){
+            if(isbnExist) {
+                alert('isbn exist');
+                return;
+            }
             $.ajax({
                 url: '/book/add-book',
                 data: JSON.stringify(formDataBook()),
@@ -200,6 +191,16 @@ $(document).ready(function(){
     //appendAjaxFormToButtonWithProgress('#send-first-page', '#first-page-form', '#container-progress-first-page', '#progress-bar-first-page');
     $('#paper').change(function(){
         paperBookChecked();
+    });
+
+    $('#isbn').change(function(){
+        $.ajax({
+            url: '/book/check-isbn/'+$('#isbn').val(),
+            type: 'POST',
+            success: function(data){
+                isbnExist = data;
+            }
+        });
     });
 
     $('#send-book').click(function(){
