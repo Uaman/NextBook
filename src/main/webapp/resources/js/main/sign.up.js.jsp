@@ -14,7 +14,7 @@
         $.validator.addMethod(
                 "emailRegex",
                 function(value, element){
-                    return element.value.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{1,4}$/);
+                    return element.value.match(/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i);
                 },
                 '<spring:message code="sign.up.error.wrong.email.format" />'
         )
