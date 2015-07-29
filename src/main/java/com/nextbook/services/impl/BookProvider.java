@@ -2,8 +2,10 @@ package com.nextbook.services.impl;
 
 import com.nextbook.dao.IBookDao;
 import com.nextbook.dao.impl.BookDAO;
+import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.services.IBookProvider;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -14,9 +16,11 @@ import java.util.List;
  * Date: 7/23/2015
  * Time: 8:13 PM
  */
+@Service
 public class BookProvider implements IBookProvider{
 
-    private IBookDao bookDao = new BookDAO();
+    @Inject
+    private IBookDao bookDao;
 
     @Override
     public Book getBookById(int bookId) {
@@ -50,5 +54,10 @@ public class BookProvider implements IBookProvider{
     @Override
     public boolean isbnExist(String isbn) {
         return bookDao.isbnExist(isbn);
+    }
+
+    @Override
+    public List<Book> getBooksByCriterion(BookCriterion criterion) {
+        return bookDao.getBooksByCriterion(criterion);
     }
 }

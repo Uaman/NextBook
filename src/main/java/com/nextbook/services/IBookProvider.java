@@ -1,5 +1,6 @@
 package com.nextbook.services;
 
+import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +27,5 @@ public interface IBookProvider {
 
     boolean isbnExist(String isbn);
 
+    List<Book> getBooksByCriterion(BookCriterion criterion);
 }

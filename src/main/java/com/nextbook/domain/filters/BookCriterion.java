@@ -1,0 +1,149 @@
+package com.nextbook.domain.filters;
+
+import com.nextbook.domain.enums.BookTypeEnum;
+
+/**
+ * Created by Polomani on 27.07.2015.
+ */
+public class BookCriterion {
+
+    private int from;
+
+    private int max;
+
+    private int id;
+
+    private String isbn;
+
+    private String name;
+
+    private String subCategory;
+
+    private String state;
+
+    private int yearOfPublication;
+
+    private String publisher;
+
+    private String language;
+
+    private BookTypeEnum typeOfBook;
+
+    private int numberOfPages;
+
+    //private String descriptionUa;
+
+    //private String descriptionEn;
+
+    //private String descriptionRu;
+
+    //private List<Keyword> keywords = new ArrayList<Keyword>();
+
+    private int authorId;
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
+    }
+
+    public String getPublisher() {
+        return '%'+publisher+'%';
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public String getSubCategory() {
+        return '%'+subCategory+'%';
+    }
+
+    public void setSubCategory(String subCategory) {
+        this.subCategory = subCategory;
+    }
+
+    public int getFrom() {
+        return from;
+    }
+
+    public void setFrom(int from) {
+        this.from = from;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public void setMax(int max) {
+        this.max = max;
+    }
+
+    public BookTypeEnum getTypeOfBook() {
+        return typeOfBook;
+    }
+
+    public void setTypeOfBook(BookTypeEnum typeOfBook) {
+        this.typeOfBook = typeOfBook;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public boolean isEighteenPlus () { return state.equalsIgnoreCase("eighteenPlus");}
+
+    public String getName() {
+        return '%'+name+'%';
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public int getYearOfPublication() {
+        return yearOfPublication;
+    }
+
+    public void setYearOfPublication(int yearOfPublication) {
+        this.yearOfPublication = yearOfPublication;
+    }
+
+    public String getLanguage() {
+        return '%'+language+'%';
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public int getNumberOfPages() {
+        return numberOfPages;
+    }
+
+    public void setNumberOfPages(int numberOfPages) {
+        this.numberOfPages = numberOfPages;
+    }
+}

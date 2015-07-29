@@ -1,7 +1,9 @@
 package com.nextbook.dao;
 
 
+import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
+import com.nextbook.domain.pojo.User;
 
 import java.util.List;
 
@@ -23,4 +25,5 @@ public interface IBookDao {
 
     boolean isbnExist(String isbn);
 
+    List<Book> getBooksByCriterion(BookCriterion criterion);
 }

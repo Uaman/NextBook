@@ -226,7 +226,7 @@ public class UserDAO implements IUserDao{
             result.setFirstResult(criterion.getFrom());
 
         if(criterion.getMax() > 0)
-            result.setFirstResult(criterion.getMax());
+            result.setMaxResults(criterion.getMax());
 
         return result;
     }
