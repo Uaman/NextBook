@@ -1,11 +1,10 @@
-package com.nextbook.controllers;
+package com.nextbook.controllers.cabinet.admin;
 
 import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.info.BookMainInfo;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.services.IBookProvider;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

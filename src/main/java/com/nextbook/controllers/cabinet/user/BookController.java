@@ -1,4 +1,4 @@
-package com.nextbook.controllers;
+package com.nextbook.controllers.cabinet.user;
 
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.forms.BookRegisterForm;
@@ -10,7 +10,6 @@ import com.nextbook.services.impl.AuthorProvider;
 import com.nextbook.services.impl.BookProvider;
 import com.nextbook.services.impl.SubCategoryProvider;
 import com.nextbook.utils.SessionUtils;
-import net.sf.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

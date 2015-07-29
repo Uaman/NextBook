@@ -187,12 +187,25 @@ public class BookDAO implements IBookDao {
 
     private Query createQueryFromCriterion(Session session, BookCriterion criterion) {
         StringBuilder queryString = new StringBuilder();
-        queryString.append("SELECT book FROM BookEntity book");
+        queryString.append("SELECT DISTINCT book FROM BookEntity book");
 
         boolean where = false;
 
+        for (int i = 0; i < criterion.getKeywords().size(); ++i) {
+            if (i==0) {
+                queryString.append(" WHERE (book.keywords.keyword.keyword LIKE '%'||?||'%'");
+            } else {
+                queryString.append(" OR book.keywords.keyword.keyword LIKE '%'||?||'%'");
+            }
+            if (i==criterion.getKeywords().size()-1) queryString.append(")");
+            where = true;
+        }
         if(criterion.getId() > 0){
-            queryString.append(" WHERE book.id=:id");
+            if(where) {
+                queryString.append(" AND book.id=:id");
+            } else {
+                queryString.append(" WHERE book.id=:id");
+            }
             where = true;
         }
         if(validString(criterion.getIsbn())){
@@ -282,8 +295,12 @@ public class BookDAO implements IBookDao {
             where = true;
         }
 
+        //CONCAT('%', :name, '%') or '%' || :name ||
+
         Query result = session.createQuery(queryString.toString());
         result.setProperties(criterion);
+        for (int i = 0; i < criterion.getKeywords().size(); ++i)
+            result.setParameter(i, criterion.getKeywords().get(i));
 
         if(criterion.getFrom() > 0)
             result.setFirstResult(criterion.getFrom());

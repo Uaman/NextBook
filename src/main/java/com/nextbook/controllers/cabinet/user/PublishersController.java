@@ -1,17 +1,14 @@
-package com.nextbook.controllers;
+package com.nextbook.controllers.cabinet.user;
 
 import com.nextbook.domain.forms.SimplePublisherForm;
 import com.nextbook.domain.pojo.Publisher;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IPublisherProvider;
 import com.nextbook.services.IUserProvider;
-import com.nextbook.services.impl.PublisherProvider;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -1,4 +1,4 @@
-package com.nextbook.controllers;
+package com.nextbook.controllers.cabinet.user;
 
 import com.nextbook.domain.forms.SimpleUserForm;
 import com.nextbook.domain.pojo.User;

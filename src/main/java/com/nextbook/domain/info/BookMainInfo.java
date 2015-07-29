@@ -2,6 +2,10 @@ package com.nextbook.domain.info;
 
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.pojo.Book;
+import com.nextbook.domain.pojo.Keyword;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Polomani on 29.07.2015.
@@ -48,6 +52,8 @@ public class BookMainInfo {
 
     private String author;
 
+    private List<String> keywords = new ArrayList<String>();
+
     public BookMainInfo() {
 
     }
@@ -76,6 +82,9 @@ public class BookMainInfo {
         numberOfImagesInGallery = book.getNumberOfImagesInGallery();
         if (book.getAuthor()!=null)
             author = book.getAuthor().getFirstNameUa() + ' ' + book.getAuthor().getLastNameUa();
+        if (book.getKeywords()!=null)
+            for (Keyword keyword:book.getKeywords())
+                keywords.add(keyword.getKeyword());
     }
 
     @Override
@@ -102,6 +111,14 @@ public class BookMainInfo {
                 ", numberOfImagesInGallery=" + numberOfImagesInGallery +
                 ", author='" + author + '\'' +
                 '}';
+    }
+
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
     }
 
     public String getAuthor() {

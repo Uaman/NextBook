@@ -2,6 +2,9 @@ package com.nextbook.domain.filters;
 
 import com.nextbook.domain.enums.BookTypeEnum;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Polomani on 27.07.2015.
  */
@@ -37,7 +40,7 @@ public class BookCriterion {
 
     //private String descriptionRu;
 
-    //private List<Keyword> keywords = new ArrayList<Keyword>();
+    private List<String> keywords = new ArrayList<String>();
 
     private int authorId;
 
@@ -63,6 +66,14 @@ public class BookCriterion {
 
     public void setSubCategory(String subCategory) {
         this.subCategory = subCategory;
+    }
+
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
     }
 
     public int getFrom() {

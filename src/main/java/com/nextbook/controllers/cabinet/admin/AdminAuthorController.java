@@ -1,4 +1,4 @@
-package com.nextbook.controllers;
+package com.nextbook.controllers.cabinet.admin;
 
 import com.nextbook.domain.filters.AuthorCriterion;
 import com.nextbook.domain.forms.AdminAuthorForm;
