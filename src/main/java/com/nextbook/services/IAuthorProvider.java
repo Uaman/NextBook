@@ -1,5 +1,6 @@
 package com.nextbook.services;
 
+import com.nextbook.domain.filters.AuthorCriterion;
 import com.nextbook.domain.pojo.Author;
 import java.util.*;
 
@@ -22,5 +23,6 @@ public interface IAuthorProvider {
     List<Author> getAll();
 
     List<Author> getFromMax(int from, int max);
+    List<Author> getAuthorsByCriterion(AuthorCriterion criterion);
 
 }

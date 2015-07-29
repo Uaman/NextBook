@@ -2,6 +2,7 @@ package com.nextbook.services.impl;
 
 import com.nextbook.dao.IAuthorDao;
 import com.nextbook.dao.impl.AuthorDao;
+import com.nextbook.domain.filters.AuthorCriterion;
 import com.nextbook.domain.pojo.Author;
 import com.nextbook.services.IAuthorProvider;
 import org.springframework.stereotype.Service;
@@ -46,5 +47,9 @@ public class AuthorProvider implements IAuthorProvider{
     @Override
     public List<Author> getFromMax(int from, int max) {
         return authorDao.getFromMax(from, max);
+    }
+    @Override
+    public List<Author> getAuthorsByCriterion(AuthorCriterion criterion) {
+        return authorDao.getAuthorsByCriterion(criterion);
     }
 }

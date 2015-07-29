@@ -12,6 +12,7 @@
 <head>
     <title>Authors</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/resources/js/author-table/filter.js"></script>
   <style>
     table{
       width: 100%;
@@ -33,6 +34,8 @@
 <label>lastNameEn:<input type="text" id="lastNameEn"/></label> <br />
 <label>firstNameRu:<input type="text" id="firstNameRu"/></label> <br />
 <label>lastNameRu:<input type="text" id="lastNameRu"/></label> <br />
+    <label>from:<input type="text" id="from"/></label> <br />
+    <label>max:<input type="text" id="max"/></label> <br />
 <input value="Search" type="submit" id="send-filter"> </p>
 <table style="border-collapse:collapse;">
   <tr>
@@ -74,7 +77,7 @@
         <th width="10%">
           <input type="submit" value="Update" />
       </form:form>
-      <form>
+            <form action = "/admin/authors/author-books/${author.id}" method="GET">
         <input type ="submit" value ="Review books"/>
       </form>
       <form action="/admin/authors/delete-author/${author.id}" method="GET">
@@ -111,8 +114,8 @@
         <input type="submit" value="Add new"/>
       </th>
 
-    </form:form>
-  </tr>
+        </form:form>
+    </tr>
 </table>
 </body>
 </html>

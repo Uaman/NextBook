@@ -1,5 +1,6 @@
 package com.nextbook.dao;
 
+import com.nextbook.domain.filters.AuthorCriterion;
 import com.nextbook.domain.pojo.Author;
 
 import java.util.List;
@@ -24,5 +25,7 @@ public interface IAuthorDao {
     Author getById(int authorId);
 
     List<Author> getFromMax(int from, int max);
+
+    List<Author> getAuthorsByCriterion(AuthorCriterion criterion);
 
 }

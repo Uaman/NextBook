@@ -1,8 +1,10 @@
 package com.nextbook.controllers;
 
+import com.nextbook.domain.filters.AuthorCriterion;
 import com.nextbook.domain.forms.AdminAuthorForm;
 import com.nextbook.domain.pojo.Author;
 import com.nextbook.services.IAuthorProvider;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by Stacy on 7/25/15.
@@ -56,7 +59,7 @@ public class AdminAuthorController {
             author.setLastNameUa(adminAuthorForm.getLastNameUa());
             authorProvider.updateAuthor(author);
         }
-            return "redirect:/admin/authors/all";
+        return "redirect:/admin/authors/all";
 
     }
 
@@ -67,5 +70,21 @@ public class AdminAuthorController {
         authorProvider.deleteAuthor(id);
         return "redirect:/admin/authors/all";
 
+    }
+    @RequestMapping(value = "/author-books/{id}",method = RequestMethod.GET)
+    @PreAuthorize(("hasRole('ROLE_ADMIN')"))
+    public String getAuthorBooks(@PathVariable("id") int id){
+        return "authors/books";
+    }
+    @RequestMapping(value = "/authors-filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public @ResponseBody
+    List<Author> filter(@RequestBody AuthorCriterion authorCriterion,
+                        HttpServletResponse response){
+        List<Author> result = authorProvider.getAuthorsByCriterion(authorCriterion);
+        response.setStatus(HttpServletResponse.SC_OK);
+        if(result == null)
+            result = new ArrayList<Author>();
+        return result;
     }
 }
