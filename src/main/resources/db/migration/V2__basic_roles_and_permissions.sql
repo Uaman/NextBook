@@ -12,7 +12,8 @@ INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('
 INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('2', '2');
 INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('3', '3');
 INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('4', '4');
-INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('5', '5');INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('2', '1');
+INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('5', '5');
+INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('2', '1');
 INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('3', '1');
 INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('4', '1');
 INSERT INTO `nextbook`.`role_permissions` (`role_id`, `permission_id`) VALUES ('5', '1');

@@ -35,7 +35,7 @@
     <br />
     <spring:message code="user.info.newPass" />:<input type="password"  name="password"/><br />
     <spring:message code="user.info.confPass" />:<input type="password"  name="confirm_pass"/><br />
-    <input type="submit" value='<spring:message code="global.update" />'/><br />
+    <input type="submit" value='<spring:message code="global.`update" />'/><br />
   </form>
 
 </body>
