@@ -40,9 +40,9 @@ public class PublisherEntity {
     @Column(name = "NAME_RU")
     private String nameRu;
 
-    @OneToMany
-    @JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "PUBLISHER_ID")}, inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
-    private List<UserEntity> users = new ArrayList<UserEntity>();
+//    @OneToMany
+//    @JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "PUBLISHER_ID")}, inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
+//    private List<UserEntity> users = new ArrayList<UserEntity>();
 
     public int getId() {
         return id;
@@ -84,13 +84,13 @@ public class PublisherEntity {
         this.nameRu = nameRu;
     }
 
-    public List<UserEntity> getUsers() {
-        return users;
-    }
+//    public List<UserEntity> getUsers() {
+//        return users;
+//    }
 
-    public void setUsers(List<UserEntity> users) {
-        this.users = users;
-    }
+//    public void setUsers(List<UserEntity> users) {
+//        this.users = users;
+//    }
 
 
     @Override
@@ -101,7 +101,7 @@ public class PublisherEntity {
                 ", description='" + description + '\'' +
                 ", nameEn='" + nameEn + '\'' +
                 ", nameRu='" + nameRu + '\'' +
-                ", users=" + users +
+//                ", users=" + users +
                 '}';
     }
 }
