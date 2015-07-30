@@ -45,7 +45,7 @@ public class UserEntity {
     private RoleEntity roleEntity;
 
     @ManyToOne
-    @JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "USER_ID")}, inverseJoinColumns = {@JoinColumn(name = "PUBLISHER_ID")})
+    @JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "PUBLISHER_ID")}, inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
     private PublisherEntity publisherEntity;
 
     public Integer getId() {
