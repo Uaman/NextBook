@@ -1,6 +1,7 @@
 package com.nextbook.services;
 
 import com.nextbook.domain.pojo.SubCategory;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -10,8 +11,7 @@ import java.util.List;
  * Date: 7/23/2015
  * Time: 10:04 PM
  */
+@Service
 public interface ISubCategoryProvider {
-
     List<SubCategory> getAll();
-
 }

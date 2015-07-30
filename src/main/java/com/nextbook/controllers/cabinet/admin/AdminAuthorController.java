@@ -4,6 +4,7 @@ import com.nextbook.domain.filters.AuthorCriterion;
 import com.nextbook.domain.forms.AdminAuthorForm;
 import com.nextbook.domain.pojo.Author;
 import com.nextbook.services.IAuthorProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/admin/authors")
 public class AdminAuthorController {
-    @Inject
+    @Autowired
     private IAuthorProvider authorProvider;
 
     @RequestMapping(value = "/all")

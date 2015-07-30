@@ -6,6 +6,7 @@ import com.nextbook.domain.pojo.Role;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.SessionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
@@ -27,7 +28,7 @@ public class AdminUserController {
 
     @Inject
     private IUserProvider userProvider;
-    @Inject
+    @Autowired
     private SessionUtils sessionUtils;
     @Inject
     private Md5PasswordEncoder md5PasswordEncoder;

@@ -1,2 +1,4 @@
-activity{
-}
+INSERT INTO `nextbook`.`publisher` (`name_ua`, `description`, `name_ru`, `name_en`) VALUES ('пуб_1', 'first publisher', 'пуб_ру_1', 'pub_1');
+INSERT INTO `nextbook`.`users_to_publisher` (`user_id`, `publisher_id`) VALUES ('1', '1');
+INSERT INTO `nextbook`.`category` (`name_ua`, `order`, `link`, `name_ru`, `name_en`) VALUES ('Перша категорія', '1', 'link', 'ру', 'name');
+INSERT INTO `nextbook`.`subcategory` (`name_ua`, `order`, `link`, `category_id`, `name_ru`, `name_en`) VALUES ('укр_підкатегорія', '1', 'link_1', '1', 'ру', 'eng_name');

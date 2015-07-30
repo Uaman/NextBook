@@ -10,6 +10,7 @@ import com.nextbook.services.impl.AuthorProvider;
 import com.nextbook.services.impl.BookProvider;
 import com.nextbook.services.impl.SubCategoryProvider;
 import com.nextbook.utils.SessionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,14 +29,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/book")
 public class BookController {
-
-    private IBookProvider bookProvider = new BookProvider();
-
-    private ISubCategoryProvider subCategoryProvider = new SubCategoryProvider();
-
-    private SessionUtils sessionUtils = new SessionUtils();
-
-    private IAuthorProvider authorProvider = new AuthorProvider();
+    @Autowired
+    private IBookProvider bookProvider;
+    @Autowired
+    private ISubCategoryProvider subCategoryProvider;
+    @Autowired
+    private SessionUtils sessionUtils;
+    @Autowired
+    private IAuthorProvider authorProvider;
 
     @RequestMapping(value = "/add-book", method = RequestMethod.GET)
     public String addBook(Model model){
@@ -75,6 +76,7 @@ public class BookController {
     @RequestMapping(value = "/add-book", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody int saveBook(@RequestBody BookRegisterForm bookRegisterForm,
                                       Principal principal){
+        System.out.println("HERE book");
         User user = sessionUtils.getCurrentUser();
         if(user == null)
             return -1;
@@ -123,6 +125,7 @@ public class BookController {
     @RequestMapping(value = "/send-first-page", method = RequestMethod.POST)
     public @ResponseBody boolean firstPage(@RequestParam("first_page")MultipartFile file,
                                            @RequestParam("bookId") int bookId){
+        System.out.println("Send first book");
         if(file == null)
             return false;
         boolean success = true;
@@ -135,6 +138,7 @@ public class BookController {
     @RequestMapping(value = "/send-last-page", method = RequestMethod.POST)
     public @ResponseBody boolean lastPage(@RequestParam("last_page")MultipartFile file,
                                           @RequestParam("bookId") int bookId){
+        System.out.println("Send last book");
         if(file == null)
             return false;
         boolean success = true;
@@ -147,6 +151,7 @@ public class BookController {
     @RequestMapping(value = "/send-book", method = RequestMethod.POST)
     public @ResponseBody boolean uploadBook(@RequestParam("book")MultipartFile file,
                                             @RequestParam("bookId") int bookId){
+        System.out.println("Send WTF book");
         if(file == null)
             return false;
         boolean success = true;
