@@ -10,6 +10,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.util.*;
 
 
@@ -31,12 +32,12 @@ public class BookUploadingProvider implements IBookUploadingProvider {
     }
 
     @Override
-    public List<CloudBlob> getAllFiles() {
+    public List<CloudBlob> getAllFiles(String containerName) {
         List<CloudBlob> result = new LinkedList<CloudBlob>();
         try {
             CloudStorageAccount storageAccount = CloudStorageAccount.parse(STORAGE_CONNECTING_STRING);
             CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
-            CloudBlobContainer container = blobClient.getContainerReference("pdffiles");
+            CloudBlobContainer container = blobClient.getContainerReference(containerName);
             for (ListBlobItem blobItem : container.listBlobs()) {
                 if (blobItem instanceof CloudBlockBlob) {
                     CloudBlob retrievedBlob = (CloudBlob) blobItem;
@@ -63,10 +64,10 @@ public class BookUploadingProvider implements IBookUploadingProvider {
     }
 
     @Override
-    public void uploadBookToStorage(String bookDirName) {
+    public String uploadBookToStorage(String bookDirName) {
         File bookDir = new File(dir + File.separator + bookDirName);
         if (!bookDir.exists()) {
-            return;
+            return "";
         }
         String prefix = bookDirName;
         for (File file : bookDir.listFiles()) {
@@ -74,6 +75,15 @@ public class BookUploadingProvider implements IBookUploadingProvider {
             file.delete();
             deleteFile(file);
         }
+
+        for(CloudBlob blob: getAllFiles(bookDirName))
+            try {
+                if(blob.getName().endsWith(".pdf"))
+                    return blob.getUri().toString();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        return "";
     }
 
     private void deleteFile(File f) {

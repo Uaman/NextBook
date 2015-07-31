@@ -13,9 +13,9 @@ import java.util.List;
  * Created by KutsykV on 06.06.2015.
  */
 public interface IBookUploadingProvider {
-    void uploadBookToStorage(String bookDirName);
+    String uploadBookToStorage(String bookDirName);
     void uploadFileToLocalStorage(String prefix, MultipartFile file);
 
-    List<CloudBlob> getAllFiles();
+    List<CloudBlob> getAllFiles(String containerName);
     void uploadFileToStorage(String prefix, File result);
 }

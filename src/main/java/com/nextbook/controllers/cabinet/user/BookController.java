@@ -89,7 +89,9 @@ public class BookController {
         if(book == null)
             return -1;
         String localPath = "book-"+book.getId()+"";
-        bookUploadingProvider.uploadBookToStorage(localPath);
+        String storageLink = bookUploadingProvider.uploadBookToStorage(localPath);
+//        book.setLinkToStorage(storageLink);
+//        bookProvider.updateBook(book);
         return 1;
     }
 
