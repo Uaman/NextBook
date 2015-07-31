@@ -4,36 +4,28 @@ import com.itextpdf.text.pdf.*;
 import com.microsoft.azure.storage.*;
 import com.nextbook.domain.upload.Constants;
 import com.microsoft.azure.storage.blob.*;
-import com.nextbook.domain.upload.*;
-import com.nextbook.services.PdfService;
+import com.nextbook.services.IBookUploadingProvider;
 import org.apache.commons.io.IOUtils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.activation.FileDataSource;
 import java.io.*;
-import java.net.URI;
-import java.nio.CharBuffer;
 import java.util.*;
 
 
 /**
  * Created by KutsykV on 06.06.2015.
  */
-public class PdfServiceImpl implements PdfService {
+public class BookUploadingProvider implements IBookUploadingProvider {
 
     private String rootPath;
     private String dir;
-    public static final String storageConnectionString =
+    private static final String STORAGE_CONNECTING_STRING =
             "DefaultEndpointsProtocol=http;" +
                     "AccountName=nextbookpdfstorage;" +
                     "AccountKey=mOiuuhUrSiKRkPJAbBhXcujcxdkcf2qM36j22hjUnq3Zu88sH9yRW0OMClPB1jnIV0nn3+E+obCIV3pxLK/Mzw==";
-    private long time;
 
-
-
-    public PdfServiceImpl() {
+    public BookUploadingProvider() {
         this.rootPath = System.getProperty("catalina.home");
         this.dir = this.rootPath + File.separator + "pdfFiles";
     }
@@ -42,10 +34,9 @@ public class PdfServiceImpl implements PdfService {
     public List<CloudBlob> getAllFiles() {
         List<CloudBlob> result = new LinkedList<CloudBlob>();
         try {
-            CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
+            CloudStorageAccount storageAccount = CloudStorageAccount.parse(STORAGE_CONNECTING_STRING);
             CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
             CloudBlobContainer container = blobClient.getContainerReference("pdffiles");
-
             for (ListBlobItem blobItem : container.listBlobs()) {
                 if (blobItem instanceof CloudBlockBlob) {
                     CloudBlob retrievedBlob = (CloudBlob) blobItem;
@@ -59,48 +50,46 @@ public class PdfServiceImpl implements PdfService {
     }
 
     @Override
-    public void uploadFile(MultipartHttpServletRequest request) {
-        Iterator<String> itr = request.getFileNames();
-        MultipartFile mpf = null;
-
-        while (itr.hasNext()) {
-            time = System.currentTimeMillis();
-            mpf = request.getFile(itr.next());
-            try {
-                File folder = new File(dir);
-                if (!folder.exists())
-                    folder.mkdirs();
-
-                File resultFile = new File(dir + File.separator + mpf.getOriginalFilename());
-                File tempFile = new File(dir + File.separator + "temp.pdf");
-                File encodedFile = new File(dir + File.separator + "encoded.pdf");
-
-                FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(tempFile));
-                setPasswordToPdfFile(tempFile, encodedFile);
-                changeFileMetaData(encodedFile, resultFile);
-                loadFileToStorage(resultFile);
-
-                deleteFile(resultFile);
-                deleteFile(tempFile);
-                deleteFile(encodedFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println("time: " + (System.currentTimeMillis() - time));
+    public void uploadFileToLocalStorage(String prefix, MultipartFile file) {
+        File bookDir = new File(dir + File.separator + prefix);
+        if (!bookDir.exists())
+            bookDir.mkdirs();
+        try {
+            File resultFile = new File(dir + File.separator + prefix + File.separator + file.getOriginalFilename());
+            FileCopyUtils.copy(file.getBytes(), new FileOutputStream(resultFile));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private void deleteFile(File f){
-        try{
-            f.delete();
-        } catch(Exception e){}
+    @Override
+    public void uploadBookToStorage(String bookDirName) {
+        File bookDir = new File(dir + File.separator + bookDirName);
+        if (!bookDir.exists()) {
+            return;
+        }
+        String prefix = bookDirName;
+        for (File file : bookDir.listFiles()) {
+            uploadFileToStorage(prefix, file);
+            file.delete();
+            deleteFile(file);
+        }
     }
 
-    public void loadFileToStorage(File result) {
+    private void deleteFile(File f) {
         try {
-            CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
+            f.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void uploadFileToStorage(String prefix, File result) {
+        try {
+            CloudStorageAccount storageAccount = CloudStorageAccount.parse(STORAGE_CONNECTING_STRING);
             CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
-            CloudBlobContainer container = blobClient.getContainerReference("pdffiles");
+            CloudBlobContainer container = blobClient.getContainerReference(prefix);
             container.createIfNotExists();
             BlobContainerPermissions containerPermissions = new BlobContainerPermissions();
             containerPermissions.setPublicAccess(BlobContainerPublicAccessType.CONTAINER);
@@ -117,7 +106,7 @@ public class PdfServiceImpl implements PdfService {
         }
     }
 
-    public void setPasswordToPdfFile(File source, File result) {
+    private void setPasswordToPdfFile(File source, File result) {
         try {
             PdfReader reader = new PdfReader(source.getAbsolutePath());
             PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(result));
@@ -130,8 +119,7 @@ public class PdfServiceImpl implements PdfService {
         }
     }
 
-    @Override
-    public void changeFileMetaData(File source, File result) throws IOException {
+    private void changeFileMetaData(File source, File result) throws IOException {
         FileInputStream input = new FileInputStream(source);
         byte[] array = IOUtils.toByteArray(input);
         array[1] = 0;

@@ -12,11 +12,10 @@ import java.util.List;
 /**
  * Created by KutsykV on 06.06.2015.
  */
-public interface PdfService {
-    void uploadFile(MultipartHttpServletRequest request);
-    List<CloudBlob> getAllFiles();
+public interface IBookUploadingProvider {
+    void uploadBookToStorage(String bookDirName);
+    void uploadFileToLocalStorage(String prefix, MultipartFile file);
 
-    void loadFileToStorage(File result);
-    void changeFileMetaData(File source, File result) throws IOException;
-    void setPasswordToPdfFile(File source, File result);
+    List<CloudBlob> getAllFiles();
+    void uploadFileToStorage(String prefix, File result);
 }
