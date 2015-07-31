@@ -286,7 +286,8 @@ function formDataBook(){
         keywords: $('#keywords').val().split(','),
         author: $('#author').val(),
         eighteenPlus: $('#eighteen-plus').is(':checked'),
-        numberOfPages: $('#number_of_pages').val()
+        numberOfPages: $('#number_of_pages').val(),
+        subCategoryId: $('#category').val()
     };
     return data;
 }

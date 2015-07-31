@@ -7,9 +7,6 @@ import com.nextbook.services.IAuthorProvider;
 import com.nextbook.services.IBookProvider;
 import com.nextbook.services.IPublisherProvider;
 import com.nextbook.services.ISubCategoryProvider;
-import com.nextbook.services.impl.AuthorProvider;
-import com.nextbook.services.impl.BookProvider;
-import com.nextbook.services.impl.SubCategoryProvider;
 import com.nextbook.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -107,6 +104,7 @@ public class BookController {
         book.setDescriptionUa(bookRegisterForm.getDescriptionUa());
         book.setDescriptionEn(bookRegisterForm.getDescriptionEn());
         book.setDescriptionRu(bookRegisterForm.getDescriptionRu());
+        book.setSubCategory(subCategoryProvider.getById(bookRegisterForm.getSubCategoryId()));
 
         List<Keyword> keywordList = new ArrayList<Keyword>();
         List<String> keywords = bookRegisterForm.getKeywords();

@@ -14,4 +14,6 @@ import java.util.List;
 @Service
 public interface ISubCategoryProvider {
     List<SubCategory> getAll();
+
+    SubCategory getById(int subCategoryId);
 }

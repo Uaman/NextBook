@@ -39,6 +39,8 @@ public class BookRegisterForm {
 
     private String descriptionRu;
 
+    private int subCategoryId;
+
     //private int numberOfImagesForCover;
 
     //private int numberOfImagesInGallery;
@@ -181,5 +183,13 @@ public class BookRegisterForm {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public int getSubCategoryId() {
+        return subCategoryId;
+    }
+
+    public void setSubCategoryId(int subCategoryId) {
+        this.subCategoryId = subCategoryId;
     }
 }
