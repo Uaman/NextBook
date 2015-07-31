@@ -5,6 +5,7 @@ import com.nextbook.domain.forms.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.services.IAuthorProvider;
 import com.nextbook.services.IBookProvider;
+import com.nextbook.services.IPublisherProvider;
 import com.nextbook.services.ISubCategoryProvider;
 import com.nextbook.services.impl.AuthorProvider;
 import com.nextbook.services.impl.BookProvider;
@@ -37,6 +38,8 @@ public class BookController {
     private SessionUtils sessionUtils;
     @Autowired
     private IAuthorProvider authorProvider;
+    @Autowired
+    private IPublisherProvider publisherProvider;
 
     @RequestMapping(value = "/add-book", method = RequestMethod.GET)
     public String addBook(Model model){
@@ -44,11 +47,12 @@ public class BookController {
         if(user == null){
             return "redirect:/";
         }
-        if(user.getPublisher() == null){
+        Publisher publisher = publisherProvider.getPublisherByUser(user);
+        if(publisher == null){
             // redirect to page where user can create publication
             return "redirect:/";
         }
-        Book book = defaultBook(user);
+        Book book = defaultBook(user, publisher);
         book = bookProvider.updateBook(book);
         if(book == null)
             return "redirect:/";
@@ -57,14 +61,14 @@ public class BookController {
         return "book/add-book";
     }
 
-    private Book defaultBook(User user){
+    private Book defaultBook(User user, Publisher publisher){
         Book book = new Book();
         book.setUaName("def-name");
         SubCategory subCategory = new SubCategory();
         subCategory.setId(1);
         book.setSubCategory(subCategory);
         book.setYearOfPublication(0);
-        book.setPublisher(user.getPublisher());
+        book.setPublisher(publisher);
         book.setLanguage("def-lang");
         book.setTypeOfBook(BookTypeEnum.ELECTRONIC);
         book.setDescriptionUa("def-desc");
