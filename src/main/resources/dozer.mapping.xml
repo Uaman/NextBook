@@ -9,10 +9,6 @@
             <a>role</a>
             <b>roleEntity</b>
         </field>
-        <field>
-            <a>publisher</a>
-            <b>publisherEntity</b>
-        </field>
     </mapping>
 
     <mapping>

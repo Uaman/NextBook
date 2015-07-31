@@ -3,6 +3,7 @@ package com.nextbook.services.impl;
 import com.nextbook.dao.IPublisherDao;
 import com.nextbook.dao.impl.PublisherDAO;
 import com.nextbook.domain.pojo.Publisher;
+import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IPublisherProvider;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,13 @@ public class PublisherProvider implements IPublisherProvider{
     @Override
     public List<Publisher> getAllPublishers(int from, int max) {
         return publisherDAO.getAllPublishers(from, max);
+    }
+
+    @Override
+    public Publisher getPublisherByUser(User user) {
+        if(user == null)
+            return null;
+        return publisherDAO.getPublisherByUser(user);
     }
 
 }

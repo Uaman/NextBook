@@ -1,6 +1,7 @@
 package com.nextbook.dao;
 
 import com.nextbook.domain.pojo.Publisher;
+import com.nextbook.domain.pojo.User;
 
 import java.util.List;
 
@@ -17,5 +18,7 @@ public interface IPublisherDao {
     public Publisher getPublisherById (int id);
 
     List<Publisher> getAllPublishers(int from, int max);
+
+    Publisher getPublisherByUser(User user);
 
 }

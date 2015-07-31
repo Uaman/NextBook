@@ -44,9 +44,9 @@ public class UserEntity {
     @JoinColumn(name = "ROLE_ID", nullable = false)
     private RoleEntity roleEntity;
 
-    @ManyToOne
-    @JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "USER_ID")}, inverseJoinColumns = {@JoinColumn(name = "PUBLISHER_ID")})
-    private PublisherEntity publisherEntity;
+    //@ManyToOne
+    //@JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "USER_ID")}, inverseJoinColumns = {@JoinColumn(name = "PUBLISHER_ID")})
+    //private PublisherEntity publisherEntity;
 
     public Integer getId() {
         return id;
@@ -95,7 +95,7 @@ public class UserEntity {
     public void setRoleEntity(RoleEntity roleEntity) {
         this.roleEntity = roleEntity;
     }
-
+/*
     public PublisherEntity getPublisherEntity() {
         return publisherEntity;
     }
@@ -103,7 +103,7 @@ public class UserEntity {
     public void setPublisherEntity(PublisherEntity publisherEntity) {
         this.publisherEntity = publisherEntity;
     }
-
+*/
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

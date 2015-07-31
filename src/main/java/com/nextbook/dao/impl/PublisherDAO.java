@@ -2,7 +2,9 @@ package com.nextbook.dao.impl;
 
 import com.nextbook.dao.IPublisherDao;
 import com.nextbook.domain.entities.PublisherEntity;
+import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.pojo.Publisher;
+import com.nextbook.domain.pojo.User;
 import org.dozer.DozerBeanMapper;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -127,6 +129,35 @@ public class PublisherDAO implements IPublisherDao {
             if(session != null && session.isOpen())
                 session.close();
         }
+        return result;
+    }
+
+    @Override
+    public Publisher getPublisherByUser(User user) {
+        Publisher result = null;
+        Session session = sessionFactory.openSession();
+
+        try{
+            UserEntity userEntity = dozerBeanMapper.map(user, UserEntity.class);
+            if(userEntity != null){
+                Query query = session.getNamedQuery(PublisherEntity.GET_ALL);
+                List<PublisherEntity> list = query.list();
+                if(list != null && list.size() > 0) {
+                    for(PublisherEntity publisherEntity : list) {
+                        if (publisherEntity.getUsers().contains(userEntity)) {
+                            result = dozerBeanMapper.map(list.get(0), Publisher.class);
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+
         return result;
     }
 

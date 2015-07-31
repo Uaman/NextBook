@@ -16,12 +16,14 @@ import java.util.List;
 @Table(name = "publisher")
 @NamedQueries({
         @NamedQuery(name = PublisherEntity.GET_BY_ID, query = "SELECT publisher FROM PublisherEntity publisher WHERE publisher.id=:id"),
-        @NamedQuery(name= PublisherEntity.GET_ALL, query = "SELECT publisher FROM PublisherEntity publisher")
+        @NamedQuery(name = PublisherEntity.GET_ALL, query = "SELECT publisher FROM PublisherEntity publisher"),
+        @NamedQuery(name = PublisherEntity.GET_PUBLISHER_BY_USER, query = "SELECT publisher FroM PublisherEntity publisher WHERE :user in (publisher.users)")
 })
 public class PublisherEntity {
 
     public static final String GET_BY_ID = "getPublisherById";
     public static final String GET_ALL = "getAllPublishers";
+    public static final String GET_PUBLISHER_BY_USER = "getPublisherBuyUser";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,9 +42,9 @@ public class PublisherEntity {
     @Column(name = "NAME_RU")
     private String nameRu;
 
-//    @OneToMany
-//    @JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "PUBLISHER_ID")}, inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
-//    private List<UserEntity> users = new ArrayList<UserEntity>();
+    @OneToMany
+    @JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "PUBLISHER_ID")}, inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
+    private List<UserEntity> users = new ArrayList<UserEntity>();
 
     public int getId() {
         return id;
@@ -84,13 +86,13 @@ public class PublisherEntity {
         this.nameRu = nameRu;
     }
 
-//    public List<UserEntity> getUsers() {
-//        return users;
-//    }
+    public List<UserEntity> getUsers() {
+        return users;
+    }
 
-//    public void setUsers(List<UserEntity> users) {
-//        this.users = users;
-//    }
+    public void setUsers(List<UserEntity> users) {
+        this.users = users;
+    }
 
 
     @Override
