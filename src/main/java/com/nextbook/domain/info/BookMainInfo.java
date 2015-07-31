@@ -1,6 +1,7 @@
 package com.nextbook.domain.info;
 
 import com.nextbook.domain.enums.BookTypeEnum;
+import com.nextbook.domain.pojo.Author;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Keyword;
 
@@ -80,8 +81,10 @@ public class BookMainInfo {
         linkToStorage = book.getLinkToStorage();
         numberOfImagesForCover = book.getNumberOfImagesForCover();
         numberOfImagesInGallery = book.getNumberOfImagesInGallery();
-        if (book.getAuthor()!=null)
-            author = book.getAuthor().getFirstNameUa() + ' ' + book.getAuthor().getLastNameUa();
+        if (book.getAuthors()!=null) {
+            for(Author auth : book.getAuthors())
+                author += auth.getFirstNameUa() + ' ' + auth.getLastNameUa();
+        }
         if (book.getKeywords()!=null)
             for (Keyword keyword:book.getKeywords())
                 keywords.add(keyword.getKeyword());

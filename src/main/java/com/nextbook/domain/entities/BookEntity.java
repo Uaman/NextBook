@@ -90,9 +90,9 @@ public class BookEntity {
     @JoinTable(name = "keywords_to_book", joinColumns = { @JoinColumn(name = "BOOK_ID") }, inverseJoinColumns = { @JoinColumn(name = "KEYWORD_ID") })
     private List<KeywordEntity> keywords = new ArrayList<KeywordEntity>();
 
-    @ManyToOne
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "authors_to_book", joinColumns = {@JoinColumn(name = "BOOK_ID")}, inverseJoinColumns = {@JoinColumn(name = "AUTHOR_ID")})
-    private AuthorEntity authorEntity;
+    private List<AuthorEntity> authorEntities;
 
     public int getId() {
         return id;
@@ -254,12 +254,12 @@ public class BookEntity {
         this.keywords = keywords;
     }
 
-    public AuthorEntity getAuthorEntity() {
-        return authorEntity;
+    public List<AuthorEntity> getAuthorEntities() {
+        return authorEntities;
     }
 
-    public void setAuthorEntity(AuthorEntity authorEntity) {
-        this.authorEntity = authorEntity;
+    public void setAuthorEntities(List<AuthorEntity> authorEntities) {
+        this.authorEntities = authorEntities;
     }
 }
 

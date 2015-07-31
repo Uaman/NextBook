@@ -123,7 +123,7 @@ public class BookController {
 
         author = authorProvider.updateAuthor(author);
 
-        book.setAuthor(author);
+        book.addAuthor(author);
     }
 
     @RequestMapping(value = "/send-first-page", method = RequestMethod.POST)
