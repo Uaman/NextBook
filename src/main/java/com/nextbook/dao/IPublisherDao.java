@@ -1,5 +1,6 @@
 package com.nextbook.dao;
 
+import com.nextbook.domain.filters.PublisherCriterion;
 import com.nextbook.domain.pojo.Publisher;
 
 import java.util.List;
@@ -18,4 +19,5 @@ public interface IPublisherDao {
 
     List<Publisher> getAllPublishers(int from, int max);
 
+    List<Publisher> getPublishersByCriterion(PublisherCriterion criterion);
 }

@@ -2,6 +2,7 @@ package com.nextbook.dao.impl;
 
 import com.nextbook.dao.IPublisherDao;
 import com.nextbook.domain.entities.PublisherEntity;
+import com.nextbook.domain.filters.PublisherCriterion;
 import com.nextbook.domain.pojo.Publisher;
 import org.dozer.DozerBeanMapper;
 import org.hibernate.Query;
@@ -130,5 +131,95 @@ public class PublisherDAO implements IPublisherDao {
         return result;
     }
 
+    @Override
+    public List<Publisher> getPublishersByCriterion(PublisherCriterion criterion) {
+        List<Publisher> result = null;
+        Session session = sessionFactory.openSession();
+        try {
+            List<PublisherEntity> entities = null;
+            session.beginTransaction();
+            Query query = createQueryFromCriterion(session, criterion);
+            entities = query.list();
+            if(entities.size() > 0) {
+                result = new ArrayList<Publisher>();
+                for (PublisherEntity entity : entities) {
+                    if (entity != null) {
+                        try {
+                            Publisher temp = dozerBeanMapper.map(entity, Publisher.class);
+                            if (temp != null)
+                                result.add(temp);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
+
+    private Query createQueryFromCriterion(Session session, PublisherCriterion criterion) {
+        StringBuilder queryString = new StringBuilder();
+        queryString.append("SELECT publisher FROM PublisherEntity publisher");
+
+        boolean where = false;
+
+        if(criterion.getId() > 0){
+            queryString.append(" WHERE publisher.id=:id");
+            where = true;
+        }
+        if (validString(criterion.getNameEn())){
+            if(where) {
+                queryString.append(" AND publisher.nameEn LIKE '%'||:nameEn||'%'");
+            } else {
+                queryString.append(" WHERE publisher.nameEn LIKE '%'||:nameEn||'%'");
+            }
+            where = true;
+        }
+        if (validString(criterion.getNameRu())){
+            if(where) {
+                queryString.append(" AND publisher.nameRu LIKE '%'||:nameRu||'%'");
+            } else {
+                queryString.append(" WHERE publisher.nameRu LIKE '%'||:nameRu||'%'");
+            }
+            where = true;
+        }
+        if (validString(criterion.getNameUa())){
+            if(where) {
+                queryString.append(" AND publisher.nameUa LIKE '%'||:nameUa||'%'");
+            } else {
+                queryString.append(" WHERE publisher.nameUa LIKE '%'||:nameUa||'%'");
+            }
+            where = true;
+        }
+        if (validString(criterion.getDescription())){
+            if(where) {
+                queryString.append(" AND publisher.description LIKE '%'||:description||'%'");
+            } else {
+                queryString.append(" WHERE publisher.description LIKE '%'||:description||'%'");
+            }
+            where = true;
+        }
+
+        Query result = session.createQuery(queryString.toString());
+        result.setProperties(criterion);
+
+        if(criterion.getFrom() > 0)
+            result.setFirstResult(criterion.getFrom());
+
+        if(criterion.getMax() > 0)
+            result.setMaxResults(criterion.getMax());
+
+        return result;
+    }
+
+    private boolean validString(String s){
+        return s != null && !s.equals("");
+    }
 
 }
