@@ -1,8 +1,6 @@
 package com.nextbook.controllers;
 
 import com.nextbook.domain.upload.Constants;
-import com.nextbook.services.PdfService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

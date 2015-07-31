@@ -7,6 +7,7 @@ import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
  * Date: 7/23/2015
  * Time: 10:06 PM
  */
+@Repository
 public class SubCategoryDao implements ISubCategoryDao{
 
     @Override
@@ -47,6 +49,30 @@ public class SubCategoryDao implements ISubCategoryDao{
             if(session != null && session.isOpen())
                 session.close();
         }
+        return result;
+    }
+
+    @Override
+    public SubCategory getById(int subCategoryId) {
+        SubCategory result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        try{
+            session.beginTransaction();
+            Query query = session.getNamedQuery(SubCategoryEntity.getById);
+            query.setParameter("id", subCategoryId);
+            List<SubCategoryEntity> list = query.list();
+            if(list != null && list.size() > 0){
+                result = DozerMapperFactory.getDozerBeanMapper().map(list.get(0), SubCategory.class);
+            }
+            session.getTransaction().commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+
         return result;
     }
 

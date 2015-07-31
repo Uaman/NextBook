@@ -50,6 +50,15 @@
         <label>RU Description:<textarea name="description_ru" id="description_ru"></textarea></label><br />
         <label>Keywords(divide with commas)*:<textarea name="keywords" id="keywords"></textarea></label><br />
         <label>Eighteen Plus: <input type="checkbox" id="eighteen-plus"/></label><br />
+        Category: <br />
+        <select id="category">
+            <c:if test="${subCategories ne null}">
+                <c:forEach items="${subCategories}" var="subCategory">
+                    <option value="${subCategory.id}">${subCategory.nameUa} : ${subCategory.category.nameUa}</option>
+                </c:forEach>
+            </c:if>
+        </select>
+        <br />
         <input type="hidden" name="test_files" id="test_files"/>
         <input type="submit" />
     </form>

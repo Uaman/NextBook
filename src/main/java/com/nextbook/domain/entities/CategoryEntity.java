@@ -22,7 +22,7 @@ public class CategoryEntity {
     private String nameUa;
 
     @Column(name = "ORDER")
-    private int order;
+    private Integer order;
 
     @Column(name = "LINK")
     private String link;
@@ -49,11 +49,11 @@ public class CategoryEntity {
         this.id = id;
     }
 
-    public int getOrder() {
+    public Integer getOrder() {
         return order;
     }
 
-    public void setOrder(int order) {
+    public void setOrder(Integer order) {
         this.order = order;
     }
 

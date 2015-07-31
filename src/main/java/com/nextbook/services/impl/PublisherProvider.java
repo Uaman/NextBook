@@ -4,6 +4,7 @@ import com.nextbook.dao.IPublisherDao;
 import com.nextbook.dao.impl.PublisherDAO;
 import com.nextbook.domain.filters.PublisherCriterion;
 import com.nextbook.domain.pojo.Publisher;
+import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IPublisherProvider;
 import org.springframework.stereotype.Service;
 
@@ -48,4 +49,12 @@ public class PublisherProvider implements IPublisherProvider{
     public List<Publisher> getPublishersByCriterion(PublisherCriterion criterion) {
         return publisherDAO.getPublishersByCriterion(criterion);
     }
+
+    @Override
+    public Publisher getPublisherByUser(User user) {
+        if(user == null)
+            return null;
+        return publisherDAO.getPublisherByUser(user);
+    }
+
 }

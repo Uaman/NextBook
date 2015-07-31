@@ -2,6 +2,7 @@ package com.nextbook.services;
 
 import com.nextbook.domain.filters.PublisherCriterion;
 import com.nextbook.domain.pojo.Publisher;
+import com.nextbook.domain.pojo.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,4 +23,7 @@ public interface IPublisherProvider {
     List<Publisher> getAllPublishers(int from, int max);
 
     List<Publisher> getPublishersByCriterion(PublisherCriterion criterion);
+
+    Publisher getPublisherByUser(User user);
+
 }

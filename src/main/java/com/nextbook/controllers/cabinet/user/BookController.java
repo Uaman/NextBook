@@ -3,12 +3,7 @@ package com.nextbook.controllers.cabinet.user;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.forms.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
-import com.nextbook.services.IAuthorProvider;
-import com.nextbook.services.IBookProvider;
-import com.nextbook.services.ISubCategoryProvider;
-import com.nextbook.services.impl.AuthorProvider;
-import com.nextbook.services.impl.BookProvider;
-import com.nextbook.services.impl.SubCategoryProvider;
+import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +32,12 @@ public class BookController {
     private SessionUtils sessionUtils;
     @Autowired
     private IAuthorProvider authorProvider;
+    @Autowired
+    private IPublisherProvider publisherProvider;
+    @Autowired
+    private IKeywordProvider keywordProvider;
+    @Autowired
+    private IBookUploadingProvider bookUploadingProvider;
 
     @RequestMapping(value = "/add-book", method = RequestMethod.GET)
     public String addBook(Model model){
@@ -44,11 +45,12 @@ public class BookController {
         if(user == null){
             return "redirect:/";
         }
-        if(user.getPublisher() == null){
+        Publisher publisher = publisherProvider.getPublisherByUser(user);
+        if(publisher == null){
             // redirect to page where user can create publication
             return "redirect:/";
         }
-        Book book = defaultBook(user);
+        Book book = defaultBook(user, publisher);
         book = bookProvider.updateBook(book);
         if(book == null)
             return "redirect:/";
@@ -57,14 +59,14 @@ public class BookController {
         return "book/add-book";
     }
 
-    private Book defaultBook(User user){
+    private Book defaultBook(User user, Publisher publisher){
         Book book = new Book();
         book.setUaName("def-name");
         SubCategory subCategory = new SubCategory();
         subCategory.setId(1);
         book.setSubCategory(subCategory);
         book.setYearOfPublication(0);
-        book.setPublisher(user.getPublisher());
+        book.setPublisher(publisher);
         book.setLanguage("def-lang");
         book.setTypeOfBook(BookTypeEnum.ELECTRONIC);
         book.setDescriptionUa("def-desc");
@@ -76,7 +78,6 @@ public class BookController {
     @RequestMapping(value = "/add-book", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody int saveBook(@RequestBody BookRegisterForm bookRegisterForm,
                                       Principal principal){
-        System.out.println("HERE book");
         User user = sessionUtils.getCurrentUser();
         if(user == null)
             return -1;
@@ -87,6 +88,8 @@ public class BookController {
         book = bookProvider.updateBook(book);
         if(book == null)
             return -1;
+        String localPath = "book-"+book.getId()+"";
+        bookUploadingProvider.uploadBookToStorage(localPath);
         return 1;
     }
 
@@ -103,6 +106,7 @@ public class BookController {
         book.setDescriptionUa(bookRegisterForm.getDescriptionUa());
         book.setDescriptionEn(bookRegisterForm.getDescriptionEn());
         book.setDescriptionRu(bookRegisterForm.getDescriptionRu());
+        book.setSubCategory(subCategoryProvider.getById(bookRegisterForm.getSubCategoryId()));
 
         List<Keyword> keywordList = new ArrayList<Keyword>();
         List<String> keywords = bookRegisterForm.getKeywords();
@@ -119,45 +123,36 @@ public class BookController {
 
         author = authorProvider.updateAuthor(author);
 
-        book.setAuthor(author);
+        book.addAuthor(author);
     }
 
     @RequestMapping(value = "/send-first-page", method = RequestMethod.POST)
     public @ResponseBody boolean firstPage(@RequestParam("first_page")MultipartFile file,
                                            @RequestParam("bookId") int bookId){
-        System.out.println("Send first book");
-        if(file == null)
-            return false;
-        boolean success = true;
-        Book book = bookProvider.getBookById(bookId);
-        if(book == null)
-            return false;
-        return success;
+        return saveBookIfExist(bookId, file);
     }
 
     @RequestMapping(value = "/send-last-page", method = RequestMethod.POST)
     public @ResponseBody boolean lastPage(@RequestParam("last_page")MultipartFile file,
                                           @RequestParam("bookId") int bookId){
-        System.out.println("Send last book");
-        if(file == null)
-            return false;
-        boolean success = true;
-        Book book = bookProvider.getBookById(bookId);
-        if(book == null)
-            return false;
-        return success;
+        return saveBookIfExist(bookId, file);
     }
 
     @RequestMapping(value = "/send-book", method = RequestMethod.POST)
     public @ResponseBody boolean uploadBook(@RequestParam("book")MultipartFile file,
                                             @RequestParam("bookId") int bookId){
-        System.out.println("Send WTF book");
+        return saveBookIfExist(bookId, file);
+    }
+
+    private boolean saveBookIfExist(int bookId, MultipartFile file){
         if(file == null)
             return false;
         boolean success = true;
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
+        String localPath = "book-"+book.getId()+"";
+        bookUploadingProvider.uploadFileToLocalStorage(localPath, file);
         return success;
     }
 
