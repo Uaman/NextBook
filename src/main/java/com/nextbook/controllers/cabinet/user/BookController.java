@@ -3,10 +3,7 @@ package com.nextbook.controllers.cabinet.user;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.forms.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
-import com.nextbook.services.IAuthorProvider;
-import com.nextbook.services.IBookProvider;
-import com.nextbook.services.IPublisherProvider;
-import com.nextbook.services.ISubCategoryProvider;
+import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +34,8 @@ public class BookController {
     private IAuthorProvider authorProvider;
     @Autowired
     private IPublisherProvider publisherProvider;
+    @Autowired
+    private IKeywordProvider keywordProvider;
 
     @RequestMapping(value = "/add-book", method = RequestMethod.GET)
     public String addBook(Model model){

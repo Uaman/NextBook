@@ -11,7 +11,12 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "keywords")
+@NamedQueries({
+        @NamedQuery(name = KeywordEntity.getByKeyword, query = "SELECT keyword FROM KeywordEntity keyword WHERE keyword.keyword=:keyword")
+})
 public class KeywordEntity {
+
+    public static final String getByKeyword = "getKeywordByName";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
