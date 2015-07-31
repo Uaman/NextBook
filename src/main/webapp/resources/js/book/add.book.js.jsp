@@ -88,7 +88,7 @@ $(document).ready(function(){
             },
             '<spring:message code="book.registration.book.require"/>'
     );
-    $('#add-book-form').validate({
+    $('#edit-book-form').validate({
         ignore: '', //allow validate hidden fields
         rules: {
             isbn: {
@@ -160,7 +160,7 @@ $(document).ready(function(){
                 return;
             }
             $.ajax({
-                url: '/book/add-book',
+                url: '/book/edit-book',
                 data: JSON.stringify(formDataBook()),
                 type: 'POST',
                 dataType: 'json',

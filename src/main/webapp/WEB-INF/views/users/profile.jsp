@@ -22,6 +22,10 @@
             <li><a href="/cabinet/edit"><spring:message code="user.info.editProfile" /></a></li>
         </security:authorize>
 
+        <security:authorize access="hasRole('ROLE_PUBLISHER')">
+            <li><a href="/book/new-book">add book</a></li>
+        </security:authorize>
+
         <security:authorize access="hasRole('ROLE_ADMIN')">
             <li><a href="/admin/users/all"><spring:message code="users.manageUsers" /></a></li>
             <li><a href="/admin/authors/all"><spring:message code="authors.manageAuthors" /></a></li>

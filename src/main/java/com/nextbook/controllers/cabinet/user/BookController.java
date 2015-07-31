@@ -39,8 +39,8 @@ public class BookController {
     @Autowired
     private IBookUploadingProvider bookUploadingProvider;
 
-    @RequestMapping(value = "/add-book", method = RequestMethod.GET)
-    public String addBook(Model model){
+    @RequestMapping(value = "/new-book", method = RequestMethod.GET)
+    public String newBook(){
         User user = sessionUtils.getCurrentUser();
         if(user == null){
             return "redirect:/";
@@ -48,12 +48,30 @@ public class BookController {
         Publisher publisher = publisherProvider.getPublisherByUser(user);
         if(publisher == null){
             // redirect to page where user can create publication
-            return "redirect:/";
+            return "redirect:/cabinet/profile";
         }
         Book book = defaultBook(user, publisher);
         book = bookProvider.updateBook(book);
         if(book == null)
+            return "redirect:/cabinet/profile";
+        return "redirect:/book/edit-book?bookId="+book.getId();
+    }
+
+    @RequestMapping(value = "/edit-book", method = RequestMethod.GET)
+    public String addBook(@RequestParam("bookId")int bookId,
+                          Model model){
+        User user = sessionUtils.getCurrentUser();
+        if(user == null){
             return "redirect:/";
+        }
+        Publisher publisher = publisherProvider.getPublisherByUser(user);
+        if(publisher == null){
+            // redirect to page where user can create publication
+            return "redirect:/cabinet/profile";
+        }
+        Book book = bookProvider.getBookById(bookId);
+        if(book == null)
+            return "redirect:/cabinet/profile";
         model.addAttribute("subCategories", subCategoryProvider.getAll());
         model.addAttribute("bookId", book.getId());
         return "book/add-book";
@@ -75,7 +93,7 @@ public class BookController {
         return book;
     }
 
-    @RequestMapping(value = "/add-book", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping(value = "/edit-book", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody int saveBook(@RequestBody BookRegisterForm bookRegisterForm,
                                       Principal principal){
         User user = sessionUtils.getCurrentUser();

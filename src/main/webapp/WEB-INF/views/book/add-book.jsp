@@ -31,7 +31,7 @@
 <div class="errorblock">
 
 </div>
-    <form id="add-book-form">
+    <form id="edit-book-form">
         <label>ISBN*: <input type="text" name="isbn" id="isbn" placeholder="ISBN"/></label><br />
         <label>UA Name*:<input type="text" name="name_ua" id="name_ua"/></label><br />
         <label>EN Name:<input type="text" name="name_en" id="name_en"/></label><br />
