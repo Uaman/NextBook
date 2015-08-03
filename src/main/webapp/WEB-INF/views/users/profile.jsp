@@ -27,6 +27,7 @@
         </security:authorize>
 
         <security:authorize access="hasRole('ROLE_ADMIN')">
+            <li><a href="/admin/books/all"><spring:message code="books.manageBooks" /></a></li>
             <li><a href="/admin/users/all"><spring:message code="users.manageUsers" /></a></li>
             <li><a href="/admin/authors/all"><spring:message code="authors.manageAuthors" /></a></li>
             <li><a href="/admin/publishers/all"><spring:message code="publishers.managePublishers" /></a></li>

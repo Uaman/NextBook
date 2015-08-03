@@ -21,11 +21,6 @@
     th, td{
       padding: 5px;
     }
-    .sinput
-    {
-      width:100%;
-      height:100%;
-    }
   </style>
 </head>
 <body>
