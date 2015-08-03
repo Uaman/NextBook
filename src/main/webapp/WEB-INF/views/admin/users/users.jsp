@@ -13,7 +13,7 @@
 <head>
   <title>Users</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="/resources/js/admin/users/user-table/filter.js"></script>
+  <script src="/resources/js/admin/users/user-table/admin.users.js"></script>
   <style>
     table{
       width: 100%;
@@ -32,7 +32,14 @@ Filters: <br />
 <label>name:<input type="text" id="name"/></label> <br />
 <label>email:<input type="text" id="email"/></label> <br />
 <label>all:<input type="checkbox" id="all"></label> <label>active:<input type="checkbox" id="active" checked></label> <br />
-<label>role id:<input type="text" id="roleId"/></label> <br />
+<label>role:
+<select id="role-filter">
+    <option value="0">All</option>
+    <c:forEach var="role" items="${roles}">
+        <option value="${role.id}"><spring:message code="role.${role.name}" /></option>
+    </c:forEach>
+</select>
+</label> <br />
 <label>from:<input type="text" id="from"/></label> <br />
 <label>max:<input type="text" id="max"/></label> <br />
 <input value="Search" type="submit" id="send-filter">
@@ -43,80 +50,59 @@ Filters: <br />
     <th width="20%">email</th>
     <th width="20%">password</th>
     <th width="10%">active</th>
-    <th width="10%">role id</th>
+    <th width="10%">role</th>
     <th width="10%">action</th>
   </tr>
   <tbody id="added">
   <c:forEach var="user" items="${users}">
-    <tr>
-      <form action="/admin/users/update-user" method="POST" id="userForm${user.id}">
-        <input type="hidden" value="${user.id}" name="id"/>
+    <tr id="row-${user.id}">
         <td width="10%">
           ${user.id}
         </td>
         <td width="20%">
-          <input type="text" value="${user.name}" name="name"/>
+          ${user.name}
         </td>
         <td width="20%">
-          <input type="text" value="${user.email}" name="email"/>
+          ${user.email}
         </td>
         <td width="20%">
-          <input type="text" value="${user.password}" name="password"/>
+          ${user.password}
         </td>
         <td width="10%">
-          <select name="active">
-            <option ${user.active?"selected":""} value="true">true</option>
-            <option ${user.active?"":"selected"} value="false">false</option>
-          </select>
+            <c:choose>
+                <c:when test="${user.active}">
+                    <button class="deactivate" value="${user.id}">Deactivate</button>
+                </c:when>
+                <c:otherwise>
+                    <button class="activate" value="${user.id}">Activate</button>
+                </c:otherwise>
+            </c:choose>
         </td>
         <td width="10%">
-            <%--<spring:message code="role.${user.role.name}" />--%>
-          <select name="roleId">
-            <c:forEach begin="1" end="5" step="1" var="index">
-              <option value="${index}" <c:if test="index==user.role.id">selected</c:if> >
-                 <c:choose>
-                   <c:when test="${index eq 1}">
-                     <spring:message code="role.user" />
-                   </c:when>
-                   <c:when test="${index eq 2}">
-                     <spring:message code="role.author" />
-                   </c:when>
-                   <c:when test="${index eq 3}">
-                     <spring:message code="role.publisher" />
-                   </c:when>
-                   <c:when test="${index eq 4}">
-                     <spring:message code="role.moderator" />
-                   </c:when>
-                   <c:when test="${index eq 5}">
-                     <spring:message code="role.admin" />
-                   </c:when>
-                 </c:choose>
-               </option>
-            </c:forEach>
-          </select>
+            <spring:message code="role.${user.role.name}" />
         </td>
-        <th width="10%">
-          <input type="submit" value="Update" />
-      </form>
-      <form action="/users/delete/${user.id}" method="GET">
-          <input type="submit" value="Delete" />
-        </th>
-      </form>
+        <td width="10%">
+            <button class="delete" value="${user.id}">Delete</button>
+            <form action="/admin/users/edit-user">
+                <input type="hidden" name="userId" value="${user.id}">
+                <input type="submit" value="Edit">
+            </form>
+        </td>
     </tr>
   </c:forEach>
   </tbody>
+    <%--
   <tr>
-    <form action="/users/add" method="POST">
       <td width="10%">
       </td>
       <td width="20%">
-        <input type="text" value="" name="name"/>
+        <input type="text" name="name" placeholder="name.."/>
       </td>
       <td width="20%">
-        <input type="text" value="" name="email"/>
+        <input type="text" value="" name="email" placeholder="email.."/>
       </td>
       <td width="20%">
-        <input type="text" value="" name="password"/>
+        <input type="text" value="" name="password" placeholder="password.."/>
       </td>
       <td width="10%">
         <select name="active">
@@ -125,19 +111,17 @@ Filters: <br />
         </select>
       </td>
       <td width="10%">
-        <select name="roleId">
-          <option value="1"><spring:message code="role.user" /></option>
-          <option value="2"><spring:message code="role.author" /></option>
-          <option value="3"><spring:message code="role.publisher" /></option>
-          <option value="4"><spring:message code="role.moderator" /></option>
-          <option value="5"><spring:message code="role.admin" /></option>
-        </select>
+          <select id="role-for">
+              <c:forEach var="role" items="${roles}">
+                  <option value="${role.id}"><spring:message code="role.${role.name}" /></option>
+              </c:forEach>
+          </select>
       </td>
       <th width="10%">
-        <input type="submit" value="Add new"/>
+        <input type="submit" value="Add new" id="add-new-user"/>
       </th>
-    </form>
   </tr>
+  --%>
 </table>
 </body>
 </html>

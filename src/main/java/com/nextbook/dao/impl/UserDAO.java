@@ -209,9 +209,9 @@ public class UserDAO implements IUserDao{
         }
         if(criterion.getRoleId() > 0) {
             if(where) {
-                queryString.append(" AND user.roleId=:roleId");
+                queryString.append(" AND user.roleEntity.id=:roleId");
             } else {
-                queryString.append(" WHERE user.roleId=:roleId");
+                queryString.append(" WHERE user.roleEntity.id=:roleId");
             }
             params.put("roleId", criterion.getRoleId());
             where = true;

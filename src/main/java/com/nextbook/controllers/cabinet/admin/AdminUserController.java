@@ -2,8 +2,10 @@ package com.nextbook.controllers.cabinet.admin;
 
 import com.nextbook.domain.filters.UserCriterion;
 import com.nextbook.domain.forms.admin.AdminUserForm;
+import com.nextbook.domain.forms.admin.UserEditForm;
 import com.nextbook.domain.pojo.Role;
 import com.nextbook.domain.pojo.User;
+import com.nextbook.services.IRoleProvider;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,10 @@ public class AdminUserController {
     private SessionUtils sessionUtils;
     @Inject
     private Md5PasswordEncoder md5PasswordEncoder;
+    @Autowired
+    private IRoleProvider roleProvider;
 
+    /*
     @RequestMapping(value = "/add-user", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String addUser (@RequestBody AdminUserForm form){
@@ -47,38 +52,37 @@ public class AdminUserController {
         userProvider.update(user);
         return "redirect:/";
     }
-
-    @RequestMapping(value = "/delete-user/{id}", method = RequestMethod.GET)
+*/
+    @RequestMapping(value = "/delete-user/{id}", method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String deleteUser(@PathVariable("id") int id) {
-        if (sessionUtils.getCurrentUser().getId()!=id)
+    public @ResponseBody boolean deleteUser(@PathVariable("id") int id) {
+        if (sessionUtils.getCurrentUser().getId()!=id) {
             userProvider.delete(id);
-        return "redirect:/admin/users";
+            return true;
+        }
+        return false;
     }
 
     @RequestMapping(value = "/update-user", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String updateUser(@RequestBody AdminUserForm form){
+    public @ResponseBody boolean updateUser(@RequestBody UserEditForm form){
         User user = userProvider.getById(form.getId());
         if (user != null) {
             user.setName(form.getName());
             user.setEmail(form.getEmail());
-            if (!form.getPassword().equals(user.getPassword()))
-                user.setPassword(md5PasswordEncoder.encodePassword(form.getPassword(), null));
-            user.setActive(form.isActive());
             Role role = new Role();
-            role.setId(form.getId());
+            role.setId(form.getRoleId());
             user.setRole(role);
-            userProvider.update(user);
+            user = userProvider.update(user);
+            return user != null;
         }
-        return "redirect:/";
+        return false;
     }
 
     @RequestMapping(value = "/users-filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public @ResponseBody
-    List<User> filter(@RequestBody UserCriterion userCriterion,
-                      HttpServletResponse response){
+    public @ResponseBody List<User> filter(@RequestBody UserCriterion userCriterion,
+                                           HttpServletResponse response){
         List<User> result = userProvider.getUsersByCriterion(userCriterion);
         response.setStatus(HttpServletResponse.SC_OK);
         if(result == null)
@@ -89,9 +93,39 @@ public class AdminUserController {
     @RequestMapping(value = "/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String users(Model model) {
-        List<User> users = userProvider.getAll();
-        model.addAttribute("users", users);
+        model.addAttribute("users", userProvider.getAll());
+        model.addAttribute("roles", roleProvider.getAll());
         return "admin/users/users";
+    }
+
+    /**
+     *
+     * @param userId - user id
+     * @param status - user status
+     * @return -1 - fail, 0 - status deactivated, 1 - status activated
+     */
+    @RequestMapping(value = "/change-active-user-status/{userId}/{status}", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public @ResponseBody int activateUser(@PathVariable("userId") int userId,
+                                          @PathVariable("status") boolean status) {
+        User user = userProvider.getById(userId);
+        if(user == null)
+            return -1;
+        user.setActive(status);
+        userProvider.update(user);
+        return status ? 1 : 0;
+    }
+
+    @RequestMapping(value = "/edit-user", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String editUser(@RequestParam("userId") int userId,
+                           Model model){
+        User user = userProvider.getById(userId);
+        if(user == null)
+            return "redirect:/admin/users/all";
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roleProvider.getAll());
+        return "admin/users/edit-user";
     }
 
 }
