@@ -1,4 +1,4 @@
-package com.nextbook.domain.forms;
+package com.nextbook.domain.forms.book;
 
 import com.nextbook.domain.enums.BookTypeEnum;
 

@@ -1,7 +1,7 @@
 package com.nextbook.controllers.cabinet.admin;
 
 import com.nextbook.domain.filters.AuthorCriterion;
-import com.nextbook.domain.forms.AdminAuthorForm;
+import com.nextbook.domain.forms.admin.AdminAuthorForm;
 import com.nextbook.domain.pojo.Author;
 import com.nextbook.services.IAuthorProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
 /**

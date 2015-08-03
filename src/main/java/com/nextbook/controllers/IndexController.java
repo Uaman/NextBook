@@ -1,6 +1,6 @@
 package com.nextbook.controllers;
 
-import com.nextbook.domain.forms.SimpleUserForm;
+import com.nextbook.domain.forms.user.RegisterUserForm;
 import com.nextbook.domain.pojo.Role;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
@@ -12,8 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Polomani on 09.07.2015.
@@ -48,7 +46,7 @@ public class IndexController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("isAnonymous()")
-    public @ResponseBody boolean addUser(@RequestBody SimpleUserForm form){
+    public @ResponseBody boolean addUser(@RequestBody RegisterUserForm form){
         User user = new User();
         user.setName(form.getName());
         user.setEmail(form.getEmail());

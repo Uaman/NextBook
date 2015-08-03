@@ -1,9 +1,9 @@
-package com.nextbook.domain.forms;
+package com.nextbook.domain.forms.user;
 
 /**
  * Created by Polomani on 21.07.2015.
  */
-public class SimpleUserForm {
+public class RegisterUserForm {
     private String email;
     private String password;
     private String name;
@@ -56,7 +56,7 @@ public class SimpleUserForm {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SimpleUserForm that = (SimpleUserForm) o;
+        RegisterUserForm that = (RegisterUserForm) o;
 
         if (roleId != that.roleId) return false;
         if (email != null ? !email.equals(that.email) : that.email != null) return false;

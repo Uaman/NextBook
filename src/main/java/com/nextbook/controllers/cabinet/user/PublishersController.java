@@ -1,6 +1,6 @@
 package com.nextbook.controllers.cabinet.user;
 
-import com.nextbook.domain.forms.SimplePublisherForm;
+import com.nextbook.domain.forms.publishers.SimplePublisherForm;
 import com.nextbook.domain.pojo.Publisher;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IPublisherProvider;

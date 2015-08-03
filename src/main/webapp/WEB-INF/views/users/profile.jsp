@@ -19,7 +19,7 @@
     <%--<security:authentication property="principal.authorities" />--%>
         <security:authorize access="isAuthenticated()">
             <li><a href="/static/j_spring_security_logout"><spring:message code="global.exit" /></a></li>
-            <li><a href="/cabinet/edit"><spring:message code="user.info.editProfile" /></a></li>
+            <li><a href="/cabinet/edit-profile"><spring:message code="user.info.editProfile" /></a></li>
         </security:authorize>
 
         <security:authorize access="hasRole('ROLE_PUBLISHER')">

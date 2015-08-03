@@ -1,7 +1,7 @@
 package com.nextbook.controllers.cabinet.admin;
 
 import com.nextbook.domain.filters.UserCriterion;
-import com.nextbook.domain.forms.AdminUserForm;
+import com.nextbook.domain.forms.admin.AdminUserForm;
 import com.nextbook.domain.pojo.Role;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;

@@ -1,4 +1,4 @@
-package com.nextbook.domain.forms;
+package com.nextbook.domain.forms.admin;
 
 import com.nextbook.domain.pojo.Book;
 

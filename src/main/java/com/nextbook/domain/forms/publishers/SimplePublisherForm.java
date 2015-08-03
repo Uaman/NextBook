@@ -1,4 +1,4 @@
-package com.nextbook.domain.forms;
+package com.nextbook.domain.forms.publishers;
 
 /**
  * Created by Polomani on 24.07.2015.

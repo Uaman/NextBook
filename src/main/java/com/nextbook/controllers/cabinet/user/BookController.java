@@ -1,7 +1,7 @@
 package com.nextbook.controllers.cabinet.user;
 
 import com.nextbook.domain.enums.BookTypeEnum;
-import com.nextbook.domain.forms.BookRegisterForm;
+import com.nextbook.domain.forms.book.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
