@@ -23,7 +23,7 @@
         </security:authorize>
 
         <security:authorize access="hasRole('ROLE_PUBLISHER')">
-            <li><a href="/book/new-book">add book</a></li>
+            <li><a href="/book/new-book">Add book</a></li>
         </security:authorize>
 
         <security:authorize access="hasRole('ROLE_ADMIN')">

@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class AdminPublisherController {
     @Inject
     private IPublisherProvider publisherProvider;
     @Inject
-    IUserProvider userProvider;
+    private IUserProvider userProvider;
 
     @RequestMapping(value="/update", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -44,6 +45,70 @@ public class AdminPublisherController {
         result = publisherProvider.updatePublisher(publisher);
         return result;
     }
+
+    @RequestMapping(value="/edit-publisher/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updatePublisherPage(@PathVariable int id, Model model) {
+        Publisher publisher = publisherProvider.getPublisherById(id);
+        if (publisher==null) {
+            model.addAttribute("edit", false);
+        } else {
+            model.addAttribute("edit", true);
+            model.addAttribute("publisher", publisher);
+        }
+        return "/admin/publishers/edit-publisher";
+    }
+
+    @RequestMapping(value="/manage-users")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updatePublisherPage(@RequestParam int publisher,
+                                      @RequestParam(required = false, defaultValue = "0") int user,
+                                      @RequestParam(required = false) String action,
+                                      Model model) {
+        Publisher publ = publisherProvider.getPublisherById(publisher);
+        if (publ==null) {
+            return "404";
+        } else {
+            if (user != 0) {
+                User us = userProvider.getById(user);
+                if (us != null && action!=null) {
+                    if (action.equals("add")) publ.addUser(us);
+                    if (action.equals("delete")) publ.deleteUser(user);
+                    publisherProvider.updatePublisher(publ);
+                }
+            }
+            List<User> users = userProvider.getAll();
+            List<User> allUsers = new ArrayList<User>();
+            List<User> publisherUsers = new ArrayList<User>();
+            for (User u:users) {
+                if (isUserInPubisher(u, publ))
+                    publisherUsers.add(u);
+                else
+                    allUsers.add(u);
+            }
+            model.addAttribute("publisher", publ);
+            model.addAttribute("allUsers", allUsers);
+            model.addAttribute("publisherUsers", publisherUsers);
+        }
+        return "/admin/publishers/manage-users";
+    }
+
+    public boolean isUserInPubisher(User user, Publisher publisher) {
+        for (User userp:publisher.getUsers()) {
+            if (user.getId().equals(userp.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @RequestMapping(value="/add-publisher")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updatePublisherPage(Model model) {
+        model.addAttribute("edit", false);
+        return "/admin/publishers/edit-publisher";
+    }
+
 
     @RequestMapping(value="/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -65,7 +130,7 @@ public class AdminPublisherController {
                                    @RequestParam (defaultValue = "0") int from,
                                    @RequestParam (defaultValue = "0")  int max) {
         model.addAttribute("publishers", publisherProvider.getAllPublishers(from, max));
-        return "publishers/publishers-admin";
+        return "admin/publishers/publishers-admin";
     }
 
     @RequestMapping(value="/add-user")

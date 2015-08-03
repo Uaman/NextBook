@@ -31,6 +31,10 @@
         <li><a href="/cabinet/profile"><spring:message code="user.info.profile" /></a></li>
     </security:authorize>
 
+    <security:authorize access="hasRole('ROLE_PUBLISHER')">
+        <li><a href="/book/new-book">Add book</a></li>
+    </security:authorize>
+
     <security:authorize access="hasRole('ROLE_ADMIN')">
         <li><a href="/admin/users/all"><spring:message code="users.manageUsers" /></a></li>
         <li><a href="/admin/authors/all"><spring:message code="authors.manageAuthors" /></a></li>

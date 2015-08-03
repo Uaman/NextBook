@@ -13,7 +13,7 @@
 <head>
   <title>Publishers</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="/resources/js/publisher-table/table.js"></script>
+  <script src="/resources/js/admin/publishers/publishers-table.js"></script>
   <style>
     table{
       width: 100%;
@@ -34,6 +34,8 @@
 </head>
 <body>
 
+<a href="/admin/publishers/add-publisher">ADD NEW</a>
+
 <form id="filterForm">
   <label>id:<input type="text" id="id"/></label> <br />
   <label>nameUa:<input type="text" id="nameUa"/></label> <br />
@@ -52,58 +54,41 @@
     <th>nameRu</th>
     <th>nameEn</th>
     <th>description</th>
+    <th>users</th>
     <th width="150px">action</th>
   </tr>
   <tbody>
   <c:forEach var="publisher" items="${publishers}">
     <tr>
       <td>
-        <input type="hidden" value="${publisher.id}" name="id"/>
           ${publisher.id}
       </td>
       <td>
-        <input value="${publisher.nameUa}" name="nameUa" class="sinput"/>
+          ${publisher.nameUa}
       </td>
       <td>
-        <input value="${publisher.nameRu}" name="nameRu" class="sinput"/>
+          ${publisher.nameRu}
       </td>
       <td>
-        <input value="${publisher.nameEn}" name="nameEn" class="sinput"/>
+          ${publisher.nameEn}
       </td>
       <td>
-        <input value="${publisher.description}" name="description" class="sinput"/>
+          ${publisher.description}
       </td>
       <td>
-        <input type="submit" value="Update" class="updateButton">
-        <input type="submit" value="Delete" class="deleteButton">
+          <c:forEach var="user" items="${publisher.users}">
+            ${user.email}<br />
+          </c:forEach>
+      </td>
+      <td>
+        <a href="/admin/publishers/edit-publisher/${publisher.id}">Edit</a>
+        <br/><a href="/admin/publishers/manage-users/?publisher=${publisher.id}">Manage users</a>
+        <button value="${publisher.id}" class="deleteButton">Delete</button>
       </td>
     </tr>
   </c:forEach>
-  <tr>
-    <td>
-      #
-    </td>
-    <td>
-      <input name="nameUa"  class="sinput"/>
-    </td>
-    <td>
-      <input name="nameRu" class="sinput"/>
-    </td>
-    <td>
-      <input name="nameEn" class="sinput"/>
-    </td>
-    <td>
-      <input name="description" class="sinput"/>
-    </td>
-    <td>
-      <input type="submit" value="Add" class="addButton"/>
-    </td>
-  </tr>
   </tbody>
 </table>
-
-
-
 
 </body>
 </html>
