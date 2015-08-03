@@ -60,21 +60,4 @@ public class IndexController {
         user = userProvider.update(user);
         return user != null;
     }
-/*
-    @RequestMapping(value = "/profile")
-    @PreAuthorize("isAuthenticated()")
-    public String profile(Model model) {
-        User user = sessionUtils.getCurrentUser();
-        model.addAttribute("user", user);
-        return "users/profile";
-    }
-
-    @RequestMapping(value = "/profile/update")
-    @PreAuthorize("isAuthenticated()")
-    public String editProfile(Model model) {
-        User user = sessionUtils.getCurrentUser();
-        model.addAttribute("user", user);
-        return "users/update_profile";
-    }
-*/
 }

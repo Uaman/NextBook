@@ -26,20 +26,6 @@ public class UsersController {
     @Inject
     private Md5PasswordEncoder md5PasswordEncoder;
 
-    /*
-    @RequestMapping(value = "/add", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("isAnonymous()")
-    public String addUser (@RequestBody SimpleUserForm form){
-        User user = new User();
-        user.setName(form.getName());
-        user.setEmail(form.getEmail());
-        user.setPassword(md5PasswordEncoder.encodePassword(form.getPassword(), null));
-        user.setActive(true);
-        user.setRoleId(form.getRoleId());
-        userProvider.addUser(user);
-        return "redirect:/";
-    }
-    */
     @RequestMapping(value = "/profile")
     @PreAuthorize("isAuthenticated()")
     public String profile(Model model) {
@@ -57,7 +43,6 @@ public class UsersController {
             user.setEmail(form.getEmail());
             if (form.getPassword().length() != 0)
                 user.setPassword(md5PasswordEncoder.encodePassword(form.getPassword(), null));
-            //user.setRoleId(user.getRoleId()); //user can not change his role
             userProvider.update(user);
         }
         return "redirect:/";
