@@ -29,7 +29,7 @@ public class AdminAuthorController {
     public String authors(Model model) {
         List<Author> authors = authorProvider.getAll();
         model.addAttribute("authors", authors);
-        return "authors/authors";
+        return "admin/authors/authors";
     }
 
 
@@ -74,7 +74,7 @@ public class AdminAuthorController {
     @RequestMapping(value = "/author-books/{id}",method = RequestMethod.GET)
     @PreAuthorize(("hasRole('ROLE_ADMIN')"))
     public String getAuthorBooks(@PathVariable("id") int id){
-        return "authors/books";
+        return "admin/authors/books";
     }
     @RequestMapping(value = "/authors-filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")

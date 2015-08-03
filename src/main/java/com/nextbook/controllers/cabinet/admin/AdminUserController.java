@@ -53,7 +53,7 @@ public class AdminUserController {
     public String deleteUser(@PathVariable("id") int id) {
         if (sessionUtils.getCurrentUser().getId()!=id)
             userProvider.delete(id);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
     @RequestMapping(value = "/update-user", method = RequestMethod.POST, headers = "Accept=application/json")
@@ -91,7 +91,7 @@ public class AdminUserController {
     public String users(Model model) {
         List<User> users = userProvider.getAll();
         model.addAttribute("users", users);
-        return "users/users";
+        return "admin/users/users";
     }
 
 }

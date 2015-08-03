@@ -12,7 +12,7 @@
 <head>
     <title>Authors</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="/resources/js/author-table/filter.js"></script>
+    <script src="/resources/js/admin/authors/author-table/filter.js"></script>
   <style>
     table{
       width: 100%;

@@ -8,6 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
   <title></title>
@@ -37,7 +38,7 @@
   <button id="send">Add publisher</button><br />
 </c:if>
 
-<br/>Users:
+<c:if test="fn:length(${publisher.users})!=0"><br/>Users:</c:if>
 
 <ol>
 <c:forEach var="user" items="${publisher.users}">
