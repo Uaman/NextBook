@@ -12,7 +12,12 @@ import java.util.List;
  */
 @Entity
 @Table(name = "role")
+@NamedQueries({
+        @NamedQuery(name = RoleEntity.getAll, query = "SELECT role FROM RoleEntity role")
+})
 public class RoleEntity {
+
+    public static final String getAll = "getAllRoles";
 
     @Id
     @Column(name = "ID")
