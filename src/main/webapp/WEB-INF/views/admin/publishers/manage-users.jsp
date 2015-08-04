@@ -10,18 +10,7 @@
 <html>
 <head>
   <title>Publisher's users</title>
-  <style>
-    table{
-      width: 100%;
-    }
-    table, th, td{
-      border: 1px solid black;
-      text-align: left;
-    }
-    th, td{
-      padding: 5px;
-    }
-  </style>
+    <link rel="stylesheet" type="text/css" href="/resources/css/tables.css"/>
 </head>
 <body>
 

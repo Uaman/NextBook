@@ -13,18 +13,7 @@
     <title>Authors</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="/resources/js/admin/authors/author-table/filter.js"></script>
-  <style>
-    table{
-      width: 100%;
-    }
-    table, th, td{
-      border: 1px solid black;
-      text-align: left;
-    }
-    th, td{
-      padding: 5px;
-    }
-  </style>
+    <link rel="stylesheet" type="text/css" href="/resources/css/tables.css"/>
 </head>
 <body>
 <p align="right">

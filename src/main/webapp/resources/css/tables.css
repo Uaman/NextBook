@@ -1,0 +1,15 @@
+table, th, td{
+    border: 1px solid #517994;
+    text-align: left;
+    border-collapse:collapse;
+}
+th, td{
+    padding: 5px;
+    white-space: nowrap;
+}
+th{
+    background: #B2CFD8;
+}
+tr:hover td{
+    background: #DFEBF1;
+}

@@ -49,6 +49,7 @@ public class AdminBookController {
     @RequestMapping(value="/all")
     public String allBooksPage(Model model) {
         model.addAttribute("books", bookProvider.getAllBooks());
+        model.addAttribute("subCategories", subCategoryProvider.getAll());
         return "admin/books/manage-books";
     }
 
