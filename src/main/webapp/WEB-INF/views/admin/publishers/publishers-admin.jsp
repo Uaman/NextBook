@@ -22,9 +22,7 @@
 
 <form id="filterForm">
   <label>id:<input type="text" id="id"/></label> <br />
-  <label>nameUa:<input type="text" id="nameUa"/></label> <br />
-  <label>nameEn:<input type="text" id="nameEn"/></label> <br />
-  <label>nameRu:<input type="text" id="nameRu"/></label> <br />
+  <label>name:<input type="text" id="name"/></label> <br />
   <label>description:<input type="text" id="description"/></label> <br />
   <label>from:<input type="text" id="from"/></label> <br />
   <label>max:<input type="text" id="max"/></label> <br />

@@ -26,9 +26,7 @@ $(document).ready(function(){
             id:$(this.id).val(),
             from:$(this.from).val(),
             max:$(this.max).val(),
-            nameUa:$(this.nameUa).val(),
-            nameRu:$(this.nameRu).val(),
-            nameEn:$(this.nameEn).val(),
+            name:$(this.name).val(),
             description:$(this.description).val()
         };
         $.ajax({

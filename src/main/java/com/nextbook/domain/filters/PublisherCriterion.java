@@ -7,9 +7,7 @@ public class PublisherCriterion {
     private int from;
     private int max;
     private int id;
-    private String nameUa;
-    private String nameEn;
-    private String nameRu;
+    private String name;
     private String description;
 
     public int getFrom() {
@@ -36,28 +34,12 @@ public class PublisherCriterion {
         this.id = id;
     }
 
-    public String getNameUa() {
-        return nameUa;
+    public String getName() {
+        return name;
     }
 
-    public void setNameUa(String nameUa) {
-        this.nameUa = nameUa;
-    }
-
-    public String getNameEn() {
-        return nameEn;
-    }
-
-    public void setNameEn(String nameEn) {
-        this.nameEn = nameEn;
-    }
-
-    public String getNameRu() {
-        return nameRu;
-    }
-
-    public void setNameRu(String nameRu) {
-        this.nameRu = nameRu;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

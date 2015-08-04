@@ -19,7 +19,7 @@
 
 <table style="border-collapse:collapse;">
   <tr>
-    <th width="50px"id</th>
+    <th width="50px">id</th>
     <th>name</th>
     <th>email</th>
     <th>active</th>

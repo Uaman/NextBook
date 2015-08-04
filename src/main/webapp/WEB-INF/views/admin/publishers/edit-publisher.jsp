@@ -38,7 +38,9 @@
   <button id="send">Add publisher</button><br />
 </c:if>
 
-<c:if test="fn:length(${publisher.users})!=0"><br/>Users:</c:if>
+<c:if test="${fn:length(publisher.users)!=0}">
+  <br/>Users:
+</c:if>
 
 <ol>
 <c:forEach var="user" items="${publisher.users}">
@@ -46,7 +48,9 @@
 </c:forEach>
 </ol>
 
-<a href="/admin/publishers/manage-users/?publisher=${publisher.id}">Manage users</a>
+<c:if test="${edit}">
+  <a href="/admin/publishers/manage-users/?publisher=${publisher.id}">Manage users</a>
+</c:if>
 
 </body>
 </html>

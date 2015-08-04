@@ -142,8 +142,8 @@ public class PublisherDAO implements IPublisherDao {
             session.beginTransaction();
             Query query = createQueryFromCriterion(session, criterion);
             entities = query.list();
+            result = new ArrayList<Publisher>();
             if(entities.size() > 0) {
-                result = new ArrayList<Publisher>();
                 for (PublisherEntity entity : entities) {
                     if (entity != null) {
                         try {
@@ -175,28 +175,14 @@ public class PublisherDAO implements IPublisherDao {
             queryString.append(" WHERE publisher.id=:id");
             where = true;
         }
-        if (validString(criterion.getNameEn())){
+        if (validString(criterion.getName())){
             if(where) {
-                queryString.append(" AND publisher.nameEn LIKE '%'||:nameEn||'%'");
+                queryString.append(" AND (publisher.nameEn LIKE '%'||:name||'%'");
             } else {
-                queryString.append(" WHERE publisher.nameEn LIKE '%'||:nameEn||'%'");
+                queryString.append(" WHERE (publisher.nameEn LIKE '%'||:name||'%'");
             }
-            where = true;
-        }
-        if (validString(criterion.getNameRu())){
-            if(where) {
-                queryString.append(" AND publisher.nameRu LIKE '%'||:nameRu||'%'");
-            } else {
-                queryString.append(" WHERE publisher.nameRu LIKE '%'||:nameRu||'%'");
-            }
-            where = true;
-        }
-        if (validString(criterion.getNameUa())){
-            if(where) {
-                queryString.append(" AND publisher.nameUa LIKE '%'||:nameUa||'%'");
-            } else {
-                queryString.append(" WHERE publisher.nameUa LIKE '%'||:nameUa||'%'");
-            }
+            queryString.append(" OR publisher.nameRu LIKE '%'||:name||'%'");
+            queryString.append(" OR publisher.nameUa LIKE '%'||:name||'%')");
             where = true;
         }
         if (validString(criterion.getDescription())){
