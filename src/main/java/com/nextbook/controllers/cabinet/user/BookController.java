@@ -1,6 +1,7 @@
 package com.nextbook.controllers.cabinet.user;
 
 import com.nextbook.domain.enums.BookTypeEnum;
+import com.nextbook.domain.filters.AuthorCriterion;
 import com.nextbook.domain.forms.book.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.services.*;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.
@@ -136,14 +138,41 @@ public class BookController {
             keywordList.add(keyword);
         }
         //book.setKeywords(keywordList);
-
+/*
         Author author = new Author();
         author.setFirstNameUa(bookRegisterForm.getAuthor());
-        author.setLastNameUa("last name");
+        author.setLastNameUa("lastName");
 
         author = authorProvider.updateAuthor(author);
+*/
+        //book.addAuthor(author);
+    }
 
-        book.addAuthor(author);
+    @RequestMapping(value = "/authors-auto-complete/{keyword}", method = RequestMethod.POST)
+    public @ResponseBody List<String> authorsAutoComplete(@PathVariable("keyword") String keyword,
+                                                          Locale locale){
+        if(keyword.equals(""))
+            return new ArrayList<String>();
+        List<Author> authors = authorProvider.getAuthorsByCriterion(new AuthorCriterion(keyword));
+        String language = locale.getLanguage();
+        List<String> response = formAuthorsForAutoComplete(authors, language);
+        return response;
+    }
+
+    private List<String> formAuthorsForAutoComplete(List<Author> authors, String language){
+        List<String> result = new ArrayList<String>();
+        if(authors != null) {
+            for (Author author : authors) {
+                if (language.equals("uk")) {
+                    result.add(author.getFirstNameUa() + ' ' + author.getLastNameUa());
+                } else if (language.equals("ru")) {
+                    result.add(author.getFirstNameRu() + ' ' + author.getLastNameRu());
+                } else {
+                    result.add(author.getFirstNameEn() + ' ' + author.getLastNameEn());
+                }
+            }
+        }
+        return result;
     }
 
     @RequestMapping(value = "/send-first-page", method = RequestMethod.POST)

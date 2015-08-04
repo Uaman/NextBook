@@ -95,7 +95,7 @@ public class AdminBookController {
             keywordList.add(keyword);
         }
         //book.setKeywords(keywordList);
-
+/*
         Author author = new Author();
         author.setFirstNameUa(bookRegisterForm.getAuthor());
         author.setLastNameUa("last name");
@@ -103,6 +103,7 @@ public class AdminBookController {
         author = authorProvider.updateAuthor(author);
 
         book.addAuthor(author);
+        */
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

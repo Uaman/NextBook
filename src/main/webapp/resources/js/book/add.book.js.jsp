@@ -98,7 +98,7 @@ $(document).ready(function(){
             name_ua: {
                 required: true
             },
-            author: {
+            authors: {
                 required: true
             },
             publication_year: {
@@ -135,7 +135,7 @@ $(document).ready(function(){
             name_ua: {
                 required: '<spring:message code="book.registration.name.ua.require" />'
             },
-            author: {
+            authors: {
                 required: '<spring:message code="book.registration.author.require" />'
             },
             publication_year: {
@@ -155,6 +155,10 @@ $(document).ready(function(){
         errorLabelContainer: $("div.errorblock"),
         wrapper: 'li',
         submitHandler: function(form){
+            if($('div.text-tag').length <= 0){ //divs with authors
+                alert('authors require');
+                return;
+            }
             if(isbnExist) {
                 alert('isbn exist');
                 return;
@@ -262,7 +266,25 @@ $(document).ready(function(){
             dataType:"text"
         }).submit();
     });
+
+    $('#authors').textext({
+        plugins : 'autocomplete tags'
+
+    }).bind('getSuggestions', function(e, data){
+        var query = (data ? data.query : '') || '';
+        var self = this;
+        $.ajax({
+            url: '/book/authors-auto-complete/'+query,
+            type: 'POST'
+        }).done(function(response){
+            $(self).trigger(
+                    'setSuggestions',
+                    { result : response }
+            );
+        });
+    });
 });
+
 function formDataBook(){
     var data = {
         bookId: BOOK_ID,
@@ -284,7 +306,14 @@ function formDataBook(){
         descriptionEn: $('#description_en').val(),
         descriptionRu: $('#description_ru').val(),
         keywords: $('#keywords').val().split(','),
-        author: $('#author').val(),
+        authors: function(){
+            var array = [];
+            var tags = $('div.text-tag');
+            $.each(tags, function( index, div ){
+                array.push($(div).text());
+            });
+            return array;
+        }(),
         eighteenPlus: $('#eighteen-plus').is(':checked'),
         numberOfPages: $('#number_of_pages').val(),
         subCategoryId: $('#category').val()
