@@ -60,6 +60,18 @@
       </td>
     </tr>
   </c:forEach>
+  <c:forEach var="user" items="${anotherPublisherUsers}">
+    <tr>
+      <td>${user.id}</td>
+      <td>${user.name}</td>
+      <td>${user.email}</td>
+      <td>${user.active}</td>
+      <td>${user.role.name}</td>
+      <td>
+        [already has publisher]
+      </td>
+    </tr>
+  </c:forEach>
 </table>
 
 </body>

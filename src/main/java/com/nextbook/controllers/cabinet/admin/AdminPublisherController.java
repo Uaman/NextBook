@@ -80,15 +80,20 @@ public class AdminPublisherController {
             List<User> users = userProvider.getAll();
             List<User> allUsers = new ArrayList<User>();
             List<User> publisherUsers = new ArrayList<User>();
+            List<User> anotherPublisherUsers = new ArrayList<User>();
             for (User u:users) {
-                if (isUserInPubisher(u, publ))
+                if (isUserInPubisher(u, publ)) {
                     publisherUsers.add(u);
-                else
+                } else if (publisherProvider.getPublisherByUser(u)==null){
                     allUsers.add(u);
+                } else {
+                    anotherPublisherUsers.add(u);
+                }
             }
             model.addAttribute("publisher", publ);
             model.addAttribute("allUsers", allUsers);
             model.addAttribute("publisherUsers", publisherUsers);
+            model.addAttribute("anotherPublisherUsers", anotherPublisherUsers);
         }
         return "/admin/publishers/manage-users";
     }
@@ -140,7 +145,7 @@ public class AdminPublisherController {
         boolean res = false;
         if (publisher!=null) {
             User user = userProvider.getById(userID);
-            if (user!=null) {
+            if (user!=null && publisherProvider.getPublisherByUser(user)==null) {
                 publisher.addUser(user);
                 publisherProvider.updatePublisher(publisher);
                 res = true;
