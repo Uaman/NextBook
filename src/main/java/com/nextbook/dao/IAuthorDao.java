@@ -28,4 +28,5 @@ public interface IAuthorDao {
 
     List<Author> getAuthorsByCriterion(AuthorCriterion criterion);
 
+    Author getByFirstAndLastName(String fName, String lName);
 }

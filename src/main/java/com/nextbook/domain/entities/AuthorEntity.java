@@ -15,13 +15,16 @@ import java.util.List;
 @Table(name = "author")
 @NamedQueries({
         @NamedQuery(name = AuthorEntity.getById, query = "SELECT author FROM AuthorEntity author WHERE author.id=:id"),
-        @NamedQuery(name = AuthorEntity.getAllUsers, query = "SELECT author FROM AuthorEntity author")
+        @NamedQuery(name = AuthorEntity.getAllUsers, query = "SELECT author FROM AuthorEntity author"),
+        @NamedQuery(name = AuthorEntity.getByFirstAndLastName, query = "SELECT author FROM AuthorEntity author WHERE (author.firstNameUa=:fName AND author.lastNameUa=:lName) " +
+                "OR (author.firstNameEn=:fName AND author.lastNameEn=:lName) OR (author.firstNameRu=:fName AND author.lastNameRu=:lName)")
 })
 
 public class AuthorEntity {
 
     public static final String getById = "getAuthorById";
     public static final String getAllUsers = "getAllAuthors";
+    public static final String getByFirstAndLastName = "getAuthorByFirstAndLastName";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

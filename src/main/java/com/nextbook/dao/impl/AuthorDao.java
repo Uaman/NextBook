@@ -156,6 +156,31 @@ public class AuthorDao implements IAuthorDao{
         }
         return result;
     }
+
+    @Override
+    public Author getByFirstAndLastName(String fName, String lName) {
+        Author author = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session.beginTransaction();
+            Query query = session.getNamedQuery(AuthorEntity.getByFirstAndLastName);
+            query.setParameter("fName", fName);
+            query.setParameter("lName", lName);
+            List<AuthorEntity> list = query.list();
+            if(list != null && list.size() > 0){
+                author = DozerMapperFactory.getDozerBeanMapper().map(list.get(0), Author.class);
+            }
+            session.getTransaction().commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+
+        return author;
+    }
+
     private Query createQueryFromCriterion(Session session, AuthorCriterion criterion){
         StringBuilder queryString = new StringBuilder();
         queryString.append("SELECT author FROM AuthorEntity author");

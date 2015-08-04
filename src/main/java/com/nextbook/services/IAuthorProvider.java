@@ -25,4 +25,5 @@ public interface IAuthorProvider {
     List<Author> getFromMax(int from, int max);
     List<Author> getAuthorsByCriterion(AuthorCriterion criterion);
 
+    Author getByFirstAndLastName(String fName, String lName);
 }

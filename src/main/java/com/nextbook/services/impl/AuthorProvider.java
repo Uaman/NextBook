@@ -52,4 +52,15 @@ public class AuthorProvider implements IAuthorProvider{
     public List<Author> getAuthorsByCriterion(AuthorCriterion criterion) {
         return authorDao.getAuthorsByCriterion(criterion);
     }
+
+    @Override
+    public Author getByFirstAndLastName(String fName, String lName) {
+        if(!validString(fName) || !validString(lName))
+            return  null;
+        return authorDao.getByFirstAndLastName(fName, lName);
+    }
+
+    private boolean validString(String s){
+        return s != null && !s.equals("");
+    }
 }
