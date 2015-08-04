@@ -17,7 +17,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = PublisherEntity.GET_BY_ID, query = "SELECT publisher FROM PublisherEntity publisher WHERE publisher.id=:id"),
         @NamedQuery(name = PublisherEntity.GET_ALL, query = "SELECT publisher FROM PublisherEntity publisher"),
-        @NamedQuery(name = PublisherEntity.GET_PUBLISHER_BY_USER, query = "SELECT publisher FroM PublisherEntity publisher WHERE :user in (publisher.users)")
+        @NamedQuery(name = PublisherEntity.GET_PUBLISHER_BY_USER, query = "SELECT publisher FROM PublisherEntity publisher WHERE publisher.users.id = :user")
 })
 public class PublisherEntity {
 
