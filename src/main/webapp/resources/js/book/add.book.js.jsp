@@ -207,7 +207,7 @@ $(document).ready(function(){
         });
     });
 
-    $('#send-book').click(function(){
+    $('#book').change(function(){
         $('#container-progress-book').show();
         $('#book-form').ajaxForm({
             success:function(data) {
@@ -227,7 +227,7 @@ $(document).ready(function(){
         }).submit();
     });
 
-    $('#send-last-page').click(function(){
+    $('#last_page').change(function(){
         $('#container-progress-last-page').show();
         $('#last-page-form').ajaxForm({
             success:function(data) {
@@ -247,7 +247,7 @@ $(document).ready(function(){
         }).submit();
     });
 
-    $('#send-first-page').click(function(){
+    $('#first_page').change(function(){
         $('#container-progress-first-page').show();
         $('#first-page-form').ajaxForm({
             success:function(data) {

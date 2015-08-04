@@ -19,7 +19,6 @@
     <script src="/resources/js/textext/textext.core.js"></script>
     <script src="/resources/js/textext/textext.plugin.autocomplete.js"></script>
     <script src="/resources/js/textext/textext.plugin.tags.js"></script>
-    <link rel="stylesheet" type="text/css" href="/resources/css/buttons.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/textext/textext.core.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/textext/textext.plugin.tags.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/textext/textext.plugin.autocomplete.css"/>
@@ -76,7 +75,6 @@
         </div>
         <input type="hidden" name="bookId" value="${bookId}">
         <label>First Page*:<input type="file" name="first_page" id="first_page"></label><br />
-        <div id="send-first-page" class="button">send</div>
     </form>
     <form id="last-page-form" action="/book/send-last-page" method="POST">
         <div id="container-progress-last-page" class="progress-container" style="display: none;">
@@ -84,7 +82,6 @@
         </div>
         <input type="hidden" name="bookId" value="${bookId}">
         <label>Last Page:<input type="file" name="last_page" id="last_page"></label><br />
-        <div id="send-last-page" class="button">send</div>
     </form>
     <form id="book-form" action="/book/send-book" method="POST">
         <div id="container-progress-book" class="progress-container" style="display: none;">
@@ -92,7 +89,6 @@
         </div>
         <input type="hidden" name="bookId" value="${bookId}">
         <label>Book*:<input type="file" name="book" id="book"></label><br />
-        <div id="send-book" class="button">send</div>
     </form>
 </body>
 </html>
