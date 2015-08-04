@@ -163,37 +163,20 @@ public class AuthorDao implements IAuthorDao{
 
         boolean where = false;
 
-        if(validString(criterion.getFirstNameUa())){
-            queryString.append(" WHERE author.firstNameUa LIKE :firstNameUa");
-            params.put("firstNameUa", '%'+criterion.getFirstNameUa()+'%');
+        if(validString(criterion.getFirstName())){
+            queryString.append(" WHERE author.firstNameUa LIKE :firstName OR author.firstNameEn LIKE :firstName OR author.firstNameRu LIKE :firstName");
+            params.put("firstName", '%'+criterion.getFirstName()+'%');
             where = true;
         }
 
-        if(validString(criterion.getLastNameUa())){
-            queryString.append(" WHERE author.lastNameUa LIKE :lastNameUa");
-            params.put("lastNameUa", '%'+criterion.getLastNameUa()+'%');
-
-            where = true;
-        }
-        if(validString(criterion.getFirstNameEn())){
-            queryString.append(" WHERE author.firstNameEn LIKE :firstNameEn");
-            params.put("firstNameEn", '%'+criterion.getFirstNameEn()+'%');
-            where = true;
-        }
-        if(validString(criterion.getLastNameEn())){
-            queryString.append(" WHERE author.lastNameEn LIKE :lastNameEn");
-            params.put("lastNameEn", '%'+criterion.getLastNameEn()+'%');
-            where = true;
-        }
-        if(validString(criterion.getFirstNameRu())){
-            queryString.append(" WHERE author.firstNameRu LIKE :firstNameRu");
-            params.put("firstNameRu", '%'+criterion.getFirstNameRu()+'%');
-            where = true;
-        }
-        if(validString(criterion.getLastNameRu())){
-            queryString.append(" WHERE author.lastNameRu LIKE :lastNameRu");
-            params.put("lastNameRu", '%'+criterion.getLastNameRu()+'%');
-            where = true;
+        if(validString(criterion.getLastName())){
+            if(where){
+                queryString.append(" AND author.lastNameUa LIKE :lastName OR author.lastNameEn LIKE :lastName OR author.lastNameRu LIKE :lastName");
+            } else {
+                queryString.append(" WHERE author.lastNameUa LIKE :lastName OR author.lastNameEn LIKE :lastName OR author.lastNameRu LIKE :lastName");
+                where = true;
+            }
+            params.put("lastName", '%'+criterion.getLastName()+'%');
         }
 
         Query result = session.createQuery(queryString.toString());
@@ -205,7 +188,7 @@ public class AuthorDao implements IAuthorDao{
             result.setFirstResult(criterion.getFrom());
 
         if(criterion.getMax() > 0)
-            result.setFirstResult(criterion.getMax());
+            result.setMaxResults(criterion.getMax());
 
         return result;
     }
