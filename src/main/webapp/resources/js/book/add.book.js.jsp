@@ -190,6 +190,42 @@ $(document).ready(function(){
         }
     });
 
+    $('#add-author-button').click(function(){
+        $('#add-author-form').show();
+        $('.shadow').show();
+    });
+    $('#close').click(function(){
+        $('#add-author-form').hide();
+        $('.shadow').hide();
+    });
+
+    $('#send-author-form').click(function(){
+        var json = {
+            firstNameUa: $('#author-first-name-ua').val(),
+            lastNameUa: $('#author-last-name-ua').val(),
+            firstNameRu: $('#author-first-name-ru').val(),
+            lastNameRu: $('#author-last-name-ru').val(),
+            firstNameEn: $('#author-first-name-en').val(),
+            lastNameEn: $('#author-last-name-en').val()
+        };
+        $.ajax({
+            url: '/author/new-author',
+            type: 'POST',
+            data: JSON.stringify(json),
+            dataType: 'json',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function(data){
+                console.log(data);
+            },
+            error: function(e){
+                console.log(e);
+            }
+        })
+    });
+
     //appendAjaxFormToButtonWithProgress('#send-book', '#book-form', '#container-progress-book', '#progress-bar-book');
     //appendAjaxFormToButtonWithProgress('#send-last-page', '#last-page-form', '#container-progress-last-page', '#progress-bar-last-page');
     //appendAjaxFormToButtonWithProgress('#send-first-page', '#first-page-form', '#container-progress-first-page', '#progress-bar-first-page');

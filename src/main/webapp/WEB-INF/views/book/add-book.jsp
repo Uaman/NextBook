@@ -22,6 +22,8 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/textext/textext.core.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/textext/textext.plugin.tags.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/textext/textext.plugin.autocomplete.css"/>
+
+    <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
     <jsp:include page="../../../resources/js/book/add.book.js.jsp"/>
     <style>
         .progress-container{
@@ -44,6 +46,7 @@
         <label>EN Name:<input type="text" name="name_en" id="name_en"/></label><br />
         <label>RU Name:<input type="text" name="name_ru" id="name_ru"/></label><br />
         <label>Author*: <textarea id="authors" name="authors" rows="2" cols="50"></textarea></label><br />
+        <div id="add-author-button" style="width: 150px; height: 30px; border: 1px solid black; cursor: pointer;">Add new author</div>
         <label>Year Of Publication*: <input type="text" id="publication_year" name="publication_year" placeholder="2015"/></label><br />
         <input type="hidden" value="some-id" id="publisher-id" name="publisher-id" />
         <label>Language*: <input type="text" id="language" name="language"/></label><br />
@@ -90,5 +93,17 @@
         <input type="hidden" name="bookId" value="${bookId}">
         <label>Book*:<input type="file" name="book" id="book"></label><br />
     </form>
+
+<div id="add-author-form" class="popup-default" style="display: none;">
+    Author First Name UA: <input type="text" id="author-first-name-ua"><br />
+    Author Last Name UA: <input type="text" id="author-last-name-ua"><br />
+    Author First Name EN: <input type="text" id="author-first-name-en"><br />
+    Author Last Name EN: <input type="text" id="author-last-name-en"><br />
+    Author First Name RU: <input type="text" id="author-first-name-ru"><br />
+    Author Last Name RU: <input type="text" id="author-last-name-ru"><br />
+    <input type="button" value="Add" id="send-author-form">
+    <button id="close"><spring:message code="button.close"/></button>
+</div>
+<div class="shadow" style="display: none;"></div>
 </body>
 </html>
