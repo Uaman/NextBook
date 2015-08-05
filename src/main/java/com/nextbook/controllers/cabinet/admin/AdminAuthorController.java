@@ -31,26 +31,11 @@ public class AdminAuthorController {
         model.addAttribute("authors", authors);
         return "admin/authors/authors";
     }
-
-
-    @RequestMapping(value = "/add-author", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String addAuthor(@ModelAttribute("adminAuthorForm")AdminAuthorForm adminAuthorForm) {
-        Author author = new Author();
-        author.setFirstNameEn(adminAuthorForm.getFirstNameEn());
-        author.setFirstNameUa(adminAuthorForm.getFirstNameUa());
-        author.setFirstNameRu(adminAuthorForm.getFirstNameRu());
-        author.setLastNameEn(adminAuthorForm.getLastNameEn());
-        author.setLastNameRu(adminAuthorForm.getLastNameRu());
-        author.setLastNameUa(adminAuthorForm.getLastNameUa());
-        authorProvider.updateAuthor(author);
-        return "redirect:/admin/authors/all";
-    }
     @RequestMapping(value = "/update-author", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateAuthor(@ModelAttribute("adminAuthorForm")AdminAuthorForm adminAuthorForm) {
         Author author = authorProvider.getById(adminAuthorForm.getId());
-        if (author != null) {
+        if (author == null) author = new Author();
             author.setFirstNameEn(adminAuthorForm.getFirstNameEn());
             author.setFirstNameUa(adminAuthorForm.getFirstNameUa());
             author.setFirstNameRu(adminAuthorForm.getFirstNameRu());
@@ -58,9 +43,7 @@ public class AdminAuthorController {
             author.setLastNameRu(adminAuthorForm.getLastNameRu());
             author.setLastNameUa(adminAuthorForm.getLastNameUa());
             authorProvider.updateAuthor(author);
-        }
         return "redirect:/admin/authors/all";
-
     }
 
 
@@ -79,10 +62,8 @@ public class AdminAuthorController {
     @RequestMapping(value = "/authors-filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
-    List<Author> filter(@RequestBody AuthorCriterion authorCriterion,
-                        HttpServletResponse response){
+    List<Author> filter(@RequestBody AuthorCriterion authorCriterion){
         List<Author> result = authorProvider.getAuthorsByCriterion(authorCriterion);
-        response.setStatus(HttpServletResponse.SC_OK);
         if(result == null)
             result = new ArrayList<Author>();
         return result;

@@ -14,23 +14,20 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="/resources/js/admin/authors/author-table/filter.js"></script>
     <link rel="stylesheet" type="text/css" href="/resources/css/tables.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
 </head>
-<body>
-<p align="right">
-<label>firstNameUa:<input type="text" id="firstNameUa"/></label> <br />
-<label>lastNameUa:<input type="text" id="lastNameUa"/></label> <br />
-<label>firstNameEn:<input type="text" id="firstNameEn"/></label> <br />
-<label>lastNameEn:<input type="text" id="lastNameEn"/></label> <br />
-<label>firstNameRu:<input type="text" id="firstNameRu"/></label> <br />
-<label>lastNameRu:<input type="text" id="lastNameRu"/></label> <br />
-    <label>from:<input type="text" id="from"/></label> <br />
-    <label>max:<input type="text" id="max"/></label> <br />
-<input value="Search" type="submit" id="send-filter"> </p>
+<body id ="bodyAuthor">
+<form id="requestAuthor">
+        <p align="right">
+<label>firstNameUa:<input type="text" id="fU"/></label> <br />
+<label>lastNameUa:<input type="text" id="lU"/></label> <br />
+<input value="Search" type="submit"> </p></form>
+<button value="Add" class="editButton">Add author</button>
 <table style="border-collapse:collapse;">
   <tr>
     <th width="5%">id</th>
-    <th width="10%">firstNameUa</th>
-    <th width="10%">lastNameUa</th>
+    <th width="15%">firstNameUa</th>
+    <th width="15%">lastNameUa</th>
     <th width="10%">firstNameEn</th>
     <th width="10%">lastNameEn</th>
     <th width="10%">firstNameRu</th>
@@ -40,71 +37,54 @@
   <tbody id="added">
   <c:forEach var="author" items="${authors}">
     <tr>
-        <form:form modelAttribute="adminAuthorForm" action="/admin/authors/update-author" method="POST" id="authorForm${author.id}">
-        <input type="hidden" value="${author.id}" name="id"/>
         <td width="5%">
             ${author.id}
         </td>
         <td width="10%">
-          <input type="text" value="${author.firstNameUa}" name="firstNameUa"/>
+            <input type="hidden" id="firstNameUa${author.id}" value=" ${author.firstNameUa}" />
+        ${author.firstNameUa}
         </td>
         <td width="10%">
-          <input type="text" value="${author.lastNameUa}" name="lastNameUa"/>
+            <input type="hidden" id="lastNameUa${author.id}" value="  ${author.lastNameUa}" />
+        ${author.lastNameUa}
         </td>
         <td width="10%">
-          <input type="text" value="${author.firstNameEn}" name="firstNameEn"/>
+            <input type="hidden" id="firstNameEn${author.id}" value=" ${author.firstNameEn}" />
+        ${author.firstNameEn}
         </td>
         <td width="10%">
-          <input type="text" value="${author.lastNameEn}" name="lastNameEn"/>
+            <input type="hidden" id="lastNameEn${author.id}" value="${author.lastNameEn}" />
+        ${author.lastNameEn}
         </td>
         <td width="10%">
-          <input type="text" value="${author.firstNameRu}" name="firstNameRu"/>
+            <input type="hidden" id="firstNameRu${author.id}" value="  ${author.firstNameRu}" />
+         ${author.firstNameRu}
         </td>
         <td width="10%">
-          <input type="text" value="${author.lastNameRu}" name="lastNameRu"/>
+            <input type="hidden" id="lastNameRu${author.id}" value=" ${author.lastNameRu}" />
+         ${author.lastNameRu}
         </td>
         <th width="10%">
-          <input type="submit" value="Update" />
-      </form:form>
-            <form action = "/admin/authors/author-books/${author.id}" method="GET">
-        <input type ="submit" value ="Review books"/>
-      </form>
-      <form action="/admin/authors/delete-author/${author.id}" method="GET">
-        <input type="submit" value="Delete" />
-        </form>
+            <button value="${author.id}" class="editButton">Update</button>
+            <button value="${author.id}" class="deleteButton">Delete</button>
           </th>
     </tr>
   </c:forEach>
   </tbody>
-
-  <tr>
-    <form:form modelAttribute="adminAuthorForm" action="/admin/authors/add-author" method="POST">
-      <td width="10%">
-      </td>
-      <td width="10%">
-        <input type="text" value="" name="firstNameUa"/>
-      </td>
-      <td width="10%">
-        <input type="text" value="" name="lastNameUa"/>
-      </td>
-      <td width="10%">
-        <input type="text" value="" name="firstNameEn"/>
-      </td>
-      <td width="10%">
-        <input type="text" value="" name="lastNameEn"/>
-      </td>
-      <td width="10%">
-        <input type="text" value="" name="firstNameRu"/>
-      </td>
-      <td width="10%">
-        <input type="text" value="" name="lastNameRu"/>
-      </td>
-      <th width="10%">
-        <input type="submit" value="Add new"/>
-      </th>
-
-        </form:form>
-    </tr>
 </table>
+<div id="edit-form" class="popup-default" style="display: none;">
+    <form:form modelAttribute="adminAuthorForm" action="/admin/authors/update-author" method="POST">
+        <input type="hidden" name="id" value="" />
+        FirstNameUa <input type="text" value=""  name="firstNameUa"/></br>
+        LastNameUa<input type="text" value=""  name="lastNameUa"/></br>
+        FirstNameEn<input type="text" value=""  name="firstNameEn"/></br>
+        LastNameEn<input type="text" value=""  name="lastNameEn"/></br>
+        FirstNameRu<input type="text" value=""  name="firstNameRu"/></br>
+        LastNameRu<input type="text" value=""  name="lastNameRu"/></br>
+        <input type="submit" value="Submit"/><br />
+        </form:form>
+    <input value="Cancel" type="submit" id="closeButton">
+    </div>
+<div class="shadow" style="display: none;"></div>
 </body>
 </html>
