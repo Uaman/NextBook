@@ -1,6 +1,8 @@
 package com.nextbook.domain.filters;
 
+import com.nextbook.domain.enums.BookOrderEnum;
 import com.nextbook.domain.enums.BookTypeEnum;
+import com.nextbook.domain.enums.OrderDirectionEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +46,33 @@ public class BookCriterion {
 
     private int authorId;
 
+    private OrderDirectionEnum orderDirection;
+
+    private BookOrderEnum orderBy;
+
     public int getAuthorId() {
         return authorId;
     }
 
     public void setAuthorId(int authorId) {
         this.authorId = authorId;
+    }
+
+
+    public OrderDirectionEnum getOrderDirection() {
+        return orderDirection;
+    }
+
+    public void setOrderDirection(OrderDirectionEnum orderDirection) {
+        this.orderDirection = orderDirection;
+    }
+
+    public BookOrderEnum getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(BookOrderEnum orderBy) {
+        this.orderBy = orderBy;
     }
 
     public String getPublisher() {

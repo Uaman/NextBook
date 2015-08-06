@@ -50,18 +50,18 @@ Category:
 
 <table>
     <tr>
-        <th>id</th>
-        <th>ISBN</th>
+        <th>id <a href="ASC" class="order" id="orderId">&darr;</a></th>
+        <th>ISBN <a href="ASC" class="order" id="orderIsbn">&darr;</a></th>
         <th>name</th>
         <th>authors</th>
         <th>subcategory</th>
-        <th>18+</th>
-        <th>year</th>
+        <th>18+ <a href="ASC" class="order" id="order18">&darr;</a></th>
+        <th>year <a href="ASC" class="order" id="orderYear">&darr;</a></th>
         <th>publisher</th>
-        <th>language</th>
-        <th>type</th>
+        <th>language <a href="ASC" class="order" id="orderLanguage">&darr;</a></th>
+        <th>type <a href="ASC" class="order" id="orderType">&darr;</a></th>
         <th>keywords</th>
-        <th># pages</th>
+        <th># pages <a href="ASC" class="order" id="orderPages">&darr;</a></th>
         <th>description</th>
         <th>action</th>
     </tr>

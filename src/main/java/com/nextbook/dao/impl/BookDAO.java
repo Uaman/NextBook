@@ -292,6 +292,9 @@ public class BookDAO implements IBookDao {
             }
             where = true;
         }
+        if(criterion.getOrderDirection()!=null && criterion.getOrderBy()!=null){
+            queryString.append(" ORDER BY " + criterion.getOrderBy() + ' ' + criterion.getOrderDirection());
+        }
 
         //CONCAT('%', :name, '%') or '%' || :name ||
 
