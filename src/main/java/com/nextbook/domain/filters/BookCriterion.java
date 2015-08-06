@@ -20,7 +20,7 @@ public class BookCriterion {
 
     private String name;
 
-    private String subCategory;
+    private int subCategory;
 
     private String state;
 
@@ -30,7 +30,7 @@ public class BookCriterion {
 
     private String language;
 
-    private BookTypeEnum typeOfBook;
+    private String typeOfBook;
 
     private int numberOfPages;
 
@@ -60,11 +60,11 @@ public class BookCriterion {
         this.publisher = publisher;
     }
 
-    public String getSubCategory() {
-        return '%'+subCategory+'%';
+    public int getSubCategory() {
+        return subCategory;
     }
 
-    public void setSubCategory(String subCategory) {
+    public void setSubCategory(int subCategory) {
         this.subCategory = subCategory;
     }
 
@@ -92,11 +92,15 @@ public class BookCriterion {
         this.max = max;
     }
 
-    public BookTypeEnum getTypeOfBook() {
+    public String getTypeOfBookString() {
         return typeOfBook;
     }
 
-    public void setTypeOfBook(BookTypeEnum typeOfBook) {
+    public BookTypeEnum getTypeOfBook() {
+        return BookTypeEnum.valueOf(typeOfBook);
+    }
+
+    public void setTypeOfBook(String typeOfBook) {
         this.typeOfBook = typeOfBook;
     }
 

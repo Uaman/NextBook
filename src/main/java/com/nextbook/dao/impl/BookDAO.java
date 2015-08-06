@@ -162,8 +162,8 @@ public class BookDAO implements IBookDao {
             session.beginTransaction();
             Query query = createQueryFromCriterion(session, criterion);
             entities = query.list();
+            result = new ArrayList<Book>();
             if(entities.size() > 0) {
-                result = new ArrayList<Book>();
                 for (BookEntity entity : entities) {
                     if (entity != null) {
                         try {
@@ -250,7 +250,7 @@ public class BookDAO implements IBookDao {
             }
             where = true;
         }
-        if(criterion.getTypeOfBook() != null){
+        if(validString(criterion.getTypeOfBookString()) && !criterion.getTypeOfBookString().equalsIgnoreCase("all")){
             if(where) {
                 queryString.append(" AND book.typeOfBook=:typeOfBook");
             } else {
@@ -266,14 +266,12 @@ public class BookDAO implements IBookDao {
             }
             where = true;
         }
-        if (validString(criterion.getSubCategory())){
+        if (criterion.getSubCategory()>0){
             if(where) {
-                queryString.append(" AND (book.subCategoryEntity.nameUa LIKE :subCategory");
+                queryString.append(" AND book.subCategoryEntity.id=:subCategory");
             } else {
-                queryString.append(" WHERE (book.subCategoryEntity.nameUa LIKE :subCategory");
+                queryString.append(" WHERE book.subCategoryEntity.id=:subCategory");
             }
-            queryString.append(" OR book.subCategoryEntity.nameRu LIKE :subCategory");
-            queryString.append(" OR book.subCategoryEntity.nameEn LIKE :subCategory)");
             where = true;
         }
         if (validString(criterion.getPublisher())){

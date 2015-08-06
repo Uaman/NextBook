@@ -36,6 +36,7 @@
                     }
                 },
                 error: function (e) {
+                    $("#message").html('error');
                     console.log('Error: ' + JSON.stringify(e));
                 }
             });

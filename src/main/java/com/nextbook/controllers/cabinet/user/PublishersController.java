@@ -29,7 +29,10 @@ public class PublishersController {
 
     @RequestMapping(value="/add")
     @PreAuthorize("hasRole('ROLE_PUBLISHER')")
-    public String addPublisher(Model model, @RequestParam boolean first) {
+    public String addPublisher(Model model,
+                               @RequestParam (required = false, defaultValue = "false") boolean first) {
+        if (publisherProvider.getPublisherByUser(sessionUtils.getCurrentUser())!=null)
+            return "redirect:/cabinet/profile";
         model.addAttribute("first", first);
         model.addAttribute("edit", false);
         return "/publisher/edit-publisher";
@@ -57,13 +60,15 @@ public class PublishersController {
         Publisher result = null;
         Publisher publisher = null;
         User user = sessionUtils.getCurrentUser();
+        Publisher upublisher = publisherProvider.getPublisherByUser(user);
         if (form.getId()!=0)
             publisher = publisherProvider.getPublisherById(form.getId());
         if (publisher==null) {
+            if (upublisher!=null)
+                return null;
             publisher = new Publisher();
             publisher.addUser(sessionUtils.getCurrentUser());
         } else {
-            Publisher upublisher = publisherProvider.getPublisherByUser(user);
             if (upublisher != null && publisher.getId() != upublisher.getId())
                 return null;
         }
