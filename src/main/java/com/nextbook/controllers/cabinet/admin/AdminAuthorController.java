@@ -33,7 +33,7 @@ public class AdminAuthorController {
     }
     @RequestMapping(value = "/update-author", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String updateAuthor(@ModelAttribute("adminAuthorForm")AdminAuthorForm adminAuthorForm) {
+    public @ResponseBody Author updateAuthor(@RequestBody AdminAuthorForm adminAuthorForm) {
         Author author = authorProvider.getById(adminAuthorForm.getId());
         if (author == null) author = new Author();
             author.setFirstNameEn(adminAuthorForm.getFirstNameEn());
@@ -43,9 +43,27 @@ public class AdminAuthorController {
             author.setLastNameRu(adminAuthorForm.getLastNameRu());
             author.setLastNameUa(adminAuthorForm.getLastNameUa());
             authorProvider.updateAuthor(author);
-        return "redirect:/admin/authors/all";
+        return author;
     }
 
+    @RequestMapping(value="/edit-author/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updatePublisherPage(@PathVariable("id") int id, Model model) {
+        Author author = authorProvider.getById(id);
+        if (author==null) {
+            model.addAttribute("edit", false);
+        } else {
+            model.addAttribute("edit", true);
+            model.addAttribute("author", author);
+        }
+        return "/admin/authors/edit-author";
+    }
+    @RequestMapping(value="/add-author")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String addAuthor(Model model) {
+        model.addAttribute("edit", false);
+        return "/admin/authors/edit-author";
+    }
 
     @RequestMapping(value = "/delete-author/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -54,11 +72,7 @@ public class AdminAuthorController {
         return "redirect:/admin/authors/all";
 
     }
-    @RequestMapping(value = "/author-books/{id}",method = RequestMethod.GET)
-    @PreAuthorize(("hasRole('ROLE_ADMIN')"))
-    public String getAuthorBooks(@PathVariable("id") int id){
-        return "admin/authors/books";
-    }
+
     @RequestMapping(value = "/authors-filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
