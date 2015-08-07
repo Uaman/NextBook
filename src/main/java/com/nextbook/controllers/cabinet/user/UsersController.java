@@ -1,12 +1,13 @@
 package com.nextbook.controllers.cabinet.user;
 
-import com.nextbook.domain.forms.user.RegisterUserForm;
 import com.nextbook.domain.forms.user.UserChangeNameEmail;
 import com.nextbook.domain.forms.user.UserChangePassword;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
+import com.nextbook.utils.StatisticUtil;
 import com.nextbook.utils.SessionUtils;
-import org.springframework.http.MediaType;
+import io.keen.client.java.JavaKeenClientBuilder;
+import io.keen.client.java.KeenClient;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -14,10 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Polomani on 21.07.2015.
@@ -32,6 +33,9 @@ public class UsersController {
     private SessionUtils sessionUtils;
     @Inject
     private Md5PasswordEncoder md5PasswordEncoder;
+    
+    @Inject
+    private StatisticUtil statisticUtil;
 
     @RequestMapping(value = "/profile")
     @PreAuthorize("isAuthenticated()")
@@ -40,6 +44,9 @@ public class UsersController {
         if(user == null)
             return "redirect:/";
         model.addAttribute("user", user);
+        Map<String, Object> event = new HashMap<String, Object>();
+        event.put("logged_user_email", user.getEmail());
+        statisticUtil.addEvent("user_logged", event);
         return "users/profile";
     }
 
