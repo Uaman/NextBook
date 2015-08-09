@@ -25,9 +25,14 @@
         <security:authorize access="hasRole('ROLE_PUBLISHER')">
             <li><a href="/book/new-book">Add book</a></li>
         </security:authorize>
-        <c:if test="${publisher ne null}">
-            <li><a href="/publisher/view?publisherId=${publisher.id}">Publisher</a></li>
-        </c:if>
+        <c:choose>
+            <c:when test="${publisher ne null}">
+                <li><a href="/publisher/view?publisherId=${publisher.id}">Publisher</a></li>
+            </c:when>
+            <c:otherwise>
+                <li><a href="/publisher/new">New Publisher</a></li>
+            </c:otherwise>
+        </c:choose>
 
         <security:authorize access="hasRole('ROLE_ADMIN')">
             <li><a href="/admin/books/all"><spring:message code="books.manageBooks" /></a></li>

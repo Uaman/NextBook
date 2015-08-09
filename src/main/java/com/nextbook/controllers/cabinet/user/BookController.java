@@ -53,7 +53,7 @@ public class BookController {
         Publisher publisher = publisherProvider.getPublisherByUser(user);
         if(publisher == null){
             // redirect to page where user can create publication
-            return "redirect:/publisher/add?first=true";
+            return "redirect:/publisher/new";
         }
         Book book = defaultBook(user, publisher);
         book = bookProvider.updateBook(book);
@@ -72,7 +72,7 @@ public class BookController {
         Publisher publisher = publisherProvider.getPublisherByUser(user);
         if(publisher == null){
             // redirect to page where user can create publication
-            return "redirect:/publisher/add?first=true";
+            return "redirect:/publisher/new";
         }
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
@@ -227,7 +227,7 @@ public class BookController {
 
 
     @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public String onLoad(@RequestParam("bookId") int bookId,
+    public String viewBook(@RequestParam("bookId") int bookId,
                          Model model){
         User user = sessionUtils.getCurrentUser();
         if(user == null)
@@ -235,7 +235,7 @@ public class BookController {
 
         Publisher publisher = publisherProvider.getPublisherByUser(user);
         if(publisher == null)
-            return "redirect:/publisher/add?first=true";
+            return "redirect:/publisher/new";
 
         Book book = bookProvider.getBookById(bookId);
         if(book == null)

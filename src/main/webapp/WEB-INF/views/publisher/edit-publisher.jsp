@@ -22,14 +22,14 @@
   <spring:message code="publisher.register.firstpublisher" />
 </c:if>
 <form>
-  <c:if test="${edit}">
     <input id="id" type="hidden" value="${publisher.id}"/><br />
     <spring:message code="publisher.register.publisherNameUa" /> <input id="nameUa" value="${publisher.nameUa}"/><br />
     <spring:message code="publisher.register.nameRu" /> <input id="nameRu" value="${publisher.nameRu}"/><br />
     <spring:message code="publisher.register.NameEn" /> <input id="nameEn" value="${publisher.nameEn}"/><br />
     <spring:message code="publisher.register.description" /> <input id="description" value="${publisher.description}"/><br />
     <button id="send"><spring:message code="publisher.register.updatePublisher" /></button><br />
-  </c:if>
+
+    <%--
   <c:if test="${!edit}">
     <spring:message code="publisher.register.publisherNameUa" /> <input id="nameUa"/><br />
     <spring:message code="publisher.register.nameRu" /> <input id="nameRu"/><br />
@@ -37,6 +37,7 @@
     <spring:message code="publisher.register.description" /> <input id="description"/><br />
     <button id="send"><spring:message code="publisher.register.addPublisher" /></button><br />
   </c:if>
+  --%>
 </form>
 <p id="message"></p>
 

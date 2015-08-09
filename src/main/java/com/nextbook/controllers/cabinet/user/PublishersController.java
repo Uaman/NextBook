@@ -3,6 +3,7 @@ package com.nextbook.controllers.cabinet.user;
 import com.nextbook.domain.forms.publishers.SimplePublisherForm;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Publisher;
+import com.nextbook.domain.pojo.Role;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IBookProvider;
 import com.nextbook.services.IPublisherProvider;
@@ -31,30 +32,37 @@ public class PublishersController {
     private SessionUtils sessionUtils;
     @Inject
     private IBookProvider bookProvider;
+    @Inject
+    private IUserProvider userProvider;
 
-    @RequestMapping(value="/add")
-    @PreAuthorize("hasRole('ROLE_PUBLISHER')")
-    public String addPublisher(Model model,
-                               @RequestParam (required = false, defaultValue = "false") boolean first) {
-        if (publisherProvider.getPublisherByUser(sessionUtils.getCurrentUser())!=null)
+    @RequestMapping(value="/new")
+    public String addPublisher() {
+        User user = sessionUtils.getCurrentUser();
+        if (publisherProvider.getPublisherByUser(user)!=null)
             return "redirect:/cabinet/profile";
-        model.addAttribute("first", first);
-        model.addAttribute("edit", false);
-        return "/publisher/edit-publisher";
+        Publisher publisher = new Publisher();
+        publisher.setDescription("");
+        publisher.setNameUa("");
+        publisher.addUser(user);
+        publisher = publisherProvider.updatePublisher(publisher);
+        Role publisherRole = new Role();
+        publisherRole.setId(3);
+        user.setRole(publisherRole);
+        user = userProvider.update(user);
+        return "redirect:/publisher/update?publisherId="+publisher.getId();
     }
 
-    @RequestMapping(value="/update/{id}")
-    @PreAuthorize("hasRole('ROLE_PUBLISHER')")
+    @RequestMapping(value="/update")
+    //@PreAuthorize("hasRole('ROLE_PUBLISHER')")
+    //user that just create publication can not 'go though' this annotation,
+    //cause he has no role publication. resign in resolve it
     public String updatePublisher(Model model,
-                                  @PathVariable int id,
-                                  @RequestParam (defaultValue = "false", required = false) boolean first) {
+                                  @RequestParam("publisherId") int id) {
         Publisher publisher = publisherProvider.getPublisherById(id);
         Publisher upublisher = publisherProvider.getPublisherByUser(sessionUtils.getCurrentUser());
         if (publisher==null || upublisher==null || publisher.getId() != upublisher.getId())
             return "redirect:/cabinet/profile";
         model.addAttribute("publisher", publisher);
-        model.addAttribute("first", first);
-        model.addAttribute("edit", true);
         return "/publisher/edit-publisher";
     }
 
@@ -100,6 +108,7 @@ public class PublishersController {
         List<User> users = publisher.getUsers();
         model.addAttribute("books", books);
         model.addAttribute("users", users);
+        model.addAttribute("publisherId", publisher.getId());
         return "publisher/view-publisher";
     }
 

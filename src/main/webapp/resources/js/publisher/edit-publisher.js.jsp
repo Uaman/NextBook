@@ -2,12 +2,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <script>
     $(document).ready(function() {
-
+<%--
         if (${first&&edit}) {
             $("#message").html('<spring:message code="publisher.register.form.saved" /><br/>' +
             '<a href="/book/new-book"><spring:message code="publisher.register.form.returnNewBookPage" /></a>');
         }
-
+--%>
         $("#send").click(function () {
             var id = ($("#id")==null)?-1:$("#id").val();
             var data = {

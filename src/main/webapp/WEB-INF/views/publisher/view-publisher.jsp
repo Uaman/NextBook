@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/tables.css"/>
 </head>
 <body>
+<a href="/publisher/update?publisherId=${publisherId}">Edit Publication</a><br />
 Users: <br />
 <table style="border-collapse:collapse;">
     <tr>
