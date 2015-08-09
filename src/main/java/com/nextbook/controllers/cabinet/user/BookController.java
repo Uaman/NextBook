@@ -5,6 +5,7 @@ import com.nextbook.domain.enums.Cover;
 import com.nextbook.domain.filters.AuthorCriterion;
 import com.nextbook.domain.forms.book.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
+import com.nextbook.domain.upload.Constants;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -224,4 +225,18 @@ public class BookController {
         return bookProvider.isbnExist(isbn);
     }
 
+
+    @RequestMapping(value = "/view", method = RequestMethod.GET)
+    public String onLoad(@RequestParam("bookId") int bookId,
+                         Model model){
+        Book book = bookProvider.getBookById(bookId);
+        if(book == null)
+            return "redirect:/";
+        String url = book.getLinkToStorage();
+        if(url == null || url.equals(""))
+            return "redirect:/";
+        model.addAttribute("urlToFile", url);
+        model.addAttribute("pass", Constants.USER_PASSWORD);
+        return "book/view";
+    }
 }

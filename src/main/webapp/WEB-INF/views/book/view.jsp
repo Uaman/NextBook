@@ -36,10 +36,10 @@ http://sourceforge.net/adobe/cmap/wiki/License/
     <script src="<c:url value='/resources/js/pdf.js/l10n.js' />"></script>
 
     <script>
-        PDFJS.imageResourcesPath = '<c:url value="../../resources/css/images/" />';
+        PDFJS.imageResourcesPath = '<c:url value="../../../resources/css/images" />';
         PDFJS.workerSrc = '<c:url value="/resources/js/pdf.js/pdf.worker.js" />';
         PDFJS.disableWorker = true;
-        PDFJS.cMapUrl = '<c:url value="../../resources/cmaps/" />';
+        PDFJS.cMapUrl = '<c:url value="../../../resources/cmaps" />';
         PDFJS.cMapPacked = true;
         var url = '${urlToFile}';
         var PASSWORD = '${pass}';

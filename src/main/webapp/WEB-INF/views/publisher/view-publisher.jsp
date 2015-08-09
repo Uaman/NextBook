@@ -131,7 +131,10 @@ Books: <br />
                 </c:if>
             </td>
             <td>
-                <a href="/book/edit-book?bookId=${book.id}">Edit</a>
+                <ul>
+                <li><a href="/book/edit-book?bookId=${book.id}">Edit</a></li>
+                <li><a href="/book/view?bookId=${book.id}">View</a></li>
+                </ul>
             </td>
         </tr>
     </c:forEach>
