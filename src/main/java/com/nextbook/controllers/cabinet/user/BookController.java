@@ -229,9 +229,21 @@ public class BookController {
     @RequestMapping(value = "/view", method = RequestMethod.GET)
     public String onLoad(@RequestParam("bookId") int bookId,
                          Model model){
+        User user = sessionUtils.getCurrentUser();
+        if(user == null)
+            return "redirect:/";
+
+        Publisher publisher = publisherProvider.getPublisherByUser(user);
+        if(publisher == null)
+            return "redirect:/publisher/add?first=true";
+
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
             return "redirect:/";
+
+        if(book.getPublisher().getId() != publisher.getId())
+            return "redirect:/publisher/view?publisherId="+publisher.getId();
+
         String url = book.getLinkToStorage();
         if(url == null || url.equals(""))
             return "redirect:/";
