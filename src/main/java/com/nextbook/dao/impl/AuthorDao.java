@@ -36,6 +36,8 @@ public class AuthorDao implements IAuthorDao{
                 result = DozerMapperFactory.getDozerBeanMapper().map(entity, Author.class);
                 session.getTransaction().commit();
             } catch (Exception e) {
+                if(session != null && session.getTransaction().isActive())
+                    session.getTransaction().rollback();
                 e.printStackTrace();
             } finally {
                 if (session != null && session.isOpen())
@@ -60,6 +62,8 @@ public class AuthorDao implements IAuthorDao{
             session.getTransaction().commit();
             deleted = true;
         } catch (Exception e){
+            if(session != null && session.getTransaction().isActive())
+                session.getTransaction().rollback();
             e.printStackTrace();
         } finally {
             if(session != null && session.isOpen())

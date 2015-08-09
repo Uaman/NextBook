@@ -55,6 +55,8 @@ public class UserDAO implements IUserDao{
                 result = DozerMapperFactory.getDozerBeanMapper().map(entity, User.class);
                 session.getTransaction().commit();
             } catch (Exception e) {
+                if(session != null && session.getTransaction().isActive())
+                    session.getTransaction().rollback();
                 e.printStackTrace();
             } finally {
                 if (session != null && session.isOpen())
@@ -113,6 +115,8 @@ public class UserDAO implements IUserDao{
             session.getTransaction().commit();
             deleted = true;
         } catch (Exception e){
+            if(session != null && session.getTransaction().isActive())
+                session.getTransaction().rollback();
             e.printStackTrace();
         } finally {
             if(session != null && session.isOpen())

@@ -40,7 +40,7 @@ public class PublisherDAO implements IPublisherDao {
                 result = dozerBeanMapper.map(entity, Publisher.class);
                 session.getTransaction().commit();
             } catch (Exception e) {
-                if(session.getTransaction().isActive())
+                if(session != null && session.getTransaction().isActive())
                     session.getTransaction().rollback();
                 e.printStackTrace();
             } finally {
@@ -66,7 +66,7 @@ public class PublisherDAO implements IPublisherDao {
             session.getTransaction().commit();
             deleted = true;
         } catch (Exception e){
-            if(session.getTransaction().isActive())
+            if(session != null && session.getTransaction().isActive())
                 session.getTransaction().rollback();
             e.printStackTrace();
         } finally {
