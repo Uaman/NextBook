@@ -2,9 +2,11 @@ package com.nextbook.services.impl;
 
 import com.itextpdf.text.pdf.*;
 import com.microsoft.azure.storage.*;
+import com.nextbook.domain.enums.Cover;
 import com.nextbook.domain.upload.Constants;
 import com.microsoft.azure.storage.blob.*;
 import com.nextbook.services.IBookUploadingProvider;
+import com.nextbook.utils.FilesUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,18 +20,6 @@ import java.util.*;
  * Created by KutsykV on 06.06.2015.
  */
 public class BookUploadingProvider implements IBookUploadingProvider {
-
-    private String rootPath;
-    private String dir;
-    private static final String STORAGE_CONNECTING_STRING =
-            "DefaultEndpointsProtocol=http;" +
-                    "AccountName=nextbookpdfstorage;" +
-                    "AccountKey=mOiuuhUrSiKRkPJAbBhXcujcxdkcf2qM36j22hjUnq3Zu88sH9yRW0OMClPB1jnIV0nn3+E+obCIV3pxLK/Mzw==";
-
-    public BookUploadingProvider() {
-        this.rootPath = System.getProperty("catalina.home");
-        this.dir = this.rootPath + File.separator + "pdfFiles";
-    }
 
     @Override
     public List<CloudBlob> getAllFiles(String containerName) {
@@ -51,32 +41,64 @@ public class BookUploadingProvider implements IBookUploadingProvider {
     }
 
     @Override
-    public void uploadFileToLocalStorage(String prefix, MultipartFile file) {
-        File bookDir = new File(dir + File.separator + prefix);
+    public boolean uploadFileToLocalStorage(int id, MultipartFile file) {
+        String path = bookFolderName + id;
+        File bookDir = new File(rootDir + File.separator + path);
         if (!bookDir.exists())
             bookDir.mkdirs();
         try {
-            File resultFile = new File(dir + File.separator + prefix + File.separator + file.getOriginalFilename());
+            File resultFile = new File(bookDir + File.separator + file.getOriginalFilename());
             FileCopyUtils.copy(file.getBytes(), new FileOutputStream(resultFile));
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     @Override
-    public String uploadBookToStorage(String bookDirName) {
-        File bookDir = new File(dir + File.separator + bookDirName);
+    public boolean uploadCoverToLocalStorage(int id, MultipartFile file, Cover cover) {
+        String path = bookFolderName + id + File.separator + coverFolderName;
+        File coverDir = new File(rootDir + File.separator + path);
+        if (!coverDir.exists())
+            coverDir.mkdirs();
+        try {
+            String fileExtension = FilesUtils.getFIleExtensions(file.getOriginalFilename());
+            if(!fileExtension.matches(acceptedCoverExtensions))
+                return false;
+            String fileName = cover.toString() + '.' + fileExtension;
+            File resultFile = new File(coverDir + File.separator + fileName);
+            FileCopyUtils.copy(file.getBytes(), new FileOutputStream(resultFile));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String uploadBookToStorage(int id) {
+        File bookDir = new File(rootDir + File.separator + bookFolderName + id);
         if (!bookDir.exists()) {
             return "";
         }
-        String prefix = bookDirName;
         for (File file : bookDir.listFiles()) {
-            uploadFileToStorage(prefix, file);
-            file.delete();
+            if(!file.isFile())
+                continue;
+            uploadFileToStorage(bookFolderName + id, file);
             deleteFile(file);
         }
-
-        for(CloudBlob blob: getAllFiles(bookDirName))
+        /*
+        String coversPath = bookDir + File.separator + coverFolderName;
+        File coverDir = new File(coversPath);
+        for (File file : coverDir.listFiles()) {
+            if(!file.isFile())
+                continue;
+            uploadFileToStorage(bookFolderName + id + '\\' + coverFolderName + '\\' + file.getName(), file);
+            deleteFile(file);
+        }
+*/
+        for(CloudBlob blob: getAllFiles(bookFolderName+id))
             try {
                 if(blob.getName().endsWith(".pdf"))
                     return blob.getUri().toString();
@@ -136,4 +158,14 @@ public class BookUploadingProvider implements IBookUploadingProvider {
         FileCopyUtils.copy(array, new FileOutputStream(result));
         input.close();
     }
+
+    private static final String rootDir = System.getProperty("catalina.home") + File.separator + "pdfFiles";
+    private static final String STORAGE_CONNECTING_STRING =
+            "DefaultEndpointsProtocol=http;" +
+                    "AccountName=nextbookpdfstorage;" +
+                    "AccountKey=mOiuuhUrSiKRkPJAbBhXcujcxdkcf2qM36j22hjUnq3Zu88sH9yRW0OMClPB1jnIV0nn3+E+obCIV3pxLK/Mzw==";
+
+    private static final String acceptedCoverExtensions = "jpg|jpeg|png|gif";
+    private static final String bookFolderName = "book-";
+    private static final String coverFolderName = "cover";
 }

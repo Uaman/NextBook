@@ -65,8 +65,7 @@ public class AdminBookController {
         book = bookProvider.updateBook(book);
         if(book == null)
             return -1;
-        String localPath = "book-"+book.getId()+"";
-        String storageLink = bookUploadingProvider.uploadBookToStorage(localPath);
+//        String storageLink = bookUploadingProvider.uploadBookToStorage(book.getId());
 //        book.setLinkToStorage(storageLink);
 //        bookProvider.updateBook(book);
         return 1;

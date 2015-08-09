@@ -1,6 +1,7 @@
 package com.nextbook.controllers.cabinet.user;
 
 import com.nextbook.domain.enums.BookTypeEnum;
+import com.nextbook.domain.enums.Cover;
 import com.nextbook.domain.filters.AuthorCriterion;
 import com.nextbook.domain.forms.book.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +79,7 @@ public class BookController {
         if(book.getPublisher().getId() != publisher.getId())
             return "redirect:/publisher/view?publisherId="+publisher.getId();
         model.addAttribute("subCategories", subCategoryProvider.getAll());
+        model.addAttribute("book", book);
         model.addAttribute("bookId", book.getId());
         return "book/add-book";
     }
@@ -110,10 +113,9 @@ public class BookController {
         book = bookProvider.updateBook(book);
         if(book == null)
             return -1;
-        String localPath = "book-"+book.getId()+"";
-        String storageLink = bookUploadingProvider.uploadBookToStorage(localPath);
-//        book.setLinkToStorage(storageLink);
-//        bookProvider.updateBook(book);
+        String storageLink = bookUploadingProvider.uploadBookToStorage(book.getId());
+        book.setLinkToStorage(storageLink);
+        bookProvider.updateBook(book);
         return 1;
     }
 
@@ -180,30 +182,38 @@ public class BookController {
     @RequestMapping(value = "/send-first-page", method = RequestMethod.POST)
     public @ResponseBody boolean firstPage(@RequestParam("first_page")MultipartFile file,
                                            @RequestParam("bookId") int bookId){
-        return saveBookIfExist(bookId, file);
+        return saveCover(bookId, file, Cover.FIRST_PAGE);
     }
 
     @RequestMapping(value = "/send-last-page", method = RequestMethod.POST)
     public @ResponseBody boolean lastPage(@RequestParam("last_page")MultipartFile file,
                                           @RequestParam("bookId") int bookId){
-        return saveBookIfExist(bookId, file);
+        return saveCover(bookId, file, Cover.LAST_PAGE);
     }
 
     @RequestMapping(value = "/send-book", method = RequestMethod.POST)
     public @ResponseBody boolean uploadBook(@RequestParam("book")MultipartFile file,
                                             @RequestParam("bookId") int bookId){
-        return saveBookIfExist(bookId, file);
+        return saveBook(bookId, file);
     }
 
-    private boolean saveBookIfExist(int bookId, MultipartFile file){
+    private boolean saveCover(int bookId, MultipartFile file, Cover cover){
         if(file == null)
             return false;
-        boolean success = true;
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
-        String localPath = "book-"+book.getId()+"";
-        bookUploadingProvider.uploadFileToLocalStorage(localPath, file);
+        boolean success = bookUploadingProvider.uploadCoverToLocalStorage(bookId, file, cover);
+        return success;
+    }
+
+    private boolean saveBook(int bookId, MultipartFile file){
+        if(file == null)
+            return false;
+        Book book = bookProvider.getBookById(bookId);
+        if(book == null)
+            return false;
+        boolean success = bookUploadingProvider.uploadFileToLocalStorage(bookId, file);
         return success;
     }
 
