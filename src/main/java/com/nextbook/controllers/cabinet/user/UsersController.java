@@ -2,7 +2,9 @@ package com.nextbook.controllers.cabinet.user;
 
 import com.nextbook.domain.forms.user.UserChangeNameEmail;
 import com.nextbook.domain.forms.user.UserChangePassword;
+import com.nextbook.domain.pojo.Publisher;
 import com.nextbook.domain.pojo.User;
+import com.nextbook.services.IPublisherProvider;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.StatisticUtil;
 import com.nextbook.utils.SessionUtils;
@@ -33,7 +35,8 @@ public class UsersController {
     private SessionUtils sessionUtils;
     @Inject
     private Md5PasswordEncoder md5PasswordEncoder;
-    
+    @Inject
+    private IPublisherProvider publisherProvider;
     @Inject
     private StatisticUtil statisticUtil;
 
@@ -44,6 +47,8 @@ public class UsersController {
         if(user == null)
             return "redirect:/";
         model.addAttribute("user", user);
+        Publisher publisher = publisherProvider.getPublisherByUser(user);
+        model.addAttribute("publisher", publisher);
         Map<String, Object> event = new HashMap<String, Object>();
         event.put("logged_user_email", user.getEmail());
         statisticUtil.addEvent("user_logged", event);

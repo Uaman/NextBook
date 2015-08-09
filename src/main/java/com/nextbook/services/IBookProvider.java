@@ -28,4 +28,6 @@ public interface IBookProvider {
     boolean isbnExist(String isbn);
 
     List<Book> getBooksByCriterion(BookCriterion criterion);
+
+    List<Book> getAllPublisherBooks(int publisherId);
 }

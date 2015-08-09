@@ -58,7 +58,7 @@ public class BookDAO implements IBookDao {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            Query query = session.createQuery("SELECT book FROM BookEntity book");
+            Query query = session.getNamedQuery(BookEntity.getAllBooks);
             List<BookEntity> entities = query.list();
             if(entities.size() > 0) {
                 result = new ArrayList<Book>();
@@ -182,6 +182,35 @@ public class BookDAO implements IBookDao {
             if(session != null && session.isOpen())
                 session.close();
         }
+        return result;
+    }
+
+    @Override
+    public List<Book> getAllPublisherBooks(int publisherId) {
+        List<Book> result = null;
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query query = session.getNamedQuery(BookEntity.getBooksByPublisherId);
+            query.setParameter("id", publisherId);
+            List<BookEntity> list = query.list();
+            if(list != null && list.size() > 0){
+                result = new ArrayList<Book>();
+                for(BookEntity entity : list){
+                    Book temp = DozerMapperFactory.getDozerBeanMapper().map(entity, Book.class);
+                    if(temp != null)
+                        result.add(temp);
+                }
+            }
+            session.getTransaction().commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+
         return result;
     }
 

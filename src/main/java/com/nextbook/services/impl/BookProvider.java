@@ -60,4 +60,9 @@ public class BookProvider implements IBookProvider{
     public List<Book> getBooksByCriterion(BookCriterion criterion) {
         return bookDao.getBooksByCriterion(criterion);
     }
+
+    @Override
+    public List<Book> getAllPublisherBooks(int publisherId) {
+        return bookDao.getAllPublisherBooks(publisherId);
+    }
 }

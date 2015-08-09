@@ -26,4 +26,6 @@ public interface IBookDao {
     boolean isbnExist(String isbn);
 
     List<Book> getBooksByCriterion(BookCriterion criterion);
+
+    List<Book> getAllPublisherBooks(int publisherId);
 }

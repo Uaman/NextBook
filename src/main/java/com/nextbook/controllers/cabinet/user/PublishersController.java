@@ -1,8 +1,10 @@
 package com.nextbook.controllers.cabinet.user;
 
 import com.nextbook.domain.forms.publishers.SimplePublisherForm;
+import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Publisher;
 import com.nextbook.domain.pojo.User;
+import com.nextbook.services.IBookProvider;
 import com.nextbook.services.IPublisherProvider;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.SessionUtils;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +29,8 @@ public class PublishersController {
     private IPublisherProvider publisherProvider;
     @Inject
     private SessionUtils sessionUtils;
+    @Inject
+    private IBookProvider bookProvider;
 
     @RequestMapping(value="/add")
     @PreAuthorize("hasRole('ROLE_PUBLISHER')")
@@ -80,10 +85,22 @@ public class PublishersController {
         return result;
     }
 
-    @RequestMapping(value="/{id}")
-    public @ResponseBody
-    Publisher getPublisherById(@PathVariable int id) {
-        return publisherProvider.getPublisherById(id);
+    @RequestMapping(value="/view", method = RequestMethod.GET)
+    public String publisherPreview(@RequestParam("publisherId") int id,
+                                   Model model) {
+        User user = sessionUtils.getCurrentUser();
+        if(user == null)
+            return "redirect:/";
+        Publisher publisher = publisherProvider.getPublisherById(id);
+        if(publisher == null)
+            return "redirect:/";
+        if(!publisher.getUsers().contains(user))
+            return "redirect:/";
+        List<Book> books = bookProvider.getAllPublisherBooks(publisher.getId());
+        List<User> users = publisher.getUsers();
+        model.addAttribute("books", books);
+        model.addAttribute("users", users);
+        return "publisher/view-publisher";
     }
 
     @RequestMapping(value="/all")
