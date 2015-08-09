@@ -137,5 +137,6 @@ Books: <br />
     </c:forEach>
     </tbody>
 </table>
+<a href="/book/new-book">New Book</a>
 </body>
 </html>

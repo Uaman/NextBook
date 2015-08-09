@@ -69,7 +69,7 @@ public class BookController {
         Publisher publisher = publisherProvider.getPublisherByUser(user);
         if(publisher == null){
             // redirect to page where user can create publication
-            return "redirect:/cabinet/profile";
+            return "redirect:/publisher/add?first=true";
         }
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
