@@ -74,6 +74,8 @@ public class BookController {
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
             return "redirect:/cabinet/profile";
+        if(book.getPublisher().getId() != publisher.getId())
+            return "redirect:/publisher/view?publisherId="+publisher.getId();
         model.addAttribute("subCategories", subCategoryProvider.getAll());
         model.addAttribute("bookId", book.getId());
         return "book/add-book";
