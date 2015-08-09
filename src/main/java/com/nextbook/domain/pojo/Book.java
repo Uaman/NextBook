@@ -228,4 +228,66 @@ public class Book {
             authors = new ArrayList<Author>();
         authors.add(author);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        if (eighteenPlus != book.eighteenPlus) return false;
+        if (id != book.id) return false;
+        if (numberOfImagesForCover != book.numberOfImagesForCover) return false;
+        if (numberOfImagesInGallery != book.numberOfImagesInGallery) return false;
+        if (numberOfPages != book.numberOfPages) return false;
+        if (yearOfPublication != book.yearOfPublication) return false;
+        if (authors != null ? !authors.equals(book.authors) : book.authors != null) return false;
+        if (descriptionEn != null ? !descriptionEn.equals(book.descriptionEn) : book.descriptionEn != null)
+            return false;
+        if (descriptionRu != null ? !descriptionRu.equals(book.descriptionRu) : book.descriptionRu != null)
+            return false;
+        if (descriptionUa != null ? !descriptionUa.equals(book.descriptionUa) : book.descriptionUa != null)
+            return false;
+        if (enName != null ? !enName.equals(book.enName) : book.enName != null) return false;
+        if (isbn != null ? !isbn.equals(book.isbn) : book.isbn != null) return false;
+        if (keywords != null ? !keywords.equals(book.keywords) : book.keywords != null) return false;
+        if (language != null ? !language.equals(book.language) : book.language != null) return false;
+        if (link != null ? !link.equals(book.link) : book.link != null) return false;
+        if (linkToStorage != null ? !linkToStorage.equals(book.linkToStorage) : book.linkToStorage != null)
+            return false;
+        if (publisher != null ? !publisher.equals(book.publisher) : book.publisher != null) return false;
+        if (ruName != null ? !ruName.equals(book.ruName) : book.ruName != null) return false;
+        if (subCategory != null ? !subCategory.equals(book.subCategory) : book.subCategory != null) return false;
+        if (typeOfBook != book.typeOfBook) return false;
+        if (uaName != null ? !uaName.equals(book.uaName) : book.uaName != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (isbn != null ? isbn.hashCode() : 0);
+        result = 31 * result + (uaName != null ? uaName.hashCode() : 0);
+        result = 31 * result + (enName != null ? enName.hashCode() : 0);
+        result = 31 * result + (ruName != null ? ruName.hashCode() : 0);
+        result = 31 * result + (subCategory != null ? subCategory.hashCode() : 0);
+        result = 31 * result + (eighteenPlus ? 1 : 0);
+        result = 31 * result + yearOfPublication;
+        result = 31 * result + (publisher != null ? publisher.hashCode() : 0);
+        result = 31 * result + (language != null ? language.hashCode() : 0);
+        result = 31 * result + (typeOfBook != null ? typeOfBook.hashCode() : 0);
+        result = 31 * result + numberOfPages;
+        result = 31 * result + (descriptionUa != null ? descriptionUa.hashCode() : 0);
+        result = 31 * result + (descriptionEn != null ? descriptionEn.hashCode() : 0);
+        result = 31 * result + (descriptionRu != null ? descriptionRu.hashCode() : 0);
+        result = 31 * result + (link != null ? link.hashCode() : 0);
+        result = 31 * result + (linkToStorage != null ? linkToStorage.hashCode() : 0);
+        result = 31 * result + numberOfImagesForCover;
+        result = 31 * result + numberOfImagesInGallery;
+        result = 31 * result + (keywords != null ? keywords.hashCode() : 0);
+        result = 31 * result + (authors != null ? authors.hashCode() : 0);
+        return result;
+    }
 }

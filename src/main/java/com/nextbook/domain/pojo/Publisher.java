@@ -94,6 +94,35 @@ public class Publisher {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Publisher publisher = (Publisher) o;
+
+        if (id != publisher.id) return false;
+        if (description != null ? !description.equals(publisher.description) : publisher.description != null)
+            return false;
+        if (nameEn != null ? !nameEn.equals(publisher.nameEn) : publisher.nameEn != null) return false;
+        if (nameRu != null ? !nameRu.equals(publisher.nameRu) : publisher.nameRu != null) return false;
+        if (nameUa != null ? !nameUa.equals(publisher.nameUa) : publisher.nameUa != null) return false;
+        if (users != null ? !users.equals(publisher.users) : publisher.users != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (nameUa != null ? nameUa.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (nameEn != null ? nameEn.hashCode() : 0);
+        result = 31 * result + (nameRu != null ? nameRu.hashCode() : 0);
+        result = 31 * result + (users != null ? users.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "PublisherEntity{" +
                 "id=" + id +

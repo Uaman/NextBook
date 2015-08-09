@@ -69,6 +69,34 @@ public class Category {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Category category = (Category) o;
+
+        if (id != category.id) return false;
+        if (order != category.order) return false;
+        if (link != null ? !link.equals(category.link) : category.link != null) return false;
+        if (nameEn != null ? !nameEn.equals(category.nameEn) : category.nameEn != null) return false;
+        if (nameRu != null ? !nameRu.equals(category.nameRu) : category.nameRu != null) return false;
+        if (nameUa != null ? !nameUa.equals(category.nameUa) : category.nameUa != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (nameUa != null ? nameUa.hashCode() : 0);
+        result = 31 * result + order;
+        result = 31 * result + (link != null ? link.hashCode() : 0);
+        result = 31 * result + (nameEn != null ? nameEn.hashCode() : 0);
+        result = 31 * result + (nameRu != null ? nameRu.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Category{" +
                 "id=" + id +

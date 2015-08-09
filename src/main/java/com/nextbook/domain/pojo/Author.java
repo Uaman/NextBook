@@ -90,4 +90,36 @@ public class Author {
     public void setBooks(List<Book> books) {
         this.books = books;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Author author = (Author) o;
+
+        if (id != author.id) return false;
+        if (books != null ? !books.equals(author.books) : author.books != null) return false;
+        if (firstNameEn != null ? !firstNameEn.equals(author.firstNameEn) : author.firstNameEn != null) return false;
+        if (firstNameRu != null ? !firstNameRu.equals(author.firstNameRu) : author.firstNameRu != null) return false;
+        if (firstNameUa != null ? !firstNameUa.equals(author.firstNameUa) : author.firstNameUa != null) return false;
+        if (lastNameEn != null ? !lastNameEn.equals(author.lastNameEn) : author.lastNameEn != null) return false;
+        if (lastNameRu != null ? !lastNameRu.equals(author.lastNameRu) : author.lastNameRu != null) return false;
+        if (lastNameUa != null ? !lastNameUa.equals(author.lastNameUa) : author.lastNameUa != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (firstNameUa != null ? firstNameUa.hashCode() : 0);
+        result = 31 * result + (lastNameUa != null ? lastNameUa.hashCode() : 0);
+        result = 31 * result + (firstNameEn != null ? firstNameEn.hashCode() : 0);
+        result = 31 * result + (lastNameEn != null ? lastNameEn.hashCode() : 0);
+        result = 31 * result + (firstNameRu != null ? firstNameRu.hashCode() : 0);
+        result = 31 * result + (lastNameRu != null ? lastNameRu.hashCode() : 0);
+        result = 31 * result + (books != null ? books.hashCode() : 0);
+        return result;
+    }
 }

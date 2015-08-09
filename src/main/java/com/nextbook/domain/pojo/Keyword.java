@@ -29,6 +29,26 @@ public class Keyword{
         }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Keyword keyword1 = (Keyword) o;
+
+        if (id != keyword1.id) return false;
+        if (keyword != null ? !keyword.equals(keyword1.keyword) : keyword1.keyword != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (keyword != null ? keyword.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Keyword{" +
                 "id=" + id +
