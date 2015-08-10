@@ -1,5 +1,6 @@
 package com.nextbook.utils;
 
+import com.google.gson.Gson;
 import com.nextbook.domain.pojo.User;
 import io.keen.client.java.JavaKeenClientBuilder;
 import io.keen.client.java.KeenClient;
@@ -20,6 +21,7 @@ public class StatisticUtil {
     private static String readKey;
     private static KeenProject project;
     private static KeenClient client;
+    private static Gson gson;
 
     public StatisticUtil(){
     }
@@ -28,6 +30,7 @@ public class StatisticUtil {
         projectId = "55bf358090e4bd5654f0b01b";
         writeKey = "85a99e97d6af61801104f77b6eea11f4523805028d91eb2c0104bf0c62f3665cca5567aa928e9fabcaa59ddb642f08329ede014d477384f9ed48d65a20062b1da7820aea774c1097a74f7b87ac0f0710033be8d79003d28140bf5cd2d42de538e9b053c637eb360b3e061069dfa5fc8f";
         readKey = "ef84bfd5531894d70d78324546544a3e30b6dc757e01326e9e27e33070f388a475d3709fd01e39793366f0ed4d5f4b7897c0faa6ef380783affc0bcc1c6cff13c67b53a7ca8d1f172e3504b8c817b12fb87cb3ea8ec08cc4fbfab5bafc9dc333ea4d061ce3df4c94c4d42dd00a51cef2";
+        gson = new Gson();
         project = new KeenProject(projectId, writeKey, readKey);
         initClient();
     }
@@ -38,19 +41,25 @@ public class StatisticUtil {
         KeenClient.client().setDefaultProject(getProject());
     }
 
-    public static void DeleteEvent(User who, String object){
+    public static void DeleteEvent(User who, Object object){
         Map<String, Object> deleteEvent = new HashMap<String, Object>();
         deleteEvent.put("user_id", who.getId());
         deleteEvent.put("user_role", who.getRole());
-        deleteEvent.put("object", object);
+        deleteEvent.put("object", gson.toJson(object));
         addEvent("Delete", deleteEvent);
     }
 
-    public static void AddEvent(User who, String object){
+    public static void RegistrationEvent(User newUser){
+        Map<String, Object> addEvent = new HashMap<String, Object>();
+        addEvent.put("new_user", gson.toJson(newUser));
+        addEvent("Registration", addEvent);
+    }
+
+    public static void AddEvent(User who, Object object){
         Map<String, Object> addEvent = new HashMap<String, Object>();
         addEvent.put("user_id", who.getId());
         addEvent.put("user_role", who.getRole());
-        addEvent.put("object", object);
+        addEvent.put("object", gson.toJson(object));
         addEvent("Add", addEvent);
     }
 
@@ -66,12 +75,12 @@ public class StatisticUtil {
         addEvent("Upload", addEvent);
     }
 
-    public static void UpdateEvent(User who, String oldObject, String newObject){
+    public static void UpdateEvent(User who, Object oldObject, Object newObject){
         Map<String, Object> addEvent = new HashMap<String, Object>();
         addEvent.put("user_id", who.getId());
         addEvent.put("user_role", who.getRole());
-        addEvent.put("before", oldObject);
-        addEvent.put("after", newObject);
+        addEvent.put("before", gson.toJson(oldObject));
+        addEvent.put("after", gson.toJson(newObject));
         addEvent("Update", addEvent);
     }
 
