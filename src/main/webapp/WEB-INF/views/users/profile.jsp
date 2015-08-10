@@ -22,7 +22,7 @@
             <li><a href="/cabinet/edit-profile"><spring:message code="user.info.editProfile" /></a></li>
         </security:authorize>
 
-        <security:authorize access="hasRole('ROLE_PUBLISHER')">
+        <security:authorize access="@Secure.isPublisher()">
             <li><a href="/book/new-book">Add book</a></li>
         </security:authorize>
         <c:choose>
@@ -34,7 +34,7 @@
             </c:otherwise>
         </c:choose>
 
-        <security:authorize access="hasRole('ROLE_ADMIN')">
+        <security:authorize access="@Secure.isAdmin()">
             <li><a href="/admin/books/all"><spring:message code="books.manageBooks" /></a></li>
             <li><a href="/admin/users/all"><spring:message code="users.manageUsers" /></a></li>
             <li><a href="/admin/authors/all"><spring:message code="authors.manageAuthors" /></a></li>

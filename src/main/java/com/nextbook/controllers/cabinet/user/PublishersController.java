@@ -53,7 +53,7 @@ public class PublishersController {
     }
 
     @RequestMapping(value="/update")
-    //@PreAuthorize("hasRole('ROLE_PUBLISHER')")
+    @PreAuthorize("@Secure.isPublisher()")
     //user that just create publication can not 'go though' this annotation,
     //cause he has no role publication. resign in resolve it
     public String updatePublisher(Model model,
@@ -67,7 +67,7 @@ public class PublishersController {
     }
 
     @RequestMapping(value="/update", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRole('ROLE_PUBLISHER')")
+    @PreAuthorize("@Secure.isPublisher()")
     public @ResponseBody
     Publisher updatePublisher(@RequestBody SimplePublisherForm form) {
         Publisher result = null;

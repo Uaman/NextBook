@@ -44,7 +44,7 @@ public class AdminBookController {
     @Inject
     private IBookUploadingProvider bookUploadingProvider;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value="/all")
     public String allBooksPage(Model model) {
         model.addAttribute("books", bookProvider.getAllBooks());
@@ -52,7 +52,7 @@ public class AdminBookController {
         return "admin/books/manage-books";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/edit-book", method = RequestMethod.GET)
     public String addBook(@RequestParam("bookId")int bookId,
                           Model model){
@@ -65,7 +65,7 @@ public class AdminBookController {
         return "admin/books/add-book";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/edit-book", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody int editBook(@RequestBody BookRegisterForm bookRegisterForm){
         Book book = bookProvider.getBookById(bookRegisterForm.getBookId());
@@ -115,7 +115,7 @@ public class AdminBookController {
         */
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping (value = "/filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody List<Book> getBooksByCriterion(@RequestBody BookCriterion criterion) {
         List<Book> books = bookProvider.getBooksByCriterion(criterion);
@@ -168,18 +168,21 @@ public class AdminBookController {
         return response;
     }
 
+    @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/send-first-page", method = RequestMethod.POST)
     public @ResponseBody boolean firstPage(@RequestParam("first_page")MultipartFile file,
                                            @RequestParam("bookId") int bookId){
         return saveCover(bookId, file, Cover.FIRST_PAGE);
     }
 
+    @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/send-last-page", method = RequestMethod.POST)
     public @ResponseBody boolean lastPage(@RequestParam("last_page")MultipartFile file,
                                           @RequestParam("bookId") int bookId){
         return saveCover(bookId, file, Cover.LAST_PAGE);
     }
 
+    @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/send-book", method = RequestMethod.POST)
     public @ResponseBody boolean uploadBook(@RequestParam("book")MultipartFile file,
                                             @RequestParam("bookId") int bookId){
@@ -213,6 +216,7 @@ public class AdminBookController {
         return bookProvider.isbnExist(isbn);
     }
 
+    @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String viewBook(@PathVariable("id") int bookId,
                            Model model){

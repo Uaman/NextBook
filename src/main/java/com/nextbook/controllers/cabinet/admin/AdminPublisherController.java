@@ -29,7 +29,7 @@ public class AdminPublisherController {
     private IUserProvider userProvider;
 
     @RequestMapping(value="/update", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody
     Publisher updatePublisher(@RequestBody SimplePublisherForm form) {
         Publisher result = null;
@@ -47,7 +47,7 @@ public class AdminPublisherController {
     }
 
     @RequestMapping(value="/edit-publisher/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public String updatePublisherPage(@PathVariable int id, Model model) {
         Publisher publisher = publisherProvider.getPublisherById(id);
         if (publisher==null) {
@@ -60,7 +60,7 @@ public class AdminPublisherController {
     }
 
     @RequestMapping(value="/manage-users")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public String updatePublisherPage(@RequestParam int publisher,
                                       @RequestParam(required = false, defaultValue = "0") int user,
                                       @RequestParam(required = false) String action,
@@ -108,7 +108,7 @@ public class AdminPublisherController {
     }
 
     @RequestMapping(value="/add-publisher")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public String updatePublisherPage(Model model) {
         model.addAttribute("edit", false);
         return "/admin/publishers/edit-publisher";
@@ -116,21 +116,21 @@ public class AdminPublisherController {
 
 
     @RequestMapping(value="/delete/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody
     boolean deletePublisher(@PathVariable int id) {
         return publisherProvider.deletePublisher(id);
     }
 
     @RequestMapping(value="/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody
     Publisher getPublisherById(@PathVariable int id) {
         return publisherProvider.getPublisherById(id);
     }
 
     @RequestMapping(value="/all")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public String getAllPublishers(Model model,
                                    @RequestParam (defaultValue = "0") int from,
                                    @RequestParam (defaultValue = "0")  int max) {
@@ -139,7 +139,7 @@ public class AdminPublisherController {
     }
 
     @RequestMapping(value="/add-user")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody boolean addUserToPublisher(@RequestParam int publisherID, @RequestParam int userID) {
         Publisher publisher = publisherProvider.getPublisherById(publisherID);
         boolean res = false;
@@ -156,7 +156,7 @@ public class AdminPublisherController {
 
 
     @RequestMapping(value="/delete-user")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody boolean deleteUserFromPublisher(@RequestParam int publisherID, @RequestParam int userID) {
         Publisher publisher = publisherProvider.getPublisherById(publisherID);
         if (publisher!=null) {
@@ -168,7 +168,7 @@ public class AdminPublisherController {
     }
 
     @RequestMapping(value="/filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody
     List<Publisher> getPublishersByCriterion(@RequestBody PublisherCriterion criterion) {
         return publisherProvider.getPublishersByCriterion(criterion);

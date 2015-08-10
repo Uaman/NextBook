@@ -25,14 +25,14 @@ public class AdminAuthorController {
     private IAuthorProvider authorProvider;
 
     @RequestMapping(value = "/all")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public String authors(Model model) {
         List<Author> authors = authorProvider.getAll();
         model.addAttribute("authors", authors);
         return "admin/authors/authors";
     }
     @RequestMapping(value = "/update-author", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody Author updateAuthor(@RequestBody AdminAuthorForm adminAuthorForm) {
         Author author = authorProvider.getById(adminAuthorForm.getId());
         if (author == null) author = new Author();
@@ -47,7 +47,7 @@ public class AdminAuthorController {
     }
 
     @RequestMapping(value="/edit-author/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public String updatePublisherPage(@PathVariable("id") int id, Model model) {
         Author author = authorProvider.getById(id);
         if (author==null) {
@@ -59,14 +59,14 @@ public class AdminAuthorController {
         return "/admin/authors/edit-author";
     }
     @RequestMapping(value="/add-author")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public String addAuthor(Model model) {
         model.addAttribute("edit", false);
         return "/admin/authors/edit-author";
     }
 
     @RequestMapping(value = "/delete-author/{id}", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public String deleteAuthor(@PathVariable("id") int id) {
         authorProvider.deleteAuthor(id);
         return "redirect:/admin/authors/all";
@@ -74,7 +74,7 @@ public class AdminAuthorController {
     }
 
     @RequestMapping(value = "/authors-filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody
     List<Author> filter(@RequestBody AuthorCriterion authorCriterion){
         List<Author> result = authorProvider.getAuthorsByCriterion(authorCriterion);

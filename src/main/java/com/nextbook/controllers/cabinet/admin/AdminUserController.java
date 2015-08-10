@@ -39,7 +39,7 @@ public class AdminUserController {
 
     /*
     @RequestMapping(value = "/add-user", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public String addUser (@RequestBody AdminUserForm form){
         User user = new User();
         user.setName(form.getName());
@@ -54,7 +54,7 @@ public class AdminUserController {
     }
 */
     @RequestMapping(value = "/delete-user/{id}", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody boolean deleteUser(@PathVariable("id") int id) {
         if (sessionUtils.getCurrentUser().getId()!=id) {
             userProvider.delete(id);
@@ -64,7 +64,7 @@ public class AdminUserController {
     }
 
     @RequestMapping(value = "/update-user", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody boolean updateUser(@RequestBody UserEditForm form){
         User user = userProvider.getById(form.getId());
         if (user != null) {
@@ -80,7 +80,7 @@ public class AdminUserController {
     }
 
     @RequestMapping(value = "/users-filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody List<User> filter(@RequestBody UserCriterion userCriterion,
                                            HttpServletResponse response){
         List<User> result = userProvider.getUsersByCriterion(userCriterion);
@@ -91,7 +91,7 @@ public class AdminUserController {
     }
 
     @RequestMapping(value = "/all")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public String users(Model model) {
         model.addAttribute("users", userProvider.getAll());
         model.addAttribute("roles", roleProvider.getAll());
@@ -105,7 +105,7 @@ public class AdminUserController {
      * @return -1 - fail, 0 - status deactivated, 1 - status activated
      */
     @RequestMapping(value = "/change-active-user-status/{userId}/{status}", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody int activateUser(@PathVariable("userId") int userId,
                                           @PathVariable("status") boolean status) {
         User user = userProvider.getById(userId);
@@ -117,7 +117,7 @@ public class AdminUserController {
     }
 
     @RequestMapping(value = "/edit-user", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@Secure.isAdmin()")
     public String editUser(@RequestParam("userId") int userId,
                            Model model){
         User user = userProvider.getById(userId);

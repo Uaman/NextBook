@@ -29,7 +29,7 @@
       <li><a href="/cabinet/profile"><spring:message code="user.info.profile" /></a></li>
     </security:authorize>
 <%--
-    <security:authorize access="hasRole('ROLE_ADMIN')">
+    <security:authorize access="@Secure.isAdmin()">
       <li><a href="/users"><spring:message code="users.manageUsers" /></a></li>
     </security:authorize>
 --%>
