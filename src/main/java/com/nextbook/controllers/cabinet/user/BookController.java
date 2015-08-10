@@ -1,5 +1,6 @@
 package com.nextbook.controllers.cabinet.user;
 
+import com.google.gson.Gson;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.enums.Cover;
 import com.nextbook.domain.filters.AuthorCriterion;
@@ -8,6 +9,7 @@ import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.upload.Constants;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
+import com.nextbook.utils.StatisticUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -117,6 +119,8 @@ public class BookController {
         String storageLink = bookUploadingProvider.uploadBookToStorage(book.getId());
         book.setLinkToStorage(storageLink);
         bookProvider.updateBook(book);
+
+        StatisticUtil.AddEvent(user, book);
         return 1;
     }
 
@@ -227,6 +231,7 @@ public class BookController {
         if(file == null)
             return false;
         Book book = bookProvider.getBookById(bookId);
+
         if(book == null)
             return false;
         boolean success = bookUploadingProvider.uploadFileToLocalStorage(bookId, file);

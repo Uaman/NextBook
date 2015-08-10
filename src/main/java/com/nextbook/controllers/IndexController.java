@@ -5,6 +5,7 @@ import com.nextbook.domain.pojo.Role;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.SessionUtils;
+import com.nextbook.utils.StatisticUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -56,6 +57,7 @@ public class IndexController {
         role.setId(1);
         user.setRole(role);
         user = userProvider.update(user);
+        StatisticUtil.RegistrationEvent(user);
         return user != null;
     }
 }
