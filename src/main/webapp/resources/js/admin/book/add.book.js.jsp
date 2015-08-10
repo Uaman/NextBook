@@ -1,4 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script>
 var BOOK_ID = ${bookId};
@@ -7,6 +8,9 @@ var lastPageUploaded = false;
 var bookUploaded = false;
 var isbnExist = false;
 $(document).ready(function(){
+    if (${book!=null})
+        fillBook();
+
     paperBookChecked();
 
     $('#publication_year').mask('0000');
@@ -413,4 +417,25 @@ function paperBookChecked(){
         $('#last-page-form').hide();
     }
 }
+    function fillBook() {
+        $('#isbn').val('${book.isbn}');
+        $('#name_ua').val(${book.uaName});
+        $('#name_en').val(${book.enName});
+        $('#name_ru').val(${book.ruName});
+        $('#publication_year').val(${book.yearOfPublication});
+        $('#language').val(${book.language});
+        $('#number_of_pages').val(${book.numberOfPages});
+        $('#description_ua').val('${book.descriptionUa}');
+        $('#description_ru').val('${book.descriptionRu}');
+        $('#description_en').val('${book.descriptionEn}');
+        $('#eighteen-plus').prop('checked', ${book.eighteenPlus});
+        if (${book.typeOfBook=="PAPER_AND_ELECTRONIC"}) {
+            $('#electronic').prop('checked', true);
+            $('#paper').prop('checked', true);
+        } else {
+            $('#electronic').prop('checked', ${book.typeOfBook=="ELECTRONIC"});
+            $('#paper').prop('checked', ${book.typeOfBook=="PAPER"});
+        }
+        $("#category").prop('selectedIndex', ${book.subCategory.id});
+    }
 </script>
