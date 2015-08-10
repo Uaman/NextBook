@@ -3,9 +3,12 @@
 
 <script>
 var BOOK_ID = ${bookId};
-var firstPageUploaded = false;
-var lastPageUploaded = false;
-var bookUploaded = false;
+//var firstPageUploaded = false;
+//var lastPageUploaded = false;
+//var bookUploaded = true;
+var firstPageUploaded = true;
+var lastPageUploaded = true;
+var bookUploaded = true;
 var isbnExist = false;
 $(document).ready(function(){
 

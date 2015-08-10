@@ -71,21 +71,21 @@
         <input type="hidden" name="test_files" id="test_files"/>
         <input type="submit" />
     </form>
-    <form id="first-page-form" action="/book/send-first-page" method="POST">
+    <form id="first-page-form" action="/admin/books/send-first-page" method="POST">
         <div id="container-progress-first-page" class="progress-container" style="display: none;">
             <div id="progress-bar-first-page" style="width:0%;background-color: #ffff00; height:inherit;"></div>
         </div>
         <input type="hidden" name="bookId" value="${bookId}">
         <label>First Page*:<input type="file" name="first_page" id="first_page"></label><br />
     </form>
-    <form id="last-page-form" action="/book/send-last-page" method="POST">
+    <form id="last-page-form" action="/admin/books/send-last-page" method="POST">
         <div id="container-progress-last-page" class="progress-container" style="display: none;">
             <div id="progress-bar-last-page" style="width:0%;background-color: green; height:inherit;"></div>
         </div>
         <input type="hidden" name="bookId" value="${bookId}">
         <label>Last Page:<input type="file" name="last_page" id="last_page"></label><br />
     </form>
-    <form id="book-form" action="/book/send-book" method="POST">
+    <form id="book-form" action="/admin/books/send-book" method="POST">
         <div id="container-progress-book" class="progress-container" style="display: none;">
             <div id="progress-bar-book" style="width:0%;background-color: red; height:inherit;"></div>
         </div>
