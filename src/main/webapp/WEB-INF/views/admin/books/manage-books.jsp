@@ -144,7 +144,8 @@ Category:
                 </c:if>
             </td>
             <td>
-                <a href="/book/edit-book?bookId=${book.id}">Edit</a>
+                <a href="/admin/books/edit-book?bookId=${book.id}">Edit</a>
+                <a href="/admin/books/view/${book.id}">View</a>
             </td>
         </tr>
     </c:forEach>

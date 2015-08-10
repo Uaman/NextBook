@@ -37,21 +37,19 @@ public class UsersController {
     private Md5PasswordEncoder md5PasswordEncoder;
     @Inject
     private IPublisherProvider publisherProvider;
-    @Inject
-    private StatisticUtil statisticUtil;
+    //@Inject
+    //private StatisticUtil statisticUtil;
 
     @RequestMapping(value = "/profile")
     @PreAuthorize("isAuthenticated()")
     public String profile(Model model) {
         User user = sessionUtils.getCurrentUser();
-        if(user == null)
-            return "redirect:/";
         model.addAttribute("user", user);
         Publisher publisher = publisherProvider.getPublisherByUser(user);
         model.addAttribute("publisher", publisher);
-        Map<String, Object> event = new HashMap<String, Object>();
-        event.put("logged_user_email", user.getEmail());
-        statisticUtil.addEvent("user_logged", event);
+        //Map<String, Object> event = new HashMap<String, Object>();
+        //event.put("logged_user_email", user.getEmail());
+        //statisticUtil.addEvent("user_logged", event);
         return "users/profile";
     }
 
