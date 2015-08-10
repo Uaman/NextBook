@@ -8,8 +8,6 @@ var lastPageUploaded = false;
 var bookUploaded = false;
 var isbnExist = false;
 $(document).ready(function(){
-    if (${book!=null})
-        fillBook();
 
     paperBookChecked();
 
@@ -309,7 +307,6 @@ $(document).ready(function(){
 
     $('#authors').textext({
         plugins : 'autocomplete tags'
-
     }).bind('getSuggestions', function(e, data){
         var query = (data ? data.query : '') || '';
         var self = this;
@@ -340,6 +337,9 @@ $(document).ready(function(){
             );
         });
     });
+
+    if (${book!=null})
+        fillBook();
 });
 
 function formDataBook(){
@@ -437,5 +437,11 @@ function paperBookChecked(){
             $('#paper').prop('checked', ${book.typeOfBook=="PAPER"});
         }
         $("#category").prop('selectedIndex', ${book.subCategory.id});
+        <c:forEach items="${book.authors}" var="author">
+            $('#authors').textext()[0].tags().addTags(['${author.firstNameUa} ${author.lastNameUa}']);;
+        </c:forEach>
+        <c:forEach items="${book.keywords}" var="keyword">
+            $('#keywords').textext()[0].tags().addTags(['${keyword.keyword}']);;
+        </c:forEach>
     }
 </script>
