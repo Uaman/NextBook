@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,6 +63,33 @@ public class KeywordDAO implements IKeywordDao{
                     session.close();
             }
         }
+        return result;
+    }
+
+    @Override
+    public List<Keyword> getListByKeyword(String keyword) {
+        List<Keyword> result = null;
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Query query = session.getNamedQuery(KeywordEntity.getKeywordsByPart);
+            query.setParameter("keyword", '%'+keyword+'%');
+            List<KeywordEntity> list = query.list();
+            if(list != null && list.size() > 0){
+                result = new ArrayList<Keyword>();
+                for(KeywordEntity entity : list){
+                    Keyword temp = DozerMapperFactory.getDozerBeanMapper().map(entity, Keyword.class);
+                    if(temp != null)
+                        result.add(temp);
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+
         return result;
     }
 

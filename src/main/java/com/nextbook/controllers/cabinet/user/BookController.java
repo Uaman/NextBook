@@ -180,6 +180,21 @@ public class BookController {
         return result;
     }
 
+    @RequestMapping(value = "/keywords-auto-complete/{keyword}", method = RequestMethod.POST)
+    public @ResponseBody List<String> keywordsAutoComplete(@PathVariable("keyword") String keyword,
+                                                          Locale locale){
+        if(keyword.equals(""))
+            return new ArrayList<String>();
+        List<Keyword> keywords = keywordProvider.getListByKeyword(keyword);
+        List<String> response = new ArrayList<String>();
+        if(keywords != null) {
+            for (Keyword k : keywords) {
+                response.add(k.getKeyword());
+            }
+        }
+        return response;
+    }
+
     @RequestMapping(value = "/send-first-page", method = RequestMethod.POST)
     public @ResponseBody boolean firstPage(@RequestParam("first_page")MultipartFile file,
                                            @RequestParam("bookId") int bookId){

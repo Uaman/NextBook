@@ -12,12 +12,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "keywords")
 @NamedQueries({
-        @NamedQuery(name = KeywordEntity.getByKeyword, query = "SELECT keyword FROM KeywordEntity keyword WHERE keyword.keyword=:keyword")
+        @NamedQuery(name = KeywordEntity.getByKeyword, query = "SELECT keyword FROM KeywordEntity keyword WHERE keyword.keyword=:keyword"),
+        @NamedQuery(name = KeywordEntity.getKeywordsByPart, query = "SELECT keyword FROM KeywordEntity keyword WHERE keyword.keyword LIKE :keyword")
 })
 public class KeywordEntity {
 
     public static final String getByKeyword = "getKeywordByName";
-
+    public static final String getKeywordsByPart = "getKeywordByKeyword";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")

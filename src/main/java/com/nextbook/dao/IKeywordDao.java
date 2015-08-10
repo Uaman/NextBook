@@ -3,6 +3,8 @@ package com.nextbook.dao;
 import com.nextbook.domain.pojo.Keyword;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: borsch
@@ -16,4 +18,5 @@ public interface IKeywordDao {
 
     Keyword update(Keyword keyword);
 
+    List<Keyword> getListByKeyword(String keyword);
 }

@@ -4,7 +4,10 @@ import com.nextbook.dao.IKeywordDao;
 import com.nextbook.dao.impl.KeywordDAO;
 import com.nextbook.domain.pojo.Keyword;
 import com.nextbook.services.IKeywordProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class KeywordProvider implements IKeywordProvider {
 
-    private IKeywordDao keywordDao = new KeywordDAO();
+    @Autowired
+    private IKeywordDao keywordDao;
 
     @Override
     public Keyword getByName(String keyword) {
@@ -30,5 +34,13 @@ public class KeywordProvider implements IKeywordProvider {
             return null;
         return keywordDao.update(keyword);
     }
+
+    @Override
+    public List<Keyword> getListByKeyword(String keyword) {
+        if(keyword == null || keyword.equals(""))
+            return null;
+        return keywordDao.getListByKeyword(keyword);
+    }
+
 
 }

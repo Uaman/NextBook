@@ -119,8 +119,8 @@ $(document).ready(function(){
                 minlength: 50
             },
             keywords: {
-                required: true,
-                keywordsNumber: true
+                required: true
+                //keywordsNumber: true
             },
             test_files: {
                 firstPageUploaded: true,
@@ -319,6 +319,23 @@ $(document).ready(function(){
             );
         });
     });
+
+    $('#keywords').textext({
+        plugins : 'autocomplete tags'
+
+    }).bind('getSuggestions', function(e, data){
+        var query = (data ? data.query : '') || '';
+        var self = this;
+        $.ajax({
+            url: '/book/keywords-auto-complete/'+query,
+            type: 'POST'
+        }).done(function(response){
+            $(self).trigger(
+                    'setSuggestions',
+                    { result : response }
+            );
+        });
+    });
 });
 
 function formDataBook(){
@@ -341,10 +358,17 @@ function formDataBook(){
         descriptionUa: $('#description_ua').val(),
         descriptionEn: $('#description_en').val(),
         descriptionRu: $('#description_ru').val(),
-        keywords: $('#keywords').val().split(','),
+        keywords: function(){
+            var array = [];
+            var tags = $('.text-tags:eq(1)').find('.text-tag');
+            $.each(tags, function( index, div ){
+                array.push($(div).text());
+            });
+            return array;
+        }(),
         authors: function(){
             var array = [];
-            var tags = $('div.text-tag');
+            var tags = $('.text-tags:eq(0)').find('.text-tag');
             $.each(tags, function( index, div ){
                 array.push($(div).text());
             });

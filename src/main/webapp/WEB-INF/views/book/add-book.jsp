@@ -58,7 +58,7 @@
         <label>UA Description*:<textarea name="description_ua" id="description_ua"></textarea></label><br />
         <label>EN Description:<textarea name="description_en" id="description_en"></textarea></label><br />
         <label>RU Description:<textarea name="description_ru" id="description_ru"></textarea></label><br />
-        <label>Keywords(divide with commas)*:<textarea name="keywords" id="keywords"></textarea></label><br />
+        <label>Keywords*:<textarea name="keywords" id="keywords" rows="2" cols="50"></textarea></label><br />
         <label>Eighteen Plus: <input type="checkbox" id="eighteen-plus"/></label><br />
         Category: <br />
         <select id="category">
