@@ -9,6 +9,7 @@ import com.nextbook.services.IBookProvider;
 import com.nextbook.services.IPublisherProvider;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.SessionUtils;
+import org.apache.http.HttpResponse;
 import org.omg.CORBA.Request;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class PublishersController {
     private IUserProvider userProvider;
 
     @RequestMapping(value="/new")
-    public String addPublisher() {
+     public String addPublisher() {
         User user = sessionUtils.getCurrentUser();
         if (publisherProvider.getPublisherByUser(user)!=null)
             return "redirect:/cabinet/profile";
@@ -68,29 +70,23 @@ public class PublishersController {
 
     @RequestMapping(value="/update", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("@Secure.isPublisher()")
-    public @ResponseBody
-    Publisher updatePublisher(@RequestBody SimplePublisherForm form) {
-        Publisher result = null;
-        Publisher publisher = null;
+    public @ResponseBody int updatePublisher(@RequestBody SimplePublisherForm form) {
         User user = sessionUtils.getCurrentUser();
-        Publisher upublisher = publisherProvider.getPublisherByUser(user);
-        if (form.getId()!=0)
-            publisher = publisherProvider.getPublisherById(form.getId());
-        if (publisher==null) {
-            if (upublisher!=null)
-                return null;
-            publisher = new Publisher();
-            publisher.addUser(sessionUtils.getCurrentUser());
-        } else {
-            if (upublisher != null && publisher.getId() != upublisher.getId())
-                return null;
-        }
+        if(user == null)
+            return -1;
+
+        Publisher userPublisher = publisherProvider.getPublisherByUser(user);
+        Publisher publisher = publisherProvider.getPublisherById(form.getId());
+        if(userPublisher == null || publisher == null || userPublisher.getId() != publisher.getId())
+            return -1;
+
         publisher.setNameEn(form.getNameEn());
         publisher.setNameRu(form.getNameRu());
         publisher.setNameUa(form.getNameUa());
         publisher.setDescription(form.getDescription());
-        result = publisherProvider.updatePublisher(publisher);
-        return result;
+        publisher = publisherProvider.updatePublisher(publisher);
+
+        return publisher.getId();
     }
 
     @RequestMapping(value="/view", method = RequestMethod.GET)

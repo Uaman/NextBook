@@ -27,12 +27,11 @@
                     xhr.setRequestHeader("Content-Type", "application/json");
                 },
                 success: function (data) {
-                    if (${edit}) {
+                    console.log(data);
+                    if (data > 0) {
                         $("#message").html('<spring:message code="publisher.register.form.saved" />');
                     } else {
-                        window.location = "/publisher/update/"+data.id+"?first=true";
-                        $("#message").html('<spring:message code="publisher.register.form.saved" /><br/>' +
-                        '<a href="/book/new-book"><spring:message code="publisher.register.form.returnNewBookPage" /></a>');
+                        $("#message").html('error');
                     }
                 },
                 error: function (e) {
