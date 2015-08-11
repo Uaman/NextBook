@@ -2,6 +2,7 @@ package com.nextbook.services;
 
 import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
+import com.nextbook.domain.pojo.BookKeyword;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,4 +31,8 @@ public interface IBookProvider {
     List<Book> getBooksByCriterion(BookCriterion criterion);
 
     List<Book> getAllPublisherBooks(int publisherId);
+
+    BookKeyword getBookToKeyword(int bookId, int keywordId);
+
+    BookKeyword updateBookToKeyword(BookKeyword bookKeyword);
 }

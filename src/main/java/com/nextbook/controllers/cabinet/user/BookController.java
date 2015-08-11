@@ -1,6 +1,7 @@
 package com.nextbook.controllers.cabinet.user;
 
 import com.google.gson.Gson;
+import com.nextbook.dao.impl.BookDAO;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.enums.Cover;
 import com.nextbook.domain.filters.AuthorCriterion;
@@ -120,7 +121,7 @@ public class BookController {
         book.setLinkToStorage(storageLink);
         bookProvider.updateBook(book);
 
-        StatisticUtil.AddEvent(user, book);
+        //StatisticUtil.AddEvent(user, book);
         return 1;
     }
 
@@ -139,14 +140,22 @@ public class BookController {
         book.setDescriptionRu(bookRegisterForm.getDescriptionRu());
         book.setSubCategory(subCategoryProvider.getById(bookRegisterForm.getSubCategoryId()));
 
-        List<Keyword> keywordList = new ArrayList<Keyword>();
         List<String> keywords = bookRegisterForm.getKeywords();
         for(String s : keywords){
-            Keyword keyword = new Keyword();
-            keyword.setKeyword(s);
-            keywordList.add(keyword);
+            Keyword keyword = keywordProvider.getByName(s);
+            if(keyword == null) {
+                keyword = new Keyword();
+                keyword.setKeyword(s);
+                keyword = keywordProvider.update(keyword);
+            }
+            if(!book.getKeywords().contains(keyword)) {
+                BookKeyword bookKeyword = new BookKeyword();
+                bookKeyword.setBook(book);
+                bookKeyword.setKeyword(keyword);
+                book.addKeyword(keyword);
+                bookProvider.updateBookToKeyword(bookKeyword);
+            }
         }
-        //book.setKeywords(keywordList);
 /*
         Author author = new Author();
         author.setFirstNameUa(bookRegisterForm.getAuthor());

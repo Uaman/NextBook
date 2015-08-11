@@ -96,14 +96,22 @@ public class AdminBookController {
         book.setDescriptionRu(bookRegisterForm.getDescriptionRu());
         book.setSubCategory(subCategoryProvider.getById(bookRegisterForm.getSubCategoryId()));
 
-        List<Keyword> keywordList = new ArrayList<Keyword>();
         List<String> keywords = bookRegisterForm.getKeywords();
         for(String s : keywords){
-            Keyword keyword = new Keyword();
-            keyword.setKeyword(s);
-            keywordList.add(keyword);
+            Keyword keyword = keywordProvider.getByName(s);
+            if(keyword == null) {
+                keyword = new Keyword();
+                keyword.setKeyword(s);
+                keyword = keywordProvider.update(keyword);
+            }
+            if(!book.getKeywords().contains(keyword)) {
+                BookKeyword bookKeyword = new BookKeyword();
+                bookKeyword.setBook(book);
+                bookKeyword.setKeyword(keyword);
+                book.addKeyword(keyword);
+                bookProvider.updateBookToKeyword(bookKeyword);
+            }
         }
-        //book.setKeywords(keywordList);
 /*
         Author author = new Author();
         author.setFirstNameUa(bookRegisterForm.getAuthor());

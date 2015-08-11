@@ -2,8 +2,10 @@ package com.nextbook.dao.impl;
 
 import com.nextbook.dao.IBookDao;
 import com.nextbook.domain.entities.BookEntity;
+import com.nextbook.domain.entities.BookKeywordEntity;
 import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
+import com.nextbook.domain.pojo.BookKeyword;
 import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;
 import org.dozer.DozerBeanMapper;
@@ -211,6 +213,48 @@ public class BookDAO implements IBookDao {
                 session.close();
         }
 
+        return result;
+    }
+
+    @Override
+    public BookKeyword getBookToKeyword(int bookId, int keywordId){
+        BookKeyword result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            Query query = session.getNamedQuery(BookKeywordEntity.getByBookAndKeywordIds);
+            query.setParameter("bookId", bookId);
+            query.setParameter("keywordId", keywordId);
+            List<BookKeywordEntity> list = query.list();
+            if(list != null && list.size() > 0){
+                result = DozerMapperFactory.getDozerBeanMapper().map(list.get(0), BookKeyword.class);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
+
+    @Override
+    public BookKeyword updateBookToKeyword(BookKeyword bookKeyword){
+        BookKeyword result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            BookKeywordEntity entity = DozerMapperFactory.getDozerBeanMapper().map(bookKeyword, BookKeywordEntity.class);
+            entity = (BookKeywordEntity) session.merge(entity);
+            result = DozerMapperFactory.getDozerBeanMapper().map(entity, BookKeyword.class);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if(session != null && session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
         return result;
     }
 

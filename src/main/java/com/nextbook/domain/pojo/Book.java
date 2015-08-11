@@ -51,9 +51,11 @@ public class Book {
 
     private int numberOfImagesInGallery;
 
-    private List<Keyword> keywords = new ArrayList<Keyword>();
+    private List<Keyword> keywords;
 
     private List<Author> authors;
+
+    private List<BookKeyword> bookToKeywords;
 
     public int getId() {
         return id;
@@ -208,11 +210,20 @@ public class Book {
     }
 
     public List<Keyword> getKeywords() {
+        if(keywords == null)
+            keywords = new ArrayList<Keyword>();
+        if(bookToKeywords.size() != keywords.size()) {
+            for (BookKeyword bookKeyword : bookToKeywords) {
+                keywords.add(bookKeyword.getKeyword());
+            }
+        }
         return keywords;
     }
 
-    public void setKeywords(List<Keyword> keywords) {
-        this.keywords = keywords;
+    public void addKeyword(Keyword keyword){
+        if (keywords == null)
+            keywords = new ArrayList<Keyword>();
+        keywords.add(keyword);
     }
 
     public List<Author> getAuthors() {
@@ -227,6 +238,14 @@ public class Book {
         if(authors == null)
             authors = new ArrayList<Author>();
         authors.add(author);
+    }
+
+    public List<BookKeyword> getBookToKeywords() {
+        return bookToKeywords;
+    }
+
+    public void setBookToKeywords(List<BookKeyword> bookToKeywords) {
+        this.bookToKeywords = bookToKeywords;
     }
 
     @Override

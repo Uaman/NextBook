@@ -4,6 +4,7 @@ import com.nextbook.dao.IBookDao;
 import com.nextbook.dao.impl.BookDAO;
 import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
+import com.nextbook.domain.pojo.BookKeyword;
 import com.nextbook.services.IBookProvider;
 import org.springframework.stereotype.Service;
 
@@ -64,5 +65,17 @@ public class BookProvider implements IBookProvider{
     @Override
     public List<Book> getAllPublisherBooks(int publisherId) {
         return bookDao.getAllPublisherBooks(publisherId);
+    }
+
+    @Override
+    public BookKeyword getBookToKeyword(int bookId, int keywordId) {
+        return bookDao.getBookToKeyword(bookId, keywordId);
+    }
+
+    @Override
+    public BookKeyword updateBookToKeyword(BookKeyword bookKeyword) {
+        if(bookKeyword == null)
+            return null;
+        return bookDao.updateBookToKeyword(bookKeyword);
     }
 }

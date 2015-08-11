@@ -90,9 +90,8 @@ public class BookEntity {
     @Column(name = "NUMBER_OF_IMG_IN_GALERY")
     private int numberOfImagesInGallery;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "keywords_to_book", joinColumns = { @JoinColumn(name = "BOOK_ID") }, inverseJoinColumns = { @JoinColumn(name = "KEYWORD_ID") })
-    private List<KeywordEntity> keywords = new ArrayList<KeywordEntity>();
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<BookKeywordEntity> bookToKeywords = new ArrayList<BookKeywordEntity>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "authors_to_book", joinColumns = {@JoinColumn(name = "BOOK_ID")}, inverseJoinColumns = {@JoinColumn(name = "AUTHOR_ID")})
@@ -250,20 +249,20 @@ public class BookEntity {
         this.numberOfImagesInGallery = numberOfImagesInGallery;
     }
 
-    public List<KeywordEntity> getKeywords() {
-        return keywords;
-    }
-
-    public void setKeywords(List<KeywordEntity> keywords) {
-        this.keywords = keywords;
-    }
-
     public List<AuthorEntity> getAuthorEntities() {
         return authorEntities;
     }
 
     public void setAuthorEntities(List<AuthorEntity> authorEntities) {
         this.authorEntities = authorEntities;
+    }
+
+    public List<BookKeywordEntity> getBookToKeywords() {
+        return bookToKeywords;
+    }
+
+    public void setBookToKeywords(List<BookKeywordEntity> bookToKeywords) {
+        this.bookToKeywords = bookToKeywords;
     }
 }
 
