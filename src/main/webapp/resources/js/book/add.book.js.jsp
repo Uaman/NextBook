@@ -159,10 +159,10 @@ $(document).ready(function(){
                 alert('authors require');
                 return;
             }
-            if(isbnExist) {
+            /*if(isbnExist) {
                 alert('isbn exist');
                 return;
-            }
+            }*/
             $.ajax({
                 url: '/book/edit-book',
                 data: JSON.stringify(formDataBook()),
