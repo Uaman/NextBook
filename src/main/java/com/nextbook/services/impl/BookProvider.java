@@ -78,4 +78,9 @@ public class BookProvider implements IBookProvider{
             return null;
         return bookDao.updateBookToKeyword(bookKeyword);
     }
+
+    @Override
+    public boolean deleteBookToKeyword(int bookId, int keywordId) {
+        return bookDao.deleteBookToKeyword(bookId, keywordId);
+    }
 }

@@ -33,4 +33,6 @@ public interface IBookDao {
     BookKeyword getBookToKeyword(int bookId, int keywordId);
 
     BookKeyword updateBookToKeyword(BookKeyword bookKeyword);
+
+    boolean deleteBookToKeyword(int bookId, int keywordId);
 }

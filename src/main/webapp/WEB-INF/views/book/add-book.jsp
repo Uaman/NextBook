@@ -32,6 +32,19 @@
             border:1px solid black;
             border-radius: 5px;
         }
+        .author, .keyword{
+            background-color: red;
+            padding: 5px;
+            margin: 3px;
+            border: 1px solid #990000;
+            border-radius: 5px;
+            min-width: 200px;
+            width: 400px;
+        }
+        .author-x, .keyword-x{
+            margin-right: 10px;
+            float: right
+        }
     </style>
     <script>
     </script>
@@ -41,30 +54,56 @@
 
 </div>
     <form id="edit-book-form">
-        <label>ISBN*: <input type="text" name="isbn" id="isbn" placeholder="ISBN"/></label><br />
-        <label>UA Name*:<input type="text" name="name_ua" id="name_ua"/></label><br />
-        <label>EN Name:<input type="text" name="name_en" id="name_en"/></label><br />
-        <label>RU Name:<input type="text" name="name_ru" id="name_ru"/></label><br />
+        <label>ISBN*: <input type="text" name="isbn" id="isbn" value="${book.isbn}"/></label><br />
+        <label>UA Name*:<input type="text" name="name_ua" id="name_ua" value="${book.uaName}"/></label><br />
+        <label>EN Name:<input type="text" name="name_en" id="name_en" value="${book.enName}"/></label><br />
+        <label>RU Name:<input type="text" name="name_ru" id="name_ru" value="${book.ruName}"/></label><br />
+        <c:if test="${authors ne null}">
+            <div>
+                <ul>
+                    <c:forEach items="${authors}" var="author">
+                        <li class="author">
+                            ${author.name} <span id="${author.id}" class="author-x" style="cursor: pointer;">X</span>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+        </c:if>
         <label>Author*: <textarea id="authors" name="authors" rows="2" cols="50"></textarea></label><br />
         <div id="add-author-button" style="width: 150px; height: 30px; border: 1px solid black; cursor: pointer;">Add new author</div>
-        <label>Year Of Publication*: <input type="text" id="publication_year" name="publication_year" placeholder="2015"/></label><br />
+        <label>Year Of Publication*: <input type="text" id="publication_year" name="publication_year" value="${book.yearOfPublication}"/></label><br />
         <input type="hidden" value="some-id" id="publisher-id" name="publisher-id" />
-        <label>Language*: <input type="text" id="language" name="language"/></label><br />
+        <label>Language*: <input type="text" id="language" name="language" value="${book.language}"/></label><br />
         Type Of Book*:<br />
-            <label>Electronic: <input type="checkbox" id="electronic" name="electronic"/></label><br />
+            <label>Electronic: <input type="checkbox" id="electronic" name="electronic" /></label><br />
             <label>Paper: <input type="checkbox" id="paper" name="paper"/></label>
         <br />
-        <label>Number Of Pages: <input type="text" id="number_of_pages" name="number_of_pages"/></label><br />
-        <label>UA Description*:<textarea name="description_ua" id="description_ua"></textarea></label><br />
-        <label>EN Description:<textarea name="description_en" id="description_en"></textarea></label><br />
-        <label>RU Description:<textarea name="description_ru" id="description_ru"></textarea></label><br />
+        <label>Number Of Pages: <input type="text" id="number_of_pages" name="number_of_pages" value="${book.numberOfPages}"/></label><br />
+        <label>UA Description*:<textarea name="description_ua" id="description_ua">${book.descriptionUa}</textarea></label><br />
+        <label>EN Description:<textarea name="description_en" id="description_en">${book.descriptionEn}</textarea></label><br />
+        <label>RU Description:<textarea name="description_ru" id="description_ru">${book.descriptionRu}</textarea></label><br />
+        <c:if test="${book.keywords ne null}">
+            <div>
+                <ul>
+                    <c:forEach items="${book.keywords}" var="keyword">
+                        <li class="keyword" id="keyword-${keyword.id}">
+                                ${keyword.keyword} <span id="${keyword.id}" class="keyword-x" style="cursor: pointer;">X</span>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+        </c:if>
         <label>Keywords*:<textarea name="keywords" id="keywords" rows="2" cols="50"></textarea></label><br />
         <label>Eighteen Plus: <input type="checkbox" id="eighteen-plus"/></label><br />
         Category: <br />
         <select id="category">
             <c:if test="${subCategories ne null}">
                 <c:forEach items="${subCategories}" var="subCategory">
-                    <option value="${subCategory.id}">${subCategory.nameUa} : ${subCategory.category.nameUa}</option>
+                    <option value="${subCategory.id}"
+                            <c:if test="${book.subCategory.id eq subCategory.id}">
+                            selected="selected"
+                            </c:if>
+                            >${subCategory.nameUa} : ${subCategory.category.nameUa}</option>
                 </c:forEach>
             </c:if>
         </select>
@@ -76,21 +115,21 @@
         <div id="container-progress-first-page" class="progress-container" style="display: none;">
             <div id="progress-bar-first-page" style="width:0%;background-color: #ffff00; height:inherit;"></div>
         </div>
-        <input type="hidden" name="bookId" value="${bookId}">
+        <input type="hidden" name="bookId" value="${book.id}">
         <label>First Page*:<input type="file" name="first_page" id="first_page"></label><br />
     </form>
     <form id="last-page-form" action="/book/send-last-page" method="POST">
         <div id="container-progress-last-page" class="progress-container" style="display: none;">
             <div id="progress-bar-last-page" style="width:0%;background-color: green; height:inherit;"></div>
         </div>
-        <input type="hidden" name="bookId" value="${bookId}">
+        <input type="hidden" name="bookId" value="${book.id}">
         <label>Last Page:<input type="file" name="last_page" id="last_page"></label><br />
     </form>
     <form id="book-form" action="/book/send-book" method="POST">
         <div id="container-progress-book" class="progress-container" style="display: none;">
             <div id="progress-bar-book" style="width:0%;background-color: red; height:inherit;"></div>
         </div>
-        <input type="hidden" name="bookId" value="${bookId}">
+        <input type="hidden" name="bookId" value="${book.id}">
         <label>Book*:<input type="file" name="book" id="book"></label><br />
     </form>
 

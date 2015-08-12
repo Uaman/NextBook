@@ -7,6 +7,7 @@ import com.nextbook.domain.enums.Cover;
 import com.nextbook.domain.filters.AuthorCriterion;
 import com.nextbook.domain.forms.book.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
+import com.nextbook.domain.preview.AuthorPreview;
 import com.nextbook.domain.upload.Constants;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
@@ -67,7 +68,7 @@ public class BookController {
 
     @RequestMapping(value = "/edit-book", method = RequestMethod.GET)
     public String addBook(@RequestParam("bookId")int bookId,
-                          Model model){
+                          Model model, Locale locale){
         User user = sessionUtils.getCurrentUser();
         if(user == null){
             return "redirect:/";
@@ -84,8 +85,26 @@ public class BookController {
             return "redirect:/publisher/view?publisherId="+publisher.getId();
         model.addAttribute("subCategories", subCategoryProvider.getAll());
         model.addAttribute("book", book);
-        model.addAttribute("bookId", book.getId());
+        model.addAttribute("authors", formAuthorsInLocale(book.getAuthors(), locale.getLanguage()));
         return "book/add-book";
+    }
+
+    private List<AuthorPreview> formAuthorsInLocale(List<Author> authors, String language){
+        List<AuthorPreview> result = new ArrayList<AuthorPreview>();
+        if(authors != null) {
+            for (Author author : authors) {
+                String name;
+                if (language.equals("uk")) {
+                    name = author.getFirstNameUa() + ' ' + author.getLastNameUa();
+                } else if (language.equals("ru")) {
+                    name = author.getFirstNameRu() + ' ' + author.getLastNameRu();
+                } else {
+                    name = author.getFirstNameEn() + ' ' + author.getLastNameEn();
+                }
+                result.add(new AuthorPreview(author.getId(), name));
+            }
+        }
+        return result;
     }
 
     private Book defaultBook(User user, Publisher publisher){
@@ -279,5 +298,26 @@ public class BookController {
         model.addAttribute("urlToFile", url);
         model.addAttribute("pass", Constants.USER_PASSWORD);
         return "book/view";
+    }
+
+    @RequestMapping(value = "/delete-keyword/{bookId}/{keywordId}", method = RequestMethod.POST)
+    public @ResponseBody boolean deleteKeyword(@PathVariable("bookId") int bookId,
+                                               @PathVariable("keywordId") int keywordId){
+        User user = sessionUtils.getCurrentUser();
+        if(user == null)
+            return false;
+
+        Publisher publisher = publisherProvider.getPublisherByUser(user);
+        if(publisher == null)
+            return false;
+
+        Book book = bookProvider.getBookById(bookId);
+        if(book == null)
+            return false;
+
+        if(book.getPublisher().getId() != publisher.getId())
+            return false;
+        boolean success = bookProvider.deleteBookToKeyword(bookId, keywordId);
+        return success;
     }
 }

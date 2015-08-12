@@ -258,6 +258,32 @@ public class BookDAO implements IBookDao {
         return result;
     }
 
+    @Override
+    public boolean deleteBookToKeyword(int bookId, int keywordId) {
+        boolean deleted = false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session.beginTransaction();
+            Query query = session.createQuery("SELECT bookToKeyword FROM BookKeywordEntity bookToKeyword WHERE bookToKeyword.book.id=:bookId AND bookToKeyword.keyword.id=:keywordId");
+            query.setParameter("bookId", bookId);
+            query.setParameter("keywordId", keywordId);
+            List<BookKeywordEntity> list = query.list();
+            if(list != null && list.size() > 0) {
+                session.delete(list.get(0));
+            }
+            session.getTransaction().commit();
+            deleted = true;
+        } catch (Exception e){
+            if(session != null && session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return deleted;
+    }
+
     private Query createQueryFromCriterion(Session session, BookCriterion criterion) {
         StringBuilder queryString = new StringBuilder();
         queryString.append("SELECT DISTINCT book FROM BookEntity book");

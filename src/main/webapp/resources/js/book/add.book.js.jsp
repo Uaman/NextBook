@@ -1,14 +1,32 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <script>
-var BOOK_ID = ${bookId};
+var BOOK_ID = ${book.id};
 var firstPageUploaded = false;
 var lastPageUploaded = false;
 var bookUploaded = false;
 var isbnExist = false;
 $(document).ready(function(){
-    paperBookChecked();
+    <c:choose>
+        <c:when test="${book.typeOfBook eq 'PAPER_AND_ELECTRONIC'}">
+            $('#electronic').prop('checked', true);
+            $('#paper').prop('checked', true);
+        </c:when>
+        <c:when test="${book.typeOfBook eq 'ELECTRONIC'}">
+            $('#electronic').prop('checked', true);
+        </c:when>
+        <c:when test="${book.typeOfBook eq 'PAPER'}">
+            $('#paper').prop('checked', true);
+        </c:when>
+    </c:choose>
 
+    <c:if test="${book.eighteenPlus}">
+        $('#eighteen-plus').prop('checked', true);
+    </c:if>
+
+    paperBookChecked();
+    
     $('#publication_year').mask('0000');
     $('#number_of_pages').mask('000000');
     $.validator.addMethod(
@@ -119,7 +137,7 @@ $(document).ready(function(){
                 minlength: 50
             },
             keywords: {
-                required: true
+                //required: true
                 //keywordsNumber: true
             },
             test_files: {
@@ -149,14 +167,18 @@ $(document).ready(function(){
                 minlength: '<spring:message code="book.registration.description.ua.length"/>'
             },
             keywords: {
-                required: '<spring:message code="book.registration.keywords.require"/>'
+                //required: '<spring:message code="book.registration.keywords.require"/>'
             }
         },
         errorLabelContainer: $("div.errorblock"),
         wrapper: 'li',
         submitHandler: function(form){
-            if($('div.text-tag').length <= 0){ //divs with authors
+            if($('.text-tags:eq(0)').find('.text-tag').length + $('.author').length < 1){ //divs with authors
                 alert('authors require');
+                return;
+            }
+            if($('.text-tags:eq(1)').find('.text-tag').length + $('.keyword').length < 5){ //divs with authors
+                alert('keywords at least 5 require');
                 return;
             }
             /*if(isbnExist) {
@@ -335,6 +357,22 @@ $(document).ready(function(){
                     { result : response }
             );
         });
+    });
+
+    $('.keyword-x').click(function(){
+        var id = $(this).attr('id');
+        $.ajax({
+            url: '/book/delete-keyword/'+BOOK_ID+'/'+id,
+            type: 'POST',
+            success: function(data){
+                if(data){
+                    $('#keyword-'+id).remove();
+                }
+            },
+            error: function(e){
+                console.log(e);
+            }
+        })
     });
 });
 
