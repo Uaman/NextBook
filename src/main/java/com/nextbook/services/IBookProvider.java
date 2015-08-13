@@ -2,6 +2,7 @@ package com.nextbook.services;
 
 import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
+import com.nextbook.domain.pojo.BookAuthor;
 import com.nextbook.domain.pojo.BookKeyword;
 import org.springframework.stereotype.Service;
 
@@ -37,4 +38,10 @@ public interface IBookProvider {
     BookKeyword updateBookToKeyword(BookKeyword bookKeyword);
 
     boolean deleteBookToKeyword(int bookId, int keywordId);
+
+    BookAuthor getBookToAuthor(int bookId, int authorId);
+
+    BookAuthor updateBookToAuthor(BookAuthor bookAuthor);
+
+    boolean deleteBookToAuthor(int bookId, int authorId);
 }

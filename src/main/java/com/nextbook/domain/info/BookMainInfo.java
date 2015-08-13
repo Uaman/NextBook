@@ -3,6 +3,7 @@ package com.nextbook.domain.info;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.pojo.Author;
 import com.nextbook.domain.pojo.Book;
+import com.nextbook.domain.pojo.BookAuthor;
 import com.nextbook.domain.pojo.Keyword;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class BookMainInfo {
 
     }
 
-    public BookMainInfo(Book book) {
+    public BookMainInfo(Book book, String lang) {
         id = book.getId();
         isbn = book.getIsbn();
         uaName = book.getUaName();
@@ -81,9 +82,19 @@ public class BookMainInfo {
         linkToStorage = book.getLinkToStorage();
         numberOfImagesForCover = book.getNumberOfImagesForCover();
         numberOfImagesInGallery = book.getNumberOfImagesInGallery();
-        if (book.getAuthors()!=null) {
-            for(Author auth : book.getAuthors())
-                author += auth.getFirstNameUa() + ' ' + auth.getLastNameUa();
+        if (book.getBookToAuthor()!=null) {
+            for(BookAuthor bookAuthor : book.getBookToAuthor()) {
+                Author author = bookAuthor.getAuthor();
+                String name;
+                if (lang.equals("uk")) {
+                    name = author.getFirstNameUa() + ' ' + author.getLastNameUa();
+                } else if (lang.equals("ru")) {
+                    name = author.getFirstNameRu() + ' ' + author.getLastNameRu();
+                } else {
+                    name = author.getFirstNameEn() + ' ' + author.getLastNameEn();
+                }
+                this.author += name;
+            }
         }
         if (book.getKeywords()!=null)
             for (Keyword keyword:book.getKeywords())

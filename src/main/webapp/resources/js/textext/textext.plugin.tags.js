@@ -470,7 +470,8 @@
 
 		if(self.isTagAllowed(tag))
 		{
-			self.addTags([ tag ]);
+            console.log(TAG);
+			self.addTags([ TAG ]);
 			// refocus the textarea just in case it lost the focus
 			self.core().focusInput();
 		}
@@ -691,7 +692,7 @@
 			node = $(self.opts(OPT_HTML_TAG))
 			;
 
-		node.find('.text-label').text(self.itemManager().itemToString(tag));
+		node.find('.text-label').text(tag.value).attr('id', 'author-tag-'+tag.id);
 		node.data(CSS_TAG, tag);
 		return node;
 	};

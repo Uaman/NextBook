@@ -61,14 +61,15 @@
             <a>publisher</a>
             <b>publisherEntity</b>
         </field>
-        <field>
-            <a>authors</a>
-            <b>authorEntities</b>
-        </field>
     </mapping>
 
     <mapping>
         <class-a>com.nextbook.domain.pojo.BookKeyword</class-a>
         <class-b>com.nextbook.domain.entities.BookKeywordEntity</class-b>
+    </mapping>
+
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.BookAuthor</class-a>
+        <class-b>com.nextbook.domain.entities.BookAuthorEntity</class-b>
     </mapping>
 </mappings>

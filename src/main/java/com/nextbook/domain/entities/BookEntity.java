@@ -93,9 +93,8 @@ public class BookEntity {
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BookKeywordEntity> bookToKeywords = new ArrayList<BookKeywordEntity>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "authors_to_book", joinColumns = {@JoinColumn(name = "BOOK_ID")}, inverseJoinColumns = {@JoinColumn(name = "AUTHOR_ID")})
-    private List<AuthorEntity> authorEntities;
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<BookAuthorEntity> bookToAuthor = new ArrayList<BookAuthorEntity>();
 
     public int getId() {
         return id;
@@ -249,12 +248,12 @@ public class BookEntity {
         this.numberOfImagesInGallery = numberOfImagesInGallery;
     }
 
-    public List<AuthorEntity> getAuthorEntities() {
-        return authorEntities;
+    public List<BookAuthorEntity> getBookToAuthor() {
+        return bookToAuthor;
     }
 
-    public void setAuthorEntities(List<AuthorEntity> authorEntities) {
-        this.authorEntities = authorEntities;
+    public void setBookToAuthor(List<BookAuthorEntity> bookToAuthor) {
+        this.bookToAuthor = bookToAuthor;
     }
 
     public List<BookKeywordEntity> getBookToKeywords() {

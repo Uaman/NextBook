@@ -125,12 +125,14 @@ public class AdminBookController {
 
     @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping (value = "/filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody List<Book> getBooksByCriterion(@RequestBody BookCriterion criterion) {
+    @ResponseBody List<Book> getBooksByCriterion(@RequestBody BookCriterion criterion,
+                                                 Locale locale) {
+        String language = locale.getLanguage();
         List<Book> books = bookProvider.getBooksByCriterion(criterion);
 //        List<BookMainInfo> res = new ArrayList<BookMainInfo>();
 //        if (books!=null)
 //            for (Book book: books)
-//                res.add(new BookMainInfo(book));
+//                res.add(new BookMainInfo(book, language));
         return books;
     }
 

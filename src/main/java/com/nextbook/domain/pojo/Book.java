@@ -55,6 +55,8 @@ public class Book {
 
     private List<Author> authors;
 
+    private List<BookAuthor> bookToAuthor;
+
     private List<BookKeyword> bookToKeywords;
 
     public int getId() {
@@ -212,7 +214,7 @@ public class Book {
     public List<Keyword> getKeywords() {
         if(keywords == null)
             keywords = new ArrayList<Keyword>();
-        if(bookToKeywords.size() != keywords.size()) {
+        if(keywords.size() == 0) {
             for (BookKeyword bookKeyword : bookToKeywords) {
                 keywords.add(bookKeyword.getKeyword());
             }
@@ -222,21 +224,32 @@ public class Book {
 
     public void addKeyword(Keyword keyword){
         if (keywords == null)
-            keywords = new ArrayList<Keyword>();
+            getKeywords();
         keywords.add(keyword);
     }
 
-    public List<Author> getAuthors() {
-        return authors;
+    public List<BookAuthor> getBookToAuthor() {
+        return bookToAuthor;
     }
 
-    public void setAuthors(List<Author> authors) {
-        this.authors = authors;
+    public void setBookToAuthor(List<BookAuthor> bookToAuthor) {
+        this.bookToAuthor = bookToAuthor;
+    }
+
+    public List<Author> getAuthors() {
+        if(authors == null)
+            authors = new ArrayList<Author>();
+        if(authors.size() == 0) {
+            for (BookAuthor bookAuthor : bookToAuthor) {
+                authors.add(bookAuthor.getAuthor());
+            }
+        }
+        return authors;
     }
 
     public void addAuthor(Author author){
         if(authors == null)
-            authors = new ArrayList<Author>();
+            getAuthors();
         authors.add(author);
     }
 
@@ -262,6 +275,9 @@ public class Book {
         if (numberOfPages != book.numberOfPages) return false;
         if (yearOfPublication != book.yearOfPublication) return false;
         if (authors != null ? !authors.equals(book.authors) : book.authors != null) return false;
+        if (bookToAuthor != null ? !bookToAuthor.equals(book.bookToAuthor) : book.bookToAuthor != null) return false;
+        if (bookToKeywords != null ? !bookToKeywords.equals(book.bookToKeywords) : book.bookToKeywords != null)
+            return false;
         if (descriptionEn != null ? !descriptionEn.equals(book.descriptionEn) : book.descriptionEn != null)
             return false;
         if (descriptionRu != null ? !descriptionRu.equals(book.descriptionRu) : book.descriptionRu != null)
@@ -307,6 +323,8 @@ public class Book {
         result = 31 * result + numberOfImagesInGallery;
         result = 31 * result + (keywords != null ? keywords.hashCode() : 0);
         result = 31 * result + (authors != null ? authors.hashCode() : 0);
+        result = 31 * result + (bookToAuthor != null ? bookToAuthor.hashCode() : 0);
+        result = 31 * result + (bookToKeywords != null ? bookToKeywords.hashCode() : 0);
         return result;
     }
 }

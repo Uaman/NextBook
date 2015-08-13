@@ -1,5 +1,7 @@
 package com.nextbook.domain.entities;
 
+import com.nextbook.domain.pojo.Book;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +51,8 @@ public class AuthorEntity {
     @Column(name = "LAST_NAME_RU")
     private String lastNameRu;
 
-    @OneToMany
-    @JoinTable(name = "authors_to_book", joinColumns = {@JoinColumn(name = "AUTHOR_ID")}, inverseJoinColumns = {@JoinColumn(name = "BOOK_ID")})
-    private List<BookEntity> books = new ArrayList<BookEntity>();
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<BookAuthorEntity> bookToAuthor = new ArrayList<BookAuthorEntity>();
 
     public int getId() {
         return id;
@@ -109,12 +110,12 @@ public class AuthorEntity {
         this.lastNameRu = lastNameRu;
     }
 
-    public List<BookEntity> getBooks() {
-        return books;
+    public List<BookAuthorEntity> getBookToAuthor() {
+        return bookToAuthor;
     }
 
-    public void setBooks(List<BookEntity> books) {
-        this.books = books;
+    public void setBookToAuthor(List<BookAuthorEntity> bookToAuthor) {
+        this.bookToAuthor = bookToAuthor;
     }
 }
 

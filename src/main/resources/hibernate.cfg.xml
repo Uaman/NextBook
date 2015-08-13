@@ -24,5 +24,6 @@
         <mapping class="com.nextbook.domain.entities.KeywordEntity"/>
         <mapping class="com.nextbook.domain.entities.AuthorEntity"/>
         <mapping class="com.nextbook.domain.entities.BookKeywordEntity"/>
+        <mapping class="com.nextbook.domain.entities.BookAuthorEntity"/>
     </session-factory>
 </hibernate-configuration>

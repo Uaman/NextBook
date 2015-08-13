@@ -2,6 +2,8 @@ package com.nextbook.controllers.cabinet.user;
 
 import com.google.gson.Gson;
 import com.nextbook.dao.impl.BookDAO;
+import com.nextbook.domain.ResponseForAutoComplete;
+import com.nextbook.domain.entities.BookAuthorEntity;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.enums.Cover;
 import com.nextbook.domain.filters.AuthorCriterion;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -85,15 +88,16 @@ public class BookController {
             return "redirect:/publisher/view?publisherId="+publisher.getId();
         model.addAttribute("subCategories", subCategoryProvider.getAll());
         model.addAttribute("book", book);
-        model.addAttribute("authors", formAuthorsInLocale(book.getAuthors(), locale.getLanguage()));
+        model.addAttribute("authors", formAuthorsInLocale(book.getBookToAuthor(), locale.getLanguage()));
         return "book/add-book";
     }
 
-    private List<AuthorPreview> formAuthorsInLocale(List<Author> authors, String language){
+    private List<AuthorPreview> formAuthorsInLocale(List<BookAuthor> authors, String language){
         List<AuthorPreview> result = new ArrayList<AuthorPreview>();
         if(authors != null) {
-            for (Author author : authors) {
+            for (BookAuthor bookAuthor : authors) {
                 String name;
+                Author author = bookAuthor.getAuthor();
                 if (language.equals("uk")) {
                     name = author.getFirstNameUa() + ' ' + author.getLastNameUa();
                 } else if (language.equals("ru")) {
@@ -109,16 +113,16 @@ public class BookController {
 
     private Book defaultBook(User user, Publisher publisher){
         Book book = new Book();
-        book.setUaName("def-name");
+        book.setUaName("");
         SubCategory subCategory = new SubCategory();
         subCategory.setId(1);
         book.setSubCategory(subCategory);
         book.setYearOfPublication(0);
         book.setPublisher(publisher);
-        book.setLanguage("def-lang");
+        book.setLanguage("");
         book.setTypeOfBook(BookTypeEnum.ELECTRONIC);
-        book.setDescriptionUa("def-desc");
-        book.setIsbn("def-isbn");
+        book.setDescriptionUa("");
+        book.setIsbn("");
 
         return book;
     }
@@ -175,53 +179,61 @@ public class BookController {
                 bookProvider.updateBookToKeyword(bookKeyword);
             }
         }
-/*
-        Author author = new Author();
-        author.setFirstNameUa(bookRegisterForm.getAuthor());
-        author.setLastNameUa("lastName");
 
-        author = authorProvider.updateAuthor(author);
-*/
-        //book.addAuthor(author);
+        for(Integer id : bookRegisterForm.getAuthors()) {
+            if(id == null)
+                continue;
+            Author author = authorProvider.getById(id);
+            if(author != null) {
+                BookAuthor bookAuthor = new BookAuthor();
+                bookAuthor.setAuthor(author);
+                bookAuthor.setBook(book);
+                bookAuthor = bookProvider.updateBookToAuthor(bookAuthor);
+                if(bookAuthor != null)
+                    book.addAuthor(bookAuthor.getAuthor());
+            }
+        }
     }
 
     @RequestMapping(value = "/authors-auto-complete/{keyword}", method = RequestMethod.POST)
-    public @ResponseBody List<String> authorsAutoComplete(@PathVariable("keyword") String keyword,
+    public @ResponseBody List<ResponseForAutoComplete> authorsAutoComplete(@PathVariable("keyword") String keyword,
                                                           Locale locale){
         if(keyword.equals(""))
-            return new ArrayList<String>();
+            return new ArrayList<ResponseForAutoComplete>();
         List<Author> authors = authorProvider.getAuthorsByCriterion(new AuthorCriterion(keyword));
         String language = locale.getLanguage();
-        List<String> response = formAuthorsForAutoComplete(authors, language);
+        List<ResponseForAutoComplete> response = formAuthorsForAutoComplete(authors, language);
         return response;
     }
 
-    private List<String> formAuthorsForAutoComplete(List<Author> authors, String language){
-        List<String> result = new ArrayList<String>();
+    private List<ResponseForAutoComplete> formAuthorsForAutoComplete(List<Author> authors, String language){
+        List<ResponseForAutoComplete> result = new ArrayList<ResponseForAutoComplete>();
         if(authors != null) {
             for (Author author : authors) {
+                String value;
                 if (language.equals("uk")) {
-                    result.add(author.getFirstNameUa() + ' ' + author.getLastNameUa());
+                    value = author.getFirstNameUa() + ' ' + author.getLastNameUa();
                 } else if (language.equals("ru")) {
-                    result.add(author.getFirstNameRu() + ' ' + author.getLastNameRu());
+                    value = author.getFirstNameRu() + ' ' + author.getLastNameRu();
                 } else {
-                    result.add(author.getFirstNameEn() + ' ' + author.getLastNameEn());
+                    value = author.getFirstNameEn() + ' ' + author.getLastNameEn();
                 }
+                result.add(new ResponseForAutoComplete(author.getId(), value));
             }
         }
         return result;
     }
 
     @RequestMapping(value = "/keywords-auto-complete/{keyword}", method = RequestMethod.POST)
-    public @ResponseBody List<String> keywordsAutoComplete(@PathVariable("keyword") String keyword,
+    public @ResponseBody List<ResponseForAutoComplete> keywordsAutoComplete(@PathVariable("keyword") String keyword,
                                                           Locale locale){
         if(keyword.equals(""))
-            return new ArrayList<String>();
+            return new ArrayList<ResponseForAutoComplete>();
         List<Keyword> keywords = keywordProvider.getListByKeyword(keyword);
-        List<String> response = new ArrayList<String>();
+        List<ResponseForAutoComplete> response = new ArrayList<ResponseForAutoComplete>();
         if(keywords != null) {
             for (Keyword k : keywords) {
-                response.add(k.getKeyword());
+                response.add(new ResponseForAutoComplete(k.getId(), k.getKeyword()));
             }
         }
         return response;
@@ -318,6 +330,27 @@ public class BookController {
         if(book.getPublisher().getId() != publisher.getId())
             return false;
         boolean success = bookProvider.deleteBookToKeyword(bookId, keywordId);
+        return success;
+    }
+
+    @RequestMapping(value = "/delete-author/{bookId}/{authorId}", method = RequestMethod.POST)
+    public @ResponseBody boolean deleteAuthor(@PathVariable("bookId") int bookId,
+                                               @PathVariable("authorId") int authorId){
+        User user = sessionUtils.getCurrentUser();
+        if(user == null)
+            return false;
+
+        Publisher publisher = publisherProvider.getPublisherByUser(user);
+        if(publisher == null)
+            return false;
+
+        Book book = bookProvider.getBookById(bookId);
+        if(book == null)
+            return false;
+
+        if(book.getPublisher().getId() != publisher.getId())
+            return false;
+        boolean success = bookProvider.deleteBookToAuthor(bookId, authorId);
         return success;
     }
 }

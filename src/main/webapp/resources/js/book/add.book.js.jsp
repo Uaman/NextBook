@@ -374,6 +374,22 @@ $(document).ready(function(){
             }
         })
     });
+
+    $('.author-x').click(function(){
+        var id = $(this).attr('id');
+        $.ajax({
+            url: '/book/delete-author/'+BOOK_ID+'/'+id,
+            type: 'POST',
+            success: function(data){
+                if(data){
+                    $('#author-'+id).remove();
+                }
+            },
+            error: function(e){
+                console.log(e);
+            }
+        })
+    });
 });
 
 function formDataBook(){
@@ -406,9 +422,13 @@ function formDataBook(){
         }(),
         authors: function(){
             var array = [];
-            var tags = $('.text-tags:eq(0)').find('.text-tag');
+            var tags = $('.text-tags:eq(0)').find('.text-tag').find('span');
             $.each(tags, function( index, div ){
-                array.push($(div).text());
+                var id = $(div).attr('id');
+                id = id.substr(id.lastIndexOf('-')+1);
+                if(!id || id == '' || id < 1)
+                    id = 0;
+                array.push(id);
             });
             return array;
         }(),

@@ -6,6 +6,9 @@
  * @copyright Copyright (C) 2011 Alex Gorbatchev. All rights reserved.
  * @license MIT License
  */
+
+var TAG = '';
+
 (function($)
 {
 	/**
@@ -925,7 +928,7 @@
 	{
 		var self     = this,
 			renderer = self.opts(OPT_RENDER),
-			node     = self.addDropdownItem(renderer ? renderer.call(self, suggestion) : self.itemManager().itemToString(suggestion))
+			node     = self.addDropdownItem(suggestion);
 			;
 
 		node.data(CSS_SUGGESTION, suggestion);
@@ -942,14 +945,14 @@
 	 * @date 2011/08/17
 	 * @id TextExtAutocomplete.addDropdownItem
 	 */
-	p.addDropdownItem = function(html)
+	p.addDropdownItem = function(suggestion)
 	{
 		var self      = this,
 			container = self.containerElement().find('.text-list'),
 			node      = $(self.opts(OPT_HTML_SUGGESTION))
 			;
 
-		node.find('.text-label').html(html);
+		node.find('.text-label').html(suggestion.value);
 		container.append(node);
 		return node;
 	};
@@ -1081,10 +1084,10 @@
 		var self       = this,
 			suggestion = self.selectedSuggestionElement().data(CSS_SUGGESTION)
 			;
-
 		if(suggestion)
 		{
-			self.val(self.itemManager().itemToString(suggestion));
+            TAG = suggestion;
+			self.val(self.itemManager().itemToString(suggestion.value));
 			self.core().getFormData();	
 		}
 

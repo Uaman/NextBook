@@ -62,7 +62,7 @@
             <div>
                 <ul>
                     <c:forEach items="${authors}" var="author">
-                        <li class="author">
+                        <li class="author" id="author-${author.id}">
                             ${author.name} <span id="${author.id}" class="author-x" style="cursor: pointer;">X</span>
                         </li>
                     </c:forEach>

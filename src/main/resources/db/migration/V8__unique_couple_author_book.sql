@@ -1,0 +1,1 @@
+ALTER TABLE nextbook.authors_to_book ADD CONSTRAINT unique_couple UNIQUE(book_id, author_id);

@@ -47,7 +47,7 @@ public class BookRegisterForm {
 
     private List<String> keywords = new ArrayList<String>();
 
-    private List<String> authors;
+    private List<Integer> authors;
 
     public int getBookId() {
         return bookId;
@@ -185,11 +185,11 @@ public class BookRegisterForm {
         this.subCategoryId = subCategoryId;
     }
 
-    public List<String> getAuthors() {
+    public List<Integer> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<String> authors) {
+    public void setAuthors(List<Integer> authors) {
         this.authors = authors;
     }
 }

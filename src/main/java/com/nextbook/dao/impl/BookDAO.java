@@ -1,10 +1,12 @@
 package com.nextbook.dao.impl;
 
 import com.nextbook.dao.IBookDao;
+import com.nextbook.domain.entities.BookAuthorEntity;
 import com.nextbook.domain.entities.BookEntity;
 import com.nextbook.domain.entities.BookKeywordEntity;
 import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
+import com.nextbook.domain.pojo.BookAuthor;
 import com.nextbook.domain.pojo.BookKeyword;
 import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;
@@ -264,7 +266,7 @@ public class BookDAO implements IBookDao {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try{
             session.beginTransaction();
-            Query query = session.createQuery("SELECT bookToKeyword FROM BookKeywordEntity bookToKeyword WHERE bookToKeyword.book.id=:bookId AND bookToKeyword.keyword.id=:keywordId");
+            Query query = session.getNamedQuery(BookKeywordEntity.getByBookAndKeywordIds);
             query.setParameter("bookId", bookId);
             query.setParameter("keywordId", keywordId);
             List<BookKeywordEntity> list = query.list();
@@ -283,6 +285,75 @@ public class BookDAO implements IBookDao {
         }
         return deleted;
     }
+
+    @Override
+    public BookAuthor getBookToAuthor(int bookId, int authorId) {
+        BookAuthor result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            Query query = session.getNamedQuery(BookAuthorEntity.getByBookAndAuthorIds);
+            query.setParameter("bookId", bookId);
+            query.setParameter("authorId", authorId);
+            List<BookAuthorEntity> list = query.list();
+            if(list != null && list.size() > 0){
+                result = DozerMapperFactory.getDozerBeanMapper().map(list.get(0), BookAuthor.class);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
+
+    @Override
+    public BookAuthor updateBookToAuthor(BookAuthor bookAuthor){
+        BookAuthor result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            BookAuthorEntity entity = DozerMapperFactory.getDozerBeanMapper().map(bookAuthor, BookAuthorEntity.class);
+            entity = (BookAuthorEntity) session.merge(entity);
+            result = DozerMapperFactory.getDozerBeanMapper().map(entity, BookAuthor.class);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if(session != null && session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
+
+    @Override
+    public boolean deleteBookToAuthor(int bookId, int authorId) {
+        boolean deleted = false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session.beginTransaction();
+            Query query = session.getNamedQuery(BookAuthorEntity.getByBookAndAuthorIds);
+            query.setParameter("bookId", bookId);
+            query.setParameter("authorId", authorId);
+            List<BookAuthorEntity> list = query.list();
+            if(list != null && list.size() > 0) {
+                session.delete(list.get(0));
+            }
+            session.getTransaction().commit();
+            deleted = true;
+        } catch (Exception e){
+            if(session != null && session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return deleted;
+    }
+
 
     private Query createQueryFromCriterion(Session session, BookCriterion criterion) {
         StringBuilder queryString = new StringBuilder();

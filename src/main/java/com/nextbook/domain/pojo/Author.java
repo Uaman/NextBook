@@ -25,7 +25,7 @@ public class Author {
 
     private String lastNameRu;
 
-    //private List<Book> books = new ArrayList<Book>();
+    private List<BookAuthor> bookToAuthor;
 
     public int getId() {
         return id;
@@ -83,13 +83,13 @@ public class Author {
         this.lastNameRu = lastNameRu;
     }
 
-    /*public List<Book> getBooks() {
-        return books;
+    public List<BookAuthor> getBookToAuthor() {
+        return bookToAuthor;
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }*/
+    public void setBookToAuthor(List<BookAuthor> bookToAuthor) {
+        this.bookToAuthor = bookToAuthor;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -99,7 +99,8 @@ public class Author {
         Author author = (Author) o;
 
         if (id != author.id) return false;
-        //if (books != null ? !books.equals(author.books) : author.books != null) return false;
+        if (bookToAuthor != null ? !bookToAuthor.equals(author.bookToAuthor) : author.bookToAuthor != null)
+            return false;
         if (firstNameEn != null ? !firstNameEn.equals(author.firstNameEn) : author.firstNameEn != null) return false;
         if (firstNameRu != null ? !firstNameRu.equals(author.firstNameRu) : author.firstNameRu != null) return false;
         if (firstNameUa != null ? !firstNameUa.equals(author.firstNameUa) : author.firstNameUa != null) return false;
@@ -119,7 +120,7 @@ public class Author {
         result = 31 * result + (lastNameEn != null ? lastNameEn.hashCode() : 0);
         result = 31 * result + (firstNameRu != null ? firstNameRu.hashCode() : 0);
         result = 31 * result + (lastNameRu != null ? lastNameRu.hashCode() : 0);
-        //result = 31 * result + (books != null ? books.hashCode() : 0);
+        result = 31 * result + (bookToAuthor != null ? bookToAuthor.hashCode() : 0);
         return result;
     }
 }
