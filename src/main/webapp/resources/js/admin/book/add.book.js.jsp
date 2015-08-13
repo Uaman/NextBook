@@ -124,7 +124,7 @@ $(document).ready(function(){
                 minlength: 50
             },
             keywords: {
-                required: true
+                //required: true
                 //keywordsNumber: true
             },
             test_files: {
@@ -154,22 +154,26 @@ $(document).ready(function(){
                 minlength: '<spring:message code="book.registration.description.ua.length"/>'
             },
             keywords: {
-                required: '<spring:message code="book.registration.keywords.require"/>'
+                //required: '<spring:message code="book.registration.keywords.require"/>'
             }
         },
         errorLabelContainer: $("div.errorblock"),
         wrapper: 'li',
         submitHandler: function(form){
-            if($('div.text-tag').length <= 0){ //divs with authors
+            if($('.text-tags:eq(0)').find('.text-tag').length + $('.author').length < 1){ //divs with authors
                 alert('authors require');
                 return;
             }
-            if(isbnExist) {
-                alert('isbn exist');
+            if($('.text-tags:eq(1)').find('.text-tag').length + $('.keyword').length < 5){ //divs with authors
+                alert('keywords at least 5 require');
                 return;
             }
+            /*if(isbnExist) {
+             alert('isbn exist');
+             return;
+             }*/
             $.ajax({
-                url: '/admin/books/edit-book',
+                url: '/book/edit-book',
                 data: JSON.stringify(formDataBook()),
                 type: 'POST',
                 dataType: 'json',
@@ -340,9 +344,37 @@ $(document).ready(function(){
             );
         });
     });
+    $('.keyword-x').click(function(){
+        var id = $(this).attr('id');
+        $.ajax({
+            url: '/book/delete-keyword/'+BOOK_ID+'/'+id,
+            type: 'POST',
+            success: function(data){
+                if(data){
+                    $('#keyword-'+id).remove();
+                }
+            },
+            error: function(e){
+                console.log(e);
+            }
+        })
+    });
 
-    if (${book!=null})
-        fillBook();
+    $('.author-x').click(function(){
+        var id = $(this).attr('id');
+        $.ajax({
+            url: '/book/delete-author/'+BOOK_ID+'/'+id,
+            type: 'POST',
+            success: function(data){
+                if(data){
+                    $('#author-'+id).remove();
+                }
+            },
+            error: function(e){
+                console.log(e);
+            }
+        })
+    });
 });
 
 function formDataBook(){
@@ -375,9 +407,13 @@ function formDataBook(){
         }(),
         authors: function(){
             var array = [];
-            var tags = $('.text-tags:eq(0)').find('.text-tag');
+            var tags = $('.text-tags:eq(0)').find('.text-tag').find('span');
             $.each(tags, function( index, div ){
-                array.push($(div).text());
+                var id = $(div).attr('id');
+                id = id.substr(id.lastIndexOf('-')+1);
+                if(!id || id == '' || id < 1)
+                    id = 0;
+                array.push(id);
             });
             return array;
         }(),
@@ -420,31 +456,4 @@ function paperBookChecked(){
         $('#last-page-form').hide();
     }
 }
-    function fillBook() {
-        $('#isbn').val('${book.isbn}');
-        $('#name_ua').val(${book.uaName});
-        $('#name_en').val(${book.enName});
-        $('#name_ru').val(${book.ruName});
-        $('#publication_year').val(${book.yearOfPublication});
-        $('#language').val(${book.language});
-        $('#number_of_pages').val(${book.numberOfPages});
-        $('#description_ua').val('${book.descriptionUa}');
-        $('#description_ru').val('${book.descriptionRu}');
-        $('#description_en').val('${book.descriptionEn}');
-        $('#eighteen-plus').prop('checked', ${book.eighteenPlus});
-        if (${book.typeOfBook=="PAPER_AND_ELECTRONIC"}) {
-            $('#electronic').prop('checked', true);
-            $('#paper').prop('checked', true);
-        } else {
-            $('#electronic').prop('checked', ${book.typeOfBook=="ELECTRONIC"});
-            $('#paper').prop('checked', ${book.typeOfBook=="PAPER"});
-        }
-        $("#category").prop('selectedIndex', ${book.subCategory.id});
-        <c:forEach items="${book.authors}" var="author">
-            $('#authors').textext()[0].tags().addTags(['${author.firstNameUa} ${author.lastNameUa}']);;
-        </c:forEach>
-        <c:forEach items="${book.keywords}" var="keyword">
-            $('#keywords').textext()[0].tags().addTags(['${keyword.keyword}']);;
-        </c:forEach>
-    }
 </script>
