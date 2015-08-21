@@ -5,6 +5,7 @@ import com.nextbook.domain.pojo.User;
 import io.keen.client.java.JavaKeenClientBuilder;
 import io.keen.client.java.KeenClient;
 import io.keen.client.java.KeenProject;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -14,6 +15,7 @@ import java.util.Map;
 /**
  * Created by KutsykV on 07.08.2015.
  */
+@Component
 public class StatisticUtil {
 
     private static String projectId;
@@ -24,9 +26,6 @@ public class StatisticUtil {
     private static Gson gson;
 
     public StatisticUtil(){
-    }
-
-    static {
         projectId = "55bf358090e4bd5654f0b01b";
         writeKey = "85a99e97d6af61801104f77b6eea11f4523805028d91eb2c0104bf0c62f3665cca5567aa928e9fabcaa59ddb642f08329ede014d477384f9ed48d65a20062b1da7820aea774c1097a74f7b87ac0f0710033be8d79003d28140bf5cd2d42de538e9b053c637eb360b3e061069dfa5fc8f";
         readKey = "ef84bfd5531894d70d78324546544a3e30b6dc757e01326e9e27e33070f388a475d3709fd01e39793366f0ed4d5f4b7897c0faa6ef380783affc0bcc1c6cff13c67b53a7ca8d1f172e3504b8c817b12fb87cb3ea8ec08cc4fbfab5bafc9dc333ea4d061ce3df4c94c4d42dd00a51cef2";
@@ -35,13 +34,13 @@ public class StatisticUtil {
         initClient();
     }
 
-    private static void initClient(){
+    private void initClient(){
         client = new JavaKeenClientBuilder().build();
         KeenClient.initialize(client);
         KeenClient.client().setDefaultProject(getProject());
     }
 
-    public static void DeleteEvent(User who, Object object){
+    public void deleteEvent(User who, Object object){
         Map<String, Object> deleteEvent = new HashMap<String, Object>();
         deleteEvent.put("user_id", who.getId());
         deleteEvent.put("user_role", who.getRole());
@@ -49,13 +48,13 @@ public class StatisticUtil {
         addEvent("Delete", deleteEvent);
     }
 
-    public static void RegistrationEvent(User newUser){
+    public void registrationEvent(User newUser){
         Map<String, Object> addEvent = new HashMap<String, Object>();
         addEvent.put("new_user", gson.toJson(newUser));
         addEvent("Registration", addEvent);
     }
 
-    public static void AddEvent(User who, Object object){
+    public void addEvent(User who, Object object){
         Map<String, Object> addEvent = new HashMap<String, Object>();
         addEvent.put("user_id", who.getId());
         addEvent.put("user_role", who.getRole());
@@ -63,7 +62,7 @@ public class StatisticUtil {
         addEvent("Add", addEvent);
     }
 
-    public static void UploadEvent(User who, MultipartFile file){
+    public void uploadEvent(User who, MultipartFile file){
         Map<String, Object> addEvent = new HashMap<String, Object>();
         addEvent.put("user_id", who.getId());
         addEvent.put("user_role", who.getRole());
@@ -75,7 +74,7 @@ public class StatisticUtil {
         addEvent("Upload", addEvent);
     }
 
-    public static void UpdateEvent(User who, Object oldObject, Object newObject){
+    public void updateEvent(User who, Object oldObject, Object newObject){
         Map<String, Object> addEvent = new HashMap<String, Object>();
         addEvent.put("user_id", who.getId());
         addEvent.put("user_role", who.getRole());
@@ -84,7 +83,7 @@ public class StatisticUtil {
         addEvent("Update", addEvent);
     }
 
-    private static void addEvent(String eventName, Map<String, Object> event){
+    private void addEvent(String eventName, Map<String, Object> event){
         if(!KeenClient.isInitialized())
             initClient();
         KeenClient.client().addEvent(eventName, event);
@@ -114,7 +113,7 @@ public class StatisticUtil {
         this.readKey = readKey;
     }
 
-    public static KeenProject getProject() {
+    public KeenProject getProject() {
         if(project == null)
             project = new KeenProject(projectId, writeKey, readKey);
         return project;

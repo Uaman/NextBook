@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class BookController {
     private IKeywordProvider keywordProvider;
     @Autowired
     private IBookUploadingProvider bookUploadingProvider;
+    @Inject
+    private StatisticUtil statisticUtil;
 
     @RequestMapping(value = "/new-book", method = RequestMethod.GET)
     public String newBook(){

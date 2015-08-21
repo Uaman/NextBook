@@ -31,6 +31,7 @@ public class AdminAuthorController {
         model.addAttribute("authors", authors);
         return "admin/authors/authors";
     }
+    
     @RequestMapping(value = "/update-author", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody Author updateAuthor(@RequestBody AdminAuthorForm adminAuthorForm) {

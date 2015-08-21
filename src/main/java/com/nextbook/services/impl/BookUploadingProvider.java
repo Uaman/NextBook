@@ -85,7 +85,7 @@ public class BookUploadingProvider implements IBookUploadingProvider {
         for (File file : bookDir.listFiles()) {
             if(!file.isFile())
                 continue;
-            uploadFileToStorage(bookFolderName + id, file);
+            uploadFileToStorage(bookFolderName + id+"/", file);
             deleteFile(file);
         }
         /*

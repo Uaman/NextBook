@@ -28,6 +28,9 @@ public class IndexController {
     private IUserProvider userProvider;
 
     @Inject
+    private StatisticUtil statisticUtil;
+
+    @Inject
     private Md5PasswordEncoder md5PasswordEncoder;
 
     @RequestMapping(value = "/signin")
@@ -57,7 +60,7 @@ public class IndexController {
         role.setId(1);
         user.setRole(role);
         user = userProvider.update(user);
-        StatisticUtil.RegistrationEvent(user);
+        statisticUtil.registrationEvent(user);
         return user != null;
     }
 }

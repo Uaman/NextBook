@@ -37,6 +37,8 @@ public class UsersController {
     private Md5PasswordEncoder md5PasswordEncoder;
     @Inject
     private IPublisherProvider publisherProvider;
+    @Inject
+    private StatisticUtil statisticUtil;
 
     @RequestMapping(value = "/profile")
     @PreAuthorize("isAuthenticated()")
