@@ -78,6 +78,7 @@ public class BookUploadingProvider implements IBookUploadingProvider {
 
     @Override
     public String uploadBookToStorage(int id) {
+        System.out.println("ID: "+id);
         File bookDir = new File(rootDir + File.separator + bookFolderName + id);
         if (!bookDir.exists()) {
             return "";
