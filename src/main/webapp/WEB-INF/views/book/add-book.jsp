@@ -23,6 +23,11 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/textext/textext.plugin.tags.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/textext/textext.plugin.autocomplete.css"/>
 
+    <script src="<c:url value="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" />"></script>
+    <script src="<c:url value="https://d26b395fwzu5fz.cloudfront.net/3.2.6/keen.min.js" />"></script>
+    <script src="<c:url value="../../../resources/js/statistic/common-web.js" />" type="text/javascript"></script>
+    <script src="<c:url value="../../../resources/js/statistic/statistic.min.js" />" type="text/javascript"></script>
+
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
     <jsp:include page="../../../resources/js/book/add.book.js.jsp"/>
     <style>
@@ -46,8 +51,6 @@
             float: right
         }
     </style>
-    <script>
-    </script>
 </head>
 <body>
 <div class="errorblock">

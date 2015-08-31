@@ -15,29 +15,10 @@
     <script src="<c:url value="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" />"></script>
     <script src="<c:url value="https://d26b395fwzu5fz.cloudfront.net/3.2.6/keen.min.js" />"></script>
     <script src="<c:url value="../../../resources/js/statistic/common-web.js" />" type="text/javascript"></script>
-    <script type="text/javascript">
-
-        var keenClient = new Keen({
-            projectId: "55bf358090e4bd5654f0b01b", // String (required always)
-            writeKey: "85a99e97d6af61801104f77b6eea11f4523805028d91eb2c0104bf0c62f3665cca5567aa928e9fabcaa59ddb642f08329ede014d477384f9ed48d65a20062b1da7820aea774c1097a74f7b87ac0f0710033be8d79003d28140bf5cd2d42de538e9b053c637eb360b3e061069dfa5fc8f"   // String (required for sending data)
-        });
-
-        CommonWeb.Keen.Client = new Keen({
-            projectId: "55bf358090e4bd5654f0b01b", // String (required always)
-            writeKey: "85a99e97d6af61801104f77b6eea11f4523805028d91eb2c0104bf0c62f3665cca5567aa928e9fabcaa59ddb642f08329ede014d477384f9ed48d65a20062b1da7820aea774c1097a74f7b87ac0f0710033be8d79003d28140bf5cd2d42de538e9b053c637eb360b3e061069dfa5fc8f"   // String (required for sending data)
-        });
-        CommonWeb.addGlobalProperties(CommonWeb.Keen.globalProperties);
-        CommonWeb.Keen.Debug = true;
-        CommonWeb.Callback = CommonWeb.Keen.Callback;
-    </script>
+    <script src="<c:url value="../../../resources/js/statistic/statistic.min.js" />" type="text/javascript"></script>
     <title></title>
 </head>
 <body>
-<script>
-    CommonWeb.trackSession();
-    CommonWeb.trackPageview();
-    CommonWeb.trackClicks();
-</script>
 <ul>
     <%--<security:authentication property="principal.authorities" />--%>
     <security:authorize access="isAuthenticated()">

@@ -1,5 +1,4 @@
 (function () {
-
     var options = {
         pageviewsEventName: "pageviews",
         clicksEventName: "clicks",
