@@ -15,6 +15,7 @@ import java.util.List;
  */
 public interface IBookUploadingProvider {
     String uploadBookToStorage(int id);
+    String uploadCoversToStorage(int id);
     boolean uploadFileToLocalStorage(int id, MultipartFile file);
     boolean uploadCoverToLocalStorage(int id, MultipartFile file, Cover cover);
 

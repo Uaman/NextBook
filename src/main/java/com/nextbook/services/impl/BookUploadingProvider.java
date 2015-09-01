@@ -63,10 +63,7 @@ public class BookUploadingProvider implements IBookUploadingProvider {
         if (!coverDir.exists())
             coverDir.mkdirs();
         try {
-            String fileExtension = FilesUtils.getFIleExtensions(file.getOriginalFilename());
-            if(!fileExtension.matches(acceptedCoverExtensions))
-                return false;
-            String fileName = cover.toString() + '.' + fileExtension;
+            String fileName = cover.toString()+"_"+file.getOriginalFilename();
             File resultFile = new File(coverDir + File.separator + fileName);
             FileCopyUtils.copy(file.getBytes(), new FileOutputStream(resultFile));
         } catch (IOException e) {
@@ -78,7 +75,6 @@ public class BookUploadingProvider implements IBookUploadingProvider {
 
     @Override
     public String uploadBookToStorage(int id) {
-        System.out.println("ID: "+id);
         File bookDir = new File(rootDir + File.separator + bookFolderName + id);
         if (!bookDir.exists()) {
             return "";
@@ -86,19 +82,9 @@ public class BookUploadingProvider implements IBookUploadingProvider {
         for (File file : bookDir.listFiles()) {
             if(!file.isFile())
                 continue;
-            uploadFileToStorage(bookFolderName + id+"/", file);
+            uploadFileToStorage(bookFolderName+id+"/", file);
             deleteFile(file);
         }
-        /*
-        String coversPath = bookDir + File.separator + coverFolderName;
-        File coverDir = new File(coversPath);
-        for (File file : coverDir.listFiles()) {
-            if(!file.isFile())
-                continue;
-            uploadFileToStorage(bookFolderName + id + '\\' + coverFolderName + '\\' + file.getName(), file);
-            deleteFile(file);
-        }
-*/
         for(CloudBlob blob: getAllFiles(bookFolderName+id))
             try {
                 if(blob.getName().endsWith(".pdf"))
@@ -106,6 +92,21 @@ public class BookUploadingProvider implements IBookUploadingProvider {
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
+        return "";
+    }
+
+    @Override
+    public String uploadCoversToStorage(int id) {
+        File bookDir = new File(rootDir + File.separator + bookFolderName + id + File.separator + "cover");
+        if (!bookDir.exists()) {
+            return "";
+        }
+        for (File file : bookDir.listFiles()) {
+            if(!file.isFile())
+                continue;
+            uploadFileToStorage(bookFolderName+id+"/", file);
+            deleteFile(file);
+        }
         return "";
     }
 

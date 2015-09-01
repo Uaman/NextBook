@@ -12,8 +12,8 @@
 
 <html>
 <head>
-    <script src="<c:url value="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" />"></script>
-    <script src="<c:url value="https://d26b395fwzu5fz.cloudfront.net/3.2.6/keen.min.js" />"></script>
+    <script src="/resources/js/jquery-2.1.3.min.js"></script>
+    <script src="https://d26b395fwzu5fz.cloudfront.net/3.2.6/keen.min.js"></script>
     <script src="<c:url value="../../../resources/js/statistic/common-web.js" />" type="text/javascript"></script>
     <script src="<c:url value="../../../resources/js/statistic/statistic.min.js" />" type="text/javascript"></script>
     <title></title>
@@ -27,9 +27,7 @@
     </security:authorize>
 
     <security:authorize access="@Secure.isPublisher()">
-        <li><a href="/book/new-book" class="keen-click-track" data-keen-name="click_homepage_hero_start_free_trial">Add
-            book</a></li>
-        <li><a href="/#" class="keen-click-track" data-keen-name="just_link">Add book</a></li>
+        <li><a href="/book/new-book">Add book</a></li>
     </security:authorize>
     <c:choose>
         <c:when test="${publisher ne null}">

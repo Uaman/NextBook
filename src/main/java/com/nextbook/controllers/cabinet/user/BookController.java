@@ -144,10 +144,9 @@ public class BookController {
         if(book == null)
             return -1;
         String storageLink = bookUploadingProvider.uploadBookToStorage(book.getId());
+        String coverLink = bookUploadingProvider.uploadCoversToStorage(book.getId());
         book.setLinkToStorage(storageLink);
         bookProvider.updateBook(book);
-
-        //StatisticUtil.AddEvent(user, book);
         return 1;
     }
 
