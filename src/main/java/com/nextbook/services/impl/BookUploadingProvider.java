@@ -12,6 +12,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.*;
 
@@ -63,7 +64,7 @@ public class BookUploadingProvider implements IBookUploadingProvider {
         if (!coverDir.exists())
             coverDir.mkdirs();
         try {
-            String fileName = cover.toString()+"_"+file.getOriginalFilename();
+            String fileName = cover.toString() + "_" + file.getOriginalFilename();
             File resultFile = new File(coverDir + File.separator + fileName);
             FileCopyUtils.copy(file.getBytes(), new FileOutputStream(resultFile));
         } catch (IOException e) {
@@ -80,16 +81,16 @@ public class BookUploadingProvider implements IBookUploadingProvider {
             return "";
         }
         for (File file : bookDir.listFiles()) {
-            if(!file.isFile())
+            if (!file.isFile())
                 continue;
-            uploadFileToStorage(bookFolderName+id+"/", file);
+            uploadFileToStorage(bookFolderName + id + "/", file);
             deleteFile(file);
         }
-        for(CloudBlob blob: getAllFiles(bookFolderName+id))
+        for (CloudBlob blob : getAllFiles(bookFolderName + id))
             try {
-                if(blob.getName().endsWith(".pdf"))
-                    return blob.getUri().toString();
-            } catch (URISyntaxException e) {
+                if (blob.getName().endsWith(".pdf"))
+                    return blob.getUri().toURL().toString();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         return "";
@@ -102,9 +103,9 @@ public class BookUploadingProvider implements IBookUploadingProvider {
             return "";
         }
         for (File file : bookDir.listFiles()) {
-            if(!file.isFile())
+            if (!file.isFile())
                 continue;
-            uploadFileToStorage(bookFolderName+id+"/", file);
+            uploadFileToStorage(bookFolderName + id + "/", file);
             deleteFile(file);
         }
         return "";
