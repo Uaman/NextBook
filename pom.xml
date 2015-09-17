@@ -555,7 +555,7 @@
                 <configuration>
                     <url>jdbc:mysql://localhost:3306/</url>
                     <user>root</user>
-                    <password>root</password>
+                    <password>Zaqwsx!05</password>
                     <schemas>
                         <schema>nextbook</schema>
                     </schemas>

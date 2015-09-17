@@ -3,8 +3,7 @@ package com.nextbook.domain.entities;
 import com.nextbook.domain.pojo.TypeOfPayment;
 
 import javax.persistence.*;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by Dima on 03.09.2015.
@@ -12,12 +11,11 @@ import java.util.Date;
 
 @Entity
 @Table(name = "orders")
-@NamedQueries({
-        @NamedQuery(name = OrderEntity.getAllOrders, query = "SELECT or der FROM OrderEntity orders"),
-        @NamedQuery(name = OrderEntity.getOrdersByUser, query = "SELECT order FROM OrderEntity orders WHERE order.user=:user")
-})
-
-public class OrderEntity {
+//@NamedQueries({
+//        @NamedQuery(name = OrderEntity.getAllOrders, query = "SELECT order FROM OrderEntity orders"),
+//        @NamedQuery(name = OrderEntity.getOrdersByUser, query = "SELECT order FROM OrderEntity orders WHERE order.user=:user")
+//})
+public class OrderEntity implements java.io.Serializable {
 
     public static final String getAllOrders = "getAllOrders";
     public static final String getOrdersByUser = "getOrdersByUser";
@@ -27,6 +25,28 @@ public class OrderEntity {
     @Column(name = "ID")
     private Integer id;
 
+
+
+
+    @OneToMany(mappedBy = "orderEntities",cascade=CascadeType.ALL)
+    private Set<OrderedBookEntity> orderedBooksEnt = new HashSet<OrderedBookEntity>();
+
+    public Set<OrderedBookEntity> getOrderedBooksEnt() {
+        return orderedBooksEnt;
+    }
+
+    public void setOrderedBooksEnt(Set<OrderedBookEntity> orderedBooksEnt) {
+        this.orderedBooksEnt = orderedBooksEnt;
+    }
+
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "STATE_ID", nullable = false)
     private StateOfOrderEntity stateOfOrderEnt;
@@ -34,8 +54,9 @@ public class OrderEntity {
     @Column(name = "IS_PAID")
     private byte[] isPaid;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID", nullable = false)
-    private UserEntity user;
+    private UserEntity userEntity;
 
     @Column(name = "DATE_OF_ORDER")
     Date dateOfOrder;
@@ -57,7 +78,7 @@ public class OrderEntity {
                 "id=" + id +
                 ", stateOfOrderEnt=" + stateOfOrderEnt +
                 ", isPaid=" + Arrays.toString(isPaid) +
-                ", user=" + user +
+                ", user=" + userEntity +
                 ", dateOfOrder=" + dateOfOrder +
                 ", typeOfPaymentEnt=" + typeOfPaymentEnt +
                 ", description='" + description + '\'' +
@@ -133,11 +154,11 @@ public class OrderEntity {
     }
 
     public UserEntity getUser() {
-        return user;
+        return userEntity;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setUser(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     public Date getDateOfOrder() {

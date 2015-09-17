@@ -1,5 +1,8 @@
 package com.nextbook.domain.pojo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: borsch
@@ -19,12 +22,22 @@ public class User {
 
     private Role role;
 
+    private List<Adresses> deliveryAdresses;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<Adresses> getDeliveryAdresses() {
+        return deliveryAdresses;
+    }
+
+    public void setDeliveryAdresses(List<Adresses> deliveryAdresses) {
+        this.deliveryAdresses = deliveryAdresses;
     }
 
     public String getEmail() {

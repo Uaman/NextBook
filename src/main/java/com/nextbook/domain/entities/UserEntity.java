@@ -1,10 +1,13 @@
 package com.nextbook.domain.entities;
 
 import com.nextbook.domain.pojo.Role;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,9 +47,34 @@ public class UserEntity {
     @JoinColumn(name = "ROLE_ID", nullable = false)
     private RoleEntity roleEntity;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "users_adresses", joinColumns = {@JoinColumn(name = "USER_ID",
+            nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "ADDRESS_ID",
+                    nullable = false, updatable = false)}
+    )
+    private Set<AdressesEntity> deliveryAdressesEnt = new HashSet<AdressesEntity>();
+
     //@ManyToOne
     //@JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "USER_ID")}, inverseJoinColumns = {@JoinColumn(name = "PUBLISHER_ID")})
     //private PublisherEntity publisherEntity;
+
+
+    public static String getGetAllUsers() {
+        return getAllUsers;
+    }
+
+    public static String getGetUserByEmail() {
+        return getUserByEmail;
+    }
+
+    public Set<AdressesEntity> getDeliveryAdressesEnt() {
+        return deliveryAdressesEnt;
+    }
+
+    public void setDeliveryAdressesEnt(Set<AdressesEntity> deliveryAdressesEnt) {
+        this.deliveryAdressesEnt = deliveryAdressesEnt;
+    }
 
     public Integer getId() {
         return id;

@@ -2,6 +2,7 @@ package com.nextbook.domain.pojo;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Dima on 01.09.2015.
@@ -18,11 +19,21 @@ public class Order {
 
     Date dateOfOrder;
 
-    TypeOfPayment typeOfPaument;
+    TypeOfPayment typeOfPayment;
+
+    List<OrderedBook> orderedBooksList;
 
     String description;
 
     Delivering delivering;
+
+    public List<OrderedBook> getOrderedBooksList() {
+        return orderedBooksList;
+    }
+
+    public void setOrderedBooksList(List<OrderedBook> orderedBooksList) {
+        this.orderedBooksList = orderedBooksList;
+    }
 
     @Override
     public String toString() {
@@ -32,7 +43,7 @@ public class Order {
                 ", isPaid=" + Arrays.toString(isPaid) +
                 ", user=" + user +
                 ", dateOfOrder=" + dateOfOrder +
-                ", typeOfPaument=" + typeOfPaument +
+                ", typeOfPaument=" + typeOfPayment +
                 ", description='" + description + '\'' +
                 ", delivering=" + delivering +
                 '}';
@@ -115,11 +126,11 @@ public class Order {
     }
 
     public TypeOfPayment getTypeOfPaument() {
-        return typeOfPaument;
+        return typeOfPayment;
     }
 
     public void setTypeOfPaument(TypeOfPayment typeOfPaument) {
-        this.typeOfPaument = typeOfPaument;
+        this.typeOfPayment = typeOfPaument;
     }
 
     public String getDescription() {
