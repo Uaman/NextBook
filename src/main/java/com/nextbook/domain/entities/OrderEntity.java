@@ -11,10 +11,10 @@ import java.util.*;
 
 @Entity
 @Table(name = "orders")
-//@NamedQueries({
+@NamedQueries(value = {
 //        @NamedQuery(name = OrderEntity.getAllOrders, query = "SELECT order FROM OrderEntity orders"),
-//        @NamedQuery(name = OrderEntity.getOrdersByUser, query = "SELECT order FROM OrderEntity orders WHERE order.user=:user")
-//})
+        @NamedQuery(name = OrderEntity.getOrdersByUser, query = "SELECT order FROM OrderEntity order WHERE order.userEntity.id =: userId")
+})
 public class OrderEntity implements java.io.Serializable {
 
     public static final String getAllOrders = "getAllOrders";
