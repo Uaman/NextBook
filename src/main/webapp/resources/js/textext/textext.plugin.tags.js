@@ -6,8 +6,7 @@
  * @copyright Copyright (C) 2011 Alex Gorbatchev. All rights reserved.
  * @license MIT License
  */
-var KEYWORD_X = 'keyword-x';
-var AUTHOR_X = 'author-x';
+
 var CLASS;
 
 (function($)

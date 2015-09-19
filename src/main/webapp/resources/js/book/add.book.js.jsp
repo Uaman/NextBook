@@ -2,6 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <script>
+var KEYWORD_X = 'keyword-x';
+var AUTHOR_X = 'author-x';
 var BOOK_ID = ${book.id};
 var firstPageUploaded = false;
 var lastPageUploaded = false;

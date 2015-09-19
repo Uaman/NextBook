@@ -48,8 +48,10 @@ public class BookUploadingProvider implements IBookUploadingProvider {
         if (!bookDir.exists())
             bookDir.mkdirs();
         try {
-            File resultFile = new File(bookDir + File.separator + file.getOriginalFilename());
-            FileCopyUtils.copy(file.getBytes(), new FileOutputStream(resultFile));
+            File fileWithoutPass = new File(bookDir + File.separator + "without_pass_" + file.getOriginalFilename());
+            FileCopyUtils.copy(file.getBytes(), new FileOutputStream(fileWithoutPass));
+            File fileWithPass = new File(bookDir + File.separator + "with_pass_" + file.getOriginalFilename());
+            setPasswordToPdfFile(fileWithoutPass, fileWithPass);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
