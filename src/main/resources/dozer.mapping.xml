@@ -22,7 +22,7 @@
 
     <mapping>
         <class-a>com.nextbook.domain.pojo.OrderState</class-a>
-        <class-b>com.nextbook.domain.entities.StateOfOrderEntity</class-b>
+        <class-b>com.nextbook.domain.entities.OrderStateEntity</class-b>
     </mapping>
 
     <mapping>
@@ -33,39 +33,11 @@
     <mapping>
         <class-a>com.nextbook.domain.pojo.OrderedBook</class-a>
         <class-b>com.nextbook.domain.entities.OrderedBookEntity</class-b>
-        <field>
-            <a>orderedBook</a>
-            <b>bookEnt</b>
-        </field>
-        <field>
-            <a>order</a>
-            <b>orderEnt</b>
-        </field>
     </mapping>
 
     <mapping>
         <class-a>com.nextbook.domain.pojo.Order</class-a>
         <class-b>com.nextbook.domain.entities.OrderEntity</class-b>
-        <field>
-            <a>orderState</a>
-            <b>stateOfOrderEnt</b>
-        </field>
-        <field>
-            <a>orderedBooksList</a>
-            <b>orderedBooksEnt</b>
-        </field>
-        <field>
-            <a>user</a>
-            <b>userEntity</b>
-        </field>
-        <field>
-            <a>typeOfPayment</a>
-            <b>typeOfPaymentEnt</b>
-        </field>
-        <field>
-            <a>delivering</a>
-            <b>typeOfDeliveringEnt</b>
-        </field>
     </mapping>
 
     <mapping>

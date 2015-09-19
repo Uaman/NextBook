@@ -6,64 +6,26 @@ import javax.persistence.*;
  * Created by Dima on 14.09.2015.
  */
 @Entity
-@Table(name = "orders_with_book")
+@Table(name = "ORDERS_WITH_BOOK")
 public class OrderedBookEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+    @Column(name = "id")
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ORDERS_ID")
-    private OrderEntity orderEnt;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "orders_id")
+    private OrderEntity order;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "BOOK_ID")
-    private BookEntity bookEnt;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private BookEntity orderedBook;
 
-    @Column(name = "NUMBER_OF_BOOKS")
+    @Column(name = "number_of_books")
     private int numberOfBooks;
 
-    @Override
-    public String toString() {
-        return "OrderedBookEntity{" +
-                "id=" + id +
-                ", orderEnt=" + orderEnt +
-                ", bookEnt=" + bookEnt +
-                ", numberOfBooks=" + numberOfBooks +
-                ", orderEntities=" + orderEntities +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        OrderedBookEntity that = (OrderedBookEntity) o;
-
-        if (getId() != that.getId()) return false;
-        if (getNumberOfBooks() != that.getNumberOfBooks()) return false;
-        if (getOrderEnt() != null ? !getOrderEnt().equals(that.getOrderEnt()) : that.getOrderEnt() != null)
-            return false;
-        if (getBookEnt() != null ? !getBookEnt().equals(that.getBookEnt()) : that.getBookEnt() != null) return false;
-        return !(getOrderEntities() != null ? !getOrderEntities().equals(that.getOrderEntities()) : that.getOrderEntities() != null);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getId();
-        result = 31 * result + (getOrderEnt() != null ? getOrderEnt().hashCode() : 0);
-        result = 31 * result + (getBookEnt() != null ? getBookEnt().hashCode() : 0);
-        result = 31 * result + getNumberOfBooks();
-        result = 31 * result + (getOrderEntities() != null ? getOrderEntities().hashCode() : 0);
-        return result;
-    }
-
     public int getId() {
-
         return id;
     }
 
@@ -71,20 +33,20 @@ public class OrderedBookEntity{
         this.id = id;
     }
 
-    public OrderEntity getOrderEnt() {
-        return orderEnt;
+    public OrderEntity getOrder() {
+        return order;
     }
 
-    public void setOrderEnt(OrderEntity orderEnt) {
-        this.orderEnt = orderEnt;
+    public void setOrder(OrderEntity order) {
+        this.order = order;
     }
 
-    public BookEntity getBookEnt() {
-        return bookEnt;
+    public BookEntity getOrderedBook() {
+        return orderedBook;
     }
 
-    public void setBookEnt(BookEntity bookEnt) {
-        this.bookEnt = bookEnt;
+    public void setOrderedBook(BookEntity orderedBook) {
+        this.orderedBook = orderedBook;
     }
 
     public int getNumberOfBooks() {
@@ -95,15 +57,37 @@ public class OrderedBookEntity{
         this.numberOfBooks = numberOfBooks;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    @ManyToOne(optional = false)
-    private OrderEntity orderEntities;
+        OrderedBookEntity that = (OrderedBookEntity) o;
 
-    public OrderEntity getOrderEntities() {
-        return orderEntities;
+        if (id != that.id) return false;
+        if (numberOfBooks != that.numberOfBooks) return false;
+        if (order != null ? !order.equals(that.order) : that.order != null) return false;
+        if (orderedBook != null ? !orderedBook.equals(that.orderedBook) : that.orderedBook != null) return false;
+
+        return true;
     }
 
-    public void setOrderEntities(OrderEntity orderEntities) {
-        this.orderEntities = orderEntities;
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (order != null ? order.hashCode() : 0);
+        result = 31 * result + (orderedBook != null ? orderedBook.hashCode() : 0);
+        result = 31 * result + numberOfBooks;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderedBookEntity{" +
+                "id=" + id +
+                ", order=" + order +
+                ", orderedBook=" + orderedBook +
+                ", numberOfBooks=" + numberOfBooks +
+                '}';
     }
 }

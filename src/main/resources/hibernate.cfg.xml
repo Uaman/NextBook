@@ -25,12 +25,11 @@
         <mapping class="com.nextbook.domain.entities.AuthorEntity"/>
         <mapping class="com.nextbook.domain.entities.BookKeywordEntity"/>
         <mapping class="com.nextbook.domain.entities.BookAuthorEntity"/>
-        <mapping class="com.nextbook.domain.entities.OrderEntity"/>
-        <mapping class="com.nextbook.domain.entities.TypeOfDeliveringEntity"/>
-        <mapping class="com.nextbook.domain.entities.AdressesEntity"/>
-        <mapping class="com.nextbook.domain.entities.StateOfOrderEntity"/>
-        <mapping class="com.nextbook.domain.entities.TypeOfPaymentEntity"/>
         <mapping class="com.nextbook.domain.entities.AdressesEntity"/>
         <mapping class="com.nextbook.domain.entities.OrderedBookEntity"/>
+        <mapping class="com.nextbook.domain.entities.OrderEntity"/>
+        <mapping class="com.nextbook.domain.entities.OrderStateEntity"/>
+        <mapping class="com.nextbook.domain.entities.TypeOfPaymentEntity"/>
+        <mapping class="com.nextbook.domain.entities.TypeOfDeliveringEntity"/>
     </session-factory>
 </hibernate-configuration>

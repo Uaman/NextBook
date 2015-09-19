@@ -6,14 +6,15 @@ import javax.persistence.*;
  * Created by Dima on 03.09.2015.
  */
 @Entity
+@Table(name="TYPES_OF_PAYMENT")
 public class TypeOfPaymentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+    @Column(name = "id")
     private int id;
 
-    @Column(name = "NAME_OF_TYPE")
+    @Column(name = "name_of_type")
     private String nameOfType;
 
     @Override

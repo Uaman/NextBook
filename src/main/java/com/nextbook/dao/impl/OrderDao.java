@@ -95,7 +95,7 @@ public class OrderDao implements IOrderDao {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try{
             Query query = session.getNamedQuery(OrderEntity.getOrdersByUser);
-            query.setParameter("user_id", currentUser.getId());
+            query.setParameter("u_id", currentUser.getId());
             List<OrderEntity> list = query.list();
             if(list != null && list.size() > 0){
                 result = new ArrayList<Order>();

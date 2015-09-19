@@ -7,14 +7,15 @@ import javax.persistence.*;
  */
 
 @Entity
-public class StateOfOrderEntity {
+@Table(name = "ORDER_STATES")
+public class OrderStateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+    @Column(name = "id")
     private int id;
 
-    @Column(name = "STATE_OF_THE_ORDER")
+    @Column(name = "state_of_the_order")
     private String stateOfTheOrder;
 
     public int getId() {
@@ -46,7 +47,7 @@ public class StateOfOrderEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        StateOfOrderEntity that = (StateOfOrderEntity) o;
+        OrderStateEntity that = (OrderStateEntity) o;
 
         if (getId() != that.getId()) return false;
         return !(getStateOfTheOrder() != null ? !getStateOfTheOrder().equals(that.getStateOfTheOrder()) : that.getStateOfTheOrder() != null);

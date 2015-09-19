@@ -6,17 +6,18 @@ import javax.persistence.*;
  * Created by Dima on 03.09.2015.
  */
 @Entity
+@Table(name="TYPES_OF_DELIVERING")
 public class TypeOfDeliveringEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+    @Column(name = "id")
     private int id;
 
-    @Column(name = "TYPE_NAME")
+    @Column(name = "type_name")
     private String typeName;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     private String description;
 
     public int getId() {
