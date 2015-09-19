@@ -6,6 +6,10 @@
  * @copyright Copyright (C) 2011 Alex Gorbatchev. All rights reserved.
  * @license MIT License
  */
+var KEYWORD_X = 'keyword-x';
+var AUTHOR_X = 'author-x';
+var CLASS;
+
 (function($)
 {
 	/**
@@ -470,7 +474,6 @@
 
 		if(self.isTagAllowed(tag))
 		{
-            console.log(TAG);
 			self.addTags([ TAG ]);
 			// refocus the textarea just in case it lost the focus
 			self.core().focusInput();
@@ -693,6 +696,7 @@
 			;
 
 		node.find('.text-label').text(tag.value).attr('id', 'author-tag-'+tag.id);
+        node.find('.text-remove').addClass(CLASS).attr('id', tag.id);
 		node.data(CSS_TAG, tag);
 		return node;
 	};

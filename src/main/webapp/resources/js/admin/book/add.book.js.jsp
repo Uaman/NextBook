@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script>
-var BOOK_ID = ${bookId};
+var BOOK_ID = ${book.id};
 //var firstPageUploaded = false;
 //var lastPageUploaded = false;
 //var bookUploaded = true;
@@ -328,6 +328,14 @@ $(document).ready(function(){
         });
     });
 
+    CLASS = AUTHOR_X;
+
+    <c:if test="${authors ne null}">
+    <c:forEach items="${authors}" var="author">
+    $('#authors').textext()[0].tags().addTags([{value: '${author.name}', id: ${author.id}}]);
+    </c:forEach>
+    </c:if>
+
     $('#keywords').textext({
         plugins : 'autocomplete tags'
 
@@ -344,6 +352,15 @@ $(document).ready(function(){
             );
         });
     });
+
+    CLASS = KEYWORD_X;
+
+    <c:if test="${book.keywords ne null}">
+    <c:forEach items="${book.keywords}" var="keyword">
+    $('#keywords').textext()[0].tags().addTags([{value: '${keyword.keyword}', id: ${keyword.id}}]);
+    </c:forEach>
+    </c:if>
+
     $('.keyword-x').click(function(){
         var id = $(this).attr('id');
         $.ajax({
