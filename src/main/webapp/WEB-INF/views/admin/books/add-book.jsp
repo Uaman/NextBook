@@ -47,8 +47,6 @@
             width: 400px;
         }
         .author-x, .keyword-x{
-            margin-right: 10px;
-            float: right
         }
     </style>
 
@@ -62,17 +60,6 @@
     <label>UA Name*:<input type="text" name="name_ua" id="name_ua" value="${book.uaName}"/></label><br />
     <label>EN Name:<input type="text" name="name_en" id="name_en" value="${book.enName}"/></label><br />
     <label>RU Name:<input type="text" name="name_ru" id="name_ru" value="${book.ruName}"/></label><br />
-    <c:if test="${authors ne null}">
-        <div>
-            <ul>
-                <c:forEach items="${authors}" var="author">
-                    <li class="author" id="author-${author.id}">
-                            ${author.name} <span id="${author.id}" class="author-x" style="cursor: pointer;">X</span>
-                    </li>
-                </c:forEach>
-            </ul>
-        </div>
-    </c:if>
     <label>Author*: <textarea id="authors" name="authors" rows="2" cols="50"></textarea></label><br />
     <div id="add-author-button" style="width: 150px; height: 30px; border: 1px solid black; cursor: pointer;">Add new author</div>
     <label>Year Of Publication*: <input type="text" id="publication_year" name="publication_year" value="${book.yearOfPublication}"/></label><br />
@@ -86,17 +73,6 @@
     <label>UA Description*:<textarea name="description_ua" id="description_ua">${book.descriptionUa}</textarea></label><br />
     <label>EN Description:<textarea name="description_en" id="description_en">${book.descriptionEn}</textarea></label><br />
     <label>RU Description:<textarea name="description_ru" id="description_ru">${book.descriptionRu}</textarea></label><br />
-    <c:if test="${book.keywords ne null}">
-        <div>
-            <ul>
-                <c:forEach items="${book.keywords}" var="keyword">
-                    <li class="keyword" id="keyword-${keyword.id}">
-                            ${keyword.keyword} <span id="${keyword.id}" class="keyword-x" style="cursor: pointer;">X</span>
-                    </li>
-                </c:forEach>
-            </ul>
-        </div>
-    </c:if>
     <label>Keywords*:<textarea name="keywords" id="keywords" rows="2" cols="50"></textarea></label><br />
     <label>Eighteen Plus: <input type="checkbox" id="eighteen-plus"/></label><br />
     Category: <br />
