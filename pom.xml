@@ -553,9 +553,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
-                    <url>jdbc:mysql://localhost:3306/</url>
-                    <user>root</user>
-                    <password>root</password>
+                    <url>jdbc:mysql://mysql-next.cloudapp.net/</url>
+                    <user>next</user>
+                    <password>Ne1615xt</password>
                     <schemas>
                         <schema>nextbook</schema>
                     </schemas>
