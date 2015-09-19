@@ -1,3 +1,40 @@
+body {
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1b1a19;
+    background: #fafafa;
+    border-top: 5px solid #322c29;
+    margin: 0;
+    line-height: 1.4;
+}
+
+input, select, textarea, button {
+    font: 12px Arial, Helvetica, sans-serif;
+    vertical-align: middle;
+    color: #000;
+    outline: 0;
+    box-shadow: none;
+    border: 1px solid transparent;
+    padding: .5em 1.2em;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-bottomright: 3px;
+    -moz-border-radius-bottomleft: 3px;
+    -webkit-transition: all ease-in-out 1s;
+    -moz-transition: all ease-in-out .1s;
+    -o-transition: all ease-in-out .1s;
+    transition: all ease-in-out .1s;
+    background: #fff;
+}
+input[type="submit"], button {
+    cursor: pointer;
+}
+
+:focus {
+    outline: none;
+}
 .row-padding {
     margin-top: 25px;
     margin-bottom: 25px;
@@ -62,4 +99,25 @@
 .fileInfo{
     max-width:600px;
     margin-left:65px;
+}
+
+.button {
+    text-transform: lowercase;
+    font: bold 12px/21px Arial, Helvetica, sans-serif;
+    margin: 6px;
+    cursor: pointer;
+}
+.but-orange {
+    color: #fff;
+    background-color: #ff6a1c;
+}
+.but-orange:hover {
+    background-color: #393431;
+}
+.but-gray {
+    color: #fff;
+    background-color: #393431;
+}
+.but-gray:hover {
+    background-color: #ff6a1c;
 }
