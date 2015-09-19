@@ -7,7 +7,7 @@ var AUTHOR_X = 'author-x';
 var BOOK_ID = ${book.id};
 var firstPageUploaded = false;
 var lastPageUploaded = false;
-var bookUploaded = false;
+var bookUploaded = ${book.linkToStorage ne null};
 var isbnExist = false;
 $(document).ready(function(){
 
