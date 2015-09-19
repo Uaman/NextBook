@@ -275,9 +275,6 @@ public class Book {
         if (numberOfPages != book.numberOfPages) return false;
         if (yearOfPublication != book.yearOfPublication) return false;
         if (authors != null ? !authors.equals(book.authors) : book.authors != null) return false;
-        if (bookToAuthor != null ? !bookToAuthor.equals(book.bookToAuthor) : book.bookToAuthor != null) return false;
-        if (bookToKeywords != null ? !bookToKeywords.equals(book.bookToKeywords) : book.bookToKeywords != null)
-            return false;
         if (descriptionEn != null ? !descriptionEn.equals(book.descriptionEn) : book.descriptionEn != null)
             return false;
         if (descriptionRu != null ? !descriptionRu.equals(book.descriptionRu) : book.descriptionRu != null)
@@ -323,8 +320,6 @@ public class Book {
         result = 31 * result + numberOfImagesInGallery;
         result = 31 * result + (keywords != null ? keywords.hashCode() : 0);
         result = 31 * result + (authors != null ? authors.hashCode() : 0);
-        result = 31 * result + (bookToAuthor != null ? bookToAuthor.hashCode() : 0);
-        result = 31 * result + (bookToKeywords != null ? bookToKeywords.hashCode() : 0);
         return result;
     }
 }
