@@ -18,10 +18,7 @@ input, select, textarea, button {
     padding: .5em 1.2em;
     border-radius: 3px;
     -webkit-border-radius: 3px;
-    -moz-border-radius-topright: 3px;
-    -moz-border-radius-topleft: 3px;
-    -moz-border-radius-bottomright: 3px;
-    -moz-border-radius-bottomleft: 3px;
+    -moz-border-radius: 3px;
     -webkit-transition: all ease-in-out 1s;
     -moz-transition: all ease-in-out .1s;
     -o-transition: all ease-in-out .1s;
@@ -73,19 +70,28 @@ a:hover {
     background: #f9f9f9;
     min-height: 29px;
     position: relative;
-    z-index: 30;
+    z-index: 20;
 }
 .row {
     margin: 0 auto;
     width: 1200px;
 }
-.grid_6 {
-    width: 570px;
+.clearfix:before, .clearfix:after {
+    content: "";
+    display: table;
+}
+.grid_6, .grid_12 {
     display: inline;
     float: left;
     position: relative;
     margin: 0 15px;
     min-height: 1px;
+}
+.grid_6 {
+    width: 570px;
+}
+.grid_12 {
+    width: 1170px;
 }
 .links {
     float: right;
@@ -98,6 +104,7 @@ a:hover {
     line-height: 29px;
     display: inline;
     border-right: 1px groove rgba(29, 28, 27, 0.35);
+    cursor: pointer;
 }
 .header-container .links li a, .header-switch span, .links li {
     color: rgba(29, 28, 27, 0.65);
@@ -125,7 +132,42 @@ a:hover {
 .links li:last-child {
     border: none;
 }
+.header-wrapper {
+    height: 114px;
+}
+header {
+    position: relative;
+    z-index: 10;
+    -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+    display: inline-block;
+    width: 100%;
+}
+header.fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #fff;
+}
+header a.logo {
+    text-decoration: none;
+    margin: 34px 0;
+    float: none;
+    display: inline-block;
+}
 /********* /Header ********/
+
+/********* Content ********/
+.main-container, .footer-container .product-slider-container {
+    background-color: #ffffff;
+}
+.col-main, .col-main-left, .col-main-right {
+    border: none;
+    padding: 30px 15px 0;
+    margin: 0;
+}
+/********* /Content ********/
 
 /********* Error block ********/
 .errorblock {

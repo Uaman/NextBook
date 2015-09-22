@@ -11,7 +11,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="header-container">
   <div class="top-switch-bg">
-    <div class="row">
+    <div class="row clearfix">
       <div class="grid_6">language-switch</div>
       <div class="grid_6">
         <ul class="links">
@@ -45,7 +45,15 @@
     </div>
   </div>
   <div class="header-wrapper">
-    <header></header>
+    <header>
+      <div class="row clearfix">
+        <div class="grid_12">
+          <a href="/" class="logo">
+            <img src="../resources/images/logo.png"/>
+          </a>
+        </div>
+      </div>
+    </header>
   </div>
 
 </div>

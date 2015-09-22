@@ -14,6 +14,7 @@
     <title>Sign up</title>
     <script src="/resources/js/jquery-2.1.3.min.js"></script>
     <script src="/resources/js/jquery.validate.min.js"></script>
+    <script src="/resources/js/main/index.js"></script>
     <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=latin-ext,cyrillic-ext' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
@@ -24,8 +25,10 @@
   <div class="wrapper">
     <div class="page">
       <jsp:include page="../../template/default/headerContent.jsp"/>
-
-      <div id="sign-in-form" class="popup-default block-login" style="display: block;">
+        <div class="main-container">
+          <div class="main row clearfix">
+            <div class="col-main">
+      <div id="sign-up-form" class="block-login">
         <span class="block-title">Sign up</span>
         <div class="errorblock">
           <ul></ul>
@@ -48,9 +51,11 @@
           </form>
         </div>
       </div>
+            </div>
 
     </div>
   </div>
 
+   <jsp:include page="signinPopup.jsp"/>
 </body>
 </html>
