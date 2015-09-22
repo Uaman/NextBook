@@ -22,35 +22,12 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/main.css"/>
 </head>
 <body>
-<ul>
+    <div class="wrapper">
+        <div class="page">
+            <jsp:include page="../../template/default/headerContent.jsp"/>
 
-    <security:authorize access="isAnonymous()">
-        <li id="sign-in"><spring:message code="global.signIn" /></li>
-        <li><a href="/signup"><spring:message code="global.signUp" /></a></li>
-    </security:authorize>
-
-    <security:authorize access="isAuthenticated()">
-        <li><a href="/cabinet/profile"><spring:message code="user.info.profile" /></a></li>
-    </security:authorize>
-
-    <security:authorize access="@Secure.isPublisher()">
-        <li><a href="/book/new-book">Add book</a></li>
-    </security:authorize>
-
-    <security:authorize access="@Secure.isAdmin()">
-        <li><a href="/admin/books/all"><spring:message code="books.manageBooks" /></a></li>
-        <li><a href="/admin/users/all"><spring:message code="users.manageUsers" /></a></li>
-        <li><a href="/admin/authors/all"><spring:message code="authors.manageAuthors" /></a></li>
-        <li><a href="/admin/publishers/all"><spring:message code="publishers.managePublishers" /></a></li>
-    </security:authorize>
-
-    <security:authorize access="isAuthenticated()">
-        <li><a href="/static/j_spring_security_logout"><spring:message code="global.exit" /></a></li>
-    </security:authorize>
-
-</ul>
-
-
+        </div>
+    </div>
     <div id="sign-in-form" class="popup-default block-login" style="display: none;">
         <span class="block-title"><spring:message code="global.signIn" /></span>
         <div class="block-content">
