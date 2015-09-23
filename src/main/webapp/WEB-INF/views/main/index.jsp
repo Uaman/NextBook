@@ -16,49 +16,17 @@
     <script src="/resources/js/jquery.validate.min.js"></script>
     <script src="/resources/js/main/index.js"></script>
 
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=latin-ext,cyrillic-ext' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/css/main.css"/>
 </head>
 <body>
-<ul>
+    <div class="wrapper">
+        <div class="page">
+            <jsp:include page="../../template/default/headerContent.jsp"/>
 
-    <security:authorize access="isAnonymous()">
-        <li id="sign-in"><spring:message code="global.signIn" /></li>
-        <li><a href="/signup"><spring:message code="global.signUp" /></a></li>
-    </security:authorize>
-
-    <security:authorize access="isAuthenticated()">
-        <li><a href="/cabinet/profile"><spring:message code="user.info.profile" /></a></li>
-    </security:authorize>
-
-    <security:authorize access="@Secure.isPublisher()">
-        <li><a href="/book/new-book">Add book</a></li>
-    </security:authorize>
-
-    <security:authorize access="@Secure.isAdmin()">
-        <li><a href="/admin/books/all"><spring:message code="books.manageBooks" /></a></li>
-        <li><a href="/admin/users/all"><spring:message code="users.manageUsers" /></a></li>
-        <li><a href="/admin/authors/all"><spring:message code="authors.manageAuthors" /></a></li>
-        <li><a href="/admin/publishers/all"><spring:message code="publishers.managePublishers" /></a></li>
-    </security:authorize>
-
-    <security:authorize access="isAuthenticated()">
-        <li><a href="/static/j_spring_security_logout"><spring:message code="global.exit" /></a></li>
-    </security:authorize>
-
-</ul>
-
-
-    <div id="sign-in-form" class="popup-default" style="display: none;">
-        <form:form action="static/j_spring_security_check" method="POST">
-            <spring:message code="user.info.email" />:<input type="text" name="j_username"/><br />
-            <spring:message code="user.info.password" />:<input type="password"  name="j_password"/><br />
-            <input id="remember_me" name="_spring_security_remember_me" type="checkbox"/>
-            <label for="remember_me"> <spring:message code="global.rememberMe" /> </label><br />
-            <input type="submit" value='<spring:message code="global.signIn" />'/><br />
-        </form:form>
-        <button id="close"><spring:message code="button.close"/></button>
+        </div>
     </div>
-    <div class="shadow" style="display: none;"></div>
+    <jsp:include page="../auth/signinPopup.jsp"/>
 </body>
 </html>

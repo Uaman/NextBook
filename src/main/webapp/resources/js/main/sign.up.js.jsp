@@ -57,7 +57,7 @@
                     required: '<spring:message code="sign.up.error.blank.password.confirm" />'
                 }
             },
-            errorLabelContainer: $("div.errorblock"),
+            errorLabelContainer: $("div.errorblock ul"),
             wrapper: 'li',
             submitHandler: function(form) {
                 var data = formData();
