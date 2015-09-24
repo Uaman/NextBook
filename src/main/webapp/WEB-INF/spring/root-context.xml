@@ -23,9 +23,8 @@
 	<bean
 			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 
-		<property name="location">
-			<value>env.properties</value>
-		</property>
+		<property name="location" value="env.properties"/>
+		<property name="ignoreUnresolvablePlaceholders" value="true"/>
 	</bean>
 
 	<!-- Файл с настройками ресурсов для работы с данными (Data Access Resources) -->

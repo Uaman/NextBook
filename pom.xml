@@ -21,13 +21,6 @@
         <org.aspectj-version>1.6.9</org.aspectj-version>
         <org.slf4j-version>1.5.10</org.slf4j-version>
         <tiles.version>2.2.1</tiles.version>
-        <bean
-                class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-            <property name="location">
-                <value>env.properties</value>
-            </property>
-        </bean>
-
     </properties>
 
 
@@ -502,24 +495,24 @@
                     <target>${java-version}</target>
                 </configuration>
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>org.codehaus.mojo</groupId>-->
-                <!--<artifactId>properties-maven-plugin</artifactId>-->
-                <!--<version>1.0-alpha-2</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<phase>validate</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>read-project-properties</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<files>-->
-                                <!--<file>src/main/webapp/env.properties</file>-->
-                            <!--</files>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>src/main/webapp/env.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
