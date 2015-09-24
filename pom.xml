@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:context="http://www.springframework.org/schema/context"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.kutsyk.pdf.uploader</groupId>
@@ -7,6 +8,10 @@
     <name>NextBook</name>
     <packaging>war</packaging>
     <version>1.0.0-BUILD-SNAPSHOT</version>
+
+
+
+
 
     <properties>
         <java-version>1.6</java-version>
@@ -16,13 +21,28 @@
         <org.aspectj-version>1.6.9</org.aspectj-version>
         <org.slf4j-version>1.5.10</org.slf4j-version>
         <tiles.version>2.2.1</tiles.version>
+        <bean
+                class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="location">
+                <value>env.properties</value>
+            </property>
+        </bean>
+
     </properties>
+
+
     <dependencies>
 
         <dependency>
             <groupId>com.liqpay</groupId>
             <artifactId>liqpay-sdk</artifactId>
             <version>0.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>properties-maven-plugin</artifactId>
+            <version>1.0-alpha-2</version>
         </dependency>
 
         <!-- Spring -->
@@ -471,7 +491,9 @@
         </repository>
     </repositories>
     <build>
+
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -480,6 +502,24 @@
                     <target>${java-version}</target>
                 </configuration>
             </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.codehaus.mojo</groupId>-->
+                <!--<artifactId>properties-maven-plugin</artifactId>-->
+                <!--<version>1.0-alpha-2</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>validate</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>read-project-properties</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<files>-->
+                                <!--<file>src/main/webapp/env.properties</file>-->
+                            <!--</files>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -553,9 +593,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
-                    <url>jdbc:mysql://localhost:3306/</url>
-                    <user>root</user>
-                    <password>root</password>
+                    <url>${database.login}</url>
+                    <user>${database.login}</user>
+                    <password>${database.password}</password>
                     <schemas>
                         <schema>nextbook</schema>
                     </schemas>
