@@ -66,7 +66,6 @@ public class Keyword{
     public int hashCode() {
         int result = id;
         result = 31 * result + (keyword != null ? keyword.hashCode() : 0);
-        result = 31 * result + (bookToKeywords != null ? bookToKeywords.hashCode() : 0);
         return result;
     }
 }

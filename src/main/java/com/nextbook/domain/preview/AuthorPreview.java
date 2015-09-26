@@ -1,5 +1,9 @@
 package com.nextbook.domain.preview;
 
+import com.nextbook.domain.pojo.Author;
+
+import java.util.Locale;
+
 /**
  * Created with IntelliJ IDEA.
  * User: borsch
@@ -19,6 +23,19 @@ public class AuthorPreview {
     public AuthorPreview(int id, String name){
         this.id = id;
         this.name = name;
+    }
+
+    public AuthorPreview(Author a, Locale locale) {
+        this.id = a.getId();
+        if (locale.getLanguage().equals("en")) {
+            this.name = a.getFirstNameEn() + " " +a.getLastNameEn();
+        }
+        if (locale.getLanguage().equals("uk")) {
+            this.name = a.getFirstNameUa() + " " +a.getLastNameUa();
+        }
+        if (locale.getLanguage().equals("ru")) {
+            this.name = a.getFirstNameRu() + " " +a.getLastNameRu();
+        }
     }
 
     public int getId() {
