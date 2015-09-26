@@ -219,8 +219,8 @@ $(document).ready(function(){
         $('#add-author-form').show();
         $('.shadow').show();
     });
-    $('#close').click(function(){
-        $('#add-author-form').hide();
+    $('.close').click(function(){
+        $('.popup-default').hide();
         $('.shadow').hide();
     });
 
@@ -408,6 +408,10 @@ $(document).ready(function(){
                 console.log(e);
             }
         })
+    });
+    $('.help').click(function(){
+        $('#help-popup').show();
+        $('.shadow').show();
     });
 });
 

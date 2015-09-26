@@ -49,6 +49,13 @@
         }
         .author-x, .keyword-x{
         }
+        ul {
+            list-style-type: none;
+            padding: 0px;
+            margin: 0px;
+            text-align: left;
+        }
+
     </style>
 </head>
 <body>
@@ -60,7 +67,7 @@
         <label>UA Name*:<input type="text" name="name_ua" id="name_ua" value="${book.uaName}"/></label><br />
         <label>EN Name:<input type="text" name="name_en" id="name_en" value="${book.enName}"/></label><br />
         <label>RU Name:<input type="text" name="name_ru" id="name_ru" value="${book.ruName}"/></label><br />
-        <label>Author*: <textarea id="authors" name="authors" rows="2" cols="50"></textarea></label><br />
+        <label>Author*: <textarea id="authors" name="authors" rows="2" cols="50"></textarea></label><span class="help">HELP</span><br />
         <div id="add-author-button" style="width: 150px; height: 30px; border: 1px solid black; cursor: pointer;">Add new author</div>
         <label>Year Of Publication*: <input type="text" id="publication_year" name="publication_year" value="${book.yearOfPublication}"/></label><br />
         <input type="hidden" value="some-id" id="publisher-id" name="publisher-id" />
@@ -73,7 +80,7 @@
         <label>UA Description*:<textarea name="description_ua" id="description_ua">${book.descriptionUa}</textarea></label><br />
         <label>EN Description:<textarea name="description_en" id="description_en">${book.descriptionEn}</textarea></label><br />
         <label>RU Description:<textarea name="description_ru" id="description_ru">${book.descriptionRu}</textarea></label><br />
-        <label>Keywords*:<textarea name="keywords" id="keywords" rows="2" cols="50"></textarea></label><br />
+        <label>Keywords*:<textarea name="keywords" id="keywords" rows="2" cols="50"></textarea></label><span class="help">HELP</span><br />
         <label>Eighteen Plus: <input type="checkbox" id="eighteen-plus"/></label><br />
         Category: <br />
         <select id="category">
@@ -121,7 +128,14 @@
     Author First Name RU: <input type="text" id="author-first-name-ru"><br />
     Author Last Name RU: <input type="text" id="author-last-name-ru"><br />
     <input type="button" value="Add" id="send-author-form">
-    <button id="close"><spring:message code="button.close"/></button>
+    <button class="close"><spring:message code="button.close"/></button>
+</div>
+
+<div id="help-popup" class="popup-default" style="display: none;">
+    <div>
+        <spring:message code="book.registration.help"/>
+    </div>
+    <button class="close"><spring:message code="button.close"/></button>
 </div>
 <div class="shadow" style="display: none;"></div>
 </body>
