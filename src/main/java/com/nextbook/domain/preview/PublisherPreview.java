@@ -14,14 +14,12 @@ public class PublisherPreview {
     private String name;
 
     public PublisherPreview(Publisher publisher, Locale locale) {
-        if (locale.getLanguage().equals("en")) {
-            this.name = publisher.getNameEn();
-        }
         if (locale.getLanguage().equals("uk")) {
             this.name = publisher.getNameUa();
-        }
-        if (locale.getLanguage().equals("ru")) {
+        } else if (locale.getLanguage().equals("ru")) {
             this.name = publisher.getNameRu();
+        } else {
+            this.name = publisher.getNameEn();
         }
 
     }

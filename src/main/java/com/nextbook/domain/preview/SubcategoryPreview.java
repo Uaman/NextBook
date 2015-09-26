@@ -17,14 +17,12 @@ public class SubcategoryPreview {
 
     public SubcategoryPreview(SubCategory s, Locale locale) {
         this.id = s.getId();
-        if (locale.getLanguage().equals("en")) {
-            this.name = s.getNameEn();
-        }
         if (locale.getLanguage().equals("uk")) {
             this.name = s.getNameUa();
-        }
-        if (locale.getLanguage().equals("ru")) {
+        } else if (locale.getLanguage().equals("ru")) {
             this.name = s.getNameRu();
+        } else {
+            this.name = s.getNameEn();
         }
     }
 

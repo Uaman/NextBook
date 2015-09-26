@@ -28,20 +28,18 @@ public class BookPreview {
     public BookPreview(Book b, Locale locale) {
         this.id = b.getId();
         this.yearOfPublication = b.getYearOfPublication();
-        if (locale.getLanguage().equals("en")) {
-            this.name = b.getEnName();
-            this.description = b.getDescriptionEn();
-            this.subCategory = b.getSubCategory().getNameEn();
-        }
         if (locale.getLanguage().equals("uk")) {
             this.name = b.getUaName();
             this.description = b.getDescriptionUa();
             this.subCategory = b.getSubCategory().getNameUa();
-        }
-        if (locale.getLanguage().equals("ru")) {
+        } else if (locale.getLanguage().equals("ru")) {
             this.name = b.getRuName();
             this.description = b.getDescriptionRu();
             this.subCategory = b.getSubCategory().getNameRu();
+        } else {
+            this.name = b.getEnName();
+            this.description = b.getDescriptionEn();
+            this.subCategory = b.getSubCategory().getNameEn();
         }
         this.authors = new ArrayList<AuthorPreview>();
         for (Author a:b.getAuthors())

@@ -20,14 +20,12 @@ public class CategoryPreview {
 
     public CategoryPreview(Category c, Locale locale) {
         this.id = c.getId();
-        if (locale.getLanguage().equals("en")) {
-            this.name = c.getNameEn();
-        }
         if (locale.getLanguage().equals("uk")) {
             this.name = c.getNameUa();
-        }
-        if (locale.getLanguage().equals("ru")) {
+        } else if (locale.getLanguage().equals("ru")) {
             this.name = c.getNameRu();
+        } else {
+            this.name = c.getNameEn();
         }
         subcategories = new ArrayList<SubcategoryPreview>();
         List<SubCategory> ss = c.getSubCategory();

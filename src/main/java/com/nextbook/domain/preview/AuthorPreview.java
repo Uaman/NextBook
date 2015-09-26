@@ -27,14 +27,12 @@ public class AuthorPreview {
 
     public AuthorPreview(Author a, Locale locale) {
         this.id = a.getId();
-        if (locale.getLanguage().equals("en")) {
-            this.name = a.getFirstNameEn() + " " +a.getLastNameEn();
-        }
         if (locale.getLanguage().equals("uk")) {
             this.name = a.getFirstNameUa() + " " +a.getLastNameUa();
-        }
-        if (locale.getLanguage().equals("ru")) {
+        } else if (locale.getLanguage().equals("ru")) {
             this.name = a.getFirstNameRu() + " " +a.getLastNameRu();
+        } else {
+            this.name = a.getFirstNameEn() + " " +a.getLastNameEn();
         }
     }
 
