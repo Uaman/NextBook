@@ -1,6 +1,8 @@
 package com.nextbook.domain.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +13,12 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "category")
+@NamedQueries({
+        @NamedQuery(name = CategoryEntity.getAll, query = "SELECT category FROM CategoryEntity category")
+})
 public class CategoryEntity {
+
+    public static final String getAll = "getAllCategories";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,6 +39,9 @@ public class CategoryEntity {
 
     @Column(name = "NAME_RU")
     private String nameRu;
+
+    @OneToMany(mappedBy="categoryEntity")
+    private List<SubCategoryEntity> subCategoryEntity =  new ArrayList<SubCategoryEntity>();
 
     public String getNameUa() {
         return nameUa;
@@ -79,6 +89,14 @@ public class CategoryEntity {
 
     public void setNameRu(String nameRu) {
         this.nameRu = nameRu;
+    }
+
+    public List<SubCategoryEntity> getSubCategoryEntity() {
+        return subCategoryEntity;
+    }
+
+    public void setSubCategoryEntity(List<SubCategoryEntity> subCategoryEntity) {
+        this.subCategoryEntity = subCategoryEntity;
     }
 
     @Override

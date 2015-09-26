@@ -17,7 +17,7 @@ import javax.persistence.*;
 })
 public class SubCategoryEntity {
 
-    public static final String getAll = "getAll";
+    public static final String getAll = "getAllSubCategories";
     public static final String getById = "getSubCategoryById";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

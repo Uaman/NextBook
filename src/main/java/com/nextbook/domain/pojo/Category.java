@@ -1,5 +1,10 @@
 package com.nextbook.domain.pojo;
 
+import com.nextbook.domain.entities.SubCategoryEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: borsch
@@ -19,6 +24,8 @@ public class Category {
     private String nameEn;
 
     private String nameRu;
+
+    private List<SubCategory> subCategory = new ArrayList<SubCategory>();
 
     public String getNameUa() {
         return nameUa;
@@ -66,6 +73,14 @@ public class Category {
 
     public void setNameRu(String nameRu) {
         this.nameRu = nameRu;
+    }
+
+    public List<SubCategory> getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(List<SubCategory> subCategory) {
+        this.subCategory = subCategory;
     }
 
     @Override
