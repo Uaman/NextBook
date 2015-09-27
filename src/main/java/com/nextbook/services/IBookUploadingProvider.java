@@ -15,11 +15,10 @@ import java.util.List;
  */
 public interface IBookUploadingProvider {
     String uploadBookToStorage(int id);
-    String uploadCoversToStorage(int id);
-    boolean uploadFileToLocalStorage(int id, MultipartFile file);
-    boolean uploadCoverToLocalStorage(int id, MultipartFile file, Cover cover);
+    void uploadCoversToStorage(int id);
+    boolean uploadBookToLocalStorage(int id, MultipartFile file);
+    boolean uploadCoversToLocalStorage(int id, MultipartFile file, Cover cover);
 
-
-    List<CloudBlob> getAllFiles(String containerName);
-    void uploadFileToStorage(String prefix, File result);
+    void deleteLocalFolder(int bookId);
+    String getUrlForPreviewBook(int bookId);
 }

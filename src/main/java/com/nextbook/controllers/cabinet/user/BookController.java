@@ -144,9 +144,12 @@ public class BookController {
         if(book == null)
             return -1;
         String storageLink = bookUploadingProvider.uploadBookToStorage(book.getId());
-        String coverLink = bookUploadingProvider.uploadCoversToStorage(book.getId());
+        if(storageLink == null)
+            return -1;
+        bookUploadingProvider.uploadCoversToStorage(book.getId());
         book.setLinkToStorage(storageLink);
         bookProvider.updateBook(book);
+        //bookUploadingProvider.deleteLocalFolder(book.getId());
         return 1;
     }
 
@@ -265,7 +268,7 @@ public class BookController {
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
-        boolean success = bookUploadingProvider.uploadCoverToLocalStorage(bookId, file, cover);
+        boolean success = bookUploadingProvider.uploadCoversToLocalStorage(bookId, file, cover);
         return success;
     }
 
@@ -276,7 +279,7 @@ public class BookController {
 
         if(book == null)
             return false;
-        boolean success = bookUploadingProvider.uploadFileToLocalStorage(bookId, file);
+        boolean success = bookUploadingProvider.uploadBookToLocalStorage(bookId, file);
         return success;
     }
 

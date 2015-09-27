@@ -97,6 +97,8 @@ public class AdminBookController {
         if(book == null)
             return -1;
         String storageLink = bookUploadingProvider.uploadBookToStorage(book.getId());
+        if(storageLink == null)
+            return -1;
         book.setLinkToStorage(storageLink);
         bookProvider.updateBook(book);
         return 1;
@@ -233,7 +235,7 @@ public class AdminBookController {
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
-        boolean success = bookUploadingProvider.uploadCoverToLocalStorage(bookId, file, cover);
+        boolean success = bookUploadingProvider.uploadCoversToLocalStorage(bookId, file, cover);
         return success;
     }
 
@@ -243,7 +245,7 @@ public class AdminBookController {
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
-        boolean success = bookUploadingProvider.uploadFileToLocalStorage(bookId, file);
+        boolean success = bookUploadingProvider.uploadBookToLocalStorage(bookId, file);
         return success;
     }
 
