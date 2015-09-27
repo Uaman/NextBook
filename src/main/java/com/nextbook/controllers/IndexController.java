@@ -3,7 +3,6 @@ package com.nextbook.controllers;
 import com.nextbook.domain.forms.user.RegisterUserForm;
 import com.nextbook.domain.pojo.Role;
 import com.nextbook.domain.pojo.User;
-import com.nextbook.services.IKeenIoProvider;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.SessionUtils;
 import com.nextbook.utils.StatisticUtil;
@@ -34,9 +33,6 @@ public class IndexController {
     @Inject
     private Md5PasswordEncoder md5PasswordEncoder;
 
-    @Inject
-    private IKeenIoProvider keenIoProvider;
-
     @RequestMapping(value = "/signin")
     public String login(Model model){
         return "auth/signin";
@@ -48,8 +44,7 @@ public class IndexController {
     }
 
     @RequestMapping(value = {"/desktop", "/"})
-    public String desktop(Model model) {
-        keenIoProvider.addKeenData(model);
+    public String desktop() {
         return "main/index";
     }
 
