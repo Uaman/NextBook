@@ -133,6 +133,26 @@ public class BookUploadingProvider implements IBookUploadingProvider {
     }
 
     @Override
+    public void getCover(OutputStream outputStream, int bookId, Cover cover) {
+        try{
+            CloudBlobContainer container = initContainer(BOOK_FOLDER + bookId);
+            CloudBlobDirectory covers = container.getDirectoryReference(COVERS_FOLDER);
+
+            for (ListBlobItem blobItem : covers.listBlobs()) {
+                if (blobItem instanceof CloudBlob) {
+                    CloudBlob blob = (CloudBlob) blobItem;
+                    if(blob.getName().contains(cover.toString())) {
+                        blob.download(outputStream);
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public String uploadBookToStorage(int id) {
         File bookDir = new File(rootDir + File.separator + BOOK_FOLDER + id);
         if (!bookDir.exists()) {

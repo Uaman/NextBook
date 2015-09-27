@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -151,6 +153,20 @@ public class BookController {
         bookProvider.updateBook(book);
         //bookUploadingProvider.deleteLocalFolder(book.getId());
         return 1;
+    }
+
+    @RequestMapping(value = "/getCover/{bookId}/{coverPage}", method = RequestMethod.GET)
+    public void getPortfolioFile(HttpServletResponse response,
+                                 @PathVariable("bookId") int bookId,
+                                 @PathVariable("coverPage") int coverPage){
+        Cover cover;
+        if(coverPage == 2) cover = Cover.LAST_PAGE;
+        else cover = Cover.FIRST_PAGE;
+        try {
+            bookUploadingProvider.getCover(response.getOutputStream(), bookId, cover);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void copyBookFromBookForm(Book book, BookRegisterForm bookRegisterForm){

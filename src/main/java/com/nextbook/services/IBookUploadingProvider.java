@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -21,4 +22,6 @@ public interface IBookUploadingProvider {
 
     void deleteLocalFolder(int bookId);
     String getUrlForPreviewBook(int bookId);
+
+    void getCover(OutputStream outputStream, int bookId, Cover cover);
 }
