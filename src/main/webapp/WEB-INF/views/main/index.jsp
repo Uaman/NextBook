@@ -19,8 +19,29 @@
     <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=latin-ext,cyrillic-ext' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
+
+    <script src="/resources/js/statistic/keen.min.js"></script>
+    <script src="/resources/js/statistic/common-web.js"></script>
+    <script src="/resources/js/statistic/statistic.min.js"></script>
+
+    <script src="/resources/js/nextbook/nextbook.js"></script>
+    <script src="/resources/js/nextbook/statistic/nextbook.statistic.js"></script>
 </head>
 <body>
+    <script>
+        $(document).ready(function(){
+            NextBook.Statistic.init('${keenProjectKey}', '${keenWriteKey}', '${keenReadKey}');
+            NextBook.Statistic.addGlobalProperty({page: 'main_page'});
+            NextBook.Statistic.pageViews();
+            $(window).on('beforeunload', function (){
+                NextBook.Statistic.sessionTime();
+            });
+
+            $(window).on("unload", function (){
+                NextBook.Statistic.sessionTime();
+            });
+        });
+    </script>
     <div class="wrapper">
         <div class="page">
             <jsp:include page="../../template/default/headerContent.jsp"/>
