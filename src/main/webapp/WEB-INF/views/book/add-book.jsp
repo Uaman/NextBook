@@ -19,6 +19,7 @@
     <script src="/resources/js/textext/textext.core.js"></script>
     <script src="/resources/js/textext/textext.plugin.autocomplete.js"></script>
     <script src="/resources/js/textext/textext.plugin.tags.js"></script>
+    <script src="/resources/js/spin/spin.js"></script>
 
     <script src="https://d26b395fwzu5fz.cloudfront.net/3.2.6/keen.min.js"></script>
     <script src="<c:url value="../../../resources/js/statistic/common-web.js" />" type="text/javascript"></script>
@@ -128,6 +129,21 @@
     Author First Name RU: <input type="text" id="author-first-name-ru"><br />
     Author Last Name RU: <input type="text" id="author-last-name-ru"><br />
     <input type="button" value="Add" id="send-author-form">
+    <button class="close"><spring:message code="button.close"/></button>
+</div>
+
+<div id="send-popup" class="popup-default" style="display: none;">
+    Please wait while we save your files
+    <div id="spin" style="margin-top: 50px;"></div>
+</div>
+
+<div id="success" class="popup-default" style="display: none;">
+    Success
+    <button class="close"><spring:message code="button.close"/></button>
+</div>
+
+<div id="error" class="popup-default" style="display: none;">
+    Error
     <button class="close"><spring:message code="button.close"/></button>
 </div>
 
