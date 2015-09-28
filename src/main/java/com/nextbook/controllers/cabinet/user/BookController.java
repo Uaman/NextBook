@@ -326,17 +326,19 @@ public class BookController {
         if(user == null)
             return "redirect:/";
 
+        /*
         Publisher publisher = publisherProvider.getPublisherByUser(user);
         if(publisher == null)
             return "redirect:/publisher/new";
-
+        */
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
             return "redirect:/";
 
+        /*
         if(book.getPublisher().getId() != publisher.getId())
             return "redirect:/publisher/view?publisherId="+publisher.getId();
-
+        */
         String url = book.getLinkToStorage();
         if(url == null || url.equals(""))
             return "redirect:/";

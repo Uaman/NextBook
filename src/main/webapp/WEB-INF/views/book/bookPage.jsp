@@ -44,5 +44,6 @@
   <c:forEach var="keyword" items="${keywords}">
     ${keyword.keyword}
   </c:forEach>
+  <iframe src="/book/view?bookId=${book.id}" style="width: 99.7%; height: 100%;"></iframe>
 </body>
 </html>
