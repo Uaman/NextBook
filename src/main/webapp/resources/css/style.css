@@ -55,6 +55,7 @@ a:hover {
     margin: 0 auto;
     padding: 0;
     text-align: left;
+    background-color: #f5f5f3;
 }
 
 /********* Header ********/
@@ -71,6 +72,8 @@ a:hover {
     min-height: 29px;
     position: relative;
     z-index: 20;
+    display: inline-block;
+    width: 100%;
 }
 .row {
     margin: 0 auto;
@@ -105,6 +108,7 @@ a:hover {
     display: inline;
     border-right: 1px groove rgba(29, 28, 27, 0.35);
     cursor: pointer;
+    position: relative;
 }
 .header-container .links li a, .header-switch span, .links li {
     color: rgba(29, 28, 27, 0.65);
@@ -122,7 +126,8 @@ a:hover {
 .product-view .box-up-sell .product-name:hover,
 .data-table td a:hover,
 .header-container .links li.active,
-.header-container .links li.signin:hover{
+.header-container .links li.signin:hover,
+.left-block li a:hover {
     color: #ff6a1c;
 }
 .links li a:hover {
@@ -132,8 +137,30 @@ a:hover {
 .links li:last-child {
     border: none;
 }
+.links ul li {
+    display: block;
+    border: none;
+}
+.links li ul:before {
+    top:-13px;
+}
+.links ul li a:before, .left-block li a:before {
+    content: '>';
+    margin-right: .5em;
+    -webkit-transform: scaleX(0.7);
+    -moz-transform: scaleX(0.7);
+    -ms-transform: scaleX(0.7);
+    -o-transform: scaleX(0.7);
+    transform: scaleX(0.7);
+    -webkit-transform-origin: 0 50%;
+    -moz-transform-origin: 0 50%;
+    -ms-transform-origin: 0 50%;
+    -o-transform-origin: 0 50%;
+    transform-origin: 0 50%;
+    display: inline-block;
+}
 .header-wrapper {
-    height: 114px;
+    /*height: 114px;*/
 }
 header {
     position: relative;
@@ -156,9 +183,195 @@ header a.logo {
     float: none;
     display: inline-block;
 }
+
+.nav-container {
+    /*position: relative;
+    z-index: 10010;*/
+    display: inline-block;
+}
+.nav-container nav {
+    width: 750px;
+    margin: 31px 0 34px 46px;
+    padding: 0;
+    position: relative;
+    border: none;
+    float: left;
+}
+
+.top-dropdowns {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -20px;
+}
+
+/********* Search *********/
+.search-top-container {
+    float: right;
+    position: relative;
+    margin: 0 0 0 4px;
+}
+.search-top, .search-top-container .search-form .search-top-title span.icon {
+    background-size: 18px 18px;
+}
+.search-top {
+    display: block;
+    overflow: hidden;
+    background: #ff6a1c url('../images/icon_search.png') 50% 50% no-repeat;
+    width: 38px;
+    height: 38px;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+    cursor: pointer;
+}
+.search-top:hover {
+    background-color: #322c29;
+}
+.search-form, .links ul {
+    background: #fff;
+    /*width: 240px;*/
+    padding: 8px;
+    position: absolute;
+    right: 0;
+    white-space: nowrap;
+    text-align: left;
+    -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -moz-transition: all 0.3s ease-in-out 0s;
+    -o-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+    border-top: 4px solid #ff6a1c;
+    opacity: 0;
+    transform-origin: 50% 0;
+    -webkit-transform: scaleY(0);
+    -moz-transform: scaleY(0);
+    -ms-transform: scaleY(0);
+    -o-transform: scaleY(0);
+    transform: scaleY(0);
+}
+.search-form {
+    top: 45px;
+}
+.search-top:after, .links li ul:before {
+    content: "";
+    position: absolute;
+    border: 5px solid transparent;
+    border-bottom-color: #ff6a1c;
+    height: 0;
+    width: 0;
+    right: 14px;
+    opacity: 0;
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -moz-transition: all 0.3s ease-in-out 0s;
+    -o-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+.search-top:after {
+    top: 35px;
+}
+.search-top-container:hover > .search-form,
+.search-top-container:hover > .search-top:after,
+.links li:hover > ul,
+.links li:hover > ul:before {
+    opacity: 1;
+    -webkit-transform: scaleY(1);
+    -moz-transform: scaleY(1);
+    -ms-transform: scaleY(1);
+    -o-transform: scaleY(1);
+    transform: scaleY(1);
+}
+.search-form button {
+    display: none;
+}
+.search-form form {
+    margin-bottom: 0;
+}
+#search {
+    width: 224px;
+    padding: 4px 7px;
+    border: 1px solid #e3e3e3;
+    line-height: 19px;
+    color: #7b7b7b;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+/********* Search *********/
+
+
 /********* /Header ********/
 
 /********* Content ********/
+.content {
+    background-color: #fff;
+}
+.page-title {
+    margin: 20px 15px;
+    display: initial;
+}
+.page-title h1 {
+    text-transform: uppercase;
+    font-size: 36px;
+    font-family: "Myriad Pro",serif;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -1.5px;
+    color: #000;
+    padding: .1em 1em;
+}
+/********* Left block ********/
+.left-block, .right-block {
+    margin: 30px 15px;
+    float: left;
+}
+.left-block {
+    width: 230px;
+    padding: 23px 20px;
+    position: relative;
+    background: #fff;
+    border: none;
+    border-top: 6px solid #ff6a1c;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.10);
+    -moz-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.10);
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.10);
+}
+.left-block ul {
+    padding-left: 0;
+}
+.left-block li a {
+    color: #322c29;
+}
+.left-block h2 {
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 22px;
+    font-family: "Myriad Pro", serif;
+    letter-spacing: -1.2px;
+    line-height: 21px;
+    padding: 0 0 22px;
+    margin: 0 0 25px;
+    color: rgba(0,0,0,0.75);
+    border-bottom: 1px solid #e8e8e8;
+    text-shadow: none;
+}
+.active-link {
+    font-weight: bold;
+}
+
+/********* /Left block ********/
+
+/******** Right block *********/
+/******** /Right block *********/
+
 .main-container, .footer-container .product-slider-container {
     background-color: #ffffff;
 }
