@@ -99,7 +99,7 @@ public class PublisherDAO implements IPublisherDao {
     }
 
     @Override
-    public List<Publisher> getAllPublishers(int from, int max) {
+         public List<Publisher> getAllPublishers(int from, int max) {
         List<Publisher> result = null;
         Session session = sessionFactory.openSession();
         try {
@@ -124,6 +124,23 @@ public class PublisherDAO implements IPublisherDao {
                     }
                 }
             }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
+
+    @Override
+    public int getPublishersQuantity() {
+        int result = 0;
+        Session session = sessionFactory.openSession();
+        try {
+            session.beginTransaction();
+            Query query = session.getNamedQuery(PublisherEntity.GET_PUBLISHERS_QUANTITY);
+            result = ((Long) query.iterate().next()).intValue();
         } catch (Exception e){
             e.printStackTrace();
         } finally {

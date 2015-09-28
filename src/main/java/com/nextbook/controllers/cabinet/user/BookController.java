@@ -19,16 +19,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -148,10 +146,8 @@ public class BookController {
         String storageLink = bookUploadingProvider.uploadBookToStorage(book.getId());
         if(storageLink == null)
             return -1;
-        bookUploadingProvider.uploadCoversToStorage(book.getId());
         book.setLinkToStorage(storageLink);
         bookProvider.updateBook(book);
-        //bookUploadingProvider.deleteLocalFolder(book.getId());
         return 1;
     }
 
@@ -278,6 +274,22 @@ public class BookController {
         return saveBook(bookId, file);
     }
 
+    @RequestMapping(value = "/send-gallery-photo", method = RequestMethod.POST)
+    public @ResponseBody int upload(MultipartHttpServletRequest request,
+                                        @RequestParam(value = "bookId", required = true) Integer bookId) {
+        if (bookId == null || bookId == 0)
+            return -1;
+        User user = sessionUtils.getCurrentUser();
+        Book book = bookProvider.getBookById(bookId);
+        if(!checkBookToUser(user, book))
+            return -1;
+        Iterator<String> itr =  request.getFileNames();
+        MultipartFile multipartFile = request.getFile(itr.next());
+        bookUploadingProvider.uploadGalleryPhotoLocal(book.getId(), multipartFile);
+        return bookUploadingProvider.getNumberOfPhotosInGallery(bookId);
+
+    }
+
     private boolean saveCover(int bookId, MultipartFile file, Cover cover){
         if(file == null)
             return false;
@@ -373,5 +385,15 @@ public class BookController {
             return false;
         boolean success = bookProvider.deleteBookToAuthor(bookId, authorId);
         return success;
+    }
+
+    private boolean checkBookToUser(User user, Book book){
+        if(user == null || book == null)
+            return false;
+        Publisher publisher = publisherProvider.getPublisherByUser(user);
+        if(publisher == null)
+            return false;
+
+        return book.getPublisher().getId() == publisher.getId();
     }
 }

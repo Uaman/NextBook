@@ -26,4 +26,5 @@ public interface IPublisherProvider {
 
     Publisher getPublisherByUser(User user);
 
+    int getPublishersQuantity();
 }

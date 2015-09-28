@@ -1,27 +1,66 @@
 package com.nextbook.services;
 
-import com.microsoft.azure.storage.blob.CloudBlob;
 import com.nextbook.domain.enums.Cover;
-import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 
 /**
  * Created by KutsykV on 06.06.2015.
  */
 public interface IBookUploadingProvider {
+
+    /**
+     *
+     * @param id - if of book that should be uploaded
+     * @return url to file on storage or null if was error while uploading
+     */
     String uploadBookToStorage(int id);
-    void uploadCoversToStorage(int id);
+
+    /**
+     *
+     * @param id - id of book
+     * @param file - file that must be saved
+     * @return success
+     */
     boolean uploadBookToLocalStorage(int id, MultipartFile file);
+
+    /**
+     *
+     * @param id - id of book
+     * @param file - file that must be saved
+     * @param cover - first or last page(enum)
+     * @return success
+     */
     boolean uploadCoversToLocalStorage(int id, MultipartFile file, Cover cover);
 
-    void deleteLocalFolder(int bookId);
+    /**
+     *
+     * @param bookId - id of book
+     * @param file - file that must be saved
+     * @return success
+     */
+    boolean uploadGalleryPhotoLocal(int bookId, MultipartFile file);
+
+    /**
+     *
+     * @param bookId - id of book
+     * @return url to preview copy of book
+     */
     String getUrlForPreviewBook(int bookId);
 
+    /**
+     *
+     * @param outputStream - stream where file will be written
+     * @param bookId - id of book
+     * @param cover - first or last page(enum)
+     */
     void getCover(OutputStream outputStream, int bookId, Cover cover);
+
+    /**
+     *
+     * @param bookId - id of book
+     * @return number of photos local + storage
+     */
+    int getNumberOfPhotosInGallery(int bookId);
 }
