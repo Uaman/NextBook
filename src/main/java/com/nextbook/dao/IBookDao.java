@@ -21,6 +21,8 @@ public interface IBookDao {
 
     List<Book> getAllBooks();
 
+    int getBooksQuantity();
+
     boolean deleteBook(int bookId);
 
     Book updateBook(Book book);

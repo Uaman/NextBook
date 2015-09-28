@@ -44,4 +44,6 @@ public interface IBookProvider {
     BookAuthor updateBookToAuthor(BookAuthor bookAuthor);
 
     boolean deleteBookToAuthor(int bookId, int authorId);
+
+    int getBooksQuantity();
 }

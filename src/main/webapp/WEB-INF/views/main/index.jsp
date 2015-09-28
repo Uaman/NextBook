@@ -28,5 +28,6 @@
         </div>
     </div>
     <jsp:include page="../auth/signinPopup.jsp"/>
+    <jsp:include page="bookShelf.jsp"/>
 </body>
 </html>

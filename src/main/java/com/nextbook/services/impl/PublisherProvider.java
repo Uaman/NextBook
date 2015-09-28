@@ -1,7 +1,6 @@
 package com.nextbook.services.impl;
 
 import com.nextbook.dao.IPublisherDao;
-import com.nextbook.dao.impl.PublisherDAO;
 import com.nextbook.domain.filters.PublisherCriterion;
 import com.nextbook.domain.pojo.Publisher;
 import com.nextbook.domain.pojo.User;
@@ -55,6 +54,11 @@ public class PublisherProvider implements IPublisherProvider{
         if(user == null)
             return null;
         return publisherDAO.getPublisherByUser(user);
+    }
+
+    @Override
+    public int getPublishersQuantity() {
+        return publisherDAO.getPublishersQuantity();
     }
 
 }
