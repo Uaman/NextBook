@@ -29,6 +29,9 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/textext/textext.plugin.tags.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/textext/textext.plugin.autocomplete.css"/>
 
+    <script type="text/javascript" src="/resources/js/galleria/galleria-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/resources/js/dropzone.js"></script>
+    <link type="text/css" rel="stylesheet" href="/resources/css/dropzone.css" />
 
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
     <jsp:include page="../../../resources/js/book/add.book.js.jsp"/>
@@ -119,6 +122,10 @@
         </div>
         <input type="hidden" name="bookId" value="${book.id}">
         <label>Book*:<input type="file" name="book" id="book"></label><br />
+    </form>
+
+    <form action="/book/send-gallery-photo" enctype="multipart/form-data" class="dropzone">
+        <input type="hidden" name ="bookId" value="${book.id}"/>
     </form>
 
 <div id="add-author-form" class="popup-default" style="display: none;">

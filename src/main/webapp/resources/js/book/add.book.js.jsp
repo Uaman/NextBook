@@ -443,6 +443,29 @@ $(document).ready(function(){
         $('#help-popup').show();
         $('.shadow').show();
     });
+
+    Dropzone.options.myAwesomeDropzone = {
+        paramName: "file", // The name that will be used to transfer the file
+        acceptedFiles: 'image/*',
+        maxFilesize: 2, // MB
+        init: function() {
+            this.on("complete", function(file) {
+                this.removeFile(file);
+            });
+            this.on("success", function (file, resp) {
+                if (resp != -1) {
+                    //$('#images').html('');
+                    //numberOfPerformerPortfolioPhotos = resp;
+                    //gallery = Galleria.get(0);
+                    //gallery.destroy();
+                    //formImages(numberOfPerformerPortfolioPhotos);
+                    //Galleria.loadTheme('/layout/js/galeria/galleria.classic.min.js');
+                    //Galleria.run('.galleria');
+                    //checkUploadButton();
+                }
+            });
+        }
+    };
 });
 
 function formDataBook(){
