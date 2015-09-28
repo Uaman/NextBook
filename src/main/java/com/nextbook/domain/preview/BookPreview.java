@@ -17,6 +17,10 @@ public class BookPreview {
 
     private String subCategory;
 
+    private int pages;
+
+    private boolean eighteenPlus;
+
     private int yearOfPublication;
 
     private PublisherPreview publisher;
@@ -28,6 +32,8 @@ public class BookPreview {
     public BookPreview(Book b, Locale locale) {
         this.id = b.getId();
         this.yearOfPublication = b.getYearOfPublication();
+        this.pages = b.getNumberOfPages();
+        this.eighteenPlus = b.isEighteenPlus();
         if (locale.getLanguage().equals("uk")) {
             this.name = b.getUaName();
             this.description = b.getDescriptionUa();
@@ -101,5 +107,21 @@ public class BookPreview {
 
     public void setAuthors(List<AuthorPreview> authors) {
         this.authors = authors;
+    }
+
+    public int getPages() {
+        return pages;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
+    public boolean isEighteenPlus() {
+        return eighteenPlus;
+    }
+
+    public void setEighteenPlus(boolean eighteenPlus) {
+        this.eighteenPlus = eighteenPlus;
     }
 }
