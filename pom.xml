@@ -3,7 +3,7 @@
          xmlns:context="http://www.springframework.org/schema/context"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.kutsyk.pdf.uploader</groupId>
+    <groupId>com.nextbook</groupId>
     <artifactId>NextBook</artifactId>
     <name>NextBook</name>
     <packaging>war</packaging>
