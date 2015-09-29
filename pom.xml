@@ -586,7 +586,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
-                    <url>${database.login}</url>
+                    <url>${database.url}</url>
                     <user>${database.login}</user>
                     <password>${database.password}</password>
                     <schemas>
