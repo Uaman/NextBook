@@ -1,6 +1,7 @@
 package com.nextbook.domain.pojo;
 
 import com.nextbook.domain.enums.BookTypeEnum;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class Book {
 
     private String ruName;
 
+    @JsonIgnore
     private SubCategory subCategory;
 
     private boolean eighteenPlus;
@@ -50,13 +52,13 @@ public class Book {
     private int numberOfImagesForCover;
 
     private int numberOfImagesInGallery;
-
+    @JsonIgnore
     private List<Keyword> keywords;
-
+    @JsonIgnore
     private List<Author> authors;
-
+    @JsonIgnore
     private List<BookAuthor> bookToAuthor;
-
+    @JsonIgnore
     private List<BookKeyword> bookToKeywords;
 
     public int getId() {

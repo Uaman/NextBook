@@ -5,7 +5,6 @@ import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.BookAuthor;
 import com.nextbook.domain.pojo.BookKeyword;
-import com.nextbook.domain.pojo.User;
 
 import java.util.List;
 

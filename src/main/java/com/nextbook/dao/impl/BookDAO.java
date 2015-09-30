@@ -371,7 +371,6 @@ public class BookDAO implements IBookDao {
         return deleted;
     }
 
-
     private Query createQueryFromCriterion(Session session, BookCriterion criterion) {
         StringBuilder queryString = new StringBuilder();
         queryString.append("SELECT DISTINCT book FROM BookEntity book");
