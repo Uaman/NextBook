@@ -2,8 +2,14 @@ package com.nextbook.controllers;
 
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Category;
+import com.nextbook.domain.pojo.Publisher;
+import com.nextbook.domain.pojo.User;
 import com.nextbook.domain.preview.BookPreview;
+import com.nextbook.domain.upload.Constants;
 import com.nextbook.services.IBookProvider;
+import com.nextbook.services.IBookStorageProvider;
+import com.nextbook.services.IPublisherProvider;
+import com.nextbook.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -22,18 +28,34 @@ import java.util.Locale;
 public class BookViewController {
     @Autowired
     private IBookProvider bookProvider;
+    @Autowired
+    private SessionUtils sessionUtils;
+    @Autowired
+    private IBookStorageProvider bookStorageProvider;
+    @Autowired
+    private IPublisherProvider publisherProvider;
 
     @RequestMapping(value = "/{bookId}", method = RequestMethod.GET)
-    @PreAuthorize("isAuthenticated()")
     public String infoBook(@PathVariable("bookId")int bookId, Model model,Locale locale){
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
             return "redirect:/";
+        User user = sessionUtils.getCurrentUser();
         BookPreview preview = new BookPreview(book,locale);
         model.addAttribute("book",preview);
         model.addAttribute("type",book.getTypeOfBook());
         model.addAttribute("category",getCategoryLocated(book.getSubCategory().getCategory(),locale));
         model.addAttribute("keywords", book.getKeywords());
+        model.addAttribute("bookName", bookNameInLocale(book, locale));
+
+        if(userBuyBook(user, book)){
+            model.addAttribute("urlToFile", book.getLinkToStorage());
+            model.addAttribute("pass", Constants.USER_PASSWORD);
+        } else {
+            model.addAttribute("urlToFile", bookStorageProvider.getUrlForPreviewBook(book.getId()));
+            model.addAttribute("pass", 1111);
+        }
+
         return "book/bookPage";
     }
 
@@ -47,6 +69,29 @@ public class BookViewController {
             locatedCategory = category.getNameEn();
         }
         return locatedCategory;
+    }
+
+    private String bookNameInLocale(Book book, Locale locale){
+        String bookName;
+        if (locale.getLanguage().equals("uk")) {
+            bookName = book.getUaName();
+        } else if (locale.getLanguage().equals("ru")) {
+            bookName = book.getRuName();
+        } else {
+            bookName = book.getEnName();
+        }
+        return bookName;
+    }
+
+    private boolean userBuyBook(User user, Book book){
+        if(user == null)
+            return false;
+        Publisher publisher = publisherProvider.getPublisherByUser(user);
+        if(publisher.getId() == book.getPublisher().getId())
+            return true;
+        if(user.getRole().getId() == 4 || user.getRole().getId() == 5)
+            return true;
+        return true;
     }
 
 }

@@ -13,9 +13,8 @@ import java.util.List;
  */
 @Repository
 public interface ISubCategoryDao {
-
     List<SubCategory> getAll();
-
+    List<SubCategory> getAllByCategoryId(int categoryId);
     SubCategory getById(int subCategoryId);
 
 }

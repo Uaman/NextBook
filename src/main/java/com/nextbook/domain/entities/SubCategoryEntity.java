@@ -13,12 +13,14 @@ import javax.persistence.*;
 @Table(name = "subcategory")
 @NamedQueries({
         @NamedQuery(name = SubCategoryEntity.getAll, query = "SELECT subCategory FROM SubCategoryEntity subCategory"),
-        @NamedQuery(name = SubCategoryEntity.getById, query = "SELECT subCategory FROM SubCategoryEntity subCategory WHERE subCategory.id=:id")
+        @NamedQuery(name = SubCategoryEntity.getById, query = "SELECT subCategory FROM SubCategoryEntity subCategory WHERE subCategory.id=:id"),
+        @NamedQuery(name = SubCategoryEntity.getAllByCategoryId, query = "SELECT subCategory FROM SubCategoryEntity subCategory WHERE subCategory.categoryEntity.id=:id")
 })
 public class SubCategoryEntity {
 
     public static final String getAll = "getAllSubCategories";
     public static final String getById = "getSubCategoryById";
+    public static final String getAllByCategoryId = "getAllByCategoryId";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")

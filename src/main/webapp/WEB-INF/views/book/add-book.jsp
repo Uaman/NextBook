@@ -160,35 +160,54 @@
                                             <c:if test="${book.subCategory.id eq subCategory.id}">
                                             selected="selected"
                                             </c:if>
-                                            >${subCategory.nameUa} : ${subCategory.category.nameUa}</option>
-                                </c:forEach>
-                            </c:if>
-                        </select>
-                        <br />
-                        <input type="hidden" name="test_files" id="test_files"/>
-                        <input type="submit" class="button but-orange" />
-                    </form>
-                    <form id="first-page-form" action="/book/send-first-page" method="POST">
-                        <div id="container-progress-first-page" class="progress-container" style="display: none;">
-                            <div id="progress-bar-first-page" style="width:0%;background-color: #ffff00; height:inherit;"></div>
-                        </div>
-                        <input type="hidden" name="bookId" value="${book.id}">
-                        <label>First Page*:<input type="file" name="first_page" id="first_page"></label><br />
-                    </form>
-                    <form id="last-page-form" action="/book/send-last-page" method="POST">
-                        <div id="container-progress-last-page" class="progress-container" style="display: none;">
-                            <div id="progress-bar-last-page" style="width:0%;background-color: green; height:inherit;"></div>
-                        </div>
-                        <input type="hidden" name="bookId" value="${book.id}">
-                        <label>Last Page:<input type="file" name="last_page" id="last_page"></label><br />
-                    </form>
-                    <form id="book-form" action="/book/send-book" method="POST">
-                        <div id="container-progress-book" class="progress-container" style="display: none;">
-                            <div id="progress-bar-book" style="width:0%;background-color: red; height:inherit;"></div>
-                        </div>
-                        <input type="hidden" name="bookId" value="${book.id}">
-                        <label>Book*:<input type="file" name="book" id="book"></label><br />
-                    </form>
+                                            >${subCategory.nameUa} : ${subCategory.category.nameUa}
+									</option>
+								</c:forEach>
+							</c:if>
+						</select>
+						<br />
+						<input type="hidden" name="test_files" id="test_files"/>
+						<input type="submit" />
+					</form>
+					<form id="first-page-form" action="/book/send-first-page" method="POST">
+						<div id="container-progress-first-page" class="progress-container" style="display: none;">
+							<div id="progress-bar-first-page" style="width:0%;background-color: #ffff00; height:inherit;"></div>
+						</div>
+						<input type="hidden" name="bookId" value="${book.id}">
+						<label>First Page*:<input type="file" name="first_page" id="first_page"></label><br />
+					</form>
+					<form id="last-page-form" action="/book/send-last-page" method="POST">
+						<div id="container-progress-last-page" class="progress-container" style="display: none;">
+							<div id="progress-bar-last-page" style="width:0%;background-color: green; height:inherit;"></div>
+						</div>
+						<input type="hidden" name="bookId" value="${book.id}">
+						<label>Last Page:<input type="file" name="last_page" id="last_page"></label><br />
+					</form>
+					<form id="book-form" action="/book/send-book" method="POST">
+						<div id="container-progress-book" class="progress-container" style="display: none;">
+							<div id="progress-bar-book" style="width:0%;background-color: red; height:inherit;"></div>
+						</div>
+						<input type="hidden" name="bookId" value="${book.id}">
+						<label>Book*:<input type="file" name="book" id="book"></label><br />
+					</form>
+
+					<form action="/book/send-gallery-photo" enctype="multipart/form-data" class="dropzone">
+						<input type="hidden" name ="bookId" value="${book.id}"/>
+					</form>
+
+				<div id="add-author-form" class="popup-default" style="display: none;">
+					<div id="author-message">
+
+					</div>
+					Author First Name UA: <input type="text" id="author-first-name-ua"><br />
+					Author Last Name UA: <input type="text" id="author-last-name-ua"><br />
+					Author First Name EN: <input type="text" id="author-first-name-en"><br />
+					Author Last Name EN: <input type="text" id="author-last-name-en"><br />
+					Author First Name RU: <input type="text" id="author-first-name-ru"><br />
+					Author Last Name RU: <input type="text" id="author-last-name-ru"><br />
+					<input type="button" value="Add" id="send-author-form">
+					<button class="close"><spring:message code="button.close"/></button>
+				</div>
 
                     <form action="/book/send-gallery-photo" enctype="multipart/form-data" class="dropzone">
                         <input type="hidden" name ="bookId" value="${book.id}"/>

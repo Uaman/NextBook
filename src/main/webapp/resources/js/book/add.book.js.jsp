@@ -274,9 +274,12 @@ $(document).ready(function(){
             },
             success: function(data){
                 console.log(data);
+                if(data) $('#author-message').text('Saved');
+                else $('#author-message').test('error while saving');
             },
             error: function(e){
                 console.log(e);
+                $('#author-message').test('error while sending request');
             }
         })
     });

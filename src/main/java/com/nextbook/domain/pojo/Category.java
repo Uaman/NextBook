@@ -1,6 +1,7 @@
 package com.nextbook.domain.pojo;
 
 import com.nextbook.domain.entities.SubCategoryEntity;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class Category {
     private String nameEn;
 
     private String nameRu;
-
+    @JsonIgnore
     private List<SubCategory> subCategory = new ArrayList<SubCategory>();
 
     public String getNameUa() {

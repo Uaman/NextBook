@@ -27,13 +27,13 @@ http://sourceforge.net/adobe/cmap/wiki/License/
     <title>PDF.js viewer</title>
 
 
-    <link rel="stylesheet" href="<c:url value='/resources/css/viewer.css' />"/>
+    <link rel="stylesheet" href="/resources/css/viewer.css"/>
 
-    <script src="<c:url value='/resources/js/pdf.js/compatibility.js' />"></script>
+    <script src="/resources/js/pdf.js/compatibility.js"></script>
 
-    <link rel="resource" type="application/l10n" href="<c:url value='/resources/locale/locale.properties' />"/>
+    <link rel="resource" type="application/l10n" href="/resources/locale/locale.properties"/>
 
-    <script src="<c:url value='/resources/js/pdf.js/l10n.js' />"></script>
+    <script src="/resources/js/pdf.js/l10n.js"></script>
 
     <script>
         PDFJS.imageResourcesPath = '<c:url value="../../../resources/css/images" />';

@@ -76,4 +76,35 @@ public class SubCategoryDao implements ISubCategoryDao{
         return result;
     }
 
+    @Override
+    public List<SubCategory> getAllByCategoryId(int categoryId) {
+        List<SubCategory> result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query query = session.getNamedQuery(SubCategoryEntity.getAllByCategoryId);
+            query.setParameter("id", categoryId);
+            List<SubCategoryEntity> entities = query.list();
+            if(entities.size() > 0) {
+                result = new ArrayList<SubCategory>();
+                for (SubCategoryEntity entity : entities) {
+                    if (entity != null) {
+                        try {
+                            SubCategory temp = DozerMapperFactory.getDozerBeanMapper().map(entity, SubCategory.class);
+                            if (temp != null)
+                                result.add(temp);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
 }
