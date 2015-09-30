@@ -7,7 +7,7 @@ import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.upload.Constants;
 import com.microsoft.azure.storage.blob.*;
 import com.nextbook.services.IBookProvider;
-import com.nextbook.services.IBookUploadingProvider;
+import com.nextbook.services.IBookStorageProvider;
 import com.nextbook.utils.FilesUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +15,14 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
-import java.util.*;
 
 
 /**
  * Created by KutsykV on 06.06.2015.
  */
-public class BookUploadingProvider implements IBookUploadingProvider {
+public class BookStorageProvider implements IBookStorageProvider {
 
     @Autowired
     private IBookProvider bookProvider;
@@ -151,16 +149,12 @@ public class BookUploadingProvider implements IBookUploadingProvider {
             uri = uploadBookToStorage(containerName, file);
             break;
         }
-        if(uri == null){
-            Book book = bookProvider.getBookById(id);
-            uri = book.getLinkToStorage();
-            if((uri == null) || uri.equals(""))
-                uri = null;
+        if(uri != null) {
+            uploadPreviewBookToStorage(containerName, id);
+            uploadCoversToStorage(containerName, id);
+            uploadGalleryToStorage(containerName, id);
+            deleteLocalFolder(id);
         }
-        uploadPreviewBookToStorage(containerName, id);
-        uploadCoversToStorage(containerName, id);
-        uploadGalleryToStorage(containerName, id);
-        deleteLocalFolder(id);
         return uri;
     }
 

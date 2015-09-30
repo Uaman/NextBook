@@ -67,7 +67,7 @@
                             var html = '<table>';
                             var len = data.length;
                             for (var i = 0; i < len; i++) {
-                                html += '<tr><td><a href="' + data[i].id + '">'
+                                html += '<tr><td><a href="/bookInfo/' + data[i].id + '">'
                                         + data[i].uaName
                                         + '</td></tr>';
                             }
@@ -86,7 +86,7 @@
                             var html = '<table>';
                             var len = data.length;
                             for (var i = 0; i < len; i++) {
-                                html += '<tr><td><a href="' + data[i].id + '">'
+                                html += '<tr><td><a href="/bookInfo/' + data[i].id + '">'
                                         + data[i].uaName
                                         + '</td></tr>';
                             }
@@ -102,7 +102,7 @@
                 var html = '<table>';
                 var len = data.length;
                 for (var i = 0; i < len; i++) {
-                    html += '<tr><td><a href="' + data[i].id + '">'
+                    html += '<tr><td><a href="/bookInfo/' + data[i].id + '">'
                             + data[i].uaName
                             + '</td></tr>';
                 }

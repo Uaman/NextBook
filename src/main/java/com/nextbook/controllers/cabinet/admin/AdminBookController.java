@@ -5,7 +5,6 @@ import com.nextbook.domain.enums.Cover;
 import com.nextbook.domain.filters.AuthorCriterion;
 import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.forms.book.BookRegisterForm;
-import com.nextbook.domain.info.BookMainInfo;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.AuthorPreview;
 import com.nextbook.domain.upload.Constants;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -44,7 +42,7 @@ public class AdminBookController {
     @Inject
     private IKeywordProvider keywordProvider;
     @Inject
-    private IBookUploadingProvider bookUploadingProvider;
+    private IBookStorageProvider bookStorageProvider;
 
     @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value="/all")
@@ -92,14 +90,11 @@ public class AdminBookController {
         Book book = bookProvider.getBookById(bookRegisterForm.getBookId());
         if(book == null)
             return -1;
-        copyBookFromBookForm(book, bookRegisterForm);
-        book = bookProvider.updateBook(book);
-        if(book == null)
-            return -1;
-        String storageLink = bookUploadingProvider.uploadBookToStorage(book.getId());
+        String storageLink = bookStorageProvider.uploadBookToStorage(book.getId());
         if(storageLink == null)
             return -1;
         book.setLinkToStorage(storageLink);
+        copyBookFromBookForm(book, bookRegisterForm);
         bookProvider.updateBook(book);
         return 1;
     }
@@ -235,7 +230,7 @@ public class AdminBookController {
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
-        boolean success = bookUploadingProvider.uploadCoversToLocalStorage(bookId, file, cover);
+        boolean success = bookStorageProvider.uploadCoversToLocalStorage(bookId, file, cover);
         return success;
     }
 
@@ -245,7 +240,7 @@ public class AdminBookController {
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
-        boolean success = bookUploadingProvider.uploadBookToLocalStorage(bookId, file);
+        boolean success = bookStorageProvider.uploadBookToLocalStorage(bookId, file);
         return success;
     }
 
