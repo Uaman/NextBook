@@ -38,6 +38,14 @@
             <version>1.0-alpha-2</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver</artifactId>
+            <version>3.0.4</version>
+        </dependency>
+
+
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -586,7 +594,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
-                    <url>${database.login}</url>
+                    <url>${database.url}</url>
                     <user>${database.login}</user>
                     <password>${database.password}</password>
                     <schemas>

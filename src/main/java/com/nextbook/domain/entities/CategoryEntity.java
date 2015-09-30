@@ -40,7 +40,7 @@ public class CategoryEntity {
     @Column(name = "NAME_RU")
     private String nameRu;
 
-    @OneToMany(mappedBy="categoryEntity")
+    @OneToMany(mappedBy="categoryEntity", fetch = FetchType.LAZY)
     private List<SubCategoryEntity> subCategoryEntity =  new ArrayList<SubCategoryEntity>();
 
     public String getNameUa() {
