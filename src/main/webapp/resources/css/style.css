@@ -391,6 +391,16 @@ header a.logo {
     width: 70%;
 }
 /********* Add book form ********/
+.right-box, .left-box {
+    width: 49%;
+}
+.left-box {
+    border-right: 1px dashed #ccc;
+    float: left;
+}
+.right-box {
+    float: right;
+}
 .edit-form  input[type="text"],
 .edit-form  input[type="search"],
 .edit-form  input[type="password"],
@@ -411,8 +421,12 @@ header a.logo {
 .edit-form input[type="search"],
 .edit-form input[type="password"],
 .edit-form select,
-.edit-form .short textarea {
+.edit-form .short textarea,
+.edit-form input[type="file"] {
     width: 75%;
+}
+.edit-form input[type="file"] {
+    float: right;
 }
 .edit-form .short input[type="text"],
 .edit-form .short input[type="search"],
@@ -426,9 +440,9 @@ header a.logo {
     margin-bottom: 5px;
 }
 .edit-form label {
-    width: 45%;
+    width: 90%;
     padding-right: 35px;
-    margin: 0 2.5%;
+    margin: 0 5%;
     display: inline-block;
     position: relative;
     box-sizing: border-box;
@@ -494,6 +508,11 @@ header a.logo {
     float: right;
     margin-right: 0;
     margin-top: 19px;
+}
+.progress-bar {
+    width:0%;
+    background-color: red;
+    height:inherit;
 }
 /********* /Add book form ********/
 

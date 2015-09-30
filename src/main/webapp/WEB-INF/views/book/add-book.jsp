@@ -81,7 +81,7 @@
                 </div>
                 <div class="edit-form">
                     <form id="edit-book-form">
-
+                        <div class="left-box">
                             <label>
                                 <span class="label-title"><spring:message code="add.book.isbn"/><span class="req-star">*</span>:</span>
                                 <input type="text" name="isbn" id="isbn" value="${book.isbn}"/>
@@ -108,87 +108,101 @@
                                 <button id="add-author-button" class="button but-orange add-new"><spring:message code="add.book.new.author"/></button>
                             </label><br/><br/>
 
-                        <label class="short">
-                            <span class="label-title"><spring:message code="add.book.year.publication"/><span class="req-star">*</span>:</span>
-                            <input type="text" id="publication_year" name="publication_year" value="${book.yearOfPublication}"/>
-                        </label><br /><br/>
-                        <input type="hidden" value="some-id" id="publisher-id" name="publisher-id" />
+                            <label class="short">
+                                <span class="label-title"><spring:message code="add.book.year.publication"/><span class="req-star">*</span>:</span>
+                                <input type="text" id="publication_year" name="publication_year" value="${book.yearOfPublication}"/>
+                            </label><br /><br/>
+                            <input type="hidden" value="some-id" id="publisher-id" name="publisher-id" />
 
-                        <label class="short">
-                            <span class="label-title"><spring:message code="add.book.language"/><span class="req-star">*</span>:</span>
-                            <input type="text" id="language" name="language" value="${book.language}"/>
-                        </label><br /><br/>
+                            <label class="short">
+                                <span class="label-title"><spring:message code="add.book.language"/><span class="req-star">*</span>:</span>
+                                <input type="text" id="language" name="language" value="${book.language}"/>
+                            </label><br /><br/>
 
-                        <h3><spring:message code="add.book.type.book"/><span class="req-star">*</span>:</h3>
-                            <label><spring:message code="add.book.type.electronic"/>: <input type="checkbox" id="electronic" name="electronic" /></label>
-                            <label><spring:message code="add.book.type.paper"/>: <input type="checkbox" id="paper" name="paper"/></label><br /><br/>
+                            <h3><spring:message code="add.book.type.book"/><span class="req-star">*</span>:</h3>
+                                <label><spring:message code="add.book.type.electronic"/>: <input type="checkbox" id="electronic" name="electronic" /></label>
+                                <label><spring:message code="add.book.type.paper"/>: <input type="checkbox" id="paper" name="paper"/></label><br /><br/>
+                        </div>
+                        <div class="right-box">
+                            <h3><spring:message code="add.book.description"/></h3>
+                            <label class="short">
+                                <spring:message code="add.book.language.ua"/><span class="req-star">*</span>:
+                                <textarea name="description_ua" id="description_ua">${book.descriptionUa}</textarea>
+                            </label><br />
+                            <label class="short">
+                                <spring:message code="add.book.language.en"/>:
+                                <textarea name="description_en" id="description_en">${book.descriptionEn}</textarea>
+                            </label><br />
+                            <label class="short">
+                                <spring:message code="add.book.language.ru"/>:
+                                <textarea name="description_ru" id="description_ru">${book.descriptionRu}</textarea>
+                            </label><br /><br/>
 
-                        <label class="short">
-                            <span class="label-title"><spring:message code="add.book.number.pages"/>:</span>
-                            <input type="text" id="number_of_pages" name="number_of_pages" value="${book.numberOfPages}"/>
-                        </label><br /><br/>
-                        <h3><spring:message code="add.book.description"/></h3>
-                        <label class="short">
-                            <spring:message code="add.book.language.ua"/><span class="req-star">*</span>:
-                            <textarea name="description_ua" id="description_ua">${book.descriptionUa}</textarea>
-                        </label><br />
-                        <label class="short">
-                            <spring:message code="add.book.language.en"/>:
-                            <textarea name="description_en" id="description_en">${book.descriptionEn}</textarea>
-                        </label><br />
-                        <label class="short">
-                            <spring:message code="add.book.language.ru"/>:
-                            <textarea name="description_ru" id="description_ru">${book.descriptionRu}</textarea>
-                        </label><br /><br/>
+                            <label>
+                                <span class="label-title"><spring:message code="add.book.keywords"/><span class="req-star">*</span>:</span>
+                                <textarea name="keywords" id="keywords" rows="3"></textarea>
+                                <span class="help">?</span>
+                            </label><br /><br/>
 
-                        <label>
-                            <span class="label-title"><spring:message code="add.book.keywords"/><span class="req-star">*</span>:</span>
-                            <textarea name="keywords" id="keywords" rows="3"></textarea>
-                            <span class="help">?</span>
-                        </label><br /><br/>
+                            <label class="short">
+                                <span class="label-title"><spring:message code="add.book.number.pages"/>:</span>
+                                <input type="text" id="number_of_pages" name="number_of_pages" value="${book.numberOfPages}"/>
+                            </label><br /><br/>
 
-                        <label>
-                            <span class="label-title"><spring:message code="add.book.eighteen.plus"/>:</span>
-                            <input type="checkbox" id="eighteen-plus"/>
-                        </label><br /><br/>
+                            <label>
+                                <span class="label-title"><spring:message code="add.book.eighteen.plus"/>:</span>
+                                <input type="checkbox" id="eighteen-plus"/>
+                            </label><br /><br/>
 
-                        Category: <br />
-                        <select id="category">
-                            <c:if test="${subCategories ne null}">
-                                <c:forEach items="${subCategories}" var="subCategory">
-                                    <option value="${subCategory.id}"
-                                            <c:if test="${book.subCategory.id eq subCategory.id}">
-                                            selected="selected"
-                                            </c:if>
-                                            >${subCategory.nameUa} : ${subCategory.category.nameUa}
-									</option>
-								</c:forEach>
-							</c:if>
-						</select>
-						<br />
-						<input type="hidden" name="test_files" id="test_files"/>
-						<input type="submit" />
+                            <label>
+                                <span class="label-title"><spring:message code="add.book.category"/>:</span>
+                                <select id="category">
+                                    <c:if test="${subCategories ne null}">
+                                        <c:forEach items="${subCategories}" var="subCategory">
+                                            <option value="${subCategory.id}"
+                                                    <c:if test="${book.subCategory.id eq subCategory.id}">
+                                                    selected="selected"
+                                                    </c:if>
+                                                    >${subCategory.nameUa} : ${subCategory.category.nameUa}</option>
+                                        </c:forEach>
+                                    </c:if>
+                                </select>
+                            </label><br /><br/>
+                            <input type="hidden" name="test_files" id="test_files"/>
+                            <label>
+                                <input type="submit" class="button but-orange add-new" value="<spring:message code='add.book.send'/>" />
+                            </label>
+                        </div>
 					</form>
-					<form id="first-page-form" action="/book/send-first-page" method="POST">
+					<form id="first-page-form" action="/book/send-first-page" method="POST" class="edit-form">
 						<div id="container-progress-first-page" class="progress-container" style="display: none;">
 							<div id="progress-bar-first-page" style="width:0%;background-color: #ffff00; height:inherit;"></div>
 						</div>
 						<input type="hidden" name="bookId" value="${book.id}">
-						<label>First Page*:<input type="file" name="first_page" id="first_page"></label><br />
+						<label>
+                            <span class="label-title"><spring:message code="add.book.first.page"/><span class="req-star">*</span>:</span>
+                            <input type="file" name="first_page" id="first_page">
+                        </label><br />
 					</form>
-					<form id="last-page-form" action="/book/send-last-page" method="POST">
+					<form id="last-page-form" action="/book/send-last-page" method="POST" class="edit-form">
 						<div id="container-progress-last-page" class="progress-container" style="display: none;">
 							<div id="progress-bar-last-page" style="width:0%;background-color: green; height:inherit;"></div>
 						</div>
 						<input type="hidden" name="bookId" value="${book.id}">
-						<label>Last Page:<input type="file" name="last_page" id="last_page"></label><br />
+						<label>
+                            <span class="label-title"><spring:message code="add.book.last.page"/><span class="req-star">*</span>:</span>
+                            <input type="file" name="last_page" id="last_page">
+                        </label><br />
 					</form>
-					<form id="book-form" action="/book/send-book" method="POST">
+					<form id="book-form" action="/book/send-book" method="POST" class="edit-form">
 						<div id="container-progress-book" class="progress-container" style="display: none;">
-							<div id="progress-bar-book" style="width:0%;background-color: red; height:inherit;"></div>
+							<div id="progress-bar-book" class="progress-bar""></div>
 						</div>
 						<input type="hidden" name="bookId" value="${book.id}">
-						<label>Book*:<input type="file" name="book" id="book"></label><br />
+						<label>
+                            <span class="label-title"><spring:message code="add.book.book"/><span class="req-star">*</span>:</span>
+                            <input type="file" name="book" id="book">
+                        </label><br />
 					</form>
 
 					<form action="/book/send-gallery-photo" enctype="multipart/form-data" class="dropzone">
@@ -208,22 +222,6 @@
 					<input type="button" value="Add" id="send-author-form">
 					<button class="close"><spring:message code="button.close"/></button>
 				</div>
-
-                    <form action="/book/send-gallery-photo" enctype="multipart/form-data" class="dropzone">
-                        <input type="hidden" name ="bookId" value="${book.id}"/>
-                    </form>
-
-                    <div id="add-author-form" class="popup-default" style="display: none;">
-                        Author First Name UA: <input type="text" id="author-first-name-ua"><br />
-                        Author Last Name UA: <input type="text" id="author-last-name-ua"><br />
-                        Author First Name EN: <input type="text" id="author-first-name-en"><br />
-                        Author Last Name EN: <input type="text" id="author-last-name-en"><br />
-                        Author First Name RU: <input type="text" id="author-first-name-ru"><br />
-                        Author Last Name RU: <input type="text" id="author-last-name-ru"><br />
-                        <input type="button" value="Add" id="send-author-form">
-                        <button class="close"><spring:message code="button.close"/></button>
-                    </div>
-
                     <div id="send-popup" class="popup-default" style="display: none;">
                         Please wait while we save your files
                         <div id="spin" style="margin-top: 50px;"></div>
