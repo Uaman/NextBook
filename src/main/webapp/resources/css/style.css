@@ -31,6 +31,27 @@ input[type="submit"], button {
 ul, ol {
     list-style: none;
 }
+label {
+    line-height: 2.5;
+}
+h1, h2, h3 {
+    color: #000;
+    color: rgba(0,0,0,0.75);
+    letter-spacing: -0.5px;
+    word-spacing: .2em;
+    text-shadow: none;
+}
+h2 {
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 22px;
+    font-family: "Myriad Pro", serif;
+    line-height: 21px;
+    padding: 0 0 22px;
+    margin: 0 0 25px;
+    border-bottom: 1px solid #e8e8e8;
+    letter-spacing: -1.1px;
+}
 a {
     transition: color 600ms ease-in-out;
     -webkit-transition: color 600ms ease-in-out;
@@ -57,6 +78,10 @@ a:hover {
     text-align: left;
     background-color: #f5f5f3;
 }
+.clear {
+    clear: both;
+    float: none;
+}
 
 /********* Header ********/
 .header-container, header.fixed {
@@ -77,7 +102,7 @@ a:hover {
 }
 .row {
     margin: 0 auto;
-    width: 1200px;
+    max-width: 1200px;
 }
 .clearfix:before, .clearfix:after {
     content: "";
@@ -309,7 +334,8 @@ header a.logo {
 
 /********* Content ********/
 .content {
-    background-color: #fff;
+    background-color: #fafafa;
+    display: inline-block;
 }
 .page-title {
     margin: 20px 15px;
@@ -330,8 +356,7 @@ header a.logo {
     margin: 30px 15px;
     float: left;
 }
-.left-block {
-    width: 230px;
+.left-block, .center-block {
     padding: 23px 20px;
     position: relative;
     background: #fff;
@@ -344,24 +369,14 @@ header a.logo {
     -moz-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.10);
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.10);
 }
+.left-block {
+    width: 230px;
+}
 .left-block ul {
     padding-left: 0;
 }
 .left-block li a {
     color: #322c29;
-}
-.left-block h2 {
-    text-transform: uppercase;
-    font-weight: normal;
-    font-size: 22px;
-    font-family: "Myriad Pro", serif;
-    letter-spacing: -1.2px;
-    line-height: 21px;
-    padding: 0 0 22px;
-    margin: 0 0 25px;
-    color: rgba(0,0,0,0.75);
-    border-bottom: 1px solid #e8e8e8;
-    text-shadow: none;
 }
 .active-link {
     font-weight: bold;
@@ -371,6 +386,116 @@ header a.logo {
 
 /******** Right block *********/
 /******** /Right block *********/
+.center-block {
+    margin: 30px auto;
+    width: 70%;
+}
+/********* Add book form ********/
+.edit-form  input[type="text"],
+.edit-form  input[type="search"],
+.edit-form  input[type="password"],
+.edit-form  select,
+.edit-form  textarea {
+    padding: 4px;
+    border: 1px solid #e0e0e0;
+    -webkit-box-shadow: inset 0 0 5px 0 #eaeaea;
+    -moz-box-shadow: inset 0 0 5px 0 #eaeaea;
+    box-shadow: inset 0 0 5px 0 #eaeaea;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    background-color: #fafafa;
+    float: right;
+}
+.edit-form input[type="text"],
+.edit-form input[type="search"],
+.edit-form input[type="password"],
+.edit-form select,
+.edit-form .short textarea {
+    width: 75%;
+}
+.edit-form .short input[type="text"],
+.edit-form .short input[type="search"],
+.edit-form .short input[type="password"],
+.edit-form .short select {
+    width: 50%;
+}
+.edit-form textarea {
+    width: 100%;
+    resize: vertical;
+    margin-bottom: 5px;
+}
+.edit-form label {
+    width: 45%;
+    padding-right: 35px;
+    margin: 0 2.5%;
+    display: inline-block;
+    position: relative;
+    box-sizing: border-box;
+}
+.edit-form h3, .label-title {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    line-height: 1.8;
+}
+.edit-form h3 {
+    margin-left: 2.5%;
+}
+.label-title {
+    float: left;
+    color: #000;
+    color: rgba(0,0,0,0.75);
+    letter-spacing: -0.5px;
+    word-spacing: .2em;
+    text-shadow: none;
+}
+.help {
+    background-color: #525252;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: bold;
+    width: 28px;
+    display: inline-block;
+    height: 28px;
+    text-align: center;
+    font-size: 18px;
+    line-height: normal;
+    padding: 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: background 200ms ease-in-out;
+    -webkit-transition: background 200ms ease-in-out;
+    -moz-transition: background 200ms ease-in-out;
+    -o-transition: background 200ms ease-in-out;
+    position: absolute;
+    top: 2px;
+    right: 0;
+    z-index: 20;
+}
+.help:hover {
+    background-color: #ff6a1c;
+}
+.edit-form .text-core {
+    display: inline-block;
+    float: right;
+    width: 75%;
+}
+.edit-form .text-wrap {
+    float: right;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    z-index: 10;
+}
+.edit-form .add-new {
+    float: right;
+    margin-right: 0;
+    margin-top: 19px;
+}
+/********* /Add book form ********/
 
 .main-container, .footer-container .product-slider-container {
     background-color: #ffffff;
@@ -494,4 +619,5 @@ header a.logo {
 
 .req-star {
     color: #f00;
+    padding: 0 .2em;
 }
