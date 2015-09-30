@@ -129,6 +129,9 @@
     </form>
 
 <div id="add-author-form" class="popup-default" style="display: none;">
+    <div id="author-message">
+
+    </div>
     Author First Name UA: <input type="text" id="author-first-name-ua"><br />
     Author Last Name UA: <input type="text" id="author-last-name-ua"><br />
     Author First Name EN: <input type="text" id="author-first-name-en"><br />
