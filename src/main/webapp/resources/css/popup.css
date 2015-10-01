@@ -44,36 +44,22 @@
     font-family: 'PT Sans', Arial, sans-serif;
     color: rgba(0,0,0,0.75);
     border-bottom: 1px solid #e8e8e8;
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: -1.2px;
-    line-height: 21px;
+    line-height: 1em;
     padding: 29px 33px 20px;
 }
-.block-login .block-content {
+.block-content {
     margin: 0;
     padding: 20px 0 0;
-    text-align: center;
 }
-.block-login .block-content label {
+.block-content label {
     float: none;
     color: #505050;
     font-weight: 300;
     padding: 0;
-}
-.block-login input.input-text {
-    margin: 0;
-    display: inline;
-    min-width: 96%;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-}
-.block-login input.input-text {
-    display: block;
-    width: 167px;
-    margin: 3px 0;
 }
 
 input.input-text, textarea, input.qty {
@@ -95,4 +81,50 @@ input.input-text, textarea, input.qty {
     text-shadow: 0 1px 1px #E2E2E2;
     padding: 3px 5px;
     text-transform: uppercase;
+}
+
+.block-login .block-content {
+    text-align: center;
+}
+.block-login input.input-text {
+    min-width: 96%;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    display: block;
+    width: 167px;
+    margin: 3px 0;
+}
+
+.block-author label {
+    width: 100%;
+    position: relative;
+    display: block;
+}
+.block-info {
+    position: fixed;
+}
+
+.info-message span {
+    display: block;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed;
+    text-transform: uppercase;
+}
+span.success {
+    color: #0eab0c;
+}
+span.error {
+    color: red;
+}
+
+
+/************* Media screen **********/
+@media screen and (max-width: 480px) {
+    .popup-default {
+        margin-left: -160px !important;
+    }
+    .popup-default, .block-login {
+        width: 320px;
+    }
 }

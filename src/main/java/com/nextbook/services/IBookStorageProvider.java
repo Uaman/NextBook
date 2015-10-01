@@ -8,7 +8,7 @@ import java.io.OutputStream;
 /**
  * Created by KutsykV on 06.06.2015.
  */
-public interface IBookUploadingProvider {
+public interface IBookStorageProvider {
 
     /**
      *

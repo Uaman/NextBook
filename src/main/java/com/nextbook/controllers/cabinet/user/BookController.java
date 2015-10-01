@@ -1,9 +1,6 @@
 package com.nextbook.controllers.cabinet.user;
 
-import com.google.gson.Gson;
-import com.nextbook.dao.impl.BookDAO;
 import com.nextbook.domain.ResponseForAutoComplete;
-import com.nextbook.domain.entities.BookAuthorEntity;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.enums.Cover;
 import com.nextbook.domain.filters.AuthorCriterion;
@@ -23,7 +20,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
@@ -50,7 +46,7 @@ public class BookController {
     @Autowired
     private IKeywordProvider keywordProvider;
     @Autowired
-    private IBookUploadingProvider bookUploadingProvider;
+    private IBookStorageProvider bookStorageProvider;
     @Inject
     private StatisticUtil statisticUtil;
 
@@ -139,14 +135,11 @@ public class BookController {
         Book book = bookProvider.getBookById(bookRegisterForm.getBookId());
         if(book == null)
             return -1;
-        copyBookFromBookForm(book, bookRegisterForm);
-        book = bookProvider.updateBook(book);
-        if(book == null)
-            return -1;
-        String storageLink = bookUploadingProvider.uploadBookToStorage(book.getId());
+        String storageLink = bookStorageProvider.uploadBookToStorage(book.getId());
         if(storageLink == null)
             return -1;
         book.setLinkToStorage(storageLink);
+        copyBookFromBookForm(book, bookRegisterForm);
         bookProvider.updateBook(book);
         return 1;
     }
@@ -159,7 +152,7 @@ public class BookController {
         if(coverPage == 2) cover = Cover.LAST_PAGE;
         else cover = Cover.FIRST_PAGE;
         try {
-            bookUploadingProvider.getCover(response.getOutputStream(), bookId, cover);
+            bookStorageProvider.getCover(response.getOutputStream(), bookId, cover);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -285,8 +278,8 @@ public class BookController {
             return -1;
         Iterator<String> itr =  request.getFileNames();
         MultipartFile multipartFile = request.getFile(itr.next());
-        bookUploadingProvider.uploadGalleryPhotoLocal(book.getId(), multipartFile);
-        return bookUploadingProvider.getNumberOfPhotosInGallery(bookId);
+        bookStorageProvider.uploadGalleryPhotoLocal(book.getId(), multipartFile);
+        return bookStorageProvider.getNumberOfPhotosInGallery(bookId);
 
     }
 
@@ -296,7 +289,7 @@ public class BookController {
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
-        boolean success = bookUploadingProvider.uploadCoversToLocalStorage(bookId, file, cover);
+        boolean success = bookStorageProvider.uploadCoversToLocalStorage(bookId, file, cover);
         return success;
     }
 
@@ -307,7 +300,7 @@ public class BookController {
 
         if(book == null)
             return false;
-        boolean success = bookUploadingProvider.uploadBookToLocalStorage(bookId, file);
+        boolean success = bookStorageProvider.uploadBookToLocalStorage(bookId, file);
         return success;
     }
 
@@ -316,35 +309,6 @@ public class BookController {
         if(isbn == null)
             return false;
         return bookProvider.isbnExist(isbn);
-    }
-
-
-    @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public String viewBook(@RequestParam("bookId") int bookId,
-                         Model model){
-        User user = sessionUtils.getCurrentUser();
-        if(user == null)
-            return "redirect:/";
-
-        /*
-        Publisher publisher = publisherProvider.getPublisherByUser(user);
-        if(publisher == null)
-            return "redirect:/publisher/new";
-        */
-        Book book = bookProvider.getBookById(bookId);
-        if(book == null)
-            return "redirect:/";
-
-        /*
-        if(book.getPublisher().getId() != publisher.getId())
-            return "redirect:/publisher/view?publisherId="+publisher.getId();
-        */
-        String url = book.getLinkToStorage();
-        if(url == null || url.equals(""))
-            return "redirect:/";
-        model.addAttribute("urlToFile", url);
-        model.addAttribute("pass", Constants.USER_PASSWORD);
-        return "book/view";
     }
 
     @RequestMapping(value = "/delete-keyword/{bookId}/{keywordId}", method = RequestMethod.POST)

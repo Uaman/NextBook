@@ -11,9 +11,6 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%--<spring:message code="mainpage.bookstotal"/>: ${booksQuantity} <br/>--%>
-<%--<spring:message code="mainpage.publisherstotal"/>: ${publishersQuantity} <br/>--%>
-
 <c:url var="getCategories" value="/categories"/>
 <c:url var="subcategories" value="/subcategories"/>
 <c:url var="getBooks" value="/getbooks"/>
