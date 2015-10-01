@@ -13,7 +13,7 @@ public class Order {
 
     OrderState orderState;
 
-    byte[] isPaid;
+    boolean isPaid;
 
     User user;
 
@@ -40,7 +40,7 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", orderState=" + orderState +
-                ", isPaid=" + Arrays.toString(isPaid) +
+                ", isPaid=" + isPaid +
                 ", user=" + user +
                 ", dateOfOrder=" + dateOfOrder +
                 ", typeOfPaument=" + typeOfPayment +
@@ -56,31 +56,29 @@ public class Order {
 
         Order order = (Order) o;
 
-        if (getId() != order.getId()) return false;
-        if (getOrderState() != null ? !getOrderState().equals(order.getOrderState()) : order.getOrderState() != null)
+        if (id != order.id) return false;
+        if (isPaid != order.isPaid) return false;
+        if (dateOfOrder != null ? !dateOfOrder.equals(order.dateOfOrder) : order.dateOfOrder != null) return false;
+        if (delivering != null ? !delivering.equals(order.delivering) : order.delivering != null) return false;
+        if (description != null ? !description.equals(order.description) : order.description != null) return false;
+        if (orderState != null ? !orderState.equals(order.orderState) : order.orderState != null) return false;
+        if (typeOfPayment != null ? !typeOfPayment.equals(order.typeOfPayment) : order.typeOfPayment != null)
             return false;
-        if (!Arrays.equals(getIsPaid(), order.getIsPaid())) return false;
-        if (getUser() != null ? !getUser().equals(order.getUser()) : order.getUser() != null) return false;
-        if (getDateOfOrder() != null ? !getDateOfOrder().equals(order.getDateOfOrder()) : order.getDateOfOrder() != null)
-            return false;
-        if (getTypeOfPaument() != null ? !getTypeOfPaument().equals(order.getTypeOfPaument()) : order.getTypeOfPaument() != null)
-            return false;
-        if (getDescription() != null ? !getDescription().equals(order.getDescription()) : order.getDescription() != null)
-            return false;
-        return !(getDelivering() != null ? !getDelivering().equals(order.getDelivering()) : order.getDelivering() != null);
+        if (user != null ? !user.equals(order.user) : order.user != null) return false;
 
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = getId();
-        result = 31 * result + (getOrderState() != null ? getOrderState().hashCode() : 0);
-        result = 31 * result + (getIsPaid() != null ? Arrays.hashCode(getIsPaid()) : 0);
-        result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
-        result = 31 * result + (getDateOfOrder() != null ? getDateOfOrder().hashCode() : 0);
-        result = 31 * result + (getTypeOfPaument() != null ? getTypeOfPaument().hashCode() : 0);
-        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + (getDelivering() != null ? getDelivering().hashCode() : 0);
+        int result = id;
+        result = 31 * result + (orderState != null ? orderState.hashCode() : 0);
+        result = 31 * result + (isPaid ? 1 : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (dateOfOrder != null ? dateOfOrder.hashCode() : 0);
+        result = 31 * result + (typeOfPayment != null ? typeOfPayment.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (delivering != null ? delivering.hashCode() : 0);
         return result;
     }
 
@@ -101,11 +99,11 @@ public class Order {
         this.orderState = orderState;
     }
 
-    public byte[] getIsPaid() {
+    public boolean isPaid() {
         return isPaid;
     }
 
-    public void setIsPaid(byte[] isPaid) {
+    public void setPaid(boolean isPaid) {
         this.isPaid = isPaid;
     }
 
