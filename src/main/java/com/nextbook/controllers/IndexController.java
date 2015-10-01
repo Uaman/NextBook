@@ -4,6 +4,8 @@ import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.forms.book.BookCatalogForm;
 import com.nextbook.domain.forms.user.RegisterUserForm;
 import com.nextbook.domain.pojo.*;
+import com.nextbook.domain.preview.BookPreview;
+import com.nextbook.domain.preview.CategoryPreview;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import com.nextbook.utils.StatisticUtil;
@@ -23,13 +25,12 @@ import java.util.*;
 @Controller
 public class IndexController {
 
-    private static final int BOOKS_ON_PAGE = 10;
-
+    private int last_book = 0;
+    private int books_on_page = 3;
     @Inject
     private ICategoryProvider categoryProvider;
     @Inject
     private ISubCategoryProvider subCategoryProvider;
-
     @Inject
     private SessionUtils sessionUtils;
     @Inject
@@ -68,12 +69,15 @@ public class IndexController {
 //        List<CategoryPreview> respCategories = new ArrayList<CategoryPreview>();
 //        for (Category c:categories)
 //            respCategories.add(new CategoryPreview(c, locale));
-//        model.addAttribute("categories", respCategories);
+//        model.addAttribute("categories", categoryProvider.getAll());
 //        model.addAttribute("lastBooks", lastBooks);
 //        model.addAttribute("booksQuantity", booksQuantity);
 //        model.addAttribute("publishersQuantity", publisherProvider.getPublishersQuantity());
         BookCatalogForm bookCatalogForm = new BookCatalogForm();
         model.addAttribute("bookCatalog", bookCatalogForm);
+        model.addAttribute("categories", categoryProvider.getAll());
+        model.addAttribute("last_book", last_book);
+        model.addAttribute("books_on_page", books_on_page);
         return "main/index";
     }
 
@@ -88,7 +92,9 @@ public class IndexController {
     public
     @ResponseBody
     List<SubCategory> subcategories(
-            @RequestParam(value = "category", required = true) int category) {
+            @RequestParam(value = "category", required = false) Integer category) {
+        if(category == null)
+            return null;
         return subCategoryProvider.getAllByCategoryId(category);
     }
 
@@ -112,18 +118,6 @@ public class IndexController {
             result.addAll(bookProvider.getAllBooks());
         return result;
     }
-
-//    @RequestMapping(value = "/getBooks", method = RequestMethod.GET)
-//    public
-//    @ResponseBody
-//    List<Book> books(
-//            @RequestParam(value = "category", required = true) int category,
-//            @RequestParam(value = "subcategory", required = true) int subcategory) {
-//        System.out.println("CAt: "+category);
-//        System.out.println("SUBCat: "+subcategory);
-//        return null;
-//    }
-
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("isAnonymous()")

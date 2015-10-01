@@ -1,23 +1,21 @@
 package com.nextbook.controllers;
 
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.Category;
-import com.nextbook.domain.pojo.Publisher;
-import com.nextbook.domain.pojo.User;
+import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.domain.upload.Constants;
 import com.nextbook.services.IBookProvider;
 import com.nextbook.services.IBookStorageProvider;
+import com.nextbook.services.IOrderProvider;
 import com.nextbook.services.IPublisherProvider;
 import com.nextbook.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -34,6 +32,8 @@ public class BookViewController {
     private IBookStorageProvider bookStorageProvider;
     @Autowired
     private IPublisherProvider publisherProvider;
+    @Autowired
+    private IOrderProvider orderProvider;
 
     @RequestMapping(value = "/{bookId}", method = RequestMethod.GET)
     public String infoBook(@PathVariable("bookId")int bookId, Model model,Locale locale){
@@ -86,12 +86,19 @@ public class BookViewController {
     private boolean userBuyBook(User user, Book book){
         if(user == null)
             return false;
+/*
         Publisher publisher = publisherProvider.getPublisherByUser(user);
         if(publisher.getId() == book.getPublisher().getId())
             return true;
+
+        //check if admin or moderator
         if(user.getRole().getId() == 4 || user.getRole().getId() == 5)
             return true;
-        return true;
+*/
+        Order order = orderProvider.getOrderByUserAndBook(user, book);
+        if(order != null && order.isPaid())
+            return true;
+        return false;
     }
 
 }
