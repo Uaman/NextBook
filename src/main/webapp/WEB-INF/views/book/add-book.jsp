@@ -37,12 +37,6 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
     <jsp:include page="../../../resources/js/book/add.book.js.jsp"/>
     <style>
-        .progress-container{
-            width:500px;
-            height:10px;
-            border:1px solid black;
-            border-radius: 5px;
-        }
         .author, .keyword{
             background-color: red;
             padding: 5px;
@@ -77,8 +71,9 @@
             <div class="center-block">
                 <h2><spring:message code="add.book.information"/></h2>
                 <div class="errorblock">
-
+                    <ul></ul>
                 </div>
+                <span class="req-star">* <spring:message code="required.fields"/></span><br/>
                 <div class="edit-form">
                     <form id="edit-book-form">
                         <div class="left-box">
@@ -88,15 +83,15 @@
                             </label><br/><br/>
 
                             <h3><spring:message code="add.book.name"/></h3>
-                            <label>
+                            <label class="lang lang-ua">
                                 <spring:message code="add.book.language.ua"/><span class="req-star">*</span>:
                                 <input type="text" name="name_ua" id="name_ua" value="${book.uaName}"/><br/>
                             </label>
-                            <label>
+                            <label class="lang lang-en">
                                 <spring:message code="add.book.language.en"/>:
                                 <input type="text" name="name_en" id="name_en" value="${book.enName}"/><br/>
                             </label>
-                            <label>
+                            <label class="lang lang-ru">
                                 <spring:message code="add.book.language.ru"/>:
                                 <input type="text" name="name_ru" id="name_ru" value="${book.ruName}"/>
                             </label><br/><br/>
@@ -120,20 +115,20 @@
                             </label><br /><br/>
 
                             <h3><spring:message code="add.book.type.book"/><span class="req-star">*</span>:</h3>
-                                <label><spring:message code="add.book.type.electronic"/>: <input type="checkbox" id="electronic" name="electronic" /></label>
-                                <label><spring:message code="add.book.type.paper"/>: <input type="checkbox" id="paper" name="paper"/></label><br /><br/>
+                                <label class="label-float"><spring:message code="add.book.type.electronic"/>: <input type="checkbox" id="electronic" name="electronic" /></label>
+                                <label class="label-float"><spring:message code="add.book.type.paper"/>: <input type="checkbox" id="paper" name="paper"/></label><br /><br/>
                         </div>
                         <div class="right-box">
                             <h3><spring:message code="add.book.description"/></h3>
-                            <label class="short">
+                            <label class="short lang lang-ua">
                                 <spring:message code="add.book.language.ua"/><span class="req-star">*</span>:
                                 <textarea name="description_ua" id="description_ua">${book.descriptionUa}</textarea>
                             </label><br />
-                            <label class="short">
+                            <label class="short lang lang-en">
                                 <spring:message code="add.book.language.en"/>:
                                 <textarea name="description_en" id="description_en">${book.descriptionEn}</textarea>
                             </label><br />
-                            <label class="short">
+                            <label class="short lang lang-ru">
                                 <spring:message code="add.book.language.ru"/>:
                                 <textarea name="description_ru" id="description_ru">${book.descriptionRu}</textarea>
                             </label><br /><br/>
@@ -196,7 +191,7 @@
 					</form>
 					<form id="book-form" action="/book/send-book" method="POST" class="edit-form">
 						<div id="container-progress-book" class="progress-container" style="display: none;">
-							<div id="progress-bar-book" class="progress-bar""></div>
+							<div id="progress-bar-book" class="progress-bar"></div>
 						</div>
 						<input type="hidden" name="bookId" value="${book.id}">
 						<label>
@@ -209,45 +204,78 @@
 						<input type="hidden" name ="bookId" value="${book.id}"/>
 					</form>
 
-				<div id="add-author-form" class="popup-default" style="display: none;">
-					<div id="author-message">
-
-					</div>
-					Author First Name UA: <input type="text" id="author-first-name-ua"><br />
-					Author Last Name UA: <input type="text" id="author-last-name-ua"><br />
-					Author First Name EN: <input type="text" id="author-first-name-en"><br />
-					Author Last Name EN: <input type="text" id="author-last-name-en"><br />
-					Author First Name RU: <input type="text" id="author-first-name-ru"><br />
-					Author Last Name RU: <input type="text" id="author-last-name-ru"><br />
-					<input type="button" value="Add" id="send-author-form">
-					<button class="close"><spring:message code="button.close"/></button>
-				</div>
-                    <div id="send-popup" class="popup-default" style="display: none;">
-                        Please wait while we save your files
-                        <div id="spin" style="margin-top: 50px;"></div>
-                    </div>
-
-                    <div id="success" class="popup-default" style="display: none;">
-                        Success
-                        <button class="close"><spring:message code="button.close"/></button>
-                    </div>
-
-                    <div id="error" class="popup-default" style="display: none;">
-                        Error
-                        <button class="close"><spring:message code="button.close"/></button>
-                    </div>
-
-                    <div id="help-popup" class="popup-default" style="display: none;">
-                        <div>
-                            <spring:message code="book.registration.help"/>
-                        </div>
-                        <button class="close"><spring:message code="button.close"/></button>
-                    </div>
-                    <div class="shadow" style="display: none;"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div id="add-author-form" class="popup-default block-author" style="display: none;">
+    <span class="block-title"><spring:message code="add.book.popup.new.author"/></span>
+    <div class="block-content">
+        <div id="author-message" class="info-message">
+
+        </div>
+        <h3><spring:message code="add.book.author.first.name"/></h3>
+        <label class="lang lang-ua">
+            <spring:message code="add.book.language.ua"/>:
+            <input type="text" id="author-first-name-ua" class="input-text" />
+        </label>
+        <label class="lang lang-en">
+            <spring:message code="add.book.language.en"/>:
+            <input type="text" id="author-first-name-en" class="input-text" />
+        </label>
+        <label class="lang lang-ru">
+            <spring:message code="add.book.language.ru"/>:
+            <input type="text" id="author-first-name-ru" class="input-text" />
+        </label><br />
+        <h3><spring:message code="add.book.author.last.name"/></h3>
+        <label class="lang lang-ua">
+            <spring:message code="add.book.language.ua"/>:
+            <input type="text" id="author-last-name-ua" class="input-text" />
+        </label>
+        <label class="lang lang-en">
+            <spring:message code="add.book.language.en"/>:
+            <input type="text" id="author-last-name-en" class="input-text" />
+        </label>
+        <label class="lang lang-ru">
+            <spring:message code="add.book.language.ru"/>:
+            <input type="text" id="author-last-name-ru" class="input-text" />
+        </label>
+        <input type="button" class="button but-orange" value="Add" id="send-author-form" />
+        <button class="close but-close but-gray" title="<spring:message code='button.close'/>">x</button>
+    </div>
+</div>
+<div id="send-popup" class="popup-default block-info" style="display: none;">
+    <span class="block-title"></span>
+    <div class="block-content">
+        <spring:message code="add.book.please.wait"/>
+        <div id="spin" style="margin-top: 50px;"></div>
+        <button class="close button but-gray"><spring:message code="button.close"/></button>
+    </div>
+</div>
+
+<div id="success" class="popup-default block-info" style="display: none;">
+    <span class="block-title success"><spring:message code="add.book.success"/></span>
+    <div class="block-content">
+        <button class="close button but-orange"><spring:message code="button.ok"/></button>
+    </div>
+</div>
+
+<div id="error" class="popup-default block-info" style="display: none;">
+    <span class="block-title error"><spring:message code="add.book.error"/></span>
+    <div class="block-content">
+        <button class="close button but-gray"><spring:message code="button.close"/></button>
+    </div>
+</div>
+
+<div id="help-popup" class="popup-default" style="display: none;">
+    <span class="block-title"><spring:message code="add.book.help"/></span>
+    <div class="block-content">
+        <spring:message code="book.registration.help"/>
+        <button class="close button but-orange"><spring:message code="button.ok"/></button>
+        <button class="close but-close but-gray">x</button>
+    </div>
+</div>
+<div class="shadow" style="display: none;"></div>
 </body>
 </html>

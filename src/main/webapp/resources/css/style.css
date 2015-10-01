@@ -393,6 +393,7 @@ header a.logo {
 /********* Add book form ********/
 .right-box, .left-box {
     width: 49%;
+    margin-bottom: 30px;
 }
 .left-box {
     border-right: 1px dashed #ccc;
@@ -434,6 +435,9 @@ header a.logo {
 .edit-form .short select {
     width: 50%;
 }
+.edit-form .label-float {
+    width: auto;
+}
 .edit-form textarea {
     width: 100%;
     resize: vertical;
@@ -454,7 +458,7 @@ header a.logo {
     line-height: 1.8;
 }
 .edit-form h3 {
-    margin-left: 2.5%;
+    margin-left: 5%;
 }
 .label-title {
     float: left;
@@ -509,11 +513,40 @@ header a.logo {
     margin-right: 0;
     margin-top: 19px;
 }
+
+.progress-container{
+    width:50%;
+    height:10px;
+    border:1px solid #b3b3b3;
+    border-radius: 5px;
+}
 .progress-bar {
-    width:0%;
-    background-color: red;
+    width:0;
+    background-color: rgba(255, 0, 0, 0.48);
     height:inherit;
 }
+.lang:before {
+    content: '';
+    width: 24px;
+    height: 17px;
+    display: inline-block;
+    background: no-repeat left top;
+    margin-right: 3px;
+    vertical-align: middle;
+    -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.35);
+}
+.lang-ua:before {
+    background-image: url("/resources/images/ua.jpg");
+}
+.lang-en:before {
+    background-image: url("/resources/images/en.jpg");
+}
+.lang-ru:before {
+    background-image: url("/resources/images/ru.jpg");
+}
+
 /********* /Add book form ********/
 
 .main-container, .footer-container .product-slider-container {
@@ -639,4 +672,45 @@ header a.logo {
 .req-star {
     color: #f00;
     padding: 0 .2em;
+}
+
+
+/************* Media screen **********/
+@media screen and (max-width: 480px) {
+    .left-box, .right-box {
+        width: 100%;
+        float: none;
+    }
+    .left-box {
+        border-right: none;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .edit-form .short input[type="text"],
+    .edit-form .short input[type="search"],
+    .edit-form .short input[type="password"],
+    .edit-form .short select,
+    .edit-form input[type="text"],
+    .edit-form input[type="search"],
+    .edit-form input[type="password"],
+    .edit-form select,
+    .edit-form .short textarea,
+    .edit-form input[type="file"],
+    .edit-form .text-core {
+        width: 100%;
+    }
+    .help {
+        top: 25px;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .left-box, .right-box {
+        width: 100%;
+        float: none;
+    }
+    .left-box {
+        border-right: none;
+    }
 }

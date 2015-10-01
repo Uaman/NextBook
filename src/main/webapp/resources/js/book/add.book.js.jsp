@@ -196,7 +196,7 @@ $(document).ready(function(){
                 //required: '<spring:message code="book.registration.keywords.require"/>'
             }
         },
-        errorLabelContainer: $("div.errorblock"),
+        errorLabelContainer: $("div.errorblock ul"),
         wrapper: 'li',
         submitHandler: function(form){
             if($('.text-tags:eq(0)').find('.text-tag').length + $('.author').length < 1){ //divs with authors
@@ -274,7 +274,7 @@ $(document).ready(function(){
             },
             success: function(data){
                 console.log(data);
-                if(data) $('#author-message').text('Saved');
+                if(data) $('#author-message').html('<span class="success">Saved</span>');
                 else $('#author-message').test('error while saving');
             },
             error: function(e){
