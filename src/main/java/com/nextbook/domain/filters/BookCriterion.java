@@ -22,6 +22,8 @@ public class BookCriterion {
 
     private String name;
 
+    private int category;
+
     private int subCategory;
 
     private String state;
@@ -183,5 +185,13 @@ public class BookCriterion {
 
     public void setNumberOfPages(int numberOfPages) {
         this.numberOfPages = numberOfPages;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
     }
 }

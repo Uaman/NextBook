@@ -1,11 +1,8 @@
 package com.nextbook.controllers;
 
 import com.nextbook.domain.filters.BookCriterion;
-import com.nextbook.domain.forms.book.BookCatalogForm;
 import com.nextbook.domain.forms.user.RegisterUserForm;
 import com.nextbook.domain.pojo.*;
-import com.nextbook.domain.preview.BookPreview;
-import com.nextbook.domain.preview.CategoryPreview;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import com.nextbook.utils.StatisticUtil;
@@ -26,7 +23,6 @@ import java.util.*;
 public class IndexController {
 
     private int last_book = 0;
-    private int books_on_page = 3;
     @Inject
     private ICategoryProvider categoryProvider;
     @Inject
@@ -73,11 +69,10 @@ public class IndexController {
 //        model.addAttribute("lastBooks", lastBooks);
 //        model.addAttribute("booksQuantity", booksQuantity);
 //        model.addAttribute("publishersQuantity", publisherProvider.getPublishersQuantity());
-        BookCatalogForm bookCatalogForm = new BookCatalogForm();
-        model.addAttribute("bookCatalog", bookCatalogForm);
+        BookCriterion bookCriterionForm = new BookCriterion();
+        model.addAttribute("bookCriterion", bookCriterionForm);
         model.addAttribute("categories", categoryProvider.getAll());
         model.addAttribute("last_book", last_book);
-        model.addAttribute("books_on_page", books_on_page);
         return "main/index";
     }
 

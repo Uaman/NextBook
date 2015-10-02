@@ -17,7 +17,7 @@
     <script src="/resources/js/jquery.validate.min.js"></script>
     <script src="/resources/js/main/index.js"></script>
 
-    <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=latin-ext,cyrillic-ext'
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=la-tin-ext,cyrillic-ext'
           rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
@@ -27,7 +27,6 @@
 <div class="wrapper">
     <div class="page">
         <jsp:include page="../../template/default/headerContent.jsp"/>
-
     </div>
 </div>
 <jsp:include page="../auth/signinPopup.jsp"/>

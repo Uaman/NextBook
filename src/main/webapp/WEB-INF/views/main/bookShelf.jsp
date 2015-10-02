@@ -15,17 +15,14 @@
 <c:url var="subcategories" value="/subcategories"/>
 <c:url var="getBooks" value="/getbooks"/>
 <c:set var="last_book" value="${last_book}"/>
-<c:set var="books_on_page" value="${books_on_page}"/>
 
 <script type="text/javascript">
     var last_showed = ${last_book};
-    var per_page = ${books_on_page};
+    var per_page = 5;
     function printBooks(data) {
         var html = '';
         var len = data.length;
         var to_book = 0;
-        console.log(len);
-        console.log(last_showed);
         if (last_showed > len)
             return html;
         if (last_showed + per_page < len)
@@ -70,7 +67,6 @@
             $('#subCategory').html(html);
         });
     }
-
     $(document).ready(
             function () {
                 $('#category').change(
@@ -94,7 +90,7 @@
                         function () {
                             last_showed = 0;
                             $.getJSON('${getBooks}', {
-                                categroy: $('#catalog').value,
+                                category: $('#category').value,
                                 subcategory: $(this).val(),
                                 ajax: 'true'
                             }, function (data) {
@@ -107,7 +103,7 @@
             function () {
                 if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
                     $.getJSON('${getBooks}', {
-                        category: $('#catalog').value,
+                        category: $('#category').value,
                         subcategory: $('#subCategory').value,
                         ajax: 'true'
                     }, function (data) {
@@ -117,7 +113,7 @@
             });
 </script>
 
-<form:form modelAttribute="bookCatalog">
+<form:form modelAttribute="bookCriterion">
     <fieldset>
         <form:select id="category" path="category">
             <option value="-1"><spring:message code="book.category"/></option>
@@ -132,4 +128,3 @@
 </form:form>
 <div id="catalog">
 </div>
-
