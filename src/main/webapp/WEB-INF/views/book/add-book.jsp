@@ -250,7 +250,6 @@
     <div class="block-content">
         <spring:message code="add.book.please.wait"/>
         <div id="spin" style="margin-top: 50px;"></div>
-        <button class="close button but-gray"><spring:message code="button.close"/></button>
     </div>
 </div>
 
