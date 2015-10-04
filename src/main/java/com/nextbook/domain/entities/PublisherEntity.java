@@ -17,14 +17,12 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = PublisherEntity.GET_BY_ID, query = "SELECT publisher FROM PublisherEntity publisher WHERE publisher.id=:id"),
         @NamedQuery(name = PublisherEntity.GET_ALL, query = "SELECT publisher FROM PublisherEntity publisher"),
-        @NamedQuery(name = PublisherEntity.GET_PUBLISHER_BY_USER, query = "SELECT publisher FROM PublisherEntity publisher WHERE publisher.users.id = :user"),
         @NamedQuery(name = PublisherEntity.GET_PUBLISHERS_QUANTITY, query = "SELECT COUNT(publisher) FROM PublisherEntity publisher")
 })
 public class PublisherEntity {
 
     public static final String GET_BY_ID = "getPublisherById";
     public static final String GET_ALL = "getAllPublishers";
-    public static final String GET_PUBLISHER_BY_USER = "getPublisherBuyUser";
     public static final String GET_PUBLISHERS_QUANTITY = "getPublishersQuantity";
 
     @Id
