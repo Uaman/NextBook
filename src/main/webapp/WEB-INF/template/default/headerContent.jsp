@@ -30,10 +30,14 @@
           </security:authorize>
 
           <security:authorize access="@Secure.isAdmin()">
-            <li><a href="/admin/books/all"><spring:message code="books.manageBooks" /></a></li>
-            <li><a href="/admin/users/all"><spring:message code="users.manageUsers" /></a></li>
-            <li><a href="/admin/authors/all"><spring:message code="authors.manageAuthors" /></a></li>
-            <li><a href="/admin/publishers/all"><spring:message code="publishers.managePublishers" /></a></li>
+            <li><a href="#">Management</a>
+              <ul>
+                <li><a href="/admin/books/all"><spring:message code="books.manageBooks" /></a></li>
+                <li><a href="/admin/users/all"><spring:message code="users.manageUsers" /></a></li>
+                <li><a href="/admin/authors/all"><spring:message code="authors.manageAuthors" /></a></li>
+                <li><a href="/admin/publishers/all"><spring:message code="publishers.managePublishers" /></a></li>
+              </ul>
+            </li>
           </security:authorize>
 
           <security:authorize access="isAuthenticated()">
@@ -51,6 +55,23 @@
           <a href="/" class="logo">
             <img src="../resources/images/logo.png"/>
           </a>
+          <div class="nav-container">
+            <nav>
+            </nav>
+            <div class="top-dropdowns">
+              <div class="search-top-container">
+                <div class="search-top"></div>
+                <div class="search-form">
+                  <form id="search_mini_form" action="" method="get">
+                    <div class="form-search">
+                      <input id="search" type="text" name="q" value="" class="input-text" autocomplete="off" placeholder="Search book">
+                      <button type="submit" title="Пошук"></button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </header>

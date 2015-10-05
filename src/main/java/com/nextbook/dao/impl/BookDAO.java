@@ -88,6 +88,23 @@ public class BookDAO implements IBookDao {
     }
 
     @Override
+    public int getBooksQuantity() {
+        int result = 0;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query query = session.getNamedQuery(BookEntity.getBooksQuantity);
+            result = ((Long) query.iterate().next()).intValue();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
+
+    @Override
     public boolean deleteBook(int bookId) {
         boolean deleted = false;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -353,7 +370,6 @@ public class BookDAO implements IBookDao {
         }
         return deleted;
     }
-
 
     private Query createQueryFromCriterion(Session session, BookCriterion criterion) {
         StringBuilder queryString = new StringBuilder();

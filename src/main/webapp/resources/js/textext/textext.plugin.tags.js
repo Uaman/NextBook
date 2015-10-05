@@ -473,7 +473,7 @@ var CLASS;
 
 		if(self.isTagAllowed(tag))
 		{
-			self.addTags([ TAG ]);
+			self.addTags([{value: tag, id: 0} ]);
 			// refocus the textarea just in case it lost the focus
 			self.core().focusInput();
 		}

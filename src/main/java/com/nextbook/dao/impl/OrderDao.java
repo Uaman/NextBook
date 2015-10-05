@@ -114,5 +114,24 @@ public class OrderDao implements IOrderDao {
         return result;
     }
 
+    @Override
+    public Order getOrderByUserAndBook(User user, Book book){
+        Order result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            Query query = session.createSQLQuery("SELECT DISTINCT(ORDERS.ID) FROM ORDERS JOIN ORDERS_WITH_BOOK ON ORDERS.ID = ORDERS_WITH_BOOK.ID WHERE ORDERS.USER_ID=:user_id AND ORDERS_WITH_BOOK.BOOK_ID=:book_id");
+            query.setParameter("user_id", user.getId());
+            query.setParameter("book_id", book.getId());
+            List<Integer> ids = query.list();
+            if(ids != null && ids.size() > 0)
+                result = getById(ids.get(0));
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
 
 }

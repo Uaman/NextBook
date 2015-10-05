@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:context="http://www.springframework.org/schema/context"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.kutsyk.pdf.uploader</groupId>
+    <groupId>com.nextbook</groupId>
     <artifactId>NextBook</artifactId>
     <name>NextBook</name>
     <packaging>war</packaging>
     <version>1.0.0-BUILD-SNAPSHOT</version>
+
+
+
+
 
     <properties>
         <java-version>1.6</java-version>
@@ -17,6 +22,8 @@
         <org.slf4j-version>1.5.10</org.slf4j-version>
         <tiles.version>2.2.1</tiles.version>
     </properties>
+
+
     <dependencies>
 
         <dependency>
@@ -24,6 +31,20 @@
             <artifactId>liqpay-sdk</artifactId>
             <version>0.6</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>properties-maven-plugin</artifactId>
+            <version>1.0-alpha-2</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver</artifactId>
+            <version>3.0.4</version>
+        </dependency>
+
 
         <!-- Spring -->
         <dependency>
@@ -471,7 +492,9 @@
         </repository>
     </repositories>
     <build>
+
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -479,6 +502,24 @@
                     <source>${java-version}</source>
                     <target>${java-version}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>src/main/webapp/env.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -553,9 +594,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
-                    <url>jdbc:mysql://mysql-next.cloudapp.net/</url>
-                    <user>next</user>
-                    <password>Ne1615xt</password>
+                    <url>${database.url}</url>
+                    <user>${database.login}</user>
+                    <password>${database.password}</password>
                     <schemas>
                         <schema>nextbook</schema>
                     </schemas>

@@ -1,5 +1,6 @@
 package com.nextbook.dao;
 
+import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Order;
 import com.nextbook.domain.pojo.User;
 
@@ -16,5 +17,7 @@ public interface IOrderDao {
 
     boolean delete(int orderId);
 
-    public List<Order> getOrdersForUser(User currentUser);
+    List<Order> getOrdersForUser(User currentUser);
+
+    Order getOrderByUserAndBook(User user, Book book);
 }

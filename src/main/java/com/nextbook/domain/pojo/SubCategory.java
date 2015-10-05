@@ -1,5 +1,7 @@
 package com.nextbook.domain.pojo;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  * Created with IntelliJ IDEA.
  * User: borsch
@@ -16,6 +18,7 @@ public class SubCategory {
 
     private String link;
 
+    @JsonIgnore
     private Category category;
 
     private String nameEn;

@@ -99,7 +99,7 @@ public class PublisherDAO implements IPublisherDao {
     }
 
     @Override
-    public List<Publisher> getAllPublishers(int from, int max) {
+         public List<Publisher> getAllPublishers(int from, int max) {
         List<Publisher> result = null;
         Session session = sessionFactory.openSession();
         try {
@@ -124,6 +124,23 @@ public class PublisherDAO implements IPublisherDao {
                     }
                 }
             }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
+
+    @Override
+    public int getPublishersQuantity() {
+        int result = 0;
+        Session session = sessionFactory.openSession();
+        try {
+            session.beginTransaction();
+            Query query = session.getNamedQuery(PublisherEntity.GET_PUBLISHERS_QUANTITY);
+            result = ((Long) query.iterate().next()).intValue();
         } catch (Exception e){
             e.printStackTrace();
         } finally {
@@ -218,11 +235,11 @@ public class PublisherDAO implements IPublisherDao {
         try{
             UserEntity userEntity = dozerBeanMapper.map(user, UserEntity.class);
             if(userEntity != null){
-                Query query = session.getNamedQuery(PublisherEntity.GET_PUBLISHER_BY_USER);
-                query.setParameter("user", userEntity.getId());
-                List<PublisherEntity> list = query.list();
-                if(list != null && list.size() > 0) {
-                    result = dozerBeanMapper.map(list.get(0), Publisher.class);
+                Query query = session.createSQLQuery("SELECT DISTINCT(PUBLISHER.ID) FROM PUBLISHER JOIN USERS_TO_PUBLISHER ON PUBLISHER.ID=USERS_TO_PUBLISHER.PUBLISHER_ID WHERE USERS_TO_PUBLISHER.USER_ID= :user_id");
+                query.setParameter("user_id", userEntity.getId());
+                List<Integer> ids = query.list();
+                if(ids != null && ids.size() > 0) {
+                    result = getPublisherById(ids.get(0));
                 }
             }
         } catch (Exception e){

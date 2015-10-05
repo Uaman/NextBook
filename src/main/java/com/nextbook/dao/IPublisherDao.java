@@ -20,6 +20,8 @@ public interface IPublisherDao {
 
     List<Publisher> getAllPublishers(int from, int max);
 
+    int getPublishersQuantity();
+
     List<Publisher> getPublishersByCriterion(PublisherCriterion criterion);
 
     Publisher getPublisherByUser(User user);

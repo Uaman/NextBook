@@ -19,7 +19,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
         <form-login login-processing-url="/static/j_spring_security_check" login-page="/signin"
                     authentication-failure-url="/signin?error=true" default-target-url="/cabinet/profile"/>
-        <logout logout-url="/static/j_spring_security_logout" logout-success-url="/desktop"/>
+        <logout logout-url="/static/j_spring_security_logout" logout-success-url="/"/>
         <http-basic />
         <anonymous username="guest" granted-authority="ROLE_ANONYMOUS"/>
         <remember-me token-validity-seconds="2419200" />

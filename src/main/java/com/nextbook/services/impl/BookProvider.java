@@ -1,7 +1,6 @@
 package com.nextbook.services.impl;
 
 import com.nextbook.dao.IBookDao;
-import com.nextbook.dao.impl.BookDAO;
 import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.BookAuthor;
@@ -101,4 +100,7 @@ public class BookProvider implements IBookProvider{
     public boolean deleteBookToAuthor(int bookId, int authorId) {
         return bookDao.deleteBookToAuthor(bookId, authorId);
     }
+
+    @Override
+    public int getBooksQuantity() { return bookDao.getBooksQuantity(); }
 }

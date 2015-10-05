@@ -11,6 +11,29 @@ var bookUploaded = ${book.linkToStorage ne null};
 var isbnExist = false;
 $(document).ready(function(){
 
+    var opts = {
+        lines: 12             // The number of lines to draw
+        , length: 7             // The length of each line
+        , width: 5              // The line thickness
+        , radius: 10            // The radius of the inner circle
+        , scale: 1.0            // Scales overall size of the spinner
+        , corners: 1            // Roundness (0..1)
+        , color: '#000'         // #rgb or #rrggbb
+        , opacity: 1/4          // Opacity of the lines
+        , rotate: 0             // Rotation offset
+        , direction: 1          // 1: clockwise, -1: counterclockwise
+        , speed: 1              // Rounds per second
+        , trail: 100            // Afterglow percentage
+        , fps: 20               // Frames per second when using setTimeout()
+        , zIndex: 2e9           // Use a high z-index by default
+        , className: 'spinner'  // CSS class to assign to the element
+        , top: '50%'            // center vertically
+        , left: '50%'           // center horizontally
+        , shadow: false         // Whether to render a shadow
+        , hwaccel: false        // Whether to use hardware acceleration (might be buggy)
+        , position: 'absolute'  // Element positioning
+    };
+
     <c:choose>
         <c:when test="${book.typeOfBook eq 'PAPER_AND_ELECTRONIC'}">
             $('#electronic').prop('checked', true);
@@ -173,7 +196,7 @@ $(document).ready(function(){
                 //required: '<spring:message code="book.registration.keywords.require"/>'
             }
         },
-        errorLabelContainer: $("div.errorblock"),
+        errorLabelContainer: $("div.errorblock ul"),
         wrapper: 'li',
         submitHandler: function(form){
             if($('.text-tags:eq(0)').find('.text-tag').length + $('.author').length < 1){ //divs with authors
@@ -188,6 +211,9 @@ $(document).ready(function(){
                 alert('isbn exist');
                 return;
             }*/
+            var spinner = new Spinner(opts).spin(document.getElementById('spin'));
+            $('#send-popup').show();
+            $('.shadow').show();
             $.ajax({
                 url: '/book/edit-book',
                 data: JSON.stringify(formDataBook()),
@@ -201,15 +227,19 @@ $(document).ready(function(){
                     xhr.setRequestHeader("Content-Type", "application/json");
                 },
                 success: function(data){
+                    spinner.stop();
+                    $('#send-popup').hide();
                     if(data == 1){
-                        alert('success');
+                        $('#success').show();
                     } else {
-                        alert('error');
+                        $('#error').show();
                     }
                 },
                 error: function(e){
                     console.log(e);
-                    alert('error');
+                    spinner.stop();
+                    $('#send-popup').hide();
+                    $('#error').show();
                 }
             });
         }
@@ -219,8 +249,8 @@ $(document).ready(function(){
         $('#add-author-form').show();
         $('.shadow').show();
     });
-    $('#close').click(function(){
-        $('#add-author-form').hide();
+    $('.close').click(function(){
+        $('.popup-default').hide();
         $('.shadow').hide();
     });
 
@@ -244,9 +274,12 @@ $(document).ready(function(){
             },
             success: function(data){
                 console.log(data);
+                if(data) $('#author-message').html('<span class="success">Saved</span>');
+                else $('#author-message').test('error while saving');
             },
             error: function(e){
                 console.log(e);
+                $('#author-message').test('error while sending request');
             }
         })
     });
@@ -409,6 +442,33 @@ $(document).ready(function(){
             }
         })
     });
+    $('.help').click(function(){
+        $('#help-popup').show();
+        $('.shadow').show();
+    });
+
+    Dropzone.options.myAwesomeDropzone = {
+        paramName: "file", // The name that will be used to transfer the file
+        acceptedFiles: 'image/*',
+        maxFilesize: 2, // MB
+        init: function() {
+            this.on("complete", function(file) {
+                this.removeFile(file);
+            });
+            this.on("success", function (file, resp) {
+                if (resp != -1) {
+                    //$('#images').html('');
+                    //numberOfPerformerPortfolioPhotos = resp;
+                    //gallery = Galleria.get(0);
+                    //gallery.destroy();
+                    //formImages(numberOfPerformerPortfolioPhotos);
+                    //Galleria.loadTheme('/layout/js/galeria/galleria.classic.min.js');
+                    //Galleria.run('.galleria');
+                    //checkUploadButton();
+                }
+            });
+        }
+    };
 });
 
 function formDataBook(){
