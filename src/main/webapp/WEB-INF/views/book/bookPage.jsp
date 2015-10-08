@@ -108,7 +108,7 @@
     VK.Widgets.Like("vk_like", {type: "mini", height: 24});
 </script>
 <script type="text/javascript">
-document.write(VK.Share.button(false,{type: "round", text: "Share", eng: 1}));
+document.write(VK.Share.button('${shareLink}',{type: "round", text: "Share", eng: 1}));
 </script>
 <div class="g-plusone" data-size="small" data-annotation="inline" data-width="300" data-href="${shareLink}"></div>
 <div style="margin-top: 500px;"></div>
