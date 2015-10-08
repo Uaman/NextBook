@@ -1,5 +1,7 @@
 package com.nextbook.dao.impl;
 
+import com.google.common.collect.Lists;
+import com.nextbook.dao.Dao;
 import com.nextbook.dao.ISubCategoryDao;
 import com.nextbook.domain.entities.SubCategoryEntity;
 import com.nextbook.domain.pojo.SubCategory;
@@ -9,6 +11,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,28 +24,20 @@ import java.util.List;
 @Repository
 public class SubCategoryDao implements ISubCategoryDao{
 
+    @Inject
+    private Dao baseDao;
+
     @Override
     public List<SubCategory> getAll() {
-        List<SubCategory> result = null;
+        List<SubCategory> result = Lists.newArrayList();
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            Query query = session.getNamedQuery(SubCategoryEntity.getAll);
-            List<SubCategoryEntity> entities = query.list();
-            if(entities.size() > 0) {
-                result = new ArrayList<SubCategory>();
-                for (SubCategoryEntity entity : entities) {
-                    if (entity != null) {
-                        try {
-                            SubCategory temp = DozerMapperFactory.getDozerBeanMapper().map(entity, SubCategory.class);
-                            if (temp != null)
-                                result.add(temp);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+            for(SubCategoryEntity entity: baseDao.getAll(session, SubCategoryEntity.class)){
+                if (entity != null)
+                    result.add(DozerMapperFactory.getDozerBeanMapper().map(entity, SubCategory.class));
             }
+            session.getTransaction().commit();
         } catch (Exception e){
             e.printStackTrace();
         } finally {
