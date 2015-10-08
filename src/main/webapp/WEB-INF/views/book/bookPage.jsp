@@ -56,8 +56,26 @@
   <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=latin-ext,cyrillic-ext' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
   <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
+<script type="text/javascript" src="//vk.com/js/api/openapi.js?117"></script>
+<script type="text/javascript" src="http://vk.com/js/api/share.js?92" charset="windows-1251"></script>
+<script type="text/javascript">
+    VK.init({apiId: 5098749, onlyWidgets: true});
+</script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+
 </head>
 <body tabindex="1" class="loadingInProgress">
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=407822279407021";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
   <div class="wrapper">
     <div class="page">
       <jsp:include page="../../template/default/headerContent.jsp"/>
@@ -84,8 +102,16 @@
   </c:forEach>
 
   <a href="#read-book">MOVE TO BOOK</a>
-
-  <div style="margin-top: 500px;"></div>
+<div class="fb-like" data-href="${shareLink}" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>
+<div id="vk_like"></div>
+<script type="text/javascript">
+    VK.Widgets.Like("vk_like", {type: "mini", height: 24});
+</script>
+<script type="text/javascript">
+document.write(VK.Share.button(false,{type: "round", text: "Share", eng: 1}));
+</script>
+<div class="g-plusone" data-size="small" data-annotation="inline" data-width="300" data-href="${shareLink}"></div>
+<div style="margin-top: 500px;"></div>
   <a name="read-book"></a>
   <div id="outerContainer">
 

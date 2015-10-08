@@ -47,7 +47,7 @@ public class BookViewController {
         model.addAttribute("category",getCategoryLocated(book.getSubCategory().getCategory(),locale));
         model.addAttribute("keywords", book.getKeywords());
         model.addAttribute("bookName", bookNameInLocale(book, locale));
-
+        model.addAttribute("shareLink", HOST_NAME+"bookInfo/"+bookId);
         if(userBuyBook(user, book)){
             model.addAttribute("urlToFile", book.getLinkToStorage());
             model.addAttribute("pass", Constants.USER_PASSWORD);
@@ -101,4 +101,6 @@ public class BookViewController {
         return false;
     }
 
+
+    private static final String HOST_NAME = "http://nextbookdemo.azurewebsites.net/";
 }
