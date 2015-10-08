@@ -89,7 +89,7 @@ public class IndexController {
     List<SubCategory> subcategories(
             @RequestParam(value = "category", required = false) Integer category) {
         if(category == null)
-            return null;
+            return subCategoryProvider.getAll();
         return subCategoryProvider.getAllByCategoryId(category);
     }
 
