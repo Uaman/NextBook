@@ -114,12 +114,11 @@
 </script>
 
 <c:forEach var="categ" items="${categories}">
-    ${categ.nameUa}
+    ${categ.name}
     <br/>
-
     <div style="padding-left:5em">
-        <c:forEach var="subCateg" items="${categ.subCategory}">
-            ${subCateg.nameUa}
+        <c:forEach var="subCateg" items="${categ.subcategories}">
+            ${subCateg.name}
         </c:forEach>
         <br/>
     </div>

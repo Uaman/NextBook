@@ -3,6 +3,7 @@ package com.nextbook.controllers;
 import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.forms.user.RegisterUserForm;
 import com.nextbook.domain.pojo.*;
+import com.nextbook.domain.preview.CategoryPreview;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import com.nextbook.utils.StatisticUtil;
@@ -54,26 +55,13 @@ public class IndexController {
     public String desktop(Model model, Locale locale) {
         BookCriterion bookCriterionForm = new BookCriterion();
         model.addAttribute("bookCriterion", bookCriterionForm);
-        model.addAttribute("categories", categoryProvider.getAll());
+
+        List<CategoryPreview> categories = new ArrayList<CategoryPreview>();
+        for(Category cat: categoryProvider.getAll())
+            categories.add(new CategoryPreview(cat, locale));
+        model.addAttribute("categories", categories);
         model.addAttribute("last_book", last_book);
         return "main/index";
-    }
-
-    @RequestMapping(value = "/categories", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    List<Category> categories() {
-        return categoryProvider.getAll();
-    }
-
-    @RequestMapping(value = "/subcategories", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    List<SubCategory> subcategories(
-            @RequestParam(value = "category", required = false) Integer category) {
-        if(category == null)
-            return subCategoryProvider.getAll();
-        return subCategoryProvider.getAllByCategoryId(category);
     }
 
     @RequestMapping(value = "/getbooks", method = RequestMethod.GET)
