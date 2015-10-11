@@ -30,7 +30,7 @@ import java.util.Properties;
 /**
  * Created by Dima on 03.10.2015.
  */
-@Configuration
+//@Configuration
 //@PropertySource(value = "env.properties"/*, ignoreResourceNotFound=true*/)
 public class MongoConfig {
 
