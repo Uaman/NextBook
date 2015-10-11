@@ -55,6 +55,21 @@ public class UserEntity {
     )
     private Set<AdressesEntity> deliveryAdressesEnt = new HashSet<AdressesEntity>();
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "favorites", joinColumns = {@JoinColumn(name = "USER_ID",
+            nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "BOOK_ID",
+                    nullable = false, updatable = false)}
+    )
+    private Set<BookEntity> favoriteBooksEnt = new HashSet<BookEntity>();
+    public Set<BookEntity> getFavoriteBooksEnt() {
+        return favoriteBooksEnt;
+    }
+
+    public void setFavoriteBooksEnt(Set<BookEntity> favoriteBooksEnt) {
+        this.favoriteBooksEnt = favoriteBooksEnt;
+    }
+
     //@ManyToOne
     //@JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "USER_ID")}, inverseJoinColumns = {@JoinColumn(name = "PUBLISHER_ID")})
     //private PublisherEntity publisherEntity;

@@ -2,6 +2,7 @@ package com.nextbook.domain.pojo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,7 +24,14 @@ public class User {
     private Role role;
 
     private List<Adresses> deliveryAdresses;
+    private Set<Book> favoriteBooks;
+    public Set<Book> getFavoriteBooks() {
+        return favoriteBooks;
+    }
 
+    public void setFavoriteBooks(Set<Book> favoriteBooks) {
+        this.favoriteBooks = favoriteBooks;
+    }
     public Integer getId() {
         return id;
     }

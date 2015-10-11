@@ -13,6 +13,10 @@
             <a>deliveryAdresses</a>
             <b>deliveryAdressesEnt</b>
         </field>
+        <field>
+            <a>favoriteBooks</a>
+            <b>favoriteBooksEnt</b>
+        </field>
     </mapping>
 
     <mapping>
