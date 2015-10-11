@@ -1,21 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
-  User: borsch
-  Date: 7/22/2015
-  Time: 12:16 PM
+  User: KutsykV
+  Date: 11.10.2015
+  Time: 18:55
   To change this template use File | Settings | File Templates.
 --%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title><spring:message code="index.title"/></title>
+    <title><spring:message code="catalog.title"/></title>
     <script src="/resources/js/jquery-2.1.3.min.js"></script>
     <script src="/resources/js/jquery.validate.min.js"></script>
-    <script src="/resources/js/main/index.js"></script>
 
     <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=la-tin-ext,cyrillic-ext'
           rel='stylesheet' type='text/css'>
