@@ -58,10 +58,10 @@
     <mapping>
         <class-a>com.nextbook.domain.pojo.Category</class-a>
         <class-b>com.nextbook.domain.entities.CategoryEntity</class-b>
-        <field-exclude>
+        <field>
             <a>subCategory</a>
             <b>subCategoryEntity</b>
-        </field-exclude>
+        </field>
     </mapping>
 
     <mapping>

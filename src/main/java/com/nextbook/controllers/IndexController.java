@@ -52,23 +52,6 @@ public class IndexController {
 
     @RequestMapping(value = {"/"})
     public String desktop(Model model, Locale locale) {
-//        int booksQuantity = bookProvider.getBooksQuantity();
-//        int from = Math.max(0, booksQuantity - BOOKS_ON_PAGE);
-//        BookCriterion bookCriterion = new BookCriterion();
-//        bookCriterion.setFrom(from);
-//        bookCriterion.setMax(BOOKS_ON_PAGE);
-//        List<Book> books = bookProvider.getBooksByCriterion(bookCriterion);
-//        List<BookPreview> lastBooks = new ArrayList<BookPreview>();
-//        for (Book b:books)
-//            lastBooks.add(new BookPreview(b, locale));
-//        List<Category> categories = categoryProvider.getAll();
-//        List<CategoryPreview> respCategories = new ArrayList<CategoryPreview>();
-//        for (Category c:categories)
-//            respCategories.add(new CategoryPreview(c, locale));
-//        model.addAttribute("categories", categoryProvider.getAll());
-//        model.addAttribute("lastBooks", lastBooks);
-//        model.addAttribute("booksQuantity", booksQuantity);
-//        model.addAttribute("publishersQuantity", publisherProvider.getPublishersQuantity());
         BookCriterion bookCriterionForm = new BookCriterion();
         model.addAttribute("bookCriterion", bookCriterionForm);
         model.addAttribute("categories", categoryProvider.getAll());

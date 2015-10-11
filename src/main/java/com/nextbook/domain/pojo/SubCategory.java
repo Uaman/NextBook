@@ -18,7 +18,6 @@ public class SubCategory {
 
     private String link;
 
-    @JsonIgnore
     private Category category;
 
     private String nameEn;
