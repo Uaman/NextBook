@@ -3,10 +3,7 @@ package com.nextbook.controllers.book;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.domain.upload.Constants;
-import com.nextbook.services.IBookProvider;
-import com.nextbook.services.IBookStorageProvider;
-import com.nextbook.services.IOrderProvider;
-import com.nextbook.services.IPublisherProvider;
+import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -34,6 +30,8 @@ public class BookViewController {
     private IPublisherProvider publisherProvider;
     @Autowired
     private IOrderProvider orderProvider;
+    @Autowired
+    private ICommentsProvider commentsProvider;
 
     @RequestMapping(value = "/{bookId}", method = RequestMethod.GET)
     public String infoBook(@PathVariable("bookId")int bookId, Model model,Locale locale){

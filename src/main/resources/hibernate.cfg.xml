@@ -31,5 +31,6 @@
         <mapping class="com.nextbook.domain.entities.OrderStateEntity"/>
         <mapping class="com.nextbook.domain.entities.TypeOfPaymentEntity"/>
         <mapping class="com.nextbook.domain.entities.TypeOfDeliveringEntity"/>
+        <mapping class="com.nextbook.domain.entities.CommentEntity"/>
     </session-factory>
 </hibernate-configuration>

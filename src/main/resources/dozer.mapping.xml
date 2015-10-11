@@ -109,4 +109,8 @@
         <class-a>com.nextbook.domain.pojo.Favorites</class-a>
         <class-b>com.nextbook.domain.entities.FavoritesEntity</class-b>
     </mapping>
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.Comment</class-a>
+        <class-b>com.nextbook.domain.entities.CommentEntity</class-b>
+    </mapping>
 </mappings>
