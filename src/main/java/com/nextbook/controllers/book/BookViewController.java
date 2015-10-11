@@ -85,7 +85,7 @@ public class BookViewController {
     private boolean userBuyBook(User user, Book book){
         if(user == null)
             return false;
-/*
+
         Publisher publisher = publisherProvider.getPublisherByUser(user);
         if(publisher.getId() == book.getPublisher().getId())
             return true;
@@ -93,7 +93,7 @@ public class BookViewController {
         //check if admin or moderator
         if(user.getRole().getId() == 4 || user.getRole().getId() == 5)
             return true;
-*/
+
         Order order = orderProvider.getOrderByUserAndBook(user, book);
         if(order != null && order.isPaid())
             return true;
