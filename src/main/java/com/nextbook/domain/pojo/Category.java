@@ -26,8 +26,6 @@ public class Category {
 
     private String nameRu;
 
-    //@JsonSerialize(using = SubcategoryListJsonSerializer.class)
-    @JsonIgnore
     private List<SubCategory> subCategory = new ArrayList<SubCategory>();
 
     public String getNameUa() {

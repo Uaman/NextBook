@@ -1,4 +1,4 @@
-package com.nextbook.controllers;
+package com.nextbook.controllers.book;
 
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;

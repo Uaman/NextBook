@@ -113,18 +113,17 @@
             });
 </script>
 
-<form:form modelAttribute="bookCriterion">
-    <fieldset>
-        <form:select id="category" path="category">
-            <option value="-1"><spring:message code="book.category"/></option>
-            <c:forEach var="categ" items="${categories}">
-                <form:option value="${categ.id}">${categ.nameUa}</form:option>
-            </c:forEach>
-        </form:select>
-        <form:select id="subCategory" path="subCategory">
-            <option value=""><spring:message code="book.subcategory"/></option>
-        </form:select>
-    </fieldset>
-</form:form>
+<c:forEach var="categ" items="${categories}">
+    ${categ.nameUa}
+    <br/>
+
+    <div style="padding-left:5em">
+        <c:forEach var="subCateg" items="${categ.subCategory}">
+            ${subCateg.nameUa}
+        </c:forEach>
+        <br/>
+    </div>
+</c:forEach>
+
 <div id="catalog">
 </div>
