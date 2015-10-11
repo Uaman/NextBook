@@ -1,5 +1,7 @@
 package com.nextbook.domain.entities;
 
+import com.nextbook.dao.base.objects.BaseDataObject;
+
 import javax.persistence.*;
 
 /**
@@ -16,7 +18,7 @@ import javax.persistence.*;
         @NamedQuery(name = SubCategoryEntity.getById, query = "SELECT subCategory FROM SubCategoryEntity subCategory WHERE subCategory.id=:id"),
         @NamedQuery(name = SubCategoryEntity.getAllByCategoryId, query = "SELECT subCategory FROM SubCategoryEntity subCategory WHERE subCategory.categoryEntity.id=:id")
 })
-public class SubCategoryEntity {
+public class SubCategoryEntity extends BaseDataObject {
 
     public static final String getAll = "getAllSubCategories";
     public static final String getById = "getSubCategoryById";

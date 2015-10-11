@@ -2,6 +2,7 @@ package com.nextbook.domain.pojo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,7 +24,6 @@ public class User {
     private Role role;
 
     private List<Adresses> deliveryAdresses;
-
     public Integer getId() {
         return id;
     }

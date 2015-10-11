@@ -55,6 +55,7 @@ public class UserEntity {
     )
     private Set<AdressesEntity> deliveryAdressesEnt = new HashSet<AdressesEntity>();
 
+
     //@ManyToOne
     //@JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "USER_ID")}, inverseJoinColumns = {@JoinColumn(name = "PUBLISHER_ID")})
     //private PublisherEntity publisherEntity;

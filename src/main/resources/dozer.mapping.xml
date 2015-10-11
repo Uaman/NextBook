@@ -58,19 +58,19 @@
     <mapping>
         <class-a>com.nextbook.domain.pojo.Category</class-a>
         <class-b>com.nextbook.domain.entities.CategoryEntity</class-b>
-        <field>
+        <field-exclude>
             <a>subCategory</a>
             <b>subCategoryEntity</b>
-        </field>
+        </field-exclude>
     </mapping>
 
     <mapping>
         <class-a>com.nextbook.domain.pojo.SubCategory</class-a>
         <class-b>com.nextbook.domain.entities.SubCategoryEntity</class-b>
-        <field>
+        <field-exclude>
             <a>category</a>
             <b>categoryEntity</b>
-        </field>
+        </field-exclude>
     </mapping>
 
     <mapping>
@@ -104,5 +104,9 @@
     <mapping>
         <class-a>com.nextbook.domain.pojo.BookAuthor</class-a>
         <class-b>com.nextbook.domain.entities.BookAuthorEntity</class-b>
+    </mapping>
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.Favorites</class-a>
+        <class-b>com.nextbook.domain.entities.FavoritesEntity</class-b>
     </mapping>
 </mappings>
