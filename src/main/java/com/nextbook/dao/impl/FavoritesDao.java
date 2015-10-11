@@ -2,8 +2,10 @@ package com.nextbook.dao.impl;
 
 import com.nextbook.dao.IFavoritesDao;
 import com.nextbook.domain.entities.BookEntity;
+import com.nextbook.domain.entities.FavoritesEntity;
 import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.pojo.Book;
+import com.nextbook.domain.pojo.Favorites;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IBookProvider;
 import com.nextbook.utils.DozerMapperFactory;
@@ -15,6 +17,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,20 +33,16 @@ public class FavoritesDao implements IFavoritesDao {
     private SessionFactory sessionFactory;
     @Autowired
     private DozerBeanMapper dozerBeanMapper;
-    @Autowired
-    private IBookProvider bookProvider;
 
     @Override
-    public boolean addToUserFavorites(User user, Book book) {
-        if(user != null) {
+    public Favorites addToUserFavorites(Favorites favorite) {
+        Favorites result = null;
             Session session = HibernateUtil.getSessionFactory().openSession();
             try {
                 session.beginTransaction();
-                UserEntity entity = DozerMapperFactory.getDozerBeanMapper().map(user, UserEntity.class);
-                BookEntity bookEntity = DozerMapperFactory.getDozerBeanMapper().map(book,BookEntity.class);
-                entity = (UserEntity) session.merge(entity);
-                bookEntity = (BookEntity)session.merge(bookEntity);
-                entity.getFavoriteBooksEnt().add(bookEntity);
+                FavoritesEntity entity = DozerMapperFactory.getDozerBeanMapper().map(favorite, FavoritesEntity.class);
+                entity = (FavoritesEntity) session.merge(entity);
+                result = DozerMapperFactory.getDozerBeanMapper().map(entity, Favorites.class);
                 session.getTransaction().commit();
             } catch (Exception e) {
                 if(session != null && session.getTransaction().isActive())
@@ -53,22 +52,24 @@ public class FavoritesDao implements IFavoritesDao {
                 if (session != null && session.isOpen())
                     session.close();
             }
-        }
-        return true;
+        return result;
     }
 
     @Override
-    public boolean deleteFromUserFavorites(User user, Book book) {
-        if(user != null) {
+    public boolean deleteFromUserFavorites(int userId, int bookId) {
+        boolean result = false;
             Session session = HibernateUtil.getSessionFactory().openSession();
             try {
                 session.beginTransaction();
-                UserEntity entity = DozerMapperFactory.getDozerBeanMapper().map(user, UserEntity.class);
-                BookEntity bookEntity = DozerMapperFactory.getDozerBeanMapper().map(book,BookEntity.class);
-                entity = (UserEntity) session.merge(entity);
-                bookEntity = (BookEntity)session.merge(bookEntity);
-                entity.getFavoriteBooksEnt().remove(bookEntity);
+                Query query = session.getNamedQuery(FavoritesEntity.getByUserAndBook);
+                query.setParameter("bookId", bookId);
+                query.setParameter("userId", userId);
+                List<FavoritesEntity> list = query.list();
+                if(list != null && list.size() > 0) {
+                    session.delete(list.get(0));
+                }
                 session.getTransaction().commit();
+                result = true;
             } catch (Exception e) {
                 if(session != null && session.getTransaction().isActive())
                     session.getTransaction().rollback();
@@ -77,36 +78,37 @@ public class FavoritesDao implements IFavoritesDao {
                 if (session != null && session.isOpen())
                     session.close();
             }
-        }
-        return false;
+        return result;
     }
 
     @Override
-    public Set<Book> getAllFavorites(User user) {
-        Set<Book> result = new HashSet<Book>();
+    public List<Favorites> getAllFavorites(User user) {
+        List<Favorites> result = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
-        try{
-            UserEntity userEntity = dozerBeanMapper.map(user, UserEntity.class);
-            if(userEntity != null){
-                Query query = session.createSQLQuery("SELECT BOOK.ID FROM BOOK JOIN FAVORITES ON BOOK.ID =  FAVORITES.book_id WHERE FAVORITES.USER_ID =:user_id");
-                query.setParameter("user_id", userEntity.getId());
-                List<Integer> ids = query.list();
-                if(ids != null && ids.size() > 0) {
-                    for(int id:ids) {
-                        Book book = bookProvider.getBookById(id);
-                        if(book!=null)
-                            result.add(book);
+        try {
+            session.beginTransaction();
+            Query query = session.getNamedQuery(FavoritesEntity.getAllFavorites);
+            List<FavoritesEntity> entities = query.list();
+            if(entities.size() > 0) {
+                result = new ArrayList<Favorites>();
+                for (FavoritesEntity entity : entities) {
+                    if (entity != null) {
+                        try {
+                            Favorites favorite = DozerMapperFactory.getDozerBeanMapper().map(entity, Favorites.class);
+                            if (favorite != null)
+                                result.add(favorite);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
-
         } catch (Exception e){
             e.printStackTrace();
         } finally {
             if(session != null && session.isOpen())
                 session.close();
         }
-
         return result;
     }
 

@@ -1,8 +1,10 @@
 package com.nextbook.services;
 
 import com.nextbook.domain.pojo.Book;
+import com.nextbook.domain.pojo.Favorites;
 import com.nextbook.domain.pojo.User;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -11,18 +13,17 @@ import java.util.Set;
 public interface IFavoritesProvider {
     /**
      *
-     * @param user - of the user
-     * @param book - of the book to add
+     * @param favorite - of the user
      * @return true if book was added to favorites
      */
-    boolean addToUserFavorites(User user, Book book);
+    Favorites addToUserFavorites(Favorites favorite);
 
     /**
      *
-     * @param user
-     * @param book - of the book to remove
+     * @param userId
+     * @param bookId - of the book to remove
      * @return true if book was removed from favorites
      */
-    boolean deleteFromUserFavorites(User user, Book book);
-    Set<Book> getAllFavorites(User user);
+    boolean deleteFromUserFavorites(int userId, int bookId);
+    List<Favorites> getAllFavorites(User user);
 }

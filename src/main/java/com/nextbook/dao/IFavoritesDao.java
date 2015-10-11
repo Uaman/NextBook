@@ -1,8 +1,10 @@
 package com.nextbook.dao;
 
 import com.nextbook.domain.pojo.Book;
+import com.nextbook.domain.pojo.Favorites;
 import com.nextbook.domain.pojo.User;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -11,18 +13,17 @@ import java.util.Set;
 public interface IFavoritesDao {
     /**
      *
-     * @param user - of the user
-     * @param book - of the book to add
-     * @return true if book was added to favorites
+     * @param favorite
+     * @return
      */
-    boolean addToUserFavorites(User user, Book book);
+    Favorites addToUserFavorites(Favorites favorite);
 
     /**
      *
-     * @param user
-     * @param book - of the book to remove
-     * @return true if book was removed from favorites
+     * @param userId
+     * @param bookId
+     * @return
      */
-    boolean deleteFromUserFavorites(User user, Book book);
-    Set<Book> getAllFavorites(User user);
+boolean deleteFromUserFavorites(int userId, int bookId);
+    List<Favorites> getAllFavorites(User user);
 }

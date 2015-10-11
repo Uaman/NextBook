@@ -13,10 +13,6 @@
             <a>deliveryAdresses</a>
             <b>deliveryAdressesEnt</b>
         </field>
-        <field>
-            <a>favoriteBooks</a>
-            <b>favoriteBooksEnt</b>
-        </field>
     </mapping>
 
     <mapping>
@@ -108,5 +104,9 @@
     <mapping>
         <class-a>com.nextbook.domain.pojo.BookAuthor</class-a>
         <class-b>com.nextbook.domain.entities.BookAuthorEntity</class-b>
+    </mapping>
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.Favorites</class-a>
+        <class-b>com.nextbook.domain.entities.FavoritesEntity</class-b>
     </mapping>
 </mappings>
