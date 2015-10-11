@@ -54,7 +54,10 @@
             margin: 0px;
             text-align: left;
         }
-
+        .small-image{
+            width: 200px;
+            height: 150px;
+        }
     </style>
 </head>
 <body>
@@ -199,11 +202,14 @@
                             <input type="file" name="book" id="book">
                         </label><br />
 					</form>
-
-					<form action="/book/send-gallery-photo" enctype="multipart/form-data" class="dropzone">
+					<form action="/book/send-gallery-photo" enctype="multipart/form-data" class="dropzone" id="my-awesome-dropzone">
 						<input type="hidden" name ="bookId" value="${book.id}"/>
 					</form>
-
+                    <div id="container_galleria">
+                        <div class="galleria" style="height: 600px;">
+                        </div>
+                    </div>
+                    <div id="images"></div>
                 </div>
             </div>
         </div>

@@ -48,6 +48,7 @@ public class BookViewController {
         model.addAttribute("keywords", book.getKeywords());
         model.addAttribute("bookName", bookNameInLocale(book, locale));
         model.addAttribute("shareLink", HOST_NAME+"bookInfo/"+bookId);
+        model.addAttribute("numberOfPhotos", bookStorageProvider.getNumberOfPhotosInGallery(book.getId()));
         if(userBuyBook(user, book)){
             model.addAttribute("urlToFile", book.getLinkToStorage());
             model.addAttribute("pass", Constants.USER_PASSWORD);

@@ -52,6 +52,9 @@ $(document).ready(function(){
     </c:if>
 
     paperBookChecked();
+    formImages(${numberOfPhotos});
+    Galleria.loadTheme('/resources/js/galleria/theme/galleria.classic.min.js');
+    Galleria.run('.galleria');
     
     $('#publication_year').mask('0000');
     $('#number_of_pages').mask('000000');
@@ -457,18 +460,27 @@ $(document).ready(function(){
             });
             this.on("success", function (file, resp) {
                 if (resp != -1) {
-                    //$('#images').html('');
-                    //numberOfPerformerPortfolioPhotos = resp;
-                    //gallery = Galleria.get(0);
-                    //gallery.destroy();
-                    //formImages(numberOfPerformerPortfolioPhotos);
-                    //Galleria.loadTheme('/layout/js/galeria/galleria.classic.min.js');
-                    //Galleria.run('.galleria');
-                    //checkUploadButton();
+                    reloadGallery(resp);
                 }
             });
         }
     };
+    $('body').on('click', '.delete-image', function(){
+        var photoId = $(this).val();
+        $.ajax({
+            url: '/book/delete-gallery-image/'+BOOK_ID+'/'+photoId,
+            type: 'POST',
+            success: function(data){
+                if(data != -1){
+                    $('#image-'+photoId).remove();
+                    reloadGallery(data);
+                }
+            },
+            error: function(e){
+                console.log(e);
+            }
+        })
+    });
 });
 
 function formDataBook(){
@@ -549,5 +561,33 @@ function paperBookChecked(){
     } else {
         $('#last-page-form').hide();
     }
+}
+
+function formImages(numberOfPhotos){
+    if(numberOfPhotos < 1){
+        $('#container_galleria').hide();
+    } else {
+        $('#container_galleria').show();
+        $('#images').html('');
+        $('.galleria').html('');
+        var html = '';
+        var htmlBig = '<ul>';
+        for (var i = 0; i < numberOfPhotos; ++i) {
+            html += '<div id="image-' + i + '"><img class="small-image" src="/book/getGalleryPhoto/' + BOOK_ID + '/' + i + '"/>';
+            htmlBig += '<li><img src="/book/getGalleryPhoto/' + BOOK_ID + '/' + i + '"/></li>';
+            html += '<br/><button class="delete-image" value="' + i + '">X</button></div>';
+        }
+        htmlBig += '</ul>';
+        $('#images').html(html);
+        $('.galleria').html(htmlBig);
+    }
+}
+
+function reloadGallery(numberOfPhotos){
+    var gallery = Galleria.get(0);
+    gallery.destroy();
+    formImages(numberOfPhotos);
+    Galleria.loadTheme('/resources/js/galleria/theme/galleria.classic.min.js');
+    Galleria.run('.galleria');
 }
 </script>

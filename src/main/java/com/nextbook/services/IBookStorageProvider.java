@@ -40,7 +40,15 @@ public interface IBookStorageProvider {
      * @param file - file that must be saved
      * @return success
      */
-    boolean uploadGalleryPhotoLocal(int bookId, MultipartFile file);
+    boolean uploadGalleryPhoto(int bookId, MultipartFile file);
+
+    /**
+     *
+     * @param bookId - id of book
+     * @param photoNumber - number of photo on storage to delete
+     * @return success
+     */
+    boolean deleteGalleryPhoto(int bookId, int photoNumber);
 
     /**
      *
@@ -56,6 +64,8 @@ public interface IBookStorageProvider {
      * @param cover - first or last page(enum)
      */
     void getCover(OutputStream outputStream, int bookId, Cover cover);
+
+    void getGalleryPhoto(OutputStream outputStream, int bookId, int photoNumber);
 
     /**
      *

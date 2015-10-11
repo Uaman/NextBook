@@ -136,6 +136,26 @@ public class BookStorageProvider implements IBookStorageProvider {
     }
 
     @Override
+    public void getGalleryPhoto(OutputStream outputStream, int bookId, int photoNumber) {
+        try{
+            CloudBlobContainer container = initContainer(BOOK_FOLDER + bookId);
+            CloudBlobDirectory gallery = container.getDirectoryReference(GALLERY_FOLDER);
+
+            for (ListBlobItem blobItem : gallery.listBlobs()) {
+                if (blobItem instanceof CloudBlob) {
+                    CloudBlob blob = (CloudBlob) blobItem;
+                    if(photoNumber-- == 0) {
+                        blob.download(outputStream);
+                        return;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public String uploadBookToStorage(int id) {
         File bookDir = new File(rootDir + "/" + BOOK_FOLDER + id);
         if (!bookDir.exists()) {
@@ -152,7 +172,7 @@ public class BookStorageProvider implements IBookStorageProvider {
         if(uri != null) {
             uploadPreviewBookToStorage(containerName, id);
             uploadCoversToStorage(containerName, id);
-            uploadGalleryToStorage(containerName, id);
+            //uploadGalleryToStorage(containerName, id);
             deleteLocalFolder(id);
         }
         return uri;
@@ -212,7 +232,7 @@ public class BookStorageProvider implements IBookStorageProvider {
     }
 
     @Override
-    public boolean uploadGalleryPhotoLocal(int bookId, MultipartFile file){
+    public boolean uploadGalleryPhoto(int bookId, MultipartFile file){
         boolean saved = false;
         File galleryFolder = new File(rootDir + "/" + BOOK_FOLDER + bookId + "/" + GALLERY_FOLDER);
         if(!galleryFolder.exists())
@@ -223,19 +243,26 @@ public class BookStorageProvider implements IBookStorageProvider {
                 || file.getSize() == 0){
             return false;
         }
-        int numberOfPhotos = getNumberOfPhotosInGallery(bookId);
+        int numberOfPhotos = newPhotoNumber(BOOK_FOLDER + bookId);
         BufferedOutputStream stream = null;
         try {
             byte[] bytes = file.getBytes();
             if (bytes.length == 0)
                 return saved;
 
-            File fileToStore = new File(galleryFolder.getPath() + "/" + numberOfPhotos + "." + FilesUtils.getFIleExtensions(file.getOriginalFilename()));
+            String photoName = numberOfPhotos + "." + FilesUtils.getFIleExtensions(file.getOriginalFilename());
+            File fileToStore = new File(galleryFolder.getPath() + "/" + photoName);
             stream = new BufferedOutputStream(new FileOutputStream(fileToStore));
             stream.write(bytes);
             stream.close();
+            CloudBlobContainer container = initContainer(BOOK_FOLDER + bookId);
+            CloudBlob blob = container.getBlockBlobReference(GALLERY_FOLDER + '/' + photoName);
+            if (blob.exists())
+                blob.delete();
+            blob.upload(new FileInputStream(fileToStore), fileToStore.length());
             saved = true;
-        } catch (IOException e) {
+            fileToStore.delete();
+        } catch (Exception e) {
             e.printStackTrace();
             saved = false;
         } finally {
@@ -248,6 +275,59 @@ public class BookStorageProvider implements IBookStorageProvider {
             }
         }
         return saved;
+    }
+
+    private int newPhotoNumber(String containerName){
+        int photoNumber = 0;
+        try {
+            CloudBlobContainer container = initContainer(containerName);
+            CloudBlobDirectory gallery = container.getDirectoryReference(GALLERY_FOLDER);
+            String uri = null;
+            if (gallery != null) {
+                for (ListBlobItem blobItem : gallery.listBlobs()) {
+                    if (blobItem instanceof CloudBlob) {
+                        uri = ((CloudBlob)blobItem).getUri().toString();
+                    }
+                }
+            }
+            if(uri != null){
+                int galleryIndex = uri.indexOf(GALLERY_FOLDER) + GALLERY_FOLDER.length() + 1;
+                int dotIndex = uri.lastIndexOf('.');
+                if(dotIndex < 0)
+                    dotIndex = uri.length();
+                photoNumber = Integer.valueOf(uri.substring(galleryIndex, dotIndex)) + 1;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            photoNumber = -1;
+        }
+        return photoNumber;
+    }
+
+    @Override
+    public boolean deleteGalleryPhoto(int bookId, int photoNumber) {
+        boolean success = false;
+        try {
+            CloudBlobContainer container = initContainer(BOOK_FOLDER + bookId);
+            CloudBlobDirectory gallery = container.getDirectoryReference(GALLERY_FOLDER);
+            if(gallery != null) {
+                for (ListBlobItem blobItem : gallery.listBlobs()) {
+                    if (blobItem instanceof CloudBlob) {
+                        if(photoNumber-- == 0){
+                            ((CloudBlob)blobItem).delete();
+                            success = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if(photoNumber > 0)
+                success = false;
+        } catch(Exception e){
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
     }
 
     private void uploadGalleryToStorage(String containerName, int id) {
@@ -286,10 +366,11 @@ public class BookStorageProvider implements IBookStorageProvider {
                     }
                 }
             }
+            /*
             File galleryFolder = new File(rootDir + '/' + BOOK_FOLDER + bookId + '/' + GALLERY_FOLDER);
             if(galleryFolder.exists())
                 count += galleryFolder.listFiles().length;
-
+*/
             return count;
         } catch (Exception e) {
             e.printStackTrace();

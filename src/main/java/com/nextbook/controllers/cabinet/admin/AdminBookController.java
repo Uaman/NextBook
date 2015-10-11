@@ -16,9 +16,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -62,6 +64,7 @@ public class AdminBookController {
         model.addAttribute("subCategories", subCategoryProvider.getAll());
         model.addAttribute("book", book);
         model.addAttribute("authors", formAuthorsInLocale(book.getBookToAuthor(), locale.getLanguage()));
+        model.addAttribute("numberOfPhotos", bookStorageProvider.getNumberOfPhotosInGallery(book.getId()));
         return "admin/books/add-book";
     }
 
@@ -159,6 +162,7 @@ public class AdminBookController {
         return books;
     }
 
+    @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/authors-auto-complete/{keyword}", method = RequestMethod.POST)
     public @ResponseBody List<ResponseForAutoComplete> authorsAutoComplete(@PathVariable("keyword") String keyword,
                                                                            Locale locale){
@@ -188,6 +192,7 @@ public class AdminBookController {
         return result;
     }
 
+    @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/keywords-auto-complete/{keyword}", method = RequestMethod.POST)
     public @ResponseBody List<ResponseForAutoComplete> keywordsAutoComplete(@PathVariable("keyword") String keyword,
                                                                             Locale locale){
@@ -244,11 +249,37 @@ public class AdminBookController {
         return success;
     }
 
+    @PreAuthorize("@Secure.isAdmin()")
+    @RequestMapping(value = "/send-gallery-photo", method = RequestMethod.POST)
+    public @ResponseBody int upload(MultipartHttpServletRequest request,
+                                    @RequestParam(value = "bookId", required = true) Integer bookId) {
+        if (bookId == null || bookId == 0)
+            return -1;
+        Book book = bookProvider.getBookById(bookId);
+        if(book == null)
+            return -1;
+        Iterator<String> itr =  request.getFileNames();
+        MultipartFile multipartFile = request.getFile(itr.next());
+        bookStorageProvider.uploadGalleryPhoto(book.getId(), multipartFile);
+        return bookStorageProvider.getNumberOfPhotosInGallery(bookId);
+    }
+
+    @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/check-isbn/{isbn}", method = RequestMethod.POST)
     public @ResponseBody boolean isbnExist(@PathVariable("isbn") String isbn){
         if(isbn == null)
             return false;
         return bookProvider.isbnExist(isbn);
+    }
+
+    @PreAuthorize("@Secure.isAdmin()")
+    @RequestMapping(value = "/delete-gallery-image/{bookId}/{photoId}", method = RequestMethod.POST)
+    public @ResponseBody int deleteGalleryImage(@PathVariable("bookId") int bookId,
+                                                @PathVariable("photoId") int photoId){
+        boolean success = bookStorageProvider.deleteGalleryPhoto(bookId, photoId);
+        if(!success)
+            return -1;
+        return bookStorageProvider.getNumberOfPhotosInGallery(bookId);
     }
 
     @PreAuthorize("@Secure.isAdmin()")
@@ -268,6 +299,7 @@ public class AdminBookController {
         return "book/view";
     }
 
+    @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/delete-keyword/{bookId}/{keywordId}", method = RequestMethod.POST)
     public @ResponseBody boolean deleteKeyword(@PathVariable("bookId") int bookId,
                                                @PathVariable("keywordId") int keywordId){
@@ -278,6 +310,7 @@ public class AdminBookController {
         return success;
     }
 
+    @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/delete-author/{bookId}/{authorId}", method = RequestMethod.POST)
     public @ResponseBody boolean deleteAuthor(@PathVariable("bookId") int bookId,
                                               @PathVariable("authorId") int authorId){
