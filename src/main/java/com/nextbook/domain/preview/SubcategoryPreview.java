@@ -14,6 +14,7 @@ public class SubcategoryPreview {
     private int id;
 
     private String name;
+    private String link;
 
     public SubcategoryPreview(SubCategory s, Locale locale) {
         this.id = s.getId();
@@ -24,6 +25,7 @@ public class SubcategoryPreview {
         } else {
             this.name = s.getNameEn();
         }
+        link = s.getNameEn() == null ? id+"" : s.getNameEn().toLowerCase().replaceAll(" ","_");
     }
 
     public int getId() {
@@ -40,5 +42,13 @@ public class SubcategoryPreview {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }

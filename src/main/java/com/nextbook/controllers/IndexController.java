@@ -3,6 +3,7 @@ package com.nextbook.controllers;
 import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.forms.user.RegisterUserForm;
 import com.nextbook.domain.pojo.*;
+import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.domain.preview.CategoryPreview;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
@@ -23,7 +24,7 @@ import java.util.*;
 @Controller
 public class IndexController {
 
-    private int last_book = 0;
+    private int BOOK_ON_PAGE = 10;
     @Inject
     private ICategoryProvider categoryProvider;
     @Inject
@@ -53,36 +54,17 @@ public class IndexController {
 
     @RequestMapping(value = {"/"})
     public String desktop(Model model, Locale locale) {
-        BookCriterion bookCriterionForm = new BookCriterion();
-        model.addAttribute("bookCriterion", bookCriterionForm);
-
-        List<CategoryPreview> categories = new ArrayList<CategoryPreview>();
-        for(Category cat: categoryProvider.getAll())
-            categories.add(new CategoryPreview(cat, locale));
-        model.addAttribute("categories", categories);
-        model.addAttribute("last_book", last_book);
+        int booksQuantity = bookProvider.getBooksQuantity();
+        int from = Math.max(0, booksQuantity - BOOK_ON_PAGE);
+        BookCriterion bookCriterion = new BookCriterion();
+        bookCriterion.setFrom(from);
+        bookCriterion.setMax(BOOK_ON_PAGE);
+        List<Book> books = bookProvider.getBooksByCriterion(bookCriterion);
+        List<BookPreview> lastBooks = new ArrayList<BookPreview>();
+        for (Book b:books)
+            lastBooks.add(new BookPreview(b, locale));
+        model.addAttribute("last_books", lastBooks);
         return "main/index";
-    }
-
-    @RequestMapping(value = "/getbooks", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Set<Book> getBooks(@RequestParam(value = "category", required = false) Integer category,
-                       @RequestParam(value = "subcategory", required = false) Integer subcategory) {
-        Set<Book> result = new HashSet<Book>();
-        if (category != null && subcategory == null) {
-            for (SubCategory subCategory : subCategoryProvider.getAllByCategoryId(category)) {
-                BookCriterion criterion = new BookCriterion();
-                criterion.setSubCategory(subCategory.getId());
-                result.addAll(bookProvider.getBooksByCriterion(criterion));
-            }
-        } else if (subcategory != null) {
-            BookCriterion criterion = new BookCriterion();
-            criterion.setSubCategory(subcategory);
-            result.addAll(bookProvider.getBooksByCriterion(criterion));
-        } else
-            result.addAll(bookProvider.getAllBooks());
-        return result;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, headers = "Accept=application/json")

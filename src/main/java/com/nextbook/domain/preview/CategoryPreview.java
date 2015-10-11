@@ -15,6 +15,7 @@ public class CategoryPreview {
     private int id;
 
     private String name;
+    private String link;
 
     private List<SubcategoryPreview> subcategories;
 
@@ -27,6 +28,7 @@ public class CategoryPreview {
         } else {
             this.name = c.getNameEn();
         }
+        link = c.getNameEn().toLowerCase().replaceAll(" ", "_");
         subcategories = new ArrayList<SubcategoryPreview>();
         List<SubCategory> ss = c.getSubCategory();
         for (SubCategory s:c.getSubCategory()) {
@@ -56,5 +58,13 @@ public class CategoryPreview {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }
