@@ -11,6 +11,8 @@ public class Order {
 
     int id;
 
+    int price;
+
     OrderState orderState;
 
     boolean isPaid;
@@ -39,11 +41,12 @@ public class Order {
     public String toString() {
         return "Order{" +
                 "id=" + id +
+                ", price=" + price +
                 ", orderState=" + orderState +
                 ", isPaid=" + isPaid +
                 ", user=" + user +
                 ", dateOfOrder=" + dateOfOrder +
-                ", typeOfPaument=" + typeOfPayment +
+                ", typeOfPayment=" + typeOfPayment +
                 ", description='" + description + '\'' +
                 ", delivering=" + delivering +
                 '}';
@@ -58,6 +61,7 @@ public class Order {
 
         if (id != order.id) return false;
         if (isPaid != order.isPaid) return false;
+        if (price != order.price) return false;
         if (dateOfOrder != null ? !dateOfOrder.equals(order.dateOfOrder) : order.dateOfOrder != null) return false;
         if (delivering != null ? !delivering.equals(order.delivering) : order.delivering != null) return false;
         if (description != null ? !description.equals(order.description) : order.description != null) return false;
@@ -72,6 +76,7 @@ public class Order {
     @Override
     public int hashCode() {
         int result = id;
+        result = 31 * result + price;
         result = 31 * result + (orderState != null ? orderState.hashCode() : 0);
         result = 31 * result + (isPaid ? 1 : 0);
         result = 31 * result + (user != null ? user.hashCode() : 0);
@@ -145,5 +150,13 @@ public class Order {
 
     public void setDelivering(Delivering delivering) {
         this.delivering = delivering;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

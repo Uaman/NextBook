@@ -44,6 +44,9 @@ public class OrderEntity{
     @Column(name = "description")
     private String description;
 
+    @Column(name = "price")
+    private int price;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "delivering_id")
     private TypeOfDeliveringEntity delivering;
@@ -121,5 +124,13 @@ public class OrderEntity{
 
     public void setOrderedBooksList(Set<OrderedBookEntity> orderedBooksList) {
         this.orderedBooksList = orderedBooksList;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }
