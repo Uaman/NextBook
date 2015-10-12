@@ -51,7 +51,6 @@ public class SubCategoryDao implements ISubCategoryDao{
     public SubCategory getById(int subCategoryId) {
         SubCategory result = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
-
         try{
             session.beginTransaction();
             Query query = session.getNamedQuery(SubCategoryEntity.getById);
@@ -67,7 +66,6 @@ public class SubCategoryDao implements ISubCategoryDao{
             if(session != null && session.isOpen())
                 session.close();
         }
-
         return result;
     }
 
@@ -94,6 +92,28 @@ public class SubCategoryDao implements ISubCategoryDao{
                     }
                 }
             }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
+
+    @Override
+    public SubCategory getByLink(String link) {
+        SubCategory result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session.beginTransaction();
+            Query query = session.getNamedQuery(SubCategoryEntity.getSubcategoryByLink);
+            query.setParameter("link", link);
+            List<SubCategoryEntity> list = query.list();
+            if(list != null && list.size() > 0){
+                result = DozerMapperFactory.getDozerBeanMapper().map(list.get(0), SubCategory.class);
+            }
+            session.getTransaction().commit();
         } catch (Exception e){
             e.printStackTrace();
         } finally {

@@ -5,8 +5,8 @@ import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Category;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.domain.preview.CategoryPreview;
-import com.nextbook.domain.preview.SubcategoryPreview;
 import com.nextbook.services.ICategoryProvider;
+import com.nextbook.services.ISubCategoryProvider;
 import com.nextbook.services.impl.BookProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +28,8 @@ public class CatalogController {
     private BookProvider bookProvider;
     @Inject
     private ICategoryProvider categoryProvider;
+    @Inject
+    private ISubCategoryProvider subCategoryProvider;
 
     private List<CategoryPreview> categories;
 
@@ -40,40 +42,22 @@ public class CatalogController {
         return "catalog/catalog";
     }
 
-    //TODO: add links to database and get them from it
     @RequestMapping(value = "/{category_link}", method = RequestMethod.GET)
     public String categoryBooks(@PathVariable String category_link, Model model, Locale locale) {
         initCategoryList(locale);
-        for (CategoryPreview category : categories)
-            if (category.getLink().equals(category_link)) {
-                BookCriterion bookCriterion = new BookCriterion();
-                bookCriterion.setCategory(category.getId());
-                model.addAttribute("books", getBooksByCriterion(bookCriterion, locale));
-                break;
-            }
+        BookCriterion bookCriterion = new BookCriterion();
+        bookCriterion.setCategory(categoryProvider.getByLink(category_link).getId());
+        model.addAttribute("books", getBooksByCriterion(bookCriterion, locale));
         return "catalog/catalog";
     }
 
-    //TODO: add links to database and get them from it
     @RequestMapping(value = "/{category_link}/{subCategory_link}", method = RequestMethod.GET)
     public String subCategoryBooks(@PathVariable String category_link,
                                    @PathVariable String subCategory_link, Model model, Locale locale) {
         initCategoryList(locale);
-        boolean subCategoryFound = false;
-        for (CategoryPreview category : categories)
-            if (category.getLink().equals(category_link)) {
-                for(SubcategoryPreview subCategory: category.getSubcategories()) {
-                    if(subCategory.getLink().equals(subCategory_link)) {
-                        BookCriterion bookCriterion = new BookCriterion();
-                        bookCriterion.setSubCategory(subCategory.getId());
-                        model.addAttribute("books", getBooksByCriterion(bookCriterion, locale));
-                        subCategoryFound = true;
-                        break;
-                    }
-                    if(subCategoryFound)
-                        break;
-                }
-            }
+        BookCriterion bookCriterion = new BookCriterion();
+        bookCriterion.setSubCategory(subCategoryProvider.getByLink(subCategory_link).getId());
+        model.addAttribute("books", getBooksByCriterion(bookCriterion, locale));
         return "catalog/catalog";
     }
 

@@ -40,6 +40,9 @@
                         <li><a href="#" class="active-link"><spring:message code="user.info.my.profile"/></a></li>
                         <li><a href="/cabinet/edit-profile"><spring:message code="user.info.editProfile"/></a></li>
                         <li><a href="/static/j_spring_security_logout"><spring:message code="global.exit"/></a></li>
+                        <c:if test="${hasFavorites}">
+                        <li><a href="/user/favorites/"><spring:message code="user.info.favorites"/></a></li>
+                        </c:if>
                     </security:authorize>
 
                     <security:authorize access="@Secure.isPublisher()">

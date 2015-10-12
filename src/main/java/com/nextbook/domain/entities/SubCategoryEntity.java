@@ -16,13 +16,16 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(name = SubCategoryEntity.getAll, query = "SELECT subCategory FROM SubCategoryEntity subCategory"),
         @NamedQuery(name = SubCategoryEntity.getById, query = "SELECT subCategory FROM SubCategoryEntity subCategory WHERE subCategory.id=:id"),
-        @NamedQuery(name = SubCategoryEntity.getAllByCategoryId, query = "SELECT subCategory FROM SubCategoryEntity subCategory WHERE subCategory.categoryEntity.id=:id")
+        @NamedQuery(name = SubCategoryEntity.getAllByCategoryId, query = "SELECT subCategory FROM SubCategoryEntity subCategory WHERE subCategory.categoryEntity.id=:id"),
+        @NamedQuery(name = SubCategoryEntity.getSubcategoryByLink, query = "SELECT subCategory FROM SubCategoryEntity subCategory WHERE subCategory.link=:link")
 })
 public class SubCategoryEntity extends BaseDataObject {
 
     public static final String getAll = "getAllSubCategories";
     public static final String getById = "getSubCategoryById";
     public static final String getAllByCategoryId = "getAllByCategoryId";
+    public static final String getSubcategoryByLink = "getSubcategoryByLink";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
