@@ -10,6 +10,8 @@ import java.util.List;
 /**
  * Created by Polomani on 27.07.2015.
  */
+//TODO
+    //Make BookCriterion as builder
 public class BookCriterion {
 
     private int from;
