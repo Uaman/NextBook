@@ -8,7 +8,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <div class="header-container">
   <div class="top-switch-bg">
     <div class="row clearfix">
@@ -53,7 +55,7 @@
       <div class="row clearfix">
         <div class="grid_12">
           <a href="/" class="logo">
-            <img src="../resources/images/logo.png"/>
+            <img src="<c:url value='../../../resources/images/logo.png'/>"/>
           </a>
           <div class="nav-container">
             <nav>

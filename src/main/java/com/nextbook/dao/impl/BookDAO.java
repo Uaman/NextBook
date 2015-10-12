@@ -460,6 +460,14 @@ public class BookDAO implements IBookDao {
             }
             where = true;
         }
+        if (criterion.getCategory()>0){
+            if(where) {
+                queryString.append(" AND book.subCategoryEntity.categoryEntity.id=:category");
+            } else {
+                queryString.append(" WHERE book.subCategoryEntity.categoryEntity.id=:category");
+            }
+            where = true;
+        }
         if (validString(criterion.getPublisher())){
             if(where) {
                 queryString.append(" AND (book.publisherEntity.nameUa LIKE :publisher");

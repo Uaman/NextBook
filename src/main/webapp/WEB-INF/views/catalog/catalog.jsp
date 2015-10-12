@@ -18,8 +18,8 @@
     <script src="/resources/js/jquery-2.1.3.min.js"></script>
     <script src="/resources/js/jquery.validate.min.js"></script>
 
-    <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=la-tin-ext,cyrillic-ext'
-          rel='stylesheet' type='text/css'>
+    <%--<link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=la-tin-ext,cyrillic-ext'--%>
+          <%--rel='stylesheet' type='text/css'>--%>
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
 
@@ -92,7 +92,7 @@
         <p>
         <hr>
         <a href="/bookInfo/${book.id}"><img src="/book/getCover/${book.id}/1" width="80" height="80"
-                                            onerror="this.src=\'/resources/images/no-cover.png\'"/>
+                                            onerror="this.src='../../resources/images/no-cover.png'"/>
             <br/>
         </a><spring:message code="book.title"/>:<a href="/bookInfo/${book.id}">${book.name}</a>
         <br/><spring:message code="book.year"/>: ${book.yearOfPublication}

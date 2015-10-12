@@ -12,26 +12,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:url value="/catalog/categories" var="categories"/>
 <script>
-    $(document).ready(
+    window.onload =
             function () {
                 $.getJSON('${categories}', {
                     ajax: 'true'
                 }, function (data) {
                     var html = '';
                     var length = data.length;
-                    for(var i=0;i<length;i++){
-                    html += '<a href="/catalog/'+data[i].link+'">'+data[i].name+'</a>';
-                    var subCategories = data[i].subcategories;
-                    var len = subCategories.length;
+                    for (var i = 0; i < length; i++) {
+                        html += '<a href="/catalog/' + data[i].link + '">' + data[i].name + '</a>';
+                        var subCategories = data[i].subcategories;
+                        var len = subCategories.length;
                         html += '<br/>';
-                        for(var j=0;j<len;j++)
-                            html += '<a href="/catalog/'+data[i].link+'/'+subCategories[j].link+'">'
-                                    +subCategories[j].name+'    </a>';
+                        for (var j = 0; j < len; j++)
+                            html += '<a href="/catalog/' + data[i].link + '/' + subCategories[j].link + '">'
+                                    + subCategories[j].name + '    </a>';
                         html += '<br/>'
                     }
                     $('#catalog').html(html);
                 });
-            });
+            };
 </script>
 <div id="catalog">
 </div>

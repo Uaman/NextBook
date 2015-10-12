@@ -18,7 +18,7 @@
         <p>
         <hr>
         <a href="/bookInfo/${book.id}"><img src="/book/getCover/${book.id}/1" width="80" height="80"
-                                            onerror="this.src=\'/resources/images/no-cover.png\'"/>
+                                            onerror="this.src='/resources/images/no-cover.png'"/>
             <br/>
         </a><spring:message code="book.title"/>:<a href="/bookInfo/${book.id}">${book.name}</a>
         <br/><spring:message code="book.year"/>: ${book.yearOfPublication}
