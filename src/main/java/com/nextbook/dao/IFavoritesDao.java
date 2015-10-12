@@ -22,6 +22,14 @@ public interface IFavoritesDao {
      *
      * @param userId
      * @param bookId
+     * @return true if book is present in user favorites
+     */
+    boolean isFavorite(int userId, int bookId);
+
+    /**
+     *
+     * @param userId
+     * @param bookId
      * @return
      */
 boolean deleteFromUserFavorites(int userId, int bookId);

@@ -16,11 +16,15 @@ import java.util.List;
 @Service
 public interface ICommentsProvider {
 
+    Comment getById(int id);
+
     Comment update(Comment comment);
 
     List<Comment> userComments(User user);
 
     List<Comment> bookComments(Book book);
+
+    boolean removeComment(Comment comment);
 
 }
 

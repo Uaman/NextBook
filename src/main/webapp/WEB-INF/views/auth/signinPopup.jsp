@@ -19,7 +19,7 @@
       <label for="remember_me"> <spring:message code="global.rememberMe" /> </label><br />
       <input type="submit" value='<spring:message code="global.signIn" />' class="button but-orange"/>
     </form:form>
-    <button id="close" class="but-close but-gray" title='<spring:message code="button.close"/>'>x</button>
+    <button class="close but-close but-gray" title='<spring:message code="button.close"/>'>x</button>
   </div>
 </div>
 <div class="shadow" style="display: none;"></div>

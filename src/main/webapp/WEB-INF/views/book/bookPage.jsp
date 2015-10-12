@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -33,7 +34,7 @@
     <script src="<c:url value='/resources/js/pdf.js/viewer.js' />"></script>
 </head>
   <script src="/resources/js/jquery-2.1.3.min.js"></script>
-  <script src="/resources/js/jquery.validate.min.js"></script>
+<script src="/resources/js/jquery.form.min.js"></script>
   <script src="/resources/js/main/index.js"></script>
 <script type="text/javascript" src="/resources/js/galleria/galleria-1.4.2.min.js"></script>
 
@@ -57,6 +58,46 @@
         formImages(${numberOfPhotos});
         Galleria.loadTheme('/resources/js/galleria/theme/galleria.classic.min.js');
         Galleria.run('.galleria');
+
+        $('#add-comment').click(function(){
+            $.ajax({
+                url: '/bookInfo/addComment',
+                data: JSON.stringify({text: $('#comment-text').val(), bookId: ${book.id}}),
+                type: 'POST',
+                dataType: 'json',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Accept", "application/json");
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                },
+                success: function(response){
+                    if(response == -1){
+                        $('#sign-in-form').show();
+                    } else if (response == 0){
+                        $('#comment-fail').show();
+                    } else {
+                        $('#comment-success').show();
+                    }
+                    $('.shadow').show();
+                },
+                error: function(e){
+                    console.log(e);
+                }
+            }).done(function(){
+                $('#comment-text').val('');
+            });
+        })
+        $('.delete-comment').click(function(){
+            var commentId = $(this).val();
+            $.ajax({
+                url: '/bookInfo/deleteComment/'+commentId,
+                type: 'POST',
+                success: function(response){
+                    if(response){
+                        $('#comment-'+commentId).remove();
+                    }
+                }
+            })
+        });
     });
 
 
@@ -77,7 +118,20 @@
     }
 
 </script>
-
+    <style>
+        .comment{
+            width: 100%;
+            min-height: 50px;
+            border: 1px solid #000000;
+        }
+        .not-active-comment{
+            width: 100%;
+            min-height: 50px;
+            border: 1px solid #000000;
+            background-color: #ccc;
+            opacity: 0.4;
+        }
+    </style>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=latin-ext,cyrillic-ext' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
   <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
@@ -89,8 +143,6 @@
 </script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
-
-</head>
 <body tabindex="1" class="loadingInProgress">
 <div id="fb-root"></div>
 <script>
@@ -107,6 +159,18 @@
       <jsp:include page="../../template/default/headerContent.jsp"/>
     </div>
   </div>
+<div id="comment-success" class="popup-default" style="display: none;">
+    <div class="block-content">
+        You comment was created. Admin or Publisher of this book will check it first.
+        <button class="but-close but-gray close" title='<spring:message code="button.close"/>'>x</button>
+    </div>
+</div>
+<div id="comment-fail" class="popup-default" style="display: none;">
+    <div class="block-content">
+        Ooops. failed to create comment
+        <button class="but-close but-gray close" title='<spring:message code="button.close"/>'>x</button>
+    </div>
+</div>
   <jsp:include page="../auth/signinPopup.jsp"/>
   <img src="/book/getCover/${book.id}/1" width="80" height="100" onerror="this.src='/resources/images/no-cover.png'" align="left"/>
   <spring:message code="book.title" />: ${book.name}
@@ -141,6 +205,42 @@ document.write(VK.Share.button('${shareLink}',{type: "round", text: "Share", eng
 <div id="container_galleria">
     <div class="galleria" style="height: 600px;">
     </div>
+</div>
+
+<c:if test="${book.comments ne null}">
+<div>
+    Comments:<br />
+    <jsp:useBean id="dateValue" class="java.util.Date"/>
+    <c:forEach var="comment" items="${book.comments}">
+        <c:choose>
+            <c:when test="${comment.status eq 'ACTIVE'}">
+                <div class="comment">
+                    user name: ${comment.user.name}<br />
+                    comment: ${comment.comment}<br />
+                    <jsp:setProperty name="dateValue" property="time" value="${comment.time}"/>
+                    date created:<fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy HH:mm"/><br />
+                    (status: ${comment.status})
+                </div>
+            </c:when>
+            <c:when test="${userId ne null && comment.status eq 'NEW' && comment.user.id eq userId}">
+                <div class="not-active-comment" id="comment-${comment.id}">
+                    user name: ${comment.user.name}<br />
+                    comment: ${comment.comment}<br />
+                    <jsp:setProperty name="dateValue" property="time" value="${comment.time}"/>
+                    date created:<fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy HH:mm"/><br />
+                    (status: ${comment.status})
+                    <button class="delete-comment" value="${comment.id}">Delete Comment</button>
+                </div>
+            </c:when>
+        </c:choose>
+    </c:forEach>
+</div>
+</c:if>
+<div style="margin-top: 200px"></div>
+<div>
+    New comment:<br />
+    <input type="text" id="comment-text" placeholder="please enter your comment"/>
+    <button id="add-comment">Add Comment</button>
 </div>
 
 <div style="margin-top: 500px;"></div>

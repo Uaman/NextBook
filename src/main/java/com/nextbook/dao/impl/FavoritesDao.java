@@ -56,6 +56,31 @@ public class FavoritesDao implements IFavoritesDao {
     }
 
     @Override
+    public boolean isFavorite(int userId, int bookId) {
+        boolean result = false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query query = session.getNamedQuery(FavoritesEntity.getByUserAndBook);
+            query.setParameter("bookId", bookId);
+            query.setParameter("userId", userId);
+            List<FavoritesEntity> list = query.list();
+            if(list != null && list.size() > 0) {
+                result = true;
+            }
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if(session != null && session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
+
+    @Override
     public boolean deleteFromUserFavorites(int userId, int bookId) {
         boolean result = false;
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -88,6 +113,7 @@ public class FavoritesDao implements IFavoritesDao {
         try {
             session.beginTransaction();
             Query query = session.getNamedQuery(FavoritesEntity.getAllFavorites);
+            query.setParameter("userId", user.getId());
             List<FavoritesEntity> entities = query.list();
             if(entities.size() > 0) {
                 result = new ArrayList<Favorites>();

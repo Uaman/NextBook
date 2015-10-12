@@ -31,4 +31,10 @@ public class FavoritesProvider implements IFavoritesProvider {
     public List<Favorites> getAllFavorites(User user) {
         return favoriteDao.getAllFavorites(user);
     }
+
+    @Override
+    public boolean isFavorite(int userId, int bookId) {
+        return favoriteDao.isFavorite(userId, bookId);
+    }
+
 }

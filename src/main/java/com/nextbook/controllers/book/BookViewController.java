@@ -6,12 +6,14 @@ import com.nextbook.domain.upload.Constants;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.Locale;
 
 /**
@@ -53,6 +55,9 @@ public class BookViewController {
         } else {
             model.addAttribute("urlToFile", bookStorageProvider.getUrlForPreviewBook(book.getId()));
             model.addAttribute("pass", 1111);
+        }
+        if(user != null){
+            model.addAttribute("userId", user.getId());
         }
 
         return "book/bookPage";
@@ -100,6 +105,68 @@ public class BookViewController {
         return false;
     }
 
+    /**
+     *
+     * @param commentRequest
+     * @return -1 - if user doesn't login, 0 - if failed to add comment, 1 if success
+     */
+    @RequestMapping(value = "/addComment", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody int addComment(@RequestBody CreateCommentRequest commentRequest,
+                          Principal principal, HttpServletRequest request){
+        User user = null;
+        if(principal == null || (user = sessionUtils.getCurrentUser()) == null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("comment", commentRequest.getText());
+            session.setAttribute("bookId", commentRequest.getBookId());
+            return -1;
+        }
+
+        Book book = bookProvider.getBookById(commentRequest.getBookId());
+        if(book == null)
+            return 0;
+
+        Comment comment = new Comment(user, book, commentRequest.getText());
+        comment = commentsProvider.update(comment);
+
+        return comment != null ? 1 : 0;
+    }
+
+    @RequestMapping(value = "/deleteComment/{commentId}", method = RequestMethod.POST)
+    public @ResponseBody boolean deleteComment(@PathVariable("commentId") int commentId){
+        User user = sessionUtils.getCurrentUser();
+        if(user == null)
+            return false;
+
+        Comment comment = commentsProvider.getById(commentId);
+        if(comment == null || !comment.getUser().getId().equals(user.getId()))
+            return false;
+
+        boolean success = commentsProvider.removeComment(comment);
+
+        return success;
+    }
 
     private static final String HOST_NAME = "http://nextbookdemo.azurewebsites.net/";
+}
+
+
+class CreateCommentRequest{
+    private String text;
+    private int bookId;
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public int getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
 }

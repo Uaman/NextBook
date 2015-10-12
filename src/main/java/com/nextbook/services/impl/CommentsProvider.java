@@ -23,6 +23,11 @@ public class CommentsProvider implements ICommentsProvider {
     private ICommentsDAO commentsDAO;
 
     @Override
+    public Comment getById(int id) {
+        return commentsDAO.getById(id);
+    }
+
+    @Override
     public Comment update(Comment comment) {
         if(comment == null)
             return null;
@@ -41,6 +46,13 @@ public class CommentsProvider implements ICommentsProvider {
         if(book == null)
             return null;
         return commentsDAO.bookComments(book);
+    }
+
+    @Override
+    public boolean removeComment(Comment comment) {
+        if(comment == null)
+            return false;
+        return commentsDAO.removeComment(comment);
     }
 
 

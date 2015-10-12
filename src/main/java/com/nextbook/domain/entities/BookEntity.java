@@ -93,6 +93,9 @@ public class BookEntity {
     private int numberOfImagesInGallery;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CommentEntity> comments;
+
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BookKeywordEntity> bookToKeywords = new ArrayList<BookKeywordEntity>();
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -264,6 +267,14 @@ public class BookEntity {
 
     public void setBookToKeywords(List<BookKeywordEntity> bookToKeywords) {
         this.bookToKeywords = bookToKeywords;
+    }
+
+    public List<CommentEntity> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentEntity> comments) {
+        this.comments = comments;
     }
 }
 

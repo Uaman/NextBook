@@ -22,6 +22,15 @@ public class Comment {
 
     private Status status;
 
+    public Comment(){}
+
+    public Comment(User user, Book book, String comment){
+        this.user = user;
+        this.book = book;
+        this.comment = comment;
+        this.status = Status.NEW;
+        this.time = System.currentTimeMillis();
+    }
 
     public int getId() {
         return id;
