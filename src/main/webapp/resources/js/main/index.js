@@ -3,8 +3,8 @@ $(document).ready(function(){
         $('#sign-in-form').show();
         $('.shadow').show();
     });
-    $('#close').click(function(){
-        $('#sign-in-form').hide();
+    $('.close').click(function(){
+        $('.popup-default').hide();
         $('.shadow').hide();
     });
 });

@@ -2,8 +2,10 @@ package com.nextbook.dao.impl;
 
 import com.nextbook.dao.ICommentsDAO;
 import com.nextbook.domain.entities.CommentEntity;
+import com.nextbook.domain.entities.OrderEntity;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Comment;
+import com.nextbook.domain.pojo.Order;
 import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;
 import org.hibernate.Query;
@@ -22,6 +24,24 @@ import java.util.List;
  */
 @Repository
 public class CommentsDAO implements ICommentsDAO {
+
+    @Override
+    public Comment getById(int id) {
+        Comment result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            CommentEntity entity = (CommentEntity) session.load(CommentEntity.class, id);
+            result = DozerMapperFactory.getDozerBeanMapper().map(entity, Comment.class);
+            session.getTransaction().commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
 
     @Override
     public Comment update(Comment comment) {
@@ -98,6 +118,29 @@ public class CommentsDAO implements ICommentsDAO {
                 session.close();
         }
         return result;
+    }
+
+    @Override
+    public boolean removeComment(Comment comment) {
+        boolean deleted = false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session.beginTransaction();
+            CommentEntity toDelete = DozerMapperFactory.getDozerBeanMapper().map(comment, CommentEntity.class);
+            if(toDelete != null){
+                session.delete(toDelete);
+            }
+            session.getTransaction().commit();
+            deleted = true;
+        } catch (Exception e){
+            if(session != null && session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return deleted;
     }
 
 }

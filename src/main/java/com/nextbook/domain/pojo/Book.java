@@ -49,6 +49,8 @@ public class Book {
 
     private String linkToStorage;
 
+    private List<Comment> comments;
+
     private int numberOfImagesForCover;
 
     private int numberOfImagesInGallery;
@@ -261,6 +263,15 @@ public class Book {
 
     public void setBookToKeywords(List<BookKeyword> bookToKeywords) {
         this.bookToKeywords = bookToKeywords;
+    }
+
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

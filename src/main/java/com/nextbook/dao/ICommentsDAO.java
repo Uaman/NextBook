@@ -16,10 +16,14 @@ import java.util.List;
 @Repository
 public interface ICommentsDAO {
 
+    Comment getById(int id);
+
     Comment update(Comment comment);
 
     List<Comment> userComments(User user);
 
     List<Comment> bookComments(Book book);
+
+    boolean removeComment(Comment comment);
 
 }
