@@ -4,12 +4,14 @@ import com.nextbook.domain.forms.user.UserChangeNameEmail;
 import com.nextbook.domain.forms.user.UserChangePassword;
 import com.nextbook.domain.pojo.Publisher;
 import com.nextbook.domain.pojo.User;
+import com.nextbook.services.IFavoritesProvider;
 import com.nextbook.services.IPublisherProvider;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.StatisticUtil;
 import com.nextbook.utils.SessionUtils;
 import io.keen.client.java.JavaKeenClientBuilder;
 import io.keen.client.java.KeenClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -39,6 +41,8 @@ public class UsersController {
     private IPublisherProvider publisherProvider;
     @Inject
     private StatisticUtil statisticUtil;
+    @Autowired
+    private IFavoritesProvider favoritesProvider;
 
     @RequestMapping(value = "/profile")
     @PreAuthorize("isAuthenticated()")
@@ -47,6 +51,7 @@ public class UsersController {
         model.addAttribute("user", user);
         Publisher publisher = publisherProvider.getPublisherByUser(user);
         model.addAttribute("publisher", publisher);
+        model.addAttribute("hasFavorites",favoritesProvider.hasFavorites(user));
         return "users/profile";
     }
 

@@ -32,6 +32,7 @@ public interface IFavoritesDao {
      * @param bookId
      * @return
      */
-boolean deleteFromUserFavorites(int userId, int bookId);
+    boolean deleteFromUserFavorites(int userId, int bookId);
     List<Favorites> getAllFavorites(User user);
+    boolean hasFavorites(User user);
 }

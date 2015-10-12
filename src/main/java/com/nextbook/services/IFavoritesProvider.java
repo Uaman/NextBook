@@ -25,4 +25,5 @@ public interface IFavoritesProvider {
     boolean deleteFromUserFavorites(int userId, int bookId);
     List<Favorites> getAllFavorites(User user);
     boolean isFavorite(int userId, int bookId);
+    boolean hasFavorites(User user);
 }

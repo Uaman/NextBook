@@ -137,5 +137,27 @@ public class FavoritesDao implements IFavoritesDao {
         }
         return result;
     }
-
+    @Override
+    public boolean hasFavorites(User user){
+        boolean result = false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query query = session.getNamedQuery(FavoritesEntity.getAllFavorites);
+            query.setParameter("userId", user.getId());
+            List<FavoritesEntity> list = query.list();
+            if(list != null && list.size() > 0) {
+                result = true;
+            }
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if(session != null && session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
 }
