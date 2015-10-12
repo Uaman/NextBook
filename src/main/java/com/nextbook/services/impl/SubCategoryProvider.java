@@ -35,4 +35,9 @@ public class SubCategoryProvider implements ISubCategoryProvider{
     public List<SubCategory> getAllByCategoryId(int categoryId) {
         return subCategoryDao.getAllByCategoryId(categoryId);
     }
+
+    @Override
+    public SubCategory getByLink(String link) {
+        return subCategoryDao.getByLink(link);
+    }
 }

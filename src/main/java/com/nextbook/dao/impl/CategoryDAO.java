@@ -28,7 +28,7 @@ public class CategoryDAO implements ICategoryDAO {
             session.beginTransaction();
             Query query = session.getNamedQuery(CategoryEntity.getAll);
             List<CategoryEntity> entities = query.list();
-            if(entities.size() > 0) {
+            if (entities.size() > 0) {
                 result = new ArrayList<Category>();
                 for (CategoryEntity entity : entities) {
                     if (entity != null) {
@@ -42,10 +42,31 @@ public class CategoryDAO implements ICategoryDAO {
                     }
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(session != null && session.isOpen())
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
+
+    @Override
+    public Category getByLink(String link) {
+        Category result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query query = session.getNamedQuery(CategoryEntity.getByLink);
+            query.setParameter("link", link);
+            List<CategoryEntity> entities = query.list();
+            if (entities.size() > 0) {
+                result = DozerMapperFactory.getDozerBeanMapper().map(entities.get(0), Category.class);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen())
                 session.close();
         }
         return result;

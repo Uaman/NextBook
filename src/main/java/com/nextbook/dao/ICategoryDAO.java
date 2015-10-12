@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface ICategoryDAO {
     List<Category> getAll();
+    Category getByLink(String link);
 }

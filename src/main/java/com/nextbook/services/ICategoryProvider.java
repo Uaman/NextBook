@@ -10,6 +10,6 @@ import java.util.List;
  * Created by Polomani on 26.09.2015.
  */
 public interface ICategoryProvider {
-
     public List<Category> getAll();
+    Category getByLink(String link);
 }

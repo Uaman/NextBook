@@ -16,4 +16,5 @@ public interface ISubCategoryProvider {
     List<SubCategory> getAll();
     List<SubCategory> getAllByCategoryId(int categoryId);
     SubCategory getById(int subCategoryId);
+    SubCategory getByLink(String link);
 }
