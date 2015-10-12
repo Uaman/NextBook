@@ -1,0 +1,37 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: KutsykV
+  Date: 11.10.2015
+  Time: 22:37
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:url value="/catalog/categories" var="categories"/>
+<script>
+    window.onload =
+            function () {
+                $.getJSON('${categories}', {
+                    ajax: 'true'
+                }, function (data) {
+                    var html = '';
+                    var length = data.length;
+                    for (var i = 0; i < length; i++) {
+                        html += '<a href="/catalog/' + data[i].link + '">' + data[i].name + '</a>';
+                        var subCategories = data[i].subcategories;
+                        var len = subCategories.length;
+                        html += '<br/>';
+                        for (var j = 0; j < len; j++)
+                            html += '<a href="/catalog/' + data[i].link + '/' + subCategories[j].link + '">'
+                                    + subCategories[j].name + '    </a>';
+                        html += '<br/>'
+                    }
+                    $('#catalog').html(html);
+                });
+            };
+</script>
+<div id="catalog">
+</div>

@@ -35,27 +35,53 @@
   <script src="/resources/js/jquery-2.1.3.min.js"></script>
   <script src="/resources/js/jquery.validate.min.js"></script>
   <script src="/resources/js/main/index.js"></script>
+<script type="text/javascript" src="/resources/js/galleria/galleria-1.4.2.min.js"></script>
 
 <script>
-    $(function() {
-        $('a[href*=#]:not([href=#])').click(function() {
-            if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-                var target = $(this.hash);
-                target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-                if (target.length) {
-                    $('html,body').animate({
-                        scrollTop: target.offset().top
-                    }, 1000);
-                    return false;
+    $(document).ready(function(){
+        $(function() {
+            $('a[href*=#]:not([href=#])').click(function() {
+                if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+                    var target = $(this.hash);
+                    target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+                    if (target.length) {
+                        $('html,body').animate({
+                            scrollTop: target.offset().top
+                        }, 1000);
+                        return false;
+                    }
                 }
-            }
+            });
         });
+
+        formImages(${numberOfPhotos});
+        Galleria.loadTheme('/resources/js/galleria/theme/galleria.classic.min.js');
+        Galleria.run('.galleria');
     });
+
+
+    function formImages(numberOfPhotos){
+        if(numberOfPhotos < 1){
+            $('#container_galleria').hide();
+        } else {
+            $('#container_galleria').show();
+            $('.galleria').html('');
+            var html = '';
+            var htmlBig = '<ul>';
+            for (var i = 0; i < numberOfPhotos; ++i) {
+                htmlBig += '<li><img src="/book/getGalleryPhoto/${book.id}/' + i + '"/></li>';
+            }
+            htmlBig += '</ul>';
+            $('.galleria').html(htmlBig);
+        }
+    }
+
 </script>
 
   <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=latin-ext,cyrillic-ext' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
   <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
+
 <script type="text/javascript" src="//vk.com/js/api/openapi.js?117"></script>
 <script type="text/javascript" src="http://vk.com/js/api/share.js?92" charset="windows-1251"></script>
 <script type="text/javascript">
@@ -111,6 +137,12 @@
 document.write(VK.Share.button('${shareLink}',{type: "round", text: "Share", eng: 1}));
 </script>
 <div class="g-plusone" data-size="small" data-annotation="inline" data-width="300" data-href="${shareLink}"></div>
+
+<div id="container_galleria">
+    <div class="galleria" style="height: 600px;">
+    </div>
+</div>
+
 <div style="margin-top: 500px;"></div>
   <a name="read-book"></a>
   <div id="outerContainer">

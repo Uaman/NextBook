@@ -20,9 +20,9 @@
     <script src="/resources/js/textext/textext.plugin.autocomplete.js"></script>
     <script src="/resources/js/textext/textext.plugin.tags.js"></script>
 
-    <script src="https://d26b395fwzu5fz.cloudfront.net/3.2.6/keen.min.js"></script>
-    <script src="<c:url value="../../../../resources/js/statistic/common-web.js" />" type="text/javascript"></script>
-    <script src="<c:url value="../../../../resources/js/statistic/statistic.min.js" />" type="text/javascript"></script>
+    <script type="text/javascript" src="/resources/js/galleria/galleria-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/resources/js/dropzone.js"></script>
+    <link type="text/css" rel="stylesheet" href="/resources/css/dropzone.css" />
 
     <link rel="stylesheet" type="text/css" href="/resources/css/textext/textext.core.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/textext/textext.plugin.tags.css"/>
@@ -47,6 +47,10 @@
             width: 400px;
         }
         .author-x, .keyword-x{
+        }
+        .small-image{
+            width: 200px;
+            height: 150px;
         }
     </style>
 
@@ -91,27 +95,37 @@
     <input type="hidden" name="test_files" id="test_files"/>
     <input type="submit" />
 </form>
-<form id="first-page-form" action="/book/send-first-page" method="POST">
+<form id="first-page-form" action="/admin/books/send-first-page" method="POST">
     <div id="container-progress-first-page" class="progress-container" style="display: none;">
         <div id="progress-bar-first-page" style="width:0%;background-color: #ffff00; height:inherit;"></div>
     </div>
     <input type="hidden" name="bookId" value="${book.id}">
     <label>First Page*:<input type="file" name="first_page" id="first_page"></label><br />
 </form>
-<form id="last-page-form" action="/book/send-last-page" method="POST">
+<form id="last-page-form" action="/admin/books/send-last-page" method="POST">
     <div id="container-progress-last-page" class="progress-container" style="display: none;">
         <div id="progress-bar-last-page" style="width:0%;background-color: green; height:inherit;"></div>
     </div>
     <input type="hidden" name="bookId" value="${book.id}">
     <label>Last Page:<input type="file" name="last_page" id="last_page"></label><br />
 </form>
-<form id="book-form" action="/book/send-book" method="POST">
+<form id="book-form" action="/admin/books/send-book" method="POST">
     <div id="container-progress-book" class="progress-container" style="display: none;">
         <div id="progress-bar-book" style="width:0%;background-color: red; height:inherit;"></div>
     </div>
     <input type="hidden" name="bookId" value="${book.id}">
     <label>Book*:<input type="file" name="book" id="book"></label><br />
 </form>
+
+<form action="/admin/books/send-gallery-photo" enctype="multipart/form-data" class="dropzone" id="my-awesome-dropzone">
+    <input type="hidden" name ="bookId" value="${book.id}"/>
+</form>
+
+<div id="container_galleria">
+    <div class="galleria" style="height: 600px;">
+    </div>
+</div>
+<div id="images"></div>
 
 <div id="add-author-form" class="popup-default" style="display: none;">
     Author First Name UA: <input type="text" id="author-first-name-ua"><br />

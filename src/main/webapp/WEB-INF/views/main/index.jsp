@@ -30,6 +30,6 @@
     </div>
 </div>
 <jsp:include page="../auth/signinPopup.jsp"/>
-<jsp:include page="../catalog/bookShelf.jsp"/>
+<jsp:include page="book-shelf.jsp"/>
 </body>
 </html>

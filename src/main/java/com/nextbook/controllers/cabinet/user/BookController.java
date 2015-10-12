@@ -88,6 +88,7 @@ public class BookController {
         model.addAttribute("subCategories", subCategoryProvider.getAll());
         model.addAttribute("book", book);
         model.addAttribute("authors", formAuthorsInLocale(book.getBookToAuthor(), locale.getLanguage()));
+        model.addAttribute("numberOfPhotos", bookStorageProvider.getNumberOfPhotosInGallery(book.getId()));
         return "book/add-book";
     }
 
@@ -145,7 +146,7 @@ public class BookController {
     }
 
     @RequestMapping(value = "/getCover/{bookId}/{coverPage}", method = RequestMethod.GET)
-    public void getPortfolioFile(HttpServletResponse response,
+    public void getCover(HttpServletResponse response,
                                  @PathVariable("bookId") int bookId,
                                  @PathVariable("coverPage") int coverPage){
         Cover cover;
@@ -153,6 +154,17 @@ public class BookController {
         else cover = Cover.FIRST_PAGE;
         try {
             bookStorageProvider.getCover(response.getOutputStream(), bookId, cover);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/getGalleryPhoto/{bookId}/{photoNumber}", method = RequestMethod.GET)
+    public void getGalleryPhoto(HttpServletResponse response,
+                                 @PathVariable("bookId") int bookId,
+                                 @PathVariable("photoNumber") int photoNumber){
+        try {
+            bookStorageProvider.getGalleryPhoto(response.getOutputStream(), bookId, photoNumber);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -278,9 +290,21 @@ public class BookController {
             return -1;
         Iterator<String> itr =  request.getFileNames();
         MultipartFile multipartFile = request.getFile(itr.next());
-        bookStorageProvider.uploadGalleryPhotoLocal(book.getId(), multipartFile);
+        bookStorageProvider.uploadGalleryPhoto(book.getId(), multipartFile);
         return bookStorageProvider.getNumberOfPhotosInGallery(bookId);
+    }
 
+    @RequestMapping(value = "/delete-gallery-image/{bookId}/{photoId}", method = RequestMethod.POST)
+    public @ResponseBody int deleteGalleryImage(@PathVariable("bookId") int bookId,
+                                  @PathVariable("photoId") int photoId){
+        User user = sessionUtils.getCurrentUser();
+        Book book = bookProvider.getBookById(bookId);
+        if(!checkBookToUser(user, book))
+            return -1;
+        boolean success = bookStorageProvider.deleteGalleryPhoto(bookId, photoId);
+        if(!success)
+            return -1;
+        return bookStorageProvider.getNumberOfPhotosInGallery(bookId);
     }
 
     private boolean saveCover(int bookId, MultipartFile file, Cover cover){

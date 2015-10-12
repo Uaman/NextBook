@@ -15,6 +15,9 @@ var isbnExist = false;
 $(document).ready(function(){
 
     paperBookChecked();
+    formImages(${numberOfPhotos});
+    Galleria.loadTheme('/resources/js/galleria/theme/galleria.classic.min.js');
+    Galleria.run('.galleria');
 
     $('#publication_year').mask('0000');
     $('#number_of_pages').mask('000000');
@@ -394,6 +397,39 @@ $(document).ready(function(){
             }
         })
     });
+
+    Dropzone.options.myAwesomeDropzone = {
+        paramName: "file", // The name that will be used to transfer the file
+        acceptedFiles: 'image/*',
+        maxFilesize: 2, // MB
+        init: function() {
+            this.on("complete", function(file) {
+                this.removeFile(file);
+            });
+            this.on("success", function (file, resp) {
+                console.log(resp);
+                if (resp != -1) {
+                    reloadGallery(resp);
+                }
+            });
+        }
+    };
+    $('body').on('click', '.delete-image', function(){
+        var photoId = $(this).val();
+        $.ajax({
+            url: '/admin/books/delete-gallery-image/'+BOOK_ID+'/'+photoId,
+            type: 'POST',
+            success: function(data){
+                if(data != -1){
+                    $('#image-'+photoId).remove();
+                    reloadGallery(data);
+                }
+            },
+            error: function(e){
+                console.log(e);
+            }
+        })
+    });
 });
 
 function formDataBook(){
@@ -474,5 +510,36 @@ function paperBookChecked(){
     } else {
         $('#last-page-form').hide();
     }
+}
+
+function formImages(numberOfPhotos){
+    console.log((numberOfPhotos));
+    if(numberOfPhotos < 1){
+        $('#container_galleria').hide();
+    } else {
+        $('#container_galleria').show();
+        $('#images').html('');
+        $('.galleria').html('');
+        var html = '';
+        var htmlBig = '<ul>';
+        for (var i = 0; i < numberOfPhotos; ++i) {
+            html += '<div id="image-' + i + '"><img class="small-image" src="/book/getGalleryPhoto/' + BOOK_ID + '/' + i + '"/>';
+            htmlBig += '<li><img src="/book/getGalleryPhoto/' + BOOK_ID + '/' + i + '"/></li>';
+            html += '<br/><button class="delete-image" value="' + i + '">X</button></div>';
+        }
+        htmlBig += '</ul>';
+        $('#images').html(html);
+        $('.galleria').html(htmlBig);
+    }
+}
+
+function reloadGallery(numberOfPhotos){
+    console.log((numberOfPhotos));
+    var gallery = Galleria.get(0);
+    gallery.destroy();
+    formImages(numberOfPhotos);
+    Galleria.loadTheme('/resources/js/galleria/theme/galleria.classic.min.js');
+    Galleria.run('.galleria');
+    console.log((numberOfPhotos));
 }
 </script>
