@@ -1,11 +1,10 @@
 package com.nextbook.controllers.cabinet.user;
 
+import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.forms.publishers.SimplePublisherForm;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.Publisher;
-import com.nextbook.domain.pojo.Role;
-import com.nextbook.domain.pojo.User;
+import com.nextbook.domain.pojo.*;
 import com.nextbook.services.IBookProvider;
+import com.nextbook.services.ICommentsProvider;
 import com.nextbook.services.IPublisherProvider;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.SessionUtils;
@@ -36,6 +35,8 @@ public class PublishersController {
     private IBookProvider bookProvider;
     @Inject
     private IUserProvider userProvider;
+    @Inject
+    private ICommentsProvider commentsProvider;
 
     @RequestMapping(value="/new")
      public String addPublisher() {
@@ -114,4 +115,25 @@ public class PublishersController {
         return publisherProvider.getAllPublishers(from, max);
     }
 
+    @PreAuthorize("@Secure.isPublisher()")
+    @RequestMapping(value = "/activateComment/{commentId}", method = RequestMethod.POST)
+    public @ResponseBody boolean activateComment(@PathVariable("commentId") int commentId){
+        Comment comment = commentsProvider.getById(commentId);
+        if(comment == null)
+            return false;
+        comment = commentsProvider.publisherActivateComment(comment);
+
+        return comment != null;
+    }
+
+    @PreAuthorize("@Secure.isPublisher()")
+    @RequestMapping(value = "/deactivateComment/{commentId}", method = RequestMethod.POST)
+    public @ResponseBody boolean deactivateComment(@PathVariable("commentId") int commentId){
+        Comment comment = commentsProvider.getById(commentId);
+        if(comment == null)
+            return false;
+        comment = commentsProvider.publisherDeactivateComment(comment);
+
+        return comment != null;
+    }
 }

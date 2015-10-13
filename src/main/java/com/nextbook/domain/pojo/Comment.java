@@ -1,6 +1,7 @@
 package com.nextbook.domain.pojo;
 
 import com.nextbook.domain.enums.Status;
+import com.nextbook.domain.enums.StatusChangedBy;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,6 +23,8 @@ public class Comment {
 
     private Status status;
 
+    private StatusChangedBy changedBy;
+
     public Comment(){}
 
     public Comment(User user, Book book, String comment){
@@ -30,6 +33,7 @@ public class Comment {
         this.comment = comment;
         this.status = Status.NEW;
         this.time = System.currentTimeMillis();
+        this.changedBy = StatusChangedBy.NONE;
     }
 
     public int getId() {
@@ -80,4 +84,11 @@ public class Comment {
         this.status = status;
     }
 
+    public StatusChangedBy getChangedBy() {
+        return changedBy;
+    }
+
+    public void setChangedBy(StatusChangedBy changedBy) {
+        this.changedBy = changedBy;
+    }
 }

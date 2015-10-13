@@ -8,10 +8,46 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>Publisher View</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/tables.css"/>
+    <script src="/resources/js/jquery-2.1.3.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.activate-comment').click(function(){
+                var commentId = $(this).val();
+                $.ajax({
+                    url: '/publisher/activateComment/'+commentId,
+                    type: 'POST',
+                    success: function(response){
+                        if(response){
+                            $('#comment-status-'+commentId).text('status: ACTIVE - changed by: PUBLISHER');
+                        }
+                    },
+                    error: function(e){
+                        console.log(e);
+                    }
+                })
+            });
+            $('.deactivate-comment').click(function(){
+                var commentId = $(this).val();
+                $.ajax({
+                    url: '/publisher/deactivateComment/'+commentId,
+                    type: 'POST',
+                    success: function(response){
+                        if(response){
+                            $('#comment-status-'+commentId).text('status: NOT_ACTIVE - changed by: PUBLISHER');
+                        }
+                    },
+                    error: function(e){
+                        console.log(e);
+                    }
+                })
+            });
+        });
+    </script>
 </head>
 <body>
 <a href="/publisher/update?publisherId=${publisherId}">Edit Publication</a><br />
@@ -36,6 +72,9 @@ Users: <br />
 </table>
 <br /><br /><br /><br />
 Books: <br />
+
+<jsp:useBean id="dateValue" class="java.util.Date"/>
+
 <table>
     <tr>
         <th>id</th>
@@ -51,6 +90,7 @@ Books: <br />
         <th>keywords</th>
         <th># pages</th>
         <th>description</th>
+        <th>comments</th>
         <th>action</th>
     </tr>
     <tbody>
@@ -129,6 +169,20 @@ Books: <br />
                 </c:if>
                 <c:if test="${book.descriptionEn ne null && book.descriptionEn ne ''}">
                     ${book.descriptionEn}<br /><br />
+                </c:if>
+            </td>
+            <td>
+                <c:if test="${book.comments ne null}">
+                    <c:forEach var="comment" items="${book.comments}">
+                        user: ${comment.user.name}<br />
+                        comment: ${comment.comment}<br />
+                        <jsp:setProperty name="dateValue" property="time" value="${comment.time}"/>
+                        date created:<fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy HH:mm"/><br />
+                        <span id="comment-status-${comment.id}">status: ${comment.status} - changed by: ${comment.changedBy}</span> <br/>
+                        <button class="activate-comment" value="${comment.id}">Active Comment</button><br/>
+                        <button class="deactivate-comment" value="${comment.id}">Deactive Comment</button>
+                        <hr style="width: 80%; margin: 5px;"/>
+                    </c:forEach>
                 </c:if>
             </td>
             <td>

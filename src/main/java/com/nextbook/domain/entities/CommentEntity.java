@@ -1,6 +1,7 @@
 package com.nextbook.domain.entities;
 
 import com.nextbook.domain.enums.Status;
+import com.nextbook.domain.enums.StatusChangedBy;
 
 import javax.persistence.*;
 
@@ -45,6 +46,9 @@ public class CommentEntity {
     @Column(name = "STATUS")
     private Status status;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "CHANGED_BY")
+    private StatusChangedBy changedBy;
 
     public int getId() {
         return id;
@@ -92,5 +96,14 @@ public class CommentEntity {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+
+    public StatusChangedBy getChangedBy() {
+        return changedBy;
+    }
+
+    public void setChangedBy(StatusChangedBy changedBy) {
+        this.changedBy = changedBy;
     }
 }
