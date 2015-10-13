@@ -35,7 +35,7 @@
 </head>
   <script src="/resources/js/jquery-2.1.3.min.js"></script>
 <script src="/resources/js/jquery.form.min.js"></script>
-  <script src="/resources/js/main/index.js"></script>
+  <script src="/resources/js/main/sign.in.js"></script>
 <script type="text/javascript" src="/resources/js/galleria/galleria-1.4.2.min.js"></script>
 
 <script>
