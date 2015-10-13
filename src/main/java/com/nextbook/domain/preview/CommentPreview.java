@@ -1,6 +1,8 @@
 package com.nextbook.domain.preview;
 
+import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.pojo.Comment;
+import com.nextbook.domain.pojo.User;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,19 +14,22 @@ public class CommentPreview {
 
     private int id;
 
-    private String user;
+    private User user;
 
     private String comment;
 
     private long time;
 
+    private Status status;
+
     public CommentPreview(){}
 
     public CommentPreview(Comment comment){
         this.id = comment.getId();
-        this.user = comment.getUser().getName();
+        this.user = comment.getUser();
         this.comment = comment.getComment();
         this.time = comment.getTime();
+        this.status = comment.getStatus();
     }
 
     public String getComment() {
@@ -43,11 +48,11 @@ public class CommentPreview {
         this.id = id;
     }
 
-    public String getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -57,5 +62,13 @@ public class CommentPreview {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
