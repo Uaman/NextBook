@@ -37,6 +37,7 @@
 <script src="/resources/js/jquery.form.min.js"></script>
   <script src="/resources/js/main/sign.in.js"></script>
 <script type="text/javascript" src="/resources/js/galleria/galleria-1.4.2.min.js"></script>
+<script src="/resources/js/main/bookFavoriteButton.js"></script>
 
 <script>
     $(document).ready(function(){
@@ -198,6 +199,8 @@
   <c:forEach var="keyword" items="${keywords}">
     ${keyword.keyword}
   </c:forEach>
+
+<br/><button class="favoriteButtonUndef" id="favorite/${book.id}"></button><br/>
 
   <a href="#read-book">MOVE TO BOOK</a>
 <div class="fb-like" data-href="${shareLink}" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>

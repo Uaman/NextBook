@@ -50,38 +50,39 @@ $(document).ready(function(){
         return false;
     });
 
-    function updateFavoriteButtons () {
-        $('.favoriteButtonUndef').each(function() {
-            var elem = $(this);
-            elem.hide();
-            elem.prop("class", "");
-
-            $.ajax({
-                url: "/book/is-" + elem.attr("id"),
-                type: 'GET',
-                success: function(data) {
-                    if (data==0) {
-                        elem.text("Add to favorites");
-                        elem.show();
-                        elem.prop("class", "addFavorite");
-                    } else if (data==1) {
-                        elem.text("Delete from favorites");
-                        elem.show();
-                        elem.prop("class", "deleteFavorite");
-                    }
-                },
-                error: function(e){
-                    console.log('Error: ' + JSON.stringify(e));
-                }
-            });
-        });
-    }
-
-    function showSignInPopup() {
-        $('#sign-in-form').show();
-        $('.shadow').show();
-    }
 });
+
+function updateFavoriteButtons () {
+    $('.favoriteButtonUndef').each(function() {
+        var elem = $(this);
+        elem.hide();
+        elem.prop("class", "");
+
+        $.ajax({
+            url: "/book/is-" + elem.attr("id"),
+            type: 'GET',
+            success: function(data) {
+                if (data==0) {
+                    elem.text("Add to favorites");
+                    elem.show();
+                    elem.prop("class", "addFavorite");
+                } else if (data==1) {
+                    elem.text("Delete from favorites");
+                    elem.show();
+                    elem.prop("class", "deleteFavorite");
+                }
+            },
+            error: function(e){
+                console.log('Error: ' + JSON.stringify(e));
+            }
+        });
+    });
+}
+
+function showSignInPopup() {
+    $('#sign-in-form').show();
+    $('.shadow').show();
+}
 
 
 
