@@ -35,19 +35,19 @@ public class CatalogController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String allBooks(Model model, Locale locale) {
-        List<BookPreview> books = new ArrayList<BookPreview>();
-        for (Book book : bookProvider.getAllBooks())
-            books.add(new BookPreview(book, locale));
-        model.addAttribute("books", books);
+        model.addAttribute("category", 0);
+        model.addAttribute("subcategory", 0);
+        model.addAttribute("last_book", 0);
         return "catalog/catalog";
     }
 
     @RequestMapping(value = "/{category_link}", method = RequestMethod.GET)
     public String categoryBooks(@PathVariable String category_link, Model model, Locale locale) {
         initCategoryList(locale);
-        BookCriterion bookCriterion = new BookCriterion();
-        bookCriterion.setCategory(categoryProvider.getByLink(category_link).getId());
-        model.addAttribute("books", getBooksByCriterion(bookCriterion, locale));
+        int categoryId = categoryProvider.getByLink(category_link).getId();
+        model.addAttribute("category", categoryId);
+        model.addAttribute("subcategory", 0);
+        model.addAttribute("last_book", 0);
         return "catalog/catalog";
     }
 
@@ -55,9 +55,11 @@ public class CatalogController {
     public String subCategoryBooks(@PathVariable String category_link,
                                    @PathVariable String subCategory_link, Model model, Locale locale) {
         initCategoryList(locale);
-        BookCriterion bookCriterion = new BookCriterion();
-        bookCriterion.setSubCategory(subCategoryProvider.getByLink(subCategory_link).getId());
-        model.addAttribute("books", getBooksByCriterion(bookCriterion, locale));
+        int subCategoryId = subCategoryProvider.getByLink(subCategory_link).getId();
+        int categoryId = categoryProvider.getByLink(category_link).getId();
+        model.addAttribute("category", categoryId);
+        model.addAttribute("subcategory", subCategoryId);
+        model.addAttribute("last_book", 0);
         return "catalog/catalog";
     }
 
@@ -75,9 +77,20 @@ public class CatalogController {
             categories.add(new CategoryPreview(cat, locale));
     }
 
-    private List<BookPreview> getBooksByCriterion(BookCriterion bookCriterion, Locale locale) {
+    @RequestMapping(value = "/getBooksByCriterion", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<BookPreview> getBooksByCriterion(@RequestParam(required = false) BookCriterion bookCriterion, Locale locale) {
+        List<Book> resultBooks = null;
+        if (bookCriterion == null)
+            resultBooks = bookProvider.getAllBooks();
+        else {
+            if (bookCriterion.getSubCategory() > 0)
+                bookCriterion.setCategory(0);
+            resultBooks = bookProvider.getBooksByCriterion(bookCriterion);
+        }
         List<BookPreview> result = new ArrayList<BookPreview>();
-        for (Book b : bookProvider.getBooksByCriterion(bookCriterion))
+        for (Book b : resultBooks)
             result.add(new BookPreview(b, locale));
         return result;
     }

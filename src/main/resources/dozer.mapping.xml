@@ -33,6 +33,7 @@
     <mapping>
         <class-a>com.nextbook.domain.pojo.OrderedBook</class-a>
         <class-b>com.nextbook.domain.entities.OrderedBookEntity</class-b>
+
     </mapping>
 
     <mapping>
@@ -112,5 +113,9 @@
     <mapping>
         <class-a>com.nextbook.domain.pojo.Comment</class-a>
         <class-b>com.nextbook.domain.entities.CommentEntity</class-b>
+        <field-exclude>
+            <a>book</a>
+            <b>book</b>
+        </field-exclude>
     </mapping>
 </mappings>
