@@ -75,6 +75,7 @@
                     } else if (response == 0){
                         $('#comment-fail').show();
                     } else {
+                        $('#comments').append(formNotActiveComment(response, $('#comment-text').val()));
                         $('#comment-success').show();
                     }
                     $('.shadow').show();
@@ -86,7 +87,7 @@
                 $('#comment-text').val('');
             });
         })
-        $('.delete-comment').click(function(){
+        $('body').on('click', '.delete-comment', function(){
             var commentId = $(this).val();
             $.ajax({
                 url: '/bookInfo/deleteComment/'+commentId,
@@ -115,6 +116,13 @@
             htmlBig += '</ul>';
             $('.galleria').html(htmlBig);
         }
+    }
+
+    function formNotActiveComment(commentId, commentText){
+    var newCommentBlock = '<div class="not-active-comment" id="comment-'+commentId+'">'+
+        'comment: '+commentText+'<br />'+
+        '<button class="delete-comment" value="'+commentId+'">Delete Comment</button></div>';
+        return newCommentBlock;
     }
 
 </script>
@@ -207,35 +215,35 @@ document.write(VK.Share.button('${shareLink}',{type: "round", text: "Share", eng
     </div>
 </div>
 
-<c:if test="${book.comments ne null}">
-<div>
+
+<div id="comments">
     Comments:<br />
-    <jsp:useBean id="dateValue" class="java.util.Date"/>
-    <c:forEach var="comment" items="${book.comments}">
-        <c:choose>
-            <c:when test="${comment.status eq 'ACTIVE'}">
-                <div class="comment">
-                    user name: ${comment.user.name}<br />
-                    comment: ${comment.comment}<br />
-                    <jsp:setProperty name="dateValue" property="time" value="${comment.time}"/>
-                    date created:<fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy HH:mm"/><br />
-                    (status: ${comment.status})
-                </div>
-            </c:when>
-            <c:when test="${userId ne null && comment.status eq 'NEW' && comment.user.id eq userId}">
-                <div class="not-active-comment" id="comment-${comment.id}">
-                    user name: ${comment.user.name}<br />
-                    comment: ${comment.comment}<br />
-                    <jsp:setProperty name="dateValue" property="time" value="${comment.time}"/>
-                    date created:<fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy HH:mm"/><br />
-                    (status: ${comment.status})
-                    <button class="delete-comment" value="${comment.id}">Delete Comment</button>
-                </div>
-            </c:when>
-        </c:choose>
-    </c:forEach>
+    <c:if test="${book.comments ne null}">
+        <jsp:useBean id="dateValue" class="java.util.Date"/>
+        <c:forEach var="comment" items="${book.comments}">
+            <c:choose>
+                <c:when test="${comment.status eq 'ACTIVE'}">
+                    <div class="comment">
+                        user name: ${comment.user.name}<br />
+                        comment: ${comment.comment}<br />
+                        <jsp:setProperty name="dateValue" property="time" value="${comment.time}"/>
+                        date created:<fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy HH:mm"/><br />
+                    </div>
+                </c:when>
+                <c:when test="${userId ne null && comment.status eq 'NEW' && comment.user.id eq userId}">
+                    <div class="not-active-comment" id="comment-${comment.id}">
+                        user name: ${comment.user.name}<br />
+                        comment: ${comment.comment}<br />
+                        <jsp:setProperty name="dateValue" property="time" value="${comment.time}"/>
+                        date created:<fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy HH:mm"/><br />
+                        <button class="delete-comment" value="${comment.id}">Delete Comment</button>
+                    </div>
+                </c:when>
+            </c:choose>
+        </c:forEach>
+    </c:if>
 </div>
-</c:if>
+
 <div style="margin-top: 200px"></div>
 <div>
     New comment:<br />

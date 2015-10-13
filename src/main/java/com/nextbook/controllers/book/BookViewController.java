@@ -128,7 +128,7 @@ public class BookViewController {
         Comment comment = new Comment(user, book, commentRequest.getText());
         comment = commentsProvider.update(comment);
 
-        return comment != null ? 1 : 0;
+        return comment != null ? comment.getId() : 0;
     }
 
     @RequestMapping(value = "/deleteComment/{commentId}", method = RequestMethod.POST)

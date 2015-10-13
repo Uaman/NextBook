@@ -26,5 +26,9 @@ public interface ICommentsProvider {
 
     boolean removeComment(Comment comment);
 
+    Comment publisherActivateComment(Comment comment);
+
+    Comment publisherDeactivateComment(Comment comment);
+
 }
 

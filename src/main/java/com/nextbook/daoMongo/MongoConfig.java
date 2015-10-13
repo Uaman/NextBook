@@ -4,6 +4,7 @@ package com.nextbook.daoMongo;
 //import com.mongodb.ServerAddress;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.MongoURI;
 import org.omg.CORBA.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +31,7 @@ import java.util.Properties;
 /**
  * Created by Dima on 03.10.2015.
  */
-//@Configuration
+@Configuration
 //@PropertySource(value = "env.properties"/*, ignoreResourceNotFound=true*/)
 public class MongoConfig {
 
@@ -72,7 +73,7 @@ public class MongoConfig {
     public @Bean
     MongoDbFactory mongoDbFactoryProd() throws Exception {
                 return new SimpleMongoDbFactory(
-                        new MongoClientURI("mongodb://NewUser:56fdgY23mjh156@ds040888.mongolab.com:40888/NBMongoDBLab"));
+                        new MongoURI("mongodb://NewUser:56fdgY23mjh156@ds040888.mongolab.com:40888/NBMongoDBLab"));
 
     }
 
