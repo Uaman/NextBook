@@ -196,4 +196,28 @@ public class BookCriterion {
     public void setCategory(int category) {
         this.category = category;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("BookCriterion{");
+        sb.append("from=").append(from);
+        sb.append(", max=").append(max);
+        sb.append(", id=").append(id);
+        sb.append(", isbn='").append(isbn).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", category=").append(category);
+        sb.append(", subCategory=").append(subCategory);
+        sb.append(", state='").append(state).append('\'');
+        sb.append(", yearOfPublication=").append(yearOfPublication);
+        sb.append(", publisher='").append(publisher).append('\'');
+        sb.append(", language='").append(language).append('\'');
+        sb.append(", typeOfBook='").append(typeOfBook).append('\'');
+        sb.append(", numberOfPages=").append(numberOfPages);
+        sb.append(", keywords=").append(keywords);
+        sb.append(", authorId=").append(authorId);
+        sb.append(", orderDirection=").append(orderDirection);
+        sb.append(", orderBy=").append(orderBy);
+        sb.append('}');
+        return sb.toString();
+    }
 }

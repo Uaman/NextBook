@@ -54,13 +54,13 @@ public class Book {
     private int numberOfImagesForCover;
 
     private int numberOfImagesInGallery;
-    @JsonIgnore
+
     private List<Keyword> keywords;
-    @JsonIgnore
+
     private List<Author> authors;
-    @JsonIgnore
+
     private List<BookAuthor> bookToAuthor;
-    @JsonIgnore
+
     private List<BookKeyword> bookToKeywords;
 
     public int getId() {

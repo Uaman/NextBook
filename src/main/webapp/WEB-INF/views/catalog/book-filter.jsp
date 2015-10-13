@@ -12,7 +12,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:url value="/catalog/categories" var="categories"/>
 <script>
-    window.onload =
+    $(document).ready(
             function () {
                 $.getJSON('${categories}', {
                     ajax: 'true'
@@ -29,9 +29,9 @@
                                     + subCategories[j].name + '    </a>';
                         html += '<br/>'
                     }
-                    $('#catalog').html(html);
+                    $('#filter').html(html);
                 });
-            };
+            });
 </script>
-<div id="catalog">
+<div id="filter">
 </div>
