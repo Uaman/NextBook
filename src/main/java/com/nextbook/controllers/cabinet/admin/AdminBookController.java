@@ -394,5 +394,32 @@ public class AdminBookController {
         return comment != null;
     }
 
+    @PreAuthorize("@Secure.isAdmin()")
+    @RequestMapping(value = "/deleteComment/{commentId}", method = RequestMethod.POST)
+    public @ResponseBody boolean deleteComment(@PathVariable("commentId") int commentId){
+        Comment comment = commentsProvider.getById(commentId);
+        if(comment == null)
+            return false;
+
+        boolean success = commentsProvider.removeComment(comment);
+
+        return success;
+    }
+
+    @PreAuthorize("@Secure.isAdmin()")
+    @RequestMapping(value = "/deactivateAllUserComments", method = RequestMethod.GET)
+    public String deactivateAllUserComments(@RequestParam("userId") int userId){
+        User user = userProvider.getById(userId);
+        if(user != null) {
+            CommentsCriterion criterion = new CommentsCriterion();
+            criterion.setUser(user);
+            List<Comment> userComments = commentsProvider.getCommentsByCriterion(criterion);
+            for(Comment comment : userComments){
+                commentsProvider.adminDeactivateComment(comment);
+            }
+        }
+        return "redirect:/admin/books/allComments";
+    }
+
     private static final int COMMENTS_PER_PAGE = 100;
 }

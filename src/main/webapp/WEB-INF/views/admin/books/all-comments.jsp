@@ -50,6 +50,21 @@
                     }
                 })
             });
+            $('.delete-comment').click(function(){
+                var commentId = $(this).val();
+                $.ajax({
+                    url: '/admin/books/deleteComment/'+commentId,
+                    type: 'POST',
+                    success: function(response){
+                        if(response){
+                            $('#comment-'+commentId).remove();
+                        }
+                    },
+                    error: function(e){
+                        console.log(e);
+                    }
+                })
+            });
         });
     </script>
 </head>
@@ -63,6 +78,12 @@
     User id: <form:input path="userId" type="text" /><br />
     <input type="submit" />
 </form:form>
+
+<form method="GET" action="/admin/books/deactivateAllUserComments">
+    <label>deactivate all comments of user: <input name="userId" type="text" /></label>
+    <input type="submit">
+</form>
+
 <table>
     <tr>
         <th>id</th>
@@ -77,7 +98,7 @@
     <tbody>
     <jsp:useBean id="dateValue" class="java.util.Date"/>
     <c:forEach var="comment" items="${comments}">
-        <tr>
+        <tr id="comment-${comment.id}">
             <td>${comment.id}</td>
             <td>${comment.user.name}(${comment.user.id})</td>
             <td>
@@ -94,7 +115,8 @@
             <td id="comment-changed-by-${comment.id}">${comment.changedBy}</td>
             <td>
                 <button class="activate-comment" value="${comment.id}">Active Comment</button><br/>
-                <button class="deactivate-comment" value="${comment.id}">Deactivate Comment</button>
+                <button class="deactivate-comment" value="${comment.id}">Deactivate Comment</button><br />
+                <button class="delete-comment" value="${comment.id}">Delete Comment</button>
             </td>
         </tr>
     </c:forEach>
