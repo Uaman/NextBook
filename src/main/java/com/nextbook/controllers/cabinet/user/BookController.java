@@ -9,9 +9,11 @@ import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.AuthorPreview;
 import com.nextbook.domain.upload.Constants;
 import com.nextbook.services.*;
+import com.nextbook.services.impl.FavoritesProvider;
 import com.nextbook.utils.SessionUtils;
 import com.nextbook.utils.StatisticUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +51,8 @@ public class BookController {
     private IBookStorageProvider bookStorageProvider;
     @Inject
     private StatisticUtil statisticUtil;
+    @Inject
+    private IFavoritesProvider favoritesProvider;
 
     @RequestMapping(value = "/new-book", method = RequestMethod.GET)
     public String newBook(){
@@ -385,5 +389,41 @@ public class BookController {
             return false;
 
         return book.getPublisher().getId() == publisher.getId();
+    }
+
+    @RequestMapping(value = "/add-favorite/{id}")
+    public @ResponseBody int addToFavorite(@PathVariable int id){
+        Book book = bookProvider.getBookById(id);
+        if (book==null)
+            return -1;
+        if (sessionUtils.getCurrentUser()==null)
+            return 0;
+        Favorites favorites = new Favorites();
+        favorites.setBook(book);
+        favorites.setUser(sessionUtils.getCurrentUser());
+        favoritesProvider.addToUserFavorites(favorites);
+        return 1;
+    }
+
+    @RequestMapping(value = "/delete-favorite/{id}")
+    public @ResponseBody int deleteFavorite(@PathVariable int id){
+        Book book = bookProvider.getBookById(id);
+        if (book==null)
+            return -1;
+        User user = sessionUtils.getCurrentUser();
+        if (user==null)
+            return 0;
+        return favoritesProvider.deleteFromUserFavorites(user.getId(), book.getId())?1:-1;
+    }
+
+    @RequestMapping(value = "/is-favorite/{id}")
+    public @ResponseBody int isFavorite(@PathVariable int id){
+        Book book = bookProvider.getBookById(id);
+        if (book==null)
+            return -1;
+        User user = sessionUtils.getCurrentUser();
+        if (user==null)
+            return 0;
+        return favoritesProvider.isFavorite(user.getId(), book.getId())?1:0;
     }
 }

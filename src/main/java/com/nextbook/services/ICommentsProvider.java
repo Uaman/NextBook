@@ -1,5 +1,6 @@
 package com.nextbook.services;
 
+import com.nextbook.domain.filters.CommentsCriterion;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Comment;
 import com.nextbook.domain.pojo.User;
@@ -29,6 +30,12 @@ public interface ICommentsProvider {
     Comment publisherActivateComment(Comment comment);
 
     Comment publisherDeactivateComment(Comment comment);
+
+    Comment adminActivateComment(Comment comment);
+
+    Comment adminDeactivateComment(Comment comment);
+
+    List<Comment> getCommentsByCriterion(CommentsCriterion criterion);
 
 }
 

@@ -92,7 +92,7 @@ public class BookViewController {
             return false;
 
         Publisher publisher = publisherProvider.getPublisherByUser(user);
-        if(publisher.getId() == book.getPublisher().getId())
+        if(publisher != null && publisher.getId() == book.getPublisher().getId())
             return true;
 
         //check if admin or moderator

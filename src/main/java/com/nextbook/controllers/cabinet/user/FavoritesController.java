@@ -35,6 +35,8 @@ public class FavoritesController {
         if(user == null)
             return "redirect:/";
         List<Favorites> favoritesList = favoritesProvider.getAllFavorites(user);
+        if(favoritesList == null)
+            return "redirect:/cabinet/profile";
         List<BookPreview> bookPreviews = new ArrayList<BookPreview>();
         for(Favorites fav:favoritesList){
             bookPreviews.add(new BookPreview(fav.getBook(),locate));
@@ -49,6 +51,6 @@ public class FavoritesController {
         if(user == null)
             return "redirect:/";
         favoritesProvider.deleteFromUserFavorites(user.getId(),id);
-        return "/users/favorites";
+        return "redirect:/user/favorites/";
     }
 }

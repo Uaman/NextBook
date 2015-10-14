@@ -17,9 +17,11 @@
     <title><spring:message code="catalog.title"/></title>
     <script src="/resources/js/jquery-2.1.3.min.js"></script>
     <script src="/resources/js/jquery.validate.min.js"></script>
+    <script src="/resources/js/main/sign.in.js"></script>
+    <script src="/resources/js/main/bookFavoriteButton.js"></script>
 
-    <%--<link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=la-tin-ext,cyrillic-ext'--%>
-    <%--rel='stylesheet' type='text/css'>--%>
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=la-tin-ext,cyrillic-ext'
+    rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
 
@@ -54,6 +56,7 @@
                         '</a><br/><spring:message code="book.year" />:' + data[i].yearOfPublication +
                         '<br/><spring:message code="book.description" />: ' + data[i].description +
                         '<br/><spring:message code="book.publisher" />: ' + data[i].publisher.name +
+                        '<br/><button class="favoriteButtonUndef" id="favorite/'+data[i].id+'"></button>' +
                         '<br/><hr></p></div>'
             }
             last_showed += per_page;
@@ -68,6 +71,7 @@
                         ajax: 'true'
                     }, function (data) {
                         $('#catalog').html(printBooks(data, last_showed));
+                        updateFavoriteButtons();
                     });
                 });
 
@@ -79,6 +83,7 @@
                             ajax: 'true'
                         }, function (data) {
                             $('#catalog').append(printBooks(data, last_showed));
+                            updateFavoriteButtons();
                         });
                     }
                 });

@@ -18,6 +18,9 @@
 </head>
 <body>
 
+<div style="font-size: 20px; margin-bottom: 30px;">
+    <a href="/admin/books/allComments">Manage comments</a>
+</div>
 
 <label>From:<input type="text" id="from"/></label> <br />
 <label>Max:<input type="text" id="max"/></label> <br />

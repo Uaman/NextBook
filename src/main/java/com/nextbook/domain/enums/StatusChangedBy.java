@@ -10,6 +10,7 @@ public enum StatusChangedBy {
 
     PUBLISHER,
     ADMIN,
-    NONE
+    NONE,
+    ALL
 
 }

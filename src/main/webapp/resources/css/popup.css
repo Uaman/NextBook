@@ -5,7 +5,7 @@
     border-radius: 10px;
     padding: 10px;*/
 
-    position: absolute;
+    position: fixed;
     top: 25%;
     left: 50%;
     margin-left: -175px !important;

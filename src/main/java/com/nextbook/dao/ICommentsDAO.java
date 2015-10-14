@@ -1,5 +1,6 @@
 package com.nextbook.dao;
 
+import com.nextbook.domain.filters.CommentsCriterion;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Comment;
 import com.nextbook.domain.pojo.User;
@@ -25,5 +26,7 @@ public interface ICommentsDAO {
     List<Comment> bookComments(Book book);
 
     boolean removeComment(Comment comment);
+
+    List<Comment> getCommentsByCriterion(CommentsCriterion criterion);
 
 }
