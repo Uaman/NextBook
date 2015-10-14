@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="/resources/css/jquery/jquery.rateyo.min.css"/>
 <script src="/resources/js/jquery.rateyo.min.js"></script>
 <script type="text/javascript" src="/resources/js/galleria/galleria-1.4.2.min.js"></script>
+<jsp:include page="/resources/js/main/bookFavoriteButton.js.jsp"/>
 
 <script>
     $(document).ready(function(){
@@ -239,6 +240,14 @@
   </c:forEach>
 <br />
 <div><div id="rating"></div> (voted: ${book.voted})</div>
+
+<br/>
+<c:choose>
+    <c:when test="${book.favorite}"> <button class="deleteFavorite" id="favorite/${book.id}"><spring:message code="book.favorites.deletefromfavorites" /></button></c:when>
+    <c:otherwise> <button class="addFavorite" id="favorite/${book.id}"><spring:message code="book.favorites.addtofavorites" /></button></c:otherwise>
+</c:choose>
+<br/>
+
   <a href="#read-book">MOVE TO BOOK</a>
 <div class="fb-like" data-href="${shareLink}" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>
 <div id="vk_like"></div>

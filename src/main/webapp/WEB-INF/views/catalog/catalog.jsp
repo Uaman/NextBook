@@ -18,6 +18,7 @@
     <script src="/resources/js/jquery-2.1.3.min.js"></script>
     <script src="/resources/js/jquery.validate.min.js"></script>
     <script src="/resources/js/main/sign.in.js"></script>
+    <jsp:include page="/resources/js/main/bookFavoriteButton.js.jsp"/>
 
     <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=la-tin-ext,cyrillic-ext'
     rel='stylesheet' type='text/css'>
@@ -54,8 +55,12 @@
                         '</a><spring:message code="book.title" />:<a href = "/bookInfo/' + data[i].id + '">' + data[i].uaName +
                         '</a><br/><spring:message code="book.year" />:' + data[i].yearOfPublication +
                         '<br/><spring:message code="book.description" />: ' + data[i].description +
-                        '<br/><spring:message code="book.publisher" />: ' + data[i].publisher.name +
-                        '<br/><hr></p></div>'
+                        '<br/><spring:message code="book.publisher" />: ' + data[i].publisher.name;
+                if(data[i].favorite)
+                    html += '<br/><button class="deleteFavorite" id="favorite/'+data[i].id+'"><spring:message code="book.favorites.deletefromfavorites" /></button>';
+                else
+                    html += '<br/><button class="addFavorite" id="favorite/'+data[i].id+'"><spring:message code="book.favorites.addtofavorites" /></button>';
+                html += '<br/><hr></p></div>';
             }
             last_showed += per_page;
             return html;
@@ -69,6 +74,7 @@
                         ajax: 'true'
                     }, function (data) {
                         $('#catalog').html(printBooks(data, last_showed));
+                        updateFavoriteButtons();
                     });
                 });
 
@@ -80,6 +86,7 @@
                             ajax: 'true'
                         }, function (data) {
                             $('#catalog').append(printBooks(data, last_showed));
+                            updateFavoriteButtons();
                         });
                     }
                 });
