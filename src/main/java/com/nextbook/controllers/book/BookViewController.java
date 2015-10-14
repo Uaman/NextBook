@@ -2,6 +2,7 @@ package com.nextbook.controllers.book;
 
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
+import com.nextbook.domain.preview.CommentPreview;
 import com.nextbook.domain.upload.Constants;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
@@ -38,7 +39,7 @@ public class BookViewController {
     private IFavoritesProvider favoritesProvider;
 
     @RequestMapping(value = "/{bookId}", method = RequestMethod.GET)
-    public String infoBook(@PathVariable("bookId")int bookId, Model model,Locale locale){
+    public String infoBook(@PathVariable("bookId")int bookId, Model model,Locale locale, HttpServletRequest request){
         Book book = bookProvider.getBookById(bookId);
         if(book == null)
             return "redirect:/";
@@ -51,6 +52,11 @@ public class BookViewController {
         model.addAttribute("bookName", bookNameInLocale(book, locale));
         model.addAttribute("shareLink", HOST_NAME+"bookInfo/"+bookId);
         model.addAttribute("numberOfPhotos", bookStorageProvider.getNumberOfPhotosInGallery(book.getId()));
+        if(user != null){
+            Comment comment = parseSession(request.getSession(), user);
+            if(comment != null)
+                preview.getComments().add(new CommentPreview(comment));
+        }
         if(userBuyBook(user, book)){
             model.addAttribute("urlToFile", book.getLinkToStorage());
             model.addAttribute("pass", Constants.USER_PASSWORD);
@@ -64,6 +70,20 @@ public class BookViewController {
         }
 
         return "book/bookPage";
+    }
+
+    private Comment parseSession(HttpSession session, User user){
+        String commentText = (String)session.getAttribute("comment");
+        if(commentText == null)
+            return null;
+        int bookId = (Integer)session.getAttribute("bookId");
+        Book book = bookProvider.getBookById(bookId);
+        if(book == null)
+            return null;
+
+        Comment comment = new Comment(user, book, commentText);
+        comment = commentsProvider.update(comment);
+        return comment;
     }
 
     private String getCategoryLocated(Category category,Locale locate){
