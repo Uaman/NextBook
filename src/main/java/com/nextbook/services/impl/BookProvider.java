@@ -2,9 +2,7 @@ package com.nextbook.services.impl;
 
 import com.nextbook.dao.IBookDao;
 import com.nextbook.domain.filters.BookCriterion;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.BookAuthor;
-import com.nextbook.domain.pojo.BookKeyword;
+import com.nextbook.domain.pojo.*;
 import com.nextbook.services.IBookProvider;
 import org.springframework.stereotype.Service;
 
@@ -103,4 +101,24 @@ public class BookProvider implements IBookProvider{
 
     @Override
     public int getBooksQuantity() { return bookDao.getBooksQuantity(); }
+
+    @Override
+    public Book userStarBook(User user, Book book, float mark){
+        if(user == null || book == null)
+            return null;
+
+        UserStarsBook userStarsBook = new UserStarsBook(user, book, mark);
+        userStarsBook = bookDao.userStarsBook(userStarsBook);
+        if(userStarsBook == null)
+            return null;
+
+        int numberOfVoted = book.getVoted() + 1;
+        float newRating = (book.getRating() * book.getVoted() + mark) / numberOfVoted;
+
+        book.setRating(newRating);
+        book.setVoted(numberOfVoted);
+        book = updateBook(book);
+
+        return book;
+    }
 }

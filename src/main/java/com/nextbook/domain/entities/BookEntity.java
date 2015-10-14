@@ -92,6 +92,12 @@ public class BookEntity {
     @Column(name = "NUMBER_OF_IMG_IN_GALERY")
     private int numberOfImagesInGallery;
 
+    @Column(name = "RATING")
+    private float rating;
+
+    @Column(name = "VOTED")
+    private int voted;
+
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
 
@@ -275,6 +281,22 @@ public class BookEntity {
 
     public void setComments(List<CommentEntity> comments) {
         this.comments = comments;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public int getVoted() {
+        return voted;
+    }
+
+    public void setVoted(int voted) {
+        this.voted = voted;
     }
 }
 

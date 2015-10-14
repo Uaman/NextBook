@@ -5,6 +5,7 @@ import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.BookAuthor;
 import com.nextbook.domain.pojo.BookKeyword;
+import com.nextbook.domain.pojo.UserStarsBook;
 
 import java.util.List;
 
@@ -43,4 +44,6 @@ public interface IBookDao {
     BookAuthor updateBookToAuthor(BookAuthor bookAuthor);
 
     boolean deleteBookToAuthor(int bookId, int authorId);
+
+    UserStarsBook userStarsBook(UserStarsBook userStarsBook);
 }

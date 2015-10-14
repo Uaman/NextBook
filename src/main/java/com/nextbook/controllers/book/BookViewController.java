@@ -146,6 +146,24 @@ public class BookViewController {
         return success;
     }
 
+
+    @RequestMapping(value = "/voteForBook/{bookId}/{userMark}", method = RequestMethod.POST)
+    public @ResponseBody float voteForBook(@PathVariable("bookId") int bookId,
+                                         @PathVariable("userMark") int userMark){
+        User user = sessionUtils.getCurrentUser();
+        if(user == null)
+            return -1;
+
+        Book book = bookProvider.getBookById(bookId);
+        if(book == null)
+            return 0;
+
+        book = bookProvider.userStarBook(user, book, userMark/10f);
+        if(book == null)
+            return 0;
+        return book.getRating();
+    }
+
     private static final String HOST_NAME = "http://nextbookdemo.azurewebsites.net/";
 }
 

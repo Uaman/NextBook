@@ -55,6 +55,10 @@ public class Book {
 
     private int numberOfImagesInGallery;
 
+    private float rating;
+
+    private int voted;
+
     private List<Keyword> keywords;
 
     private List<Author> authors;
@@ -272,6 +276,22 @@ public class Book {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public int getVoted() {
+        return voted;
+    }
+
+    public void setVoted(int voted) {
+        this.voted = voted;
     }
 
     @Override

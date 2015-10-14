@@ -114,4 +114,8 @@
         <class-a>com.nextbook.domain.pojo.Comment</class-a>
         <class-b>com.nextbook.domain.entities.CommentEntity</class-b>
     </mapping>
+    <mapping>
+        <class-a>com.nextbook.domain.pojo.UserStarsBook</class-a>
+        <class-b>com.nextbook.domain.entities.UserStarsBookEntity</class-b>
+    </mapping>
 </mappings>
