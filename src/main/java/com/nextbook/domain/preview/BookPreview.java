@@ -29,7 +29,7 @@ public class BookPreview {
 
     private List<AuthorPreview> authors;
 
-    private List<Comment> comments;
+    private List<CommentPreview> comments;
 
     public BookPreview(Book b, Locale locale) {
         this.id = b.getId();
@@ -53,7 +53,9 @@ public class BookPreview {
         for (Author a:b.getAuthors())
             this.authors.add(new AuthorPreview(a, locale));
         this.publisher = new PublisherPreview(b.getPublisher(), locale);
-        this.comments = b.getComments();
+        this.comments = new ArrayList<CommentPreview>();
+        for(Comment comment : b.getComments())
+            this.comments.add(new CommentPreview(comment));
     }
 
     public int getId() {
@@ -128,11 +130,11 @@ public class BookPreview {
         this.eighteenPlus = eighteenPlus;
     }
 
-    public List<Comment> getComments() {
+    public List<CommentPreview> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(List<CommentPreview> comments) {
         this.comments = comments;
     }
 }

@@ -225,21 +225,34 @@ document.write(VK.Share.button('${shareLink}',{type: "round", text: "Share", eng
         <jsp:useBean id="dateValue" class="java.util.Date"/>
         <c:forEach var="comment" items="${book.comments}">
             <c:choose>
+                <c:when test="${userId ne null && comment.user.id eq userId}">
+                    <c:choose>
+                        <c:when test="${comment.status eq 'NEW'}">
+                            <div class="not-active-comment" id="comment-${comment.id}">
+                                user name: ${comment.user.name}<br />
+                                comment: ${comment.comment}<br />
+                                <jsp:setProperty name="dateValue" property="time" value="${comment.time}"/>
+                                date created:<fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy HH:mm"/><br />
+                                <button class="delete-comment" value="${comment.id}">Delete Comment</button>
+                            </div>
+                        </c:when>
+                        <c:when test="${comment.status eq 'ACTIVE'}">
+                            <div class="comment" id="comment-${comment.id}">
+                                user name: ${comment.user.name}<br />
+                                comment: ${comment.comment}<br />
+                                <jsp:setProperty name="dateValue" property="time" value="${comment.time}"/>
+                                date created:<fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy HH:mm"/><br />
+                                <button class="delete-comment" value="${comment.id}">Delete Comment</button>
+                            </div>
+                        </c:when>
+                    </c:choose>
+                </c:when>
                 <c:when test="${comment.status eq 'ACTIVE'}">
                     <div class="comment">
                         user name: ${comment.user.name}<br />
                         comment: ${comment.comment}<br />
                         <jsp:setProperty name="dateValue" property="time" value="${comment.time}"/>
                         date created:<fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy HH:mm"/><br />
-                    </div>
-                </c:when>
-                <c:when test="${userId ne null && comment.status eq 'NEW' && comment.user.id eq userId}">
-                    <div class="not-active-comment" id="comment-${comment.id}">
-                        user name: ${comment.user.name}<br />
-                        comment: ${comment.comment}<br />
-                        <jsp:setProperty name="dateValue" property="time" value="${comment.time}"/>
-                        date created:<fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy HH:mm"/><br />
-                        <button class="delete-comment" value="${comment.id}">Delete Comment</button>
                     </div>
                 </c:when>
             </c:choose>
