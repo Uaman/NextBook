@@ -4,9 +4,11 @@ import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.BookAuthor;
 import com.nextbook.domain.pojo.BookKeyword;
+import com.nextbook.domain.preview.BookPreview;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,4 +48,6 @@ public interface IBookProvider {
     boolean deleteBookToAuthor(int bookId, int authorId);
 
     int getBooksQuantity();
+
+    List<BookPreview> booksToBookPreviews(List<Book> books, Locale locale);
 }

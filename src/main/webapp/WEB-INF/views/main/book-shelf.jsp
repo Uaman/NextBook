@@ -12,7 +12,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:include page="../catalog/book-filter.jsp"/>
-<script src="/resources/js/main/bookFavoriteButton.js"></script>
+<jsp:include page="/resources/js/main/bookFavoriteButton.js.jsp"/>
 
 <c:forEach var="book" items="${last_books}">
     <div style="background-color: #dfe1e4">
@@ -25,7 +25,10 @@
         <br/><spring:message code="book.year"/>: ${book.yearOfPublication}
         <br/><spring:message code="book.description"/>: ${book.description}
         <br/><spring:message code="book.publisher"/>: ${book.publisher.name}
-        <br/><button class="favoriteButtonUndef" id="favorite/${book.id}"></button>
+        <br/><c:choose>
+                <c:when test="${book.favorite}"> <button class="deleteFavorite" id="favorite/${book.id}"><spring:message code="book.favorites.deletefromfavorites" /></button></c:when>
+                <c:otherwise> <button class="addFavorite" id="favorite/${book.id}"><spring:message code="book.favorites.addtofavorites" /></button></c:otherwise>
+             </c:choose>
         <br/>
         <hr>
         </p>

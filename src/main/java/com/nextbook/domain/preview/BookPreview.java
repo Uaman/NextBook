@@ -31,6 +31,8 @@ public class BookPreview {
 
     private List<CommentPreview> comments;
 
+    private boolean favorite;
+
     public BookPreview(Book b, Locale locale) {
         this.id = b.getId();
         this.yearOfPublication = b.getYearOfPublication();
@@ -136,5 +138,13 @@ public class BookPreview {
 
     public void setComments(List<CommentPreview> comments) {
         this.comments = comments;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

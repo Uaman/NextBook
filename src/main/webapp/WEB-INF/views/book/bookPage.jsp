@@ -37,7 +37,7 @@
 <script src="/resources/js/jquery.form.min.js"></script>
   <script src="/resources/js/main/sign.in.js"></script>
 <script type="text/javascript" src="/resources/js/galleria/galleria-1.4.2.min.js"></script>
-<script src="/resources/js/main/bookFavoriteButton.js"></script>
+<jsp:include page="/resources/js/main/bookFavoriteButton.js.jsp"/>
 
 <script>
     $(document).ready(function(){
@@ -200,7 +200,12 @@
     ${keyword.keyword}
   </c:forEach>
 
-<br/><button class="favoriteButtonUndef" id="favorite/${book.id}"></button><br/>
+<br/>
+<c:choose>
+    <c:when test="${book.favorite}"> <button class="deleteFavorite" id="favorite/${book.id}"><spring:message code="book.favorites.deletefromfavorites" /></button></c:when>
+    <c:otherwise> <button class="addFavorite" id="favorite/${book.id}"><spring:message code="book.favorites.addtofavorites" /></button></c:otherwise>
+</c:choose>
+<br/>
 
   <a href="#read-book">MOVE TO BOOK</a>
 <div class="fb-like" data-href="${shareLink}" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>

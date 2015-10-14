@@ -89,9 +89,7 @@ public class CatalogController {
                 bookCriterion.setCategory(0);
             resultBooks = bookProvider.getBooksByCriterion(bookCriterion);
         }
-        List<BookPreview> result = new ArrayList<BookPreview>();
-        for (Book b : resultBooks)
-            result.add(new BookPreview(b, locale));
+        List<BookPreview> result = bookProvider.booksToBookPreviews(resultBooks, locale);
         return result;
     }
 

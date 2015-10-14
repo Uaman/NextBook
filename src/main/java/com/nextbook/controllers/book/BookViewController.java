@@ -34,6 +34,8 @@ public class BookViewController {
     private IOrderProvider orderProvider;
     @Autowired
     private ICommentsProvider commentsProvider;
+    @Autowired
+    private IFavoritesProvider favoritesProvider;
 
     @RequestMapping(value = "/{bookId}", method = RequestMethod.GET)
     public String infoBook(@PathVariable("bookId")int bookId, Model model,Locale locale){
@@ -58,6 +60,7 @@ public class BookViewController {
         }
         if(user != null){
             model.addAttribute("userId", user.getId());
+            preview.setFavorite(favoritesProvider.isFavorite(user.getId(), book.getId()));
         }
 
         return "book/bookPage";
