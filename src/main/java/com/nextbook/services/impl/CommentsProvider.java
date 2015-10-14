@@ -3,6 +3,7 @@ package com.nextbook.services.impl;
 import com.nextbook.dao.ICommentsDAO;
 import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.enums.StatusChangedBy;
+import com.nextbook.domain.filters.CommentsCriterion;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Comment;
 import com.nextbook.domain.pojo.User;
@@ -73,6 +74,31 @@ public class CommentsProvider implements ICommentsProvider {
         comment.setStatus(Status.NOT_ACTIVE);
         comment.setChangedBy(StatusChangedBy.PUBLISHER);
         return commentsDAO.update(comment);
+    }
+
+    @Override
+    public Comment adminActivateComment(Comment comment) {
+        if(comment == null)
+            return null;
+        comment.setStatus(Status.ACTIVE);
+        comment.setChangedBy(StatusChangedBy.ADMIN);
+        return commentsDAO.update(comment);
+    }
+
+    @Override
+    public Comment adminDeactivateComment(Comment comment) {
+        if(comment == null)
+            return null;
+        comment.setStatus(Status.NOT_ACTIVE);
+        comment.setChangedBy(StatusChangedBy.ADMIN);
+        return commentsDAO.update(comment);
+    }
+
+    @Override
+    public List<Comment> getCommentsByCriterion(CommentsCriterion criterion) {
+        if(criterion == null)
+            return null;
+        return commentsDAO.getCommentsByCriterion(criterion);
     }
 
 

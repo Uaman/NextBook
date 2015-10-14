@@ -2,8 +2,12 @@ package com.nextbook.controllers.cabinet.admin;
 
 import com.nextbook.domain.ResponseForAutoComplete;
 import com.nextbook.domain.enums.Cover;
+import com.nextbook.domain.enums.Status;
+import com.nextbook.domain.enums.StatusChangedBy;
 import com.nextbook.domain.filters.AuthorCriterion;
 import com.nextbook.domain.filters.BookCriterion;
+import com.nextbook.domain.filters.CommentsCriterion;
+import com.nextbook.domain.filters.CommentsFilter;
 import com.nextbook.domain.forms.book.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.AuthorPreview;
@@ -45,6 +49,10 @@ public class AdminBookController {
     private IKeywordProvider keywordProvider;
     @Inject
     private IBookStorageProvider bookStorageProvider;
+    @Inject
+    private ICommentsProvider commentsProvider;
+    @Inject
+    private IUserProvider userProvider;
 
     @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value="/all")
@@ -320,4 +328,71 @@ public class AdminBookController {
         boolean success = bookProvider.deleteBookToAuthor(bookId, authorId);
         return success;
     }
+
+    @PreAuthorize("@Secure.isAdmin()")
+    @RequestMapping(value = "/allComments", method = RequestMethod.GET)
+    public String allComments(@ModelAttribute("commentsCriterion") CommentsFilter filter,
+                              Model model){
+        CommentsCriterion criterion = copyFromCommentsFilter(filter);
+        List<Comment> comments = commentsProvider.getCommentsByCriterion(criterion);
+        model.addAttribute("comments", comments);
+
+        copyFromCommentsCriterion(criterion, filter);
+
+        model.addAttribute("commentsCriterion", filter);
+        model.addAttribute("statuses", Status.values());
+        model.addAttribute("changedByValues", StatusChangedBy.values());
+
+        return "admin/books/all-comments";
+    }
+
+
+    public CommentsCriterion copyFromCommentsFilter(CommentsFilter filter){
+        CommentsCriterion criterion = new CommentsCriterion(filter);
+
+
+        criterion.setUser(userProvider.getById(filter.getUserId()));
+        criterion.setBook(bookProvider.getBookById(filter.getBookId()));
+
+        criterion.setFrom(filter.getPage() * COMMENTS_PER_PAGE);
+        criterion.setMax(COMMENTS_PER_PAGE);
+
+        return criterion;
+    }
+
+
+    public void copyFromCommentsCriterion(CommentsCriterion criterion, CommentsFilter filter){
+        if(filter == null)
+            filter = new CommentsFilter();
+        filter.setStatus(criterion.getStatus());
+        filter.setTimeTo(criterion.getTimeTo());
+        filter.setTimeFrom(criterion.getTimeFrom());
+        filter.setBookId(criterion.getBook() != null ? criterion.getBook().getId() : 0);
+        filter.setUserId(criterion.getUser() != null ? criterion.getUser().getId() : 0);
+        filter.setChangedBy(criterion.getChangedBy());
+    }
+
+    @PreAuthorize("@Secure.isAdmin()")
+    @RequestMapping(value = "/activateComment/{commentId}", method = RequestMethod.POST)
+    public @ResponseBody boolean activateComment(@PathVariable("commentId") int commentId){
+        Comment comment = commentsProvider.getById(commentId);
+        if(comment == null)
+            return false;
+        comment = commentsProvider.adminActivateComment(comment);
+
+        return comment != null;
+    }
+
+    @PreAuthorize("@Secure.isAdmin()")
+    @RequestMapping(value = "/deactivateComment/{commentId}", method = RequestMethod.POST)
+    public @ResponseBody boolean deactivateComment(@PathVariable("commentId") int commentId){
+        Comment comment = commentsProvider.getById(commentId);
+        if(comment == null)
+            return false;
+        comment = commentsProvider.adminDeactivateComment(comment);
+
+        return comment != null;
+    }
+
+    private static final int COMMENTS_PER_PAGE = 100;
 }
