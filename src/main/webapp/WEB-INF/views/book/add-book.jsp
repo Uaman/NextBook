@@ -63,6 +63,7 @@
 <body>
 <div class="wrapper">
     <div class="page">
+        <jsp:include page="../../template/default/headerContent.jsp"/>
         <div class="row">
             <div class="page-title">
                 <h1><spring:message code="add.book.title"/></h1>

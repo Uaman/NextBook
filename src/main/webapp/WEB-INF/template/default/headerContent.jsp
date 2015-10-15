@@ -14,7 +14,7 @@
 <div class="header-container">
   <div class="top-switch-bg">
     <div class="row clearfix">
-      <div class="grid_6">language-switch</div>
+      <div class="grid_6"><%--language-switch--%></div>
       <div class="grid_6">
         <ul class="links">
 
@@ -59,8 +59,17 @@
           </a>
           <div class="nav-container">
             <nav>
+              <ul class="topmenu">
+                <li class="level0"><a href="/">Home</a></li>
+                <li class="level0"><a href="#">All categories</a>
+                <jsp:include page="../../views/catalog/book-filter.jsp"/></li>
+              </ul>
             </nav>
             <div class="top-dropdowns">
+              <div class="my-cart-container">
+                <div class="my-cart"></div>
+                <div class="cart-content">Your cart is empty</div>
+              </div>
               <div class="search-top-container">
                 <div class="search-top"></div>
                 <div class="search-form">

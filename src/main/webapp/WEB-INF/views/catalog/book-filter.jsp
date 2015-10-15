@@ -20,18 +20,18 @@
                     var html = '';
                     var length = data.length;
                     for (var i = 0; i < length; i++) {
-                        html += '<a href="/catalog/' + data[i].link + '">' + data[i].name + '</a>';
+                        html += '<li><a href="/catalog/' + data[i].link + '">' + data[i].name + '</a>';
                         var subCategories = data[i].subcategories;
                         var len = subCategories.length;
-                        html += '<br/>';
+                        html += '<ul>';
                         for (var j = 0; j < len; j++)
-                            html += '<a href="/catalog/' + data[i].link + '/' + subCategories[j].link + '">'
-                                    + subCategories[j].name + '    </a>';
-                        html += '<br/>'
+                            html += '<li><a href="/catalog/' + data[i].link + '/' + subCategories[j].link + '">'
+                                    + subCategories[j].name + '</a></li>';
+                        html += '</ul></li>'
                     }
                     $('#filter').html(html);
                 });
             });
 </script>
-<div id="filter">
-</div>
+<ul id="filter" class="categories">
+</ul>
