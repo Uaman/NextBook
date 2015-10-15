@@ -16,12 +16,29 @@
     <script src="/resources/js/jquery-2.1.3.min.js"></script>
     <script src="/resources/js/jquery.validate.min.js"></script>
     <script src="/resources/js/main/sign.in.js"></script>
+    <script src="/resources/js/jquery.bxSlider.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#book-slider').bxSlider({
+                displaySlideQty: 6,
+                moveSlideQty: 2,
+                auto: false,
+                autoControls: false,
+                autoHover: true,
+                pager: false,
+                speed: 300,
+                pause: 3000,
+                controls: true
+            });
+
+        });
+    </script>
 
     <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=la-tin-ext,cyrillic-ext'
           rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
-
+    <link rel="stylesheet" type="text/css" href="/resources/css/bx_styles/bx_styles.css"/>
 </head>
 <body>
 <div class="wrapper index">
@@ -33,7 +50,7 @@
 <div class="page content index">
     <div class="row">
         <div class="page-title"><h2>New</h2></div>
-        <jsp:include page="book-shelf.jsp"/>
+            <jsp:include page="book-shelf.jsp"/>
     </div>
 </div>
 

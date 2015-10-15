@@ -1,0 +1,127 @@
+/* @override http://localhost/bxslider_v3_plugin/css/styles.css */
+
+/*
+ * To change the color scheme of slider change each 
+ * background property for each of the five styles below
+ */
+.bx-wrapper {
+	margin:0 auto !important;
+}
+.bx-windows {
+	height: auto !important;
+}
+/*next button*/
+.bx-prev, .bx-next {
+	position:absolute;
+	top:-40px;
+	width: 35px;
+	height: 35px;
+	text-indent: -999999px;
+	transition: all 400ms ease-in-out;
+	-webkit-transition: all 400ms ease-in-out;
+	-moz-transition: all 400ms ease-in-out;
+	-o-transition: all 400ms ease-in-out;
+	outline: none;
+	background: #fefefe url("../../images/arrow_about.png") 0 0 no-repeat;
+	-webkit-border-radius: 100% !important;
+	-moz-border-radius: 100% !important;
+	border-radius: 100% !important;
+}
+.bx-next {
+	right:0;
+}
+/*previous button*/
+.bx-prev {
+	right:40px;
+	background-position: 100% 0;;
+}
+
+/*pager links*/
+.bx-pager a {
+	margin-right: 5px;
+	color: #fff;
+	padding: 3px 8px 3px 6px;
+	font-size: 12px;
+	zoom:1;
+	background: url(green_pager.png) no-repeat 0 -20px;
+	outline: none;
+}
+
+/*auto start button*/
+.bx-auto .start {
+	background: url(green_auto.png) no-repeat 0 2px;
+	padding-left: 13px;
+}
+
+/*auto stop button*/
+.bx-auto .stop {
+	background: url(green_auto.png) no-repeat 0 -14px;
+	padding-left: 13px;
+}
+
+/*
+ * End color scheme styles
+ */
+
+
+/*next/prev button hover state*/
+.bx-next:hover,
+.bx-prev:hover {
+	background-color:#ff6a1c;
+	transition: all 400ms ease-in-out;
+	-webkit-transition: all 400ms ease-in-out;
+	-moz-transition: all 400ms ease-in-out;
+	-o-transition: all 400ms ease-in-out;
+}
+.bx-next:hover {
+	 background-position:0 100%;
+ }
+.bx-prev:hover {
+	background-position:100% 100%;
+}
+/*pager links hover and active states*/
+.bx-pager .pager-active,
+.bx-pager a:hover {
+	background-position: 0 0;
+}
+
+/*pager wrapper*/
+.bx-pager {
+	text-align:center;
+	padding-top: 7px;
+	font-size:12px;
+	color:#666;
+	outline: none;
+}
+
+/*captions*/
+.bx-captions {
+	text-align:center;
+	font-size: 12px;
+	padding: 7px 0;
+	color: #666;
+	outline: none;
+}
+
+/*auto controls*/
+.bx-auto {
+	text-align: center;
+	padding-top: 15px;
+	outline: none;
+}
+
+.bx-auto a {
+	color: #666;
+	font-size: 12px;
+}
+
+
+
+
+
+
+
+
+
+
+

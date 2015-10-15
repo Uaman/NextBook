@@ -674,18 +674,27 @@ header a.logo {
 }
 .index .page-title h2 {
     border: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 /********* /Content ********/
 
 /********* Book *********/
+#book-slider {
+    display: block;
+    width: 100%;
+}
 .book-default {
     display: inline-block;
-    margin: 0 15px 30px;
+    margin: 15px 0 65px;
     border: 9px solid transparent;
     position: relative;
+    padding: 0 10px;
 }
 .book-default img {
     width: 150px;
+    display: inline-block;
+    vertical-align: bottom;
 }
 .book-default:hover {
     background-color: #fff;
@@ -714,6 +723,34 @@ header a.logo {
 }
 .book-default .addFavorite span, .book-default .deleteFavorite span {
     margin-right: 5px;
+    transform-origin: 50% 50%;
+    transition: all 400ms ease-in-out;
+    -webkit-transition: all 400ms ease-in-out;
+    -moz-transition: all 400ms ease-in-out;
+    -o-transition: all 400ms ease-in-out;
+}
+.book-default .addFavorite:hover > span, .book-default .deleteFavorite:hover > span {
+    color: #000;
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.gInfo-book {
+    height: 240px;
+    overflow: hidden;
+    vertical-align: bottom;
+}
+.gInfo-book a {
+    position: relative;
+    display: block;
+    width: 150px;
+    height: 240px;
+}
+.gInfo-book a img {
+    position: absolute;
+    bottom: 0;
 }
 .book-default h3 {
     text-align: center;
@@ -723,10 +760,11 @@ header a.logo {
 }
 .book-preview {
     position: absolute;
-    bottom:50px;
+    top:80px;
     margin: 0 auto;
     display: none;
     text-align: center;
+    z-index: 200;
 }
 .book-detail {
     display: none;
@@ -737,16 +775,16 @@ header a.logo {
     width: 100%;
     border: 9px solid #fff;
     z-index: 200;
-    -webkit-box-shadow: 0 15px 10px 6px rgba(0, 0, 0, 0.05);
-    -moz-box-shadow: 0 15px 10px 6px rgba(0, 0, 0, 0.05);
-    box-shadow: 0 15px 10px 6px rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: 0 9px 15px 6px rgba(0, 0, 0, 0.03);
+    -moz-box-shadow: 0 9px 15px 6px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 9px 15px 6px rgba(0, 0, 0, 0.03);
 }
 .book-detail hr {
     border-top: 1px solid #e0e0e0;
 }
 .book-default:hover > .book-preview {
     display: inline-block;
-    width: 100%;
+    width: 90%;
 }
 .book-default:hover > .book-detail {
     display: block;
