@@ -1,6 +1,6 @@
 package com.nextbook.dao;
 
-import com.nextbook.domain.filters.AuthorCriterion;
+import com.nextbook.domain.criterion.AuthorCriterion;
 import com.nextbook.domain.pojo.Author;
 
 import java.util.List;

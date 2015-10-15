@@ -1,4 +1,4 @@
-package com.nextbook.domain.filters;
+package com.nextbook.domain.criterion;
 
 /**
  * Created by Stacy on 7/29/15.

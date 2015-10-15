@@ -1,12 +1,11 @@
 package com.nextbook.controllers.cabinet.admin;
 
 import com.nextbook.domain.ResponseForAutoComplete;
-import com.nextbook.domain.enums.Cover;
-import com.nextbook.domain.enums.Status;
-import com.nextbook.domain.enums.StatusChangedBy;
-import com.nextbook.domain.filters.AuthorCriterion;
-import com.nextbook.domain.filters.BookCriterion;
-import com.nextbook.domain.filters.CommentsCriterion;
+import com.nextbook.domain.enums.*;
+import com.nextbook.domain.criterion.AuthorCriterion;
+import com.nextbook.domain.criterion.BookCriterion;
+import com.nextbook.domain.criterion.CommentsCriterion;
+import com.nextbook.domain.filters.AdminPageBooksFilter;
 import com.nextbook.domain.filters.CommentsFilter;
 import com.nextbook.domain.forms.book.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
@@ -42,6 +41,8 @@ public class AdminBookController {
     @Inject
     private ISubCategoryProvider subCategoryProvider;
     @Inject
+    private ICategoryProvider categoryProvider;
+    @Inject
     private IAuthorProvider authorProvider;
     @Inject
     private IPublisherProvider publisherProvider;
@@ -56,9 +57,30 @@ public class AdminBookController {
 
     @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value="/all")
-    public String allBooksPage(Model model) {
-        model.addAttribute("books", bookProvider.getAllBooks());
+    public String allBooksPage(@ModelAttribute("booksFilter") AdminPageBooksFilter booksFilter,
+                               Model model) {
+        BookCriterion bookCriterion = new BookCriterion.Builder()
+                .subcategory(booksFilter.getSubCategory() > 0 ? subCategoryProvider.getById(booksFilter.getSubCategory()) : null)
+                .category(booksFilter.getCategory() > 0 ? categoryProvider.getById(booksFilter.getCategory()) : null)
+                .author(booksFilter.getAuthor() > 0 ? authorProvider.getById(booksFilter.getAuthor()) : null)
+                .publisher(booksFilter.getPublisher() > 0 ? publisherProvider.getPublisherById(booksFilter.getPublisher()) : null)
+                .bootType(booksFilter.getBookType())
+                .eighteenPlus(booksFilter.getEighteenPlus())
+                .numberOfPages(booksFilter.getNumberOfPages())
+                .orderBy(booksFilter.getOrderBy())
+                .status(booksFilter.getStatus() == null ? Status.READY_FOR_REVIEW : booksFilter.getStatus())
+                .yearOfPublication(booksFilter.getYearOfPublication())
+                .orderDirection(booksFilter.getOrderDirection())
+                .build();
+        model.addAttribute("books", bookProvider.getBooksByCriterion(bookCriterion));
         model.addAttribute("subCategories", subCategoryProvider.getAll());
+        model.addAttribute("publishers", publisherProvider.getAll());
+        model.addAttribute("authors", authorProvider.getAll());
+        model.addAttribute("bookTypes", BookTypeEnum.values());
+        model.addAttribute("eighteenPlusValues", EighteenPlus.values());
+        model.addAttribute("orderDirections", OrderDirectionEnum.values());
+        model.addAttribute("orderBy", BookOrderEnum.values());
+        model.addAttribute("statuses", Status.values());
         return "admin/books/manage-books";
     }
 

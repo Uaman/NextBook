@@ -5,7 +5,10 @@ import com.nextbook.domain.entities.BookAuthorEntity;
 import com.nextbook.domain.entities.BookEntity;
 import com.nextbook.domain.entities.BookKeywordEntity;
 import com.nextbook.domain.entities.UserStarsBookEntity;
-import com.nextbook.domain.filters.BookCriterion;
+import com.nextbook.domain.enums.BookTypeEnum;
+import com.nextbook.domain.enums.EighteenPlus;
+import com.nextbook.domain.criterion.BookCriterion;
+import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.BookAuthor;
 import com.nextbook.domain.pojo.BookKeyword;
@@ -19,8 +22,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -398,50 +400,21 @@ public class BookDAO implements IBookDao {
         StringBuilder queryString = new StringBuilder();
         queryString.append("SELECT DISTINCT book FROM BookEntity book");
 
+        Map<String, Object> params = new HashMap<String, Object>();
+
         boolean where = false;
 
-        for (int i = 0; i < criterion.getKeywords().size(); ++i) {
-            if (i==0) {
-                queryString.append(" WHERE (book.keywords.keyword.keyword LIKE '%'||?||'%'");
-            } else {
-                queryString.append(" OR book.keywords.keyword.keyword LIKE '%'||?||'%'");
-            }
-            if (i==criterion.getKeywords().size()-1) queryString.append(")");
-            where = true;
-        }
-        if(criterion.getId() > 0){
-            if(where) {
-                queryString.append(" AND book.id=:id");
-            } else {
-                queryString.append(" WHERE book.id=:id");
-            }
-            where = true;
-        }
-        if(validString(criterion.getIsbn())){
-            if(where) {
-                queryString.append(" AND book.isbn=:isbn");
-            } else {
-                queryString.append(" WHERE book.isbn=:isbn");
-            }
-            where = true;
-        }
-        if (validString(criterion.getName())){
-            if(where) {
-                queryString.append(" AND (book.uaName LIKE :name");
-            } else {
-                queryString.append(" WHERE (book.uaName LIKE :name");
-            }
-            queryString.append(" OR book.ruName LIKE :name");
-            queryString.append(" OR book.enName LIKE :name)");
-            where = true;
-        }
-        if (validString(criterion.getState()) && !criterion.getState().equals("all")) {
+        if (criterion.getEighteenPlus() != null && criterion.getEighteenPlus() != EighteenPlus.ALL) {
+            boolean eighteenPlus = false;
+            if(criterion.getEighteenPlus() == EighteenPlus.ONLY_EIGHTEEN_PLUS)
+                eighteenPlus = true;
             if(where) {
                 queryString.append(" AND book.eighteenPlus=:eighteenPlus");
             } else {
                 queryString.append(" WHERE book.eighteenPlus=:eighteenPlus");
             }
             where = true;
+            params.put("eighteenPlus", eighteenPlus);
         }
         if(criterion.getYearOfPublication() > 0){
             if(where) {
@@ -450,22 +423,16 @@ public class BookDAO implements IBookDao {
                 queryString.append(" WHERE book.yearOfPublication=:yearOfPublication");
             }
             where = true;
+            params.put("yearOfPublication", criterion.getYearOfPublication());
         }
-        if (validString(criterion.getLanguage())){
-            if(where) {
-                queryString.append(" AND book.language LIKE :language");
-            } else {
-                queryString.append(" WHERE book.language LIKE :language");
-            }
-            where = true;
-        }
-        if(validString(criterion.getTypeOfBookString()) && !criterion.getTypeOfBookString().equalsIgnoreCase("all")){
+        if(criterion.getBookType() != null && criterion.getBookType() != BookTypeEnum.ALL){
             if(where) {
                 queryString.append(" AND book.typeOfBook=:typeOfBook");
             } else {
                 queryString.append(" WHERE book.typeOfBook=:typeOfBook");
             }
             where = true;
+            params.put("typeOfBook", criterion.getBookType());
         }
         if(criterion.getNumberOfPages() > 0){
             if(where) {
@@ -474,51 +441,63 @@ public class BookDAO implements IBookDao {
                 queryString.append(" WHERE book.numberOfPages=:numberOfPages");
             }
             where = true;
+            params.put("numberOfPages", criterion.getNumberOfPages());
         }
-        if (criterion.getSubCategory()>0){
+        if (criterion.getSubCategory() != null){
             if(where) {
                 queryString.append(" AND book.subCategoryEntity.id=:subCategory");
             } else {
                 queryString.append(" WHERE book.subCategoryEntity.id=:subCategory");
             }
             where = true;
-        }
-        if (criterion.getCategory()>0){
+            params.put("subCategory", criterion.getSubCategory().getId());
+        } else if (criterion.getCategory() != null){
             if(where) {
                 queryString.append(" AND book.subCategoryEntity.categoryEntity.id=:category");
             } else {
                 queryString.append(" WHERE book.subCategoryEntity.categoryEntity.id=:category");
             }
             where = true;
+            params.put("category", criterion.getCategory().getId());
         }
-        if (validString(criterion.getPublisher())){
+        if (criterion.getPublisher() != null){
             if(where) {
-                queryString.append(" AND (book.publisherEntity.nameUa LIKE :publisher");
+                queryString.append(" AND book.publisherEntity.id=:publisher");
             } else {
-                queryString.append(" WHERE (book.publisherEntity.nameUa LIKE :publisher");
+                queryString.append(" WHERE book.publisherEntity.id=:publisher");
             }
-            queryString.append(" OR book.publisherEntity.nameRu LIKE :publisher");
-            queryString.append(" OR book.publisherEntity.nameEn LIKE :publisher)");
+            params.put("publisher", criterion.getPublisher().getId());
             where = true;
         }
-        if(criterion.getAuthorId() > 0){
+        /*
+        if(criterion.getAuthor() != null){
             if(where) {
-                queryString.append(" AND book.authorEntity.id=:authorId");
+                queryString.append(" AND book.bookToAuthor.author.id=:author");
             } else {
-                queryString.append(" WHERE book.authorEntity.id=:authorId");
+                queryString.append(" WHERE book.bookToAuthor.author.id=:author");
             }
             where = true;
+            params.put("author", criterion.getAuthor().getId());
+        }*/
+        if(criterion.getStatus() != null && criterion.getStatus() != Status.ALL){
+            if(where) {
+                queryString.append(" AND book.status=:status");
+            } else {
+                queryString.append(" WHERE book.status=:status");
+            }
+            where = true;
+            params.put("status", criterion.getStatus());
         }
+
         if(criterion.getOrderDirection()!=null && criterion.getOrderBy()!=null){
             queryString.append(" ORDER BY " + criterion.getOrderBy() + ' ' + criterion.getOrderDirection());
         }
 
-        //CONCAT('%', :name, '%') or '%' || :name ||
-
         Query result = session.createQuery(queryString.toString());
-        result.setProperties(criterion);
-        for (int i = 0; i < criterion.getKeywords().size(); ++i)
-            result.setParameter(i, criterion.getKeywords().get(i));
+
+        Set<String> keys = params.keySet();
+        for(String key : keys)
+            result.setParameter(key, params.get(key));
 
         if(criterion.getFrom() > 0)
             result.setFirstResult(criterion.getFrom());

@@ -1,7 +1,8 @@
-package com.nextbook.domain.filters;
+package com.nextbook.domain.criterion;
 
 import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.enums.StatusChangedBy;
+import com.nextbook.domain.filters.CommentsFilter;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.User;
 

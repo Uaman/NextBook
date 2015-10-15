@@ -11,6 +11,8 @@ public enum Status {
     NEW,
     ACTIVE,
     NOT_ACTIVE,
+    READY_FOR_REVIEW,
+    REJECTED,
     ALL
 
 }

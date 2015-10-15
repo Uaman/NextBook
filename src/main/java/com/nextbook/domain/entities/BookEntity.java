@@ -1,6 +1,7 @@
 package com.nextbook.domain.entities;
 
 import com.nextbook.domain.enums.BookTypeEnum;
+import com.nextbook.domain.enums.Status;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -97,6 +98,9 @@ public class BookEntity {
 
     @Column(name = "VOTED")
     private int voted;
+
+    @Column(name = "STATUS")
+    private Status status;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
@@ -297,6 +301,14 @@ public class BookEntity {
 
     public void setVoted(int voted) {
         this.voted = voted;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
 

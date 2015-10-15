@@ -16,6 +16,11 @@ public class CategoryProvider implements ICategoryProvider{
     @Inject
     private ICategoryDAO categoryDao;
 
+    @Override
+    public Category getById(int id) {
+        return categoryDao.getById(id);
+    }
+
     public List<Category> getAll() {
         return categoryDao.getAll();
     }

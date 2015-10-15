@@ -2,7 +2,7 @@ package com.nextbook.dao.impl;
 
 import com.nextbook.dao.IAuthorDao;
 import com.nextbook.domain.entities.AuthorEntity;
-import com.nextbook.domain.filters.AuthorCriterion;
+import com.nextbook.domain.criterion.AuthorCriterion;
 import com.nextbook.domain.pojo.Author;
 import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;

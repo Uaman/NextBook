@@ -2,7 +2,7 @@ package com.nextbook.dao.impl;
 
 import com.nextbook.dao.IPublisherDao;
 import com.nextbook.domain.entities.PublisherEntity;
-import com.nextbook.domain.filters.PublisherCriterion;
+import com.nextbook.domain.criterion.PublisherCriterion;
 import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.pojo.Publisher;
 import com.nextbook.domain.pojo.User;
@@ -99,7 +99,7 @@ public class PublisherDAO implements IPublisherDao {
     }
 
     @Override
-         public List<Publisher> getAllPublishers(int from, int max) {
+    public List<Publisher> getAllPublishers(int from, int max) {
         List<Publisher> result = null;
         Session session = sessionFactory.openSession();
         try {

@@ -1,10 +1,9 @@
 package com.nextbook.controllers;
 
-import com.nextbook.domain.filters.BookCriterion;
+import com.nextbook.domain.criterion.BookCriterion;
 import com.nextbook.domain.forms.user.RegisterUserForm;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
-import com.nextbook.domain.preview.CategoryPreview;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import com.nextbook.utils.StatisticUtil;
@@ -56,9 +55,11 @@ public class IndexController {
     public String desktop(Model model, Locale locale) {
         int booksQuantity = bookProvider.getBooksQuantity();
         int from = Math.max(0, booksQuantity - BOOK_ON_PAGE);
-        BookCriterion bookCriterion = new BookCriterion();
-        bookCriterion.setFrom(from);
-        bookCriterion.setMax(BOOK_ON_PAGE);
+        BookCriterion bookCriterion = new BookCriterion.Builder()
+                .from(from)
+                .max(BOOK_ON_PAGE)
+                .build();
+
         List<Book> books = bookProvider.getBooksByCriterion(bookCriterion);
         List<BookPreview> lastBooks = bookProvider.booksToBookPreviews(books, locale);
         model.addAttribute("last_books", lastBooks);
