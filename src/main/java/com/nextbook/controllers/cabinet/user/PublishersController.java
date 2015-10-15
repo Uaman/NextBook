@@ -136,4 +136,12 @@ public class PublishersController {
 
         return comment != null;
     }
+
+    @PreAuthorize("@Secure.isPublisher()")
+    @RequestMapping(value = "/sendBookForReview/{bookId}", method = RequestMethod.POST)
+    public @ResponseBody boolean sendBookForReview(@PathVariable("bookId") int bookId){
+        Book book = bookProvider.getBookById(bookId);
+        book = bookProvider.publisherSendBookForReview(book);
+        return book != null;
+    }
 }

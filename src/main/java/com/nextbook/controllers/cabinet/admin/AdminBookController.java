@@ -64,13 +64,13 @@ public class AdminBookController {
                 .category(booksFilter.getCategory() > 0 ? categoryProvider.getById(booksFilter.getCategory()) : null)
                 .author(booksFilter.getAuthor() > 0 ? authorProvider.getById(booksFilter.getAuthor()) : null)
                 .publisher(booksFilter.getPublisher() > 0 ? publisherProvider.getPublisherById(booksFilter.getPublisher()) : null)
-                .bootType(booksFilter.getBookType())
-                .eighteenPlus(booksFilter.getEighteenPlus())
-                .numberOfPages(booksFilter.getNumberOfPages())
-                .orderBy(booksFilter.getOrderBy())
+                .bootType(booksFilter.getBookType() == null ? BookTypeEnum.ALL : booksFilter.getBookType())
+                .eighteenPlus(booksFilter.getEighteenPlus() == null ? EighteenPlus.ALL : booksFilter.getEighteenPlus())
                 .status(booksFilter.getStatus() == null ? Status.READY_FOR_REVIEW : booksFilter.getStatus())
                 .yearOfPublication(booksFilter.getYearOfPublication())
+                .numberOfPages(booksFilter.getNumberOfPages())
                 .orderDirection(booksFilter.getOrderDirection())
+                .orderBy(booksFilter.getOrderBy())
                 .build();
         model.addAttribute("books", bookProvider.getBooksByCriterion(bookCriterion));
         model.addAttribute("subCategories", subCategoryProvider.getAll());
@@ -81,6 +81,7 @@ public class AdminBookController {
         model.addAttribute("orderDirections", OrderDirectionEnum.values());
         model.addAttribute("orderBy", BookOrderEnum.values());
         model.addAttribute("statuses", Status.values());
+        model.addAttribute("booksFilter", new AdminPageBooksFilter(bookCriterion));
         return "admin/books/manage-books";
     }
 
@@ -441,6 +442,22 @@ public class AdminBookController {
             }
         }
         return "redirect:/admin/books/allComments";
+    }
+
+    @PreAuthorize("@Secure.isAdmin()")
+    @RequestMapping(value = "/activateBook/{bookId}", method = RequestMethod.POST)
+    public @ResponseBody boolean activateBook(@PathVariable("bookId") int bookId){
+        Book book = bookProvider.getBookById(bookId);
+        book = bookProvider.adminActivateBook(book);
+        return book != null;
+    }
+
+    @PreAuthorize("@Secure.isAdmin()")
+    @RequestMapping(value = "/deactivateBook/{bookId}", method = RequestMethod.POST)
+    public @ResponseBody boolean deactivateBook(@PathVariable("bookId") int bookId){
+        Book book = bookProvider.getBookById(bookId);
+        book = bookProvider.adminDeactivateBook(book);
+        return book != null;
     }
 
     private static final int COMMENTS_PER_PAGE = 100;

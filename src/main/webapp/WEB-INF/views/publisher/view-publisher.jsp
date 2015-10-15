@@ -46,6 +46,21 @@
                     }
                 })
             });
+            $('.send-for-review').click(function(){
+                var bookId = $(this).val();
+                $.ajax({
+                    url: '/publisher/sendBookForReview/'+bookId,
+                    type: 'POST',
+                    success: function(response){
+                        if(response){
+                            $('#status-'+bookId).text('READY_FOR_REVIEW');
+                        }
+                    },
+                    error: function(e){
+                        console.log(e);
+                    }
+                });
+            });
         });
     </script>
 </head>
@@ -91,6 +106,7 @@ Books: <br />
         <th># pages</th>
         <th>description</th>
         <th>comments</th>
+        <th>status</th>
         <th>action</th>
     </tr>
     <tbody>
@@ -185,8 +201,14 @@ Books: <br />
                     </c:forEach>
                 </c:if>
             </td>
+            <td id="status-${book.id}">
+                ${book.status}
+            </td>
             <td>
                 <ul>
+                <c:if test="${book.status eq 'NEW' || book.status eq 'NOT_ACTIVE'}">
+                    <li><button class="send-for-review" value="${book.id}">send book for review</button></li>
+                </c:if>
                 <li><a href="/book/edit-book?bookId=${book.id}">Edit</a></li>
                 <li><a href="/bookInfo/${book.id}">View</a></li>
                 </ul>

@@ -15,6 +15,40 @@
     <title>Books-manager</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/tables.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.activate-book').click(function(){
+                var bookId = $(this).val();
+                $.ajax({
+                    url: '/admin/books/activateBook/'+bookId,
+                    type: 'POST',
+                    success: function(response){
+                        if(response) {
+                            $('#status-' + bookId).text('ACTIVE');
+                        }
+                    },
+                    error: function(e){
+                        console.log(e);
+                    }
+                })
+            });
+            $('.deactivate-book').click(function(){
+                var bookId = $(this).val();
+                $.ajax({
+                    url: '/admin/books/deactivateBook/'+bookId,
+                    type: 'POST',
+                    success: function(response){
+                        if(response) {
+                            $('#status-' + bookId).text('NOT_ACTIVE');
+                        }
+                    },
+                    error: function(e){
+                        console.log(e);
+                    }
+                })
+            });
+        });
+    </script>
     <%--<script src="/resources/js/admin/book/manage-books.js"></script>--%>
 </head>
 <body>
@@ -80,19 +114,20 @@ Category:
 
 <table>
     <tr>
-        <th>id <a href="ASC" class="order" id="orderId">&darr;</a></th>
-        <th>ISBN <a href="ASC" class="order" id="orderIsbn">&darr;</a></th>
+        <th>id</th>
+        <th>ISBN</th>
         <th>name</th>
         <th>authors</th>
         <th>subcategory</th>
-        <th>18+ <a href="ASC" class="order" id="order18">&darr;</a></th>
-        <th>year <a href="ASC" class="order" id="orderYear">&darr;</a></th>
+        <th>18+</th>
+        <th>year</th>
         <th>publisher</th>
-        <th>language <a href="ASC" class="order" id="orderLanguage">&darr;</a></th>
-        <th>type <a href="ASC" class="order" id="orderType">&darr;</a></th>
+        <th>language</th>
+        <th>type</th>
         <th>keywords</th>
-        <th># pages <a href="ASC" class="order" id="orderPages">&darr;</a></th>
+        <th># pages</th>
         <th>description</th>
+        <th>status</th>
         <th>action</th>
     </tr>
     <tbody id="added">
@@ -173,7 +208,12 @@ Category:
                     ${book.descriptionEn}<br /><br />
                 </c:if>
             </td>
+            <td id="status-${book.id}">${book.status}</td>
             <td>
+                <c:if test="${book.status eq 'READY_FOR_REVIEW'}">
+                    <button class="activate-book" value="${book.id}">Activate Book</button><br />
+                    <button class="deactivate-book" value="${book.id}">Deactivate Book</button><br />
+                </c:if>
                 <a href="/admin/books/edit-book?bookId=${book.id}">Edit</a>
                 <a href="/bookInfo/${book.id}">View</a>
             </td>

@@ -53,4 +53,10 @@ public interface IBookProvider {
     Book userStarBook(User user, Book book, float mark);
 
     List<BookPreview> booksToBookPreviews(List<Book> books, Locale locale);
+
+    Book adminActivateBook(Book book);
+
+    Book adminDeactivateBook(Book book);
+
+    Book publisherSendBookForReview(Book book);
 }

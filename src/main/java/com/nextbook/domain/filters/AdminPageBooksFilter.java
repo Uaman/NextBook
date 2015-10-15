@@ -1,5 +1,6 @@
 package com.nextbook.domain.filters;
 
+import com.nextbook.domain.criterion.BookCriterion;
 import com.nextbook.domain.enums.*;
 
 /**
@@ -31,6 +32,26 @@ public class AdminPageBooksFilter {
     private BookOrderEnum orderBy;
 
     private Status status;
+
+    public AdminPageBooksFilter(){}
+
+    public AdminPageBooksFilter(BookCriterion criterion){
+        if(criterion.getCategory() != null)
+            this.category = criterion.getCategory().getId();
+        if(criterion.getSubCategory() != null)
+            this.subCategory = criterion.getSubCategory().getId();
+        if(criterion.getPublisher() != null)
+            this.publisher = criterion.getPublisher().getId();
+        if(criterion.getAuthor() != null)
+            this.author = criterion.getAuthor().getId();
+        this.eighteenPlus = criterion.getEighteenPlus();
+        this.bookType = criterion.getBookType();
+        this.orderDirection = criterion.getOrderDirection();
+        this.orderBy = criterion.getOrderBy();
+        this.status = criterion.getStatus();
+        this.yearOfPublication = criterion.getYearOfPublication();
+        this.numberOfPages = criterion.getNumberOfPages();
+    }
 
     public int getCategory() {
         return category;

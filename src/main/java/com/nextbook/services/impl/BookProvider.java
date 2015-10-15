@@ -2,6 +2,7 @@ package com.nextbook.services.impl;
 
 import com.nextbook.dao.IBookDao;
 import com.nextbook.domain.criterion.BookCriterion;
+import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.services.IBookProvider;
@@ -143,5 +144,31 @@ public class BookProvider implements IBookProvider{
             res.add(book);
         }
         return res;
+    }
+
+    @Override
+    public Book adminActivateBook(Book book) {
+        if(book == null)
+            return null;
+        book.setStatus(Status.ACTIVE);
+        book = updateBook(book);
+        return book;
+    }
+
+    @Override
+    public Book adminDeactivateBook(Book book) {
+        if(book == null)
+            return null;
+        book.setStatus(Status.NOT_ACTIVE);
+        book = updateBook(book);
+        return book;
+    }
+
+    public Book publisherSendBookForReview(Book book){
+        if(book == null)
+            return null;
+        book.setStatus(Status.READY_FOR_REVIEW);
+        book = updateBook(book);
+        return book;
     }
 }
