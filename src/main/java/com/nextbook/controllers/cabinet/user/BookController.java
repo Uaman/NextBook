@@ -396,11 +396,12 @@ public class BookController {
         Book book = bookProvider.getBookById(id);
         if (book==null)
             return -1;
-        if (sessionUtils.getCurrentUser()==null)
+        User user = sessionUtils.getCurrentUser();
+        if (user==null)
             return 0;
         Favorites favorites = new Favorites();
         favorites.setBook(book);
-        favorites.setUser(sessionUtils.getCurrentUser());
+        favorites.setUser(user);
         favoritesProvider.addToUserFavorites(favorites);
         return 1;
     }

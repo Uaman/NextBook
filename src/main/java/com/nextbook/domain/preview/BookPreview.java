@@ -31,6 +31,13 @@ public class BookPreview {
 
     private List<CommentPreview> comments;
 
+    private float rating;
+
+    private int voted;
+
+    private boolean favorite;
+
+
     public BookPreview(Book b, Locale locale) {
         this.id = b.getId();
         this.yearOfPublication = b.getYearOfPublication();
@@ -56,6 +63,9 @@ public class BookPreview {
         this.comments = new ArrayList<CommentPreview>();
         for(Comment comment : b.getComments())
             this.comments.add(new CommentPreview(comment));
+
+        this.rating = b.getRating();
+        this.voted = b.getVoted();
     }
 
     public int getId() {
@@ -136,5 +146,29 @@ public class BookPreview {
 
     public void setComments(List<CommentPreview> comments) {
         this.comments = comments;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public int getVoted() {
+        return voted;
+    }
+
+    public void setVoted(int voted) {
+        this.voted = voted;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

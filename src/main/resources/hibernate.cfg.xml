@@ -33,5 +33,6 @@
         <mapping class="com.nextbook.domain.entities.TypeOfDeliveringEntity"/>
         <mapping class="com.nextbook.domain.entities.CommentEntity"/>
         <mapping class="com.nextbook.domain.entities.FavoritesEntity"/>
+        <mapping class="com.nextbook.domain.entities.UserStarsBookEntity"/>
     </session-factory>
 </hibernate-configuration>

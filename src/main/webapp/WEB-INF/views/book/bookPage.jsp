@@ -36,11 +36,43 @@
   <script src="/resources/js/jquery-2.1.3.min.js"></script>
 <script src="/resources/js/jquery.form.min.js"></script>
   <script src="/resources/js/main/sign.in.js"></script>
+<link rel="stylesheet" href="/resources/css/jquery/jquery.rateyo.min.css"/>
+<script src="/resources/js/jquery.rateyo.min.js"></script>
 <script type="text/javascript" src="/resources/js/galleria/galleria-1.4.2.min.js"></script>
-<script src="/resources/js/main/bookFavoriteButton.js"></script>
+<jsp:include page="/resources/js/main/bookFavoriteButton.js.jsp"/>
 
 <script>
     $(document).ready(function(){
+        var voted = false;
+        $('#rating').rateYo({
+            rating: ${book.rating},
+            starWidth: '20px',
+            numStars: 5
+        }).on('rateyo.set', function (e, data) {
+            if(!voted) {
+                voted = true;
+                $.ajax({
+                    url: '/bookInfo/voteForBook/${book.id}/' + parseInt(data.rating * 10),
+                    type: 'POST',
+                    success: function (response) {
+                        if(response == -1){
+                            $('#sign-in-form').show();
+                            $('.shadow').show();
+                        } else if(response == 0){
+                            $('#already-voted').show();
+                            $('.shadow').show();
+                        } else {
+                            $('#rating').rateYo('option', 'rating', response);
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                }).done(function(){
+                    voted = false;
+                });
+            }
+        });
         $(function() {
             $('a[href*=#]:not([href=#])').click(function() {
                 if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
@@ -180,6 +212,13 @@
         <button class="but-close but-gray close" title='<spring:message code="button.close"/>'>x</button>
     </div>
 </div>
+
+<div id="already-voted" class="popup-default" style="display: none;">
+    <div class="block-content">
+        You already voted for this book
+        <button class="but-close but-gray close" title='<spring:message code="button.close"/>'>x</button>
+    </div>
+</div>
   <jsp:include page="../auth/signinPopup.jsp"/>
   <img src="/book/getCover/${book.id}/1" width="80" height="100" onerror="this.src='/resources/images/no-cover.png'" align="left"/>
   <spring:message code="book.title" />: ${book.name}
@@ -197,10 +236,17 @@
   <spring:message code="book.publisher" />: ${book.publisher.name} <br />
   ${category}:${book.subCategory}</br>
   <c:forEach var="keyword" items="${keywords}">
-    ${keyword.keyword}
+    ${keyword.keyword},
   </c:forEach>
+<br />
+<div><div id="rating"></div> (voted: ${book.voted})</div>
 
-<br/><button class="favoriteButtonUndef" id="favorite/${book.id}"></button><br/>
+<br/>
+<c:choose>
+    <c:when test="${book.favorite}"> <button class="deleteFavorite" id="favorite/${book.id}"><spring:message code="book.favorites.deletefromfavorites" /></button></c:when>
+    <c:otherwise> <button class="addFavorite" id="favorite/${book.id}"><spring:message code="book.favorites.addtofavorites" /></button></c:otherwise>
+</c:choose>
+<br/>
 
   <a href="#read-book">MOVE TO BOOK</a>
 <div class="fb-like" data-href="${shareLink}" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>

@@ -2,11 +2,14 @@ package com.nextbook.services;
 
 import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
+import com.nextbook.domain.pojo.User;
 import com.nextbook.domain.pojo.BookAuthor;
 import com.nextbook.domain.pojo.BookKeyword;
+import com.nextbook.domain.preview.BookPreview;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,4 +49,8 @@ public interface IBookProvider {
     boolean deleteBookToAuthor(int bookId, int authorId);
 
     int getBooksQuantity();
+
+    Book userStarBook(User user, Book book, float mark);
+
+    List<BookPreview> booksToBookPreviews(List<Book> books, Locale locale);
 }

@@ -11,25 +11,32 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="../catalog/book-filter.jsp"/>
-<script src="/resources/js/main/bookFavoriteButton.js"></script>
+<jsp:include page="/resources/js/main/bookFavoriteButton.js.jsp"/>
 
 <c:forEach var="book" items="${last_books}">
-    <div style="background-color: #dfe1e4">
-        <p>
-        <hr>
-        <a href="/bookInfo/${book.id}"><img src="/book/getCover/${book.id}/1" width="80" height="80"
-                                            onerror="this.src='/resources/images/no-cover.png'"/>
+    <div class="book-default">
+        <div class="book-preview">
+            <button class="button but-orange"><a href="/bookInfo/${book.id}#read-book">Preview</a></button>
+        </div>
+        <div>
+        <a href="/bookInfo/${book.id}"><img src="/book/getCover/${book.id}/1" onerror="this.src='/resources/images/no-cover.png'"/>
             <br/>
-        </a><spring:message code="book.title"/>:<a href="/bookInfo/${book.id}">${book.name}</a>
-        <br/><spring:message code="book.year"/>: ${book.yearOfPublication}
+        </a>
+            <h3><spring:message code="book.title"/>:<a href="/bookInfo/${book.id}">${book.name}</a></h3>
+        </div>
+            <div class="book-detail">
+                <hr/>
+        <%--<br/><spring:message code="book.year"/>: ${book.yearOfPublication}
         <br/><spring:message code="book.description"/>: ${book.description}
-        <br/><spring:message code="book.publisher"/>: ${book.publisher.name}
-        <br/><button class="favoriteButtonUndef" id="favorite/${book.id}"></button>
-        <br/>
-        <hr>
-        </p>
+        <br/><spring:message code="book.publisher"/>: ${book.publisher.name}<br/>--%>
+                <div class="add-cart"></div>
+            <c:choose>
+                <c:when test="${book.favorite}"> <button class="deleteFavorite" id="favorite/${book.id}"><span>-</span><spring:message code="book.favorites.deletefromfavorites" /></button></c:when>
+                <c:otherwise><button class="addFavorite" id="favorite/${book.id}"><span>+</span><spring:message code="book.favorites.addtofavorites" /></button></c:otherwise>
+             </c:choose>
+         </div>
     </div>
 </c:forEach>
+<div class="clear"></div>
 
-<h3><a href="/catalog/all"><spring:message code="catalog.more"/></a></h3>
+<div class="right-nav more-book"><a href="/catalog/all"><button class="button but-orange"><spring:message code="catalog.more"/></button></a></div>

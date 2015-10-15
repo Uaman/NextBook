@@ -4,10 +4,12 @@ import com.nextbook.dao.IBookDao;
 import com.nextbook.domain.entities.BookAuthorEntity;
 import com.nextbook.domain.entities.BookEntity;
 import com.nextbook.domain.entities.BookKeywordEntity;
+import com.nextbook.domain.entities.UserStarsBookEntity;
 import com.nextbook.domain.filters.BookCriterion;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.BookAuthor;
 import com.nextbook.domain.pojo.BookKeyword;
+import com.nextbook.domain.pojo.UserStarsBook;
 import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;
 import org.dozer.DozerBeanMapper;
@@ -369,6 +371,27 @@ public class BookDAO implements IBookDao {
                 session.close();
         }
         return deleted;
+    }
+
+    @Override
+    public UserStarsBook userStarsBook(UserStarsBook userStarsBook) {
+        UserStarsBook result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session.beginTransaction();
+            UserStarsBookEntity entity = DozerMapperFactory.getDozerBeanMapper().map(userStarsBook, UserStarsBookEntity.class);
+            entity = (UserStarsBookEntity)session.merge(entity);
+            result = DozerMapperFactory.getDozerBeanMapper().map(entity, UserStarsBook.class);
+            session.getTransaction().commit();
+        } catch (Exception e){
+            if(session != null && session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
     }
 
     private Query createQueryFromCriterion(Session session, BookCriterion criterion) {

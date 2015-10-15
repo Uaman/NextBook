@@ -60,9 +60,7 @@ public class IndexController {
         bookCriterion.setFrom(from);
         bookCriterion.setMax(BOOK_ON_PAGE);
         List<Book> books = bookProvider.getBooksByCriterion(bookCriterion);
-        List<BookPreview> lastBooks = new ArrayList<BookPreview>();
-        for (Book b:books)
-            lastBooks.add(new BookPreview(b, locale));
+        List<BookPreview> lastBooks = bookProvider.booksToBookPreviews(books, locale);
         model.addAttribute("last_books", lastBooks);
         return "main/index";
     }

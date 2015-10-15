@@ -2,14 +2,17 @@ package com.nextbook.services.impl;
 
 import com.nextbook.dao.IBookDao;
 import com.nextbook.domain.filters.BookCriterion;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.BookAuthor;
-import com.nextbook.domain.pojo.BookKeyword;
+import com.nextbook.domain.pojo.*;
+import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.services.IBookProvider;
+import com.nextbook.services.IFavoritesProvider;
+import com.nextbook.utils.SessionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,6 +25,10 @@ public class BookProvider implements IBookProvider{
 
     @Inject
     private IBookDao bookDao;
+    @Inject
+    private SessionUtils sessionUtils;
+    @Inject
+    private IFavoritesProvider favoritesProvider;
 
     @Override
     public Book getBookById(int bookId) {
@@ -103,4 +110,38 @@ public class BookProvider implements IBookProvider{
 
     @Override
     public int getBooksQuantity() { return bookDao.getBooksQuantity(); }
+
+    @Override
+    public Book userStarBook(User user, Book book, float mark) {
+        if (user == null || book == null)
+            return null;
+
+        UserStarsBook userStarsBook = new UserStarsBook(user, book, mark);
+        userStarsBook = bookDao.userStarsBook(userStarsBook);
+        if (userStarsBook == null)
+            return null;
+
+        int numberOfVoted = book.getVoted() + 1;
+        float newRating = (book.getRating() * book.getVoted() + mark) / numberOfVoted;
+
+        book.setRating(newRating);
+        book.setVoted(numberOfVoted);
+        book = updateBook(book);
+
+        return book;
+    }
+
+    @Override
+    public List<BookPreview> booksToBookPreviews(List<Book> books, Locale locale) {
+        ArrayList<BookPreview> res = new ArrayList<BookPreview>();
+        for (Book b:books) {
+            BookPreview book = new BookPreview(b, locale);
+            User user = sessionUtils.getCurrentUser();
+            if (user!=null) {
+                book.setFavorite(favoritesProvider.isFavorite(user.getId(), book.getId()));
+            }
+            res.add(book);
+        }
+        return res;
+    }
 }
