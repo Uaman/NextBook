@@ -17,6 +17,7 @@
     <script src="/resources/js/jquery.validate.min.js"></script>
     <script src="/resources/js/main/sign.in.js"></script>
     <script src="/resources/js/jquery.bxSlider.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/resources/js/jquery.nivo.slider.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#book-slider').bxSlider({
@@ -31,6 +32,7 @@
                 controls: true
             });
 
+            $('#slider').nivoSlider();
         });
     </script>
 
@@ -39,6 +41,7 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/bx_styles/bx_styles.css"/>
+    <link rel="stylesheet" href="/resources/css/nivo-slider/nivo-slider.css" type="text/css" media="screen" />
 </head>
 <body>
 <div class="wrapper index">
@@ -48,6 +51,15 @@
 </div>
 <jsp:include page="../auth/signinPopup.jsp"/>
 <div class="page content index">
+    <div class="slider-wrapper theme-default">
+        <div id="slider" class="nivoSlider">
+            <img src="../../resources/images/slides/autumn.jpg" data-thumb="../../resources/images/slides/autumn.jpg" alt="" />
+            <img src="../../resources/images/slides/winter.jpg" data-thumb="../../resources/images/slides/winter.jpg" alt=""  />
+            <img src="../../resources/images/slides/spring.jpg" data-thumb="../../resources/images/slides/spring.jpg" alt="" data-transition="slideInLeft" />
+            <img src="../../resources/images/slides/summer.jpg" data-thumb="../../resources/images/slides/summer.jpg" alt="" />
+        </div>
+    </div>
+
     <div class="row">
         <div class="page-title"><h2>New</h2></div>
             <jsp:include page="book-shelf.jsp"/>
