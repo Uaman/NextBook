@@ -1,6 +1,6 @@
 package com.nextbook.controllers.cabinet.admin;
 
-import com.nextbook.domain.filters.AuthorCriterion;
+import com.nextbook.domain.criterion.AuthorCriterion;
 import com.nextbook.domain.forms.admin.AdminAuthorForm;
 import com.nextbook.domain.pojo.Author;
 import com.nextbook.services.IAuthorProvider;
@@ -12,8 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by Stacy on 7/25/15.

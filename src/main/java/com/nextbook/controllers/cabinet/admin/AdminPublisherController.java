@@ -1,6 +1,6 @@
 package com.nextbook.controllers.cabinet.admin;
 
-import com.nextbook.domain.filters.PublisherCriterion;
+import com.nextbook.domain.criterion.PublisherCriterion;
 import com.nextbook.domain.forms.publishers.SimplePublisherForm;
 import com.nextbook.domain.pojo.Publisher;
 import com.nextbook.domain.pojo.User;

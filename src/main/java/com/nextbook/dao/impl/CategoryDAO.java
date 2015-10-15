@@ -20,6 +20,25 @@ import java.util.List;
 @Repository
 public class CategoryDAO implements ICategoryDAO {
 
+
+    @Override
+    public Category getById(int id) {
+        Category result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            CategoryEntity entity = (CategoryEntity) session.load(CategoryEntity.class, id);
+            result = DozerMapperFactory.getDozerBeanMapper().map(entity, Category.class);
+            session.getTransaction().commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
+
     @Override
     public List<Category> getAll() {
         List<Category> result = null;

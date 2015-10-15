@@ -1,6 +1,6 @@
 package com.nextbook.services;
 
-import com.nextbook.domain.filters.UserCriterion;
+import com.nextbook.domain.criterion.UserCriterion;
 import com.nextbook.domain.pojo.User;
 
 import java.util.List;

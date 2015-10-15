@@ -10,6 +10,7 @@ public enum BookTypeEnum {
 
     PAPER,
     ELECTRONIC,
-    PAPER_AND_ELECTRONIC
+    PAPER_AND_ELECTRONIC,
+    ALL
 
 }

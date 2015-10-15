@@ -2,11 +2,10 @@ package com.nextbook.dao.impl;
 
 import com.nextbook.dao.IUserDao;
 import com.nextbook.domain.entities.UserEntity;
-import com.nextbook.domain.filters.UserCriterion;
+import com.nextbook.domain.criterion.UserCriterion;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;

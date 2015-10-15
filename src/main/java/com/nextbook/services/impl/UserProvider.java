@@ -1,12 +1,9 @@
 package com.nextbook.services.impl;
 
 import com.nextbook.dao.IUserDao;
-import com.nextbook.dao.impl.UserDAO;
-import com.nextbook.domain.entities.UserEntity;
-import com.nextbook.domain.filters.UserCriterion;
+import com.nextbook.domain.criterion.UserCriterion;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;

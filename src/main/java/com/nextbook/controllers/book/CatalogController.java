@@ -1,8 +1,9 @@
 package com.nextbook.controllers.book;
 
-import com.nextbook.domain.filters.BookCriterion;
+import com.nextbook.domain.criterion.BookCriterion;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Category;
+import com.nextbook.domain.pojo.SubCategory;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.domain.preview.CategoryPreview;
 import com.nextbook.services.ICategoryProvider;
@@ -80,17 +81,42 @@ public class CatalogController {
     @RequestMapping(value = "/getBooksByCriterion", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<BookPreview> getBooksByCriterion(@RequestParam(required = false) BookCriterion bookCriterion, Locale locale) {
+    List<BookPreview> getBooksByCriterion(@RequestParam(required = false) CatalogRequest catalogRequest, Locale locale) {
         List<Book> resultBooks = null;
-        if (bookCriterion == null)
+        BookCriterion bookCriterion = null;
+        if (catalogRequest == null)
             resultBooks = bookProvider.getAllBooks();
         else {
-            if (bookCriterion.getSubCategory() > 0)
-                bookCriterion.setCategory(0);
+            if (catalogRequest.getSubCategory() > 0) {
+                SubCategory subCategory = subCategoryProvider.getById(catalogRequest.getSubCategory());
+                BookCriterion.Builder builder = new BookCriterion.Builder().subcategory(subCategory);
+                bookCriterion = builder.build();
+            }
             resultBooks = bookProvider.getBooksByCriterion(bookCriterion);
         }
         List<BookPreview> result = bookProvider.booksToBookPreviews(resultBooks, locale);
         return result;
     }
 
+}
+
+class CatalogRequest {
+    private int category;
+    private int subCategory;
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public int getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(int subCategory) {
+        this.subCategory = subCategory;
+    }
 }

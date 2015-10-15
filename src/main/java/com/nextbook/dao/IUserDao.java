@@ -1,7 +1,6 @@
 package com.nextbook.dao;
 
-import com.nextbook.domain.entities.UserEntity;
-import com.nextbook.domain.filters.UserCriterion;
+import com.nextbook.domain.criterion.UserCriterion;
 import com.nextbook.domain.pojo.User;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.nextbook.services.impl;
 
 import com.nextbook.dao.IPublisherDao;
-import com.nextbook.domain.filters.PublisherCriterion;
+import com.nextbook.domain.criterion.PublisherCriterion;
 import com.nextbook.domain.pojo.Publisher;
 import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IPublisherProvider;
@@ -42,6 +42,11 @@ public class PublisherProvider implements IPublisherProvider{
     @Override
     public List<Publisher> getAllPublishers(int from, int max) {
         return publisherDAO.getAllPublishers(from, max);
+    }
+
+    @Override
+    public List<Publisher> getAll(){
+        return getAllPublishers(0, 0);
     }
 
     @Override

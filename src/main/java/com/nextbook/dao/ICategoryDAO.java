@@ -9,6 +9,10 @@ import java.util.List;
  * Created by Polomani on 26.09.2015.
  */
 public interface ICategoryDAO {
+
+    Category getById(int id);
+
     List<Category> getAll();
+
     Category getByLink(String link);
 }

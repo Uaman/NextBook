@@ -2,13 +2,11 @@ package com.nextbook.dao.impl;
 
 import com.nextbook.dao.ICommentsDAO;
 import com.nextbook.domain.entities.CommentEntity;
-import com.nextbook.domain.entities.OrderEntity;
 import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.enums.StatusChangedBy;
-import com.nextbook.domain.filters.CommentsCriterion;
+import com.nextbook.domain.criterion.CommentsCriterion;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Comment;
-import com.nextbook.domain.pojo.Order;
 import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;
 import org.hibernate.Query;

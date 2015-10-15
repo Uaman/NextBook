@@ -8,13 +8,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <html>
 <head>
     <title>Books-manager</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/tables.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="/resources/js/admin/book/manage-books.js"></script>
+    <%--<script src="/resources/js/admin/book/manage-books.js"></script>--%>
 </head>
 <body>
 
@@ -22,6 +23,32 @@
     <a href="/admin/books/allComments">Manage comments</a>
 </div>
 
+<form:form method="GET" action="/admin/books/all" modelAttribute="booksFilter">
+    <label>Publisher:
+        <form:select path="publisher">
+            <form:option value="0" label="All"/>
+            <form:options items="${publishers}" itemValue="id" itemLabel="nameUa"/>
+        </form:select>
+        <br />
+    </label>
+    <label>Author:
+        <form:select path="author">
+            <form:option value="0" label="All"/>
+            <form:options items="${authors}" itemValue="id" itemLabel="lastNameUa"/>
+        </form:select>
+        <br />
+    </label>
+    <label>Book type: <form:select path="bookType" items="${bookTypes}"/></label><br />
+    <label>Eighteen Plus: <form:select path="eighteenPlus" items="${eighteenPlusValues}"/></label><br />
+    <label>Order direction: <form:select path="orderDirection" items="${orderDirections}"/></label><br />
+    <label>Order by: <form:select path="orderBy" items="${orderBy}"/></label><br />
+    <label>Status: <form:select path="status" items="${statuses}"/></label><br />
+    <label>Number of pages: <form:input type="text" path="numberOfPages"/></label><br />
+    <label>Year of publication: <form:input type="text" path="yearOfPublication"/></label><br />
+    <input type="submit">
+</form:form>
+
+<%--
 <label>From:<input type="text" id="from"/></label> <br />
 <label>Max:<input type="text" id="max"/></label> <br />
 <label>Id:<input type="text" id="id"/></label> <br />
@@ -49,7 +76,7 @@ Category:
     </select></label> <br />
 <label>Number of pages:<input type="text" id="numberOfPages"/></label> <br />
 <input value="Search" type="submit"  id="send-filter">
-
+--%>
 
 <table>
     <tr>

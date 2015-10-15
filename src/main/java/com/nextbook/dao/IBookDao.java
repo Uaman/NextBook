@@ -1,7 +1,7 @@
 package com.nextbook.dao;
 
 
-import com.nextbook.domain.filters.BookCriterion;
+import com.nextbook.domain.criterion.BookCriterion;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.BookAuthor;
 import com.nextbook.domain.pojo.BookKeyword;

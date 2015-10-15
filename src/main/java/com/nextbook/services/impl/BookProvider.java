@@ -1,7 +1,7 @@
 package com.nextbook.services.impl;
 
 import com.nextbook.dao.IBookDao;
-import com.nextbook.domain.filters.BookCriterion;
+import com.nextbook.domain.criterion.BookCriterion;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.services.IBookProvider;

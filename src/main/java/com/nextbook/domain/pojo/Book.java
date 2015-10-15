@@ -1,6 +1,7 @@
 package com.nextbook.domain.pojo;
 
 import com.nextbook.domain.enums.BookTypeEnum;
+import com.nextbook.domain.enums.Status;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.ArrayList;
@@ -58,6 +59,8 @@ public class Book {
     private float rating;
 
     private int voted;
+
+    private Status status;
 
     private List<Keyword> keywords;
 
@@ -292,6 +295,14 @@ public class Book {
 
     public void setVoted(int voted) {
         this.voted = voted;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override
