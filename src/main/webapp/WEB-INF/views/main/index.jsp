@@ -65,6 +65,6 @@
             <jsp:include page="book-shelf.jsp"/>
     </div>
 </div>
-
+<jsp:include page="../../template/default/footer.jsp"/>
 </body>
 </html>

@@ -22,7 +22,7 @@
         <div class="gInfo-book">
         <a href="/bookInfo/${book.id}"><img src="/book/getCover/${book.id}/1" onerror="this.src='/resources/images/no-cover.png'"/>
         </a></div>
-            <h3><a href="/bookInfo/${book.id}">${book.name}</a></h3>
+            <h3><a href="/bookInfo/${book.id}" class="book-name">${book.name}</a></h3>
             <div class="book-detail">
                 <hr/>
         <%--<br/><spring:message code="book.year"/>: ${book.yearOfPublication}
