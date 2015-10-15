@@ -24,12 +24,18 @@
 
 </head>
 <body>
-<div class="wrapper">
+<div class="wrapper index">
     <div class="page">
         <jsp:include page="../../template/default/headerContent.jsp"/>
     </div>
 </div>
 <jsp:include page="../auth/signinPopup.jsp"/>
-<jsp:include page="book-shelf.jsp"/>
+<div class="page content index">
+    <div class="row">
+        <div class="page-title"><h2>New</h2></div>
+        <jsp:include page="book-shelf.jsp"/>
+    </div>
+</div>
+
 </body>
 </html>

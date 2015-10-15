@@ -454,7 +454,7 @@ header a.logo {
 }
 .page-title {
     margin: 20px 15px;
-    display: initial;
+    display: inherit;
 }
 .page-title h1 {
     text-transform: uppercase;
@@ -672,7 +672,87 @@ header a.logo {
     padding: 30px 15px 0;
     margin: 0;
 }
+.index .page-title h2 {
+    border: none;
+}
 /********* /Content ********/
+
+/********* Book *********/
+.book-default {
+    display: inline-block;
+    margin: 0 15px 30px;
+    border: 9px solid transparent;
+    position: relative;
+}
+.book-default img {
+    width: 150px;
+}
+.book-default:hover {
+    background-color: #fff;
+    border-color: #fff;
+    -webkit-box-shadow: 0 0 25px 6px rgba(0, 0, 0, 0.09);
+    -moz-box-shadow: 0 0 25px 6px rgba(0, 0, 0, 0.09);
+    box-shadow: 0 0 25px 6px rgba(0, 0, 0, 0.09);
+}
+.book-default .button a {
+    color: #fff;
+}
+.book-default .addFavorite, .book-default .deleteFavorite {
+    outline: none;
+    border: none;
+    display: inline;
+    text-align: center;
+    width: 100%;
+    background: transparent;
+}
+
+.book-default .addFavorite span {
+    color: #ff6a1c;
+}
+.book-default .deleteFavorite span {
+    color: red;
+}
+.book-default .addFavorite span, .book-default .deleteFavorite span {
+    margin-right: 5px;
+}
+.book-default h3 {
+    text-align: center;
+    font-size: 14px;
+    font-weight: normal;
+    margin-bottom: 0;
+}
+.book-preview {
+    position: absolute;
+    bottom:50px;
+    margin: 0 auto;
+    display: none;
+    text-align: center;
+}
+.book-detail {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: -9px;
+    background: #fff;
+    width: 100%;
+    border: 9px solid #fff;
+    z-index: 200;
+    -webkit-box-shadow: 0 15px 10px 6px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0 15px 10px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 15px 10px 6px rgba(0, 0, 0, 0.05);
+}
+.book-detail hr {
+    border-top: 1px solid #e0e0e0;
+}
+.book-default:hover > .book-preview {
+    display: inline-block;
+    width: 100%;
+}
+.book-default:hover > .book-detail {
+    display: block;
+}
+
+/********* /Book ***********
 
 /********* Error block ********/
 .errorblock {
@@ -790,7 +870,9 @@ header a.logo {
     padding: 0 .2em;
 }
 
-
+.right-nav {
+    float: right;
+}
 /************* Media screen **********/
 @media screen and (max-width: 480px) {
     .left-box, .right-box {
