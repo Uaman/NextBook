@@ -99,6 +99,7 @@ public class BookEntity {
     @Column(name = "VOTED")
     private int voted;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
     private Status status;
 
