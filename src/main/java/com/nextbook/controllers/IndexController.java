@@ -54,7 +54,7 @@ public class IndexController {
 
     @RequestMapping(value = {"/"})
     public String desktop(Model model, Locale locale) {
-        int booksQuantity = bookProvider.getBooksQuantity();
+        int booksQuantity = bookProvider.getCountByCriterion(new BookCriterion.Builder().status(Status.ACTIVE).build());
         int from = Math.max(0, booksQuantity - BOOK_ON_PAGE);
         BookCriterion bookCriterion = new BookCriterion.Builder()
                 .from(from)

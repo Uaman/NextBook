@@ -8,6 +8,7 @@ import com.nextbook.domain.entities.UserStarsBookEntity;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.enums.EighteenPlus;
 import com.nextbook.domain.criterion.BookCriterion;
+import com.nextbook.domain.enums.QueryType;
 import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.BookAuthor;
@@ -98,6 +99,23 @@ public class BookDAO implements IBookDao {
         try {
             session.beginTransaction();
             Query query = session.getNamedQuery(BookEntity.getBooksQuantity);
+            result = ((Long) query.iterate().next()).intValue();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null && session.isOpen())
+                session.close();
+        }
+        return result;
+    }
+
+    @Override
+    public int getCountByCriterion(BookCriterion criterion){
+        int result = 0;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query query = createQueryFromCriterion(session, criterion);
             result = ((Long) query.iterate().next()).intValue();
         } catch (Exception e){
             e.printStackTrace();
@@ -398,7 +416,11 @@ public class BookDAO implements IBookDao {
 
     private Query createQueryFromCriterion(Session session, BookCriterion criterion) {
         StringBuilder queryString = new StringBuilder();
-        queryString.append("SELECT DISTINCT book FROM BookEntity book");
+        queryString.append("SELECT ");
+        if(criterion.getQueryType() == QueryType.COUNT)
+            queryString.append(" COUNT(book) FROM BookEntity book");
+        else
+            queryString.append(" DISTINCT book FROM BookEntity book");
 
         Map<String, Object> params = new HashMap<String, Object>();
 

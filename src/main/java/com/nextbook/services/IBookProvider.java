@@ -48,6 +48,8 @@ public interface IBookProvider {
 
     boolean deleteBookToAuthor(int bookId, int authorId);
 
+    int getCountByCriterion(BookCriterion criterion);
+
     int getBooksQuantity();
 
     Book userStarBook(User user, Book book, float mark);

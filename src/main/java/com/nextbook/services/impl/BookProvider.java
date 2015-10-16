@@ -2,6 +2,7 @@ package com.nextbook.services.impl;
 
 import com.nextbook.dao.IBookDao;
 import com.nextbook.domain.criterion.BookCriterion;
+import com.nextbook.domain.enums.QueryType;
 import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
@@ -67,6 +68,9 @@ public class BookProvider implements IBookProvider{
 
     @Override
     public List<Book> getBooksByCriterion(BookCriterion criterion) {
+        if(criterion == null)
+            return null;
+        criterion.setQueryType(QueryType.GET);
         return bookDao.getBooksByCriterion(criterion);
     }
 
@@ -107,6 +111,14 @@ public class BookProvider implements IBookProvider{
     @Override
     public boolean deleteBookToAuthor(int bookId, int authorId) {
         return bookDao.deleteBookToAuthor(bookId, authorId);
+    }
+
+    @Override
+    public int getCountByCriterion(BookCriterion criterion) {
+        if(criterion == null)
+            return 0;
+        criterion.setQueryType(QueryType.COUNT);
+        return bookDao.getCountByCriterion(criterion);
     }
 
     @Override

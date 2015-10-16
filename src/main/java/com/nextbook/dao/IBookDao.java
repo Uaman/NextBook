@@ -23,6 +23,8 @@ public interface IBookDao {
 
     int getBooksQuantity();
 
+    int getCountByCriterion(BookCriterion criterion);
+
     boolean deleteBook(int bookId);
 
     Book updateBook(Book book);

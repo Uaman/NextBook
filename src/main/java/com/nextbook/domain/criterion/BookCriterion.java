@@ -1,7 +1,6 @@
 package com.nextbook.domain.criterion;
 
 import com.nextbook.domain.enums.*;
-import com.nextbook.domain.filters.AdminPageBooksFilter;
 import com.nextbook.domain.pojo.Author;
 import com.nextbook.domain.pojo.Category;
 import com.nextbook.domain.pojo.Publisher;
@@ -37,6 +36,8 @@ public class BookCriterion {
     private BookOrderEnum orderBy;
 
     private Status status;
+
+    private QueryType queryType;
 
     private BookCriterion(){}
 
@@ -144,6 +145,14 @@ public class BookCriterion {
         this.status = status;
     }
 
+    public QueryType getQueryType() {
+        return queryType;
+    }
+
+    public void setQueryType(QueryType queryType) {
+        this.queryType = queryType;
+    }
+
     public static class Builder{
 
         private BookCriterion bookCriterion;
@@ -218,6 +227,11 @@ public class BookCriterion {
 
         public Builder status(Status status){
             this.bookCriterion.setStatus(status);
+            return this;
+        }
+
+        public Builder queryType(QueryType queryType){
+            this.bookCriterion.setQueryType(queryType);
             return this;
         }
     }
