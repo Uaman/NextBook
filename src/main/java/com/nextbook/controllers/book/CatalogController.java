@@ -1,6 +1,7 @@
 package com.nextbook.controllers.book;
 
 import com.nextbook.domain.criterion.BookCriterion;
+import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Category;
 import com.nextbook.domain.pojo.SubCategory;
@@ -83,16 +84,15 @@ public class CatalogController {
     @ResponseBody
     List<BookPreview> getBooksByCriterion(@RequestParam(required = false) CatalogRequest catalogRequest, Locale locale) {
         List<Book> resultBooks = null;
-        BookCriterion bookCriterion = null;
+        BookCriterion.Builder builder = new BookCriterion.Builder().status(Status.ACTIVE);
         if (catalogRequest == null)
-            resultBooks = bookProvider.getAllBooks();
+            resultBooks = bookProvider.getBooksByCriterion(builder.build());
         else {
             if (catalogRequest.getSubCategory() > 0) {
                 SubCategory subCategory = subCategoryProvider.getById(catalogRequest.getSubCategory());
-                BookCriterion.Builder builder = new BookCriterion.Builder().subcategory(subCategory);
-                bookCriterion = builder.build();
+                builder.subcategory(subCategory);
             }
-            resultBooks = bookProvider.getBooksByCriterion(bookCriterion);
+            resultBooks = bookProvider.getBooksByCriterion(builder.build());
         }
         List<BookPreview> result = bookProvider.booksToBookPreviews(resultBooks, locale);
         return result;

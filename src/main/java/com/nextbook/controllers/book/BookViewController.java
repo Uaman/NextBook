@@ -1,5 +1,6 @@
 package com.nextbook.controllers.book;
 
+import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.domain.preview.CommentPreview;
@@ -121,6 +122,9 @@ public class BookViewController {
         //check if admin or moderator
         if(user.getRole().getId() == 4 || user.getRole().getId() == 5)
             return true;
+
+        if(book.getStatus() != Status.ACTIVE)
+            return false;
 
         Order order = orderProvider.getOrderByUserAndBook(user, book);
         if(order != null && order.isPaid())

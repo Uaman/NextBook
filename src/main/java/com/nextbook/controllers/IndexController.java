@@ -1,6 +1,7 @@
 package com.nextbook.controllers;
 
 import com.nextbook.domain.criterion.BookCriterion;
+import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.forms.user.RegisterUserForm;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
@@ -58,6 +59,7 @@ public class IndexController {
         BookCriterion bookCriterion = new BookCriterion.Builder()
                 .from(from)
                 .max(BOOK_ON_PAGE)
+                .status(Status.ACTIVE)
                 .build();
 
         List<Book> books = bookProvider.getBooksByCriterion(bookCriterion);
