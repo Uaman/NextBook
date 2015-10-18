@@ -17,7 +17,7 @@
 <c:forEach var="book" items="${last_books}">
     <div class="book-default">
         <div class="book-preview">
-            <button class="button but-orange"><a href="/bookInfo/${book.id}#read-book">Preview</a></button>
+            <button class="button but-orange"><a href="/bookInfo/${book.id}#read-book"><spring:message code="book.preview"/></a></button>
         </div>
         <div class="gInfo-book">
         <a href="/bookInfo/${book.id}"><img src="/book/getCover/${book.id}/1" onerror="this.src='/resources/images/no-cover.png'"/>
