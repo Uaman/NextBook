@@ -9,11 +9,13 @@ import javax.persistence.*;
 @Table(name = "favorites")
 @NamedQueries({
         @NamedQuery(name = FavoritesEntity.getAllFavorites, query = "SELECT favorite FROM FavoritesEntity favorite WHERE favorite.user.id=:userId"),
-        @NamedQuery(name = FavoritesEntity.getByUserAndBook, query = "SELECT favorite FROM FavoritesEntity favorite WHERE favorite.book.id=:bookId AND favorite.user.id=:userId")
+        @NamedQuery(name = FavoritesEntity.getByUserAndBook, query = "SELECT favorite FROM FavoritesEntity favorite WHERE favorite.book.id=:bookId AND favorite.user.id=:userId"),
+        @NamedQuery(name = FavoritesEntity.getFavoritesCount, query = "SELECT COUNT(favorite) FROM FavoritesEntity favorite WHERE favorite.user.id=:userId")
 })
 public class FavoritesEntity {
     public static final String getAllFavorites = "getAllFavorites";
     public static final String getByUserAndBook = "getByUserAndBook";
+    public static final String getFavoritesCount = "getFavoritesCount";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

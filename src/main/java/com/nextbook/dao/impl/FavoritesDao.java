@@ -1,13 +1,9 @@
 package com.nextbook.dao.impl;
 
 import com.nextbook.dao.IFavoritesDao;
-import com.nextbook.domain.entities.BookEntity;
 import com.nextbook.domain.entities.FavoritesEntity;
-import com.nextbook.domain.entities.UserEntity;
-import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.pojo.Favorites;
 import com.nextbook.domain.pojo.User;
-import com.nextbook.services.IBookProvider;
 import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;
 import org.dozer.DozerBeanMapper;
@@ -18,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -138,21 +132,19 @@ public class FavoritesDao implements IFavoritesDao {
         return result;
     }
     @Override
-    public boolean hasFavorites(User user){
-        boolean result = false;
+    public boolean hasFavorites(User user) {
+        return getQuantityOfUserFavorites(user) != 0;
+    }
+    @Override
+    public int getQuantityOfUserFavorites(User user){
+        int result = 0;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            Query query = session.getNamedQuery(FavoritesEntity.getAllFavorites);
+            Query query = session.getNamedQuery(FavoritesEntity.getFavoritesCount);
             query.setParameter("userId", user.getId());
-            List<FavoritesEntity> list = query.list();
-            if(list != null && list.size() > 0) {
-                result = true;
-            }
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            if(session != null && session.getTransaction().isActive())
-                session.getTransaction().rollback();
+            result = ((Long) query.iterate().next()).intValue();
+        } catch (Exception e){
             e.printStackTrace();
         } finally {
             if (session != null && session.isOpen())

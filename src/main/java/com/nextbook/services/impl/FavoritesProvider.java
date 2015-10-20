@@ -41,5 +41,9 @@ public class FavoritesProvider implements IFavoritesProvider {
     public boolean hasFavorites(User user){
         return favoriteDao.hasFavorites(user);
     }
+    @Override
+    public int countOfUserFavorites(User user){
+        return favoriteDao.getQuantityOfUserFavorites(user);
+    }
 
 }
