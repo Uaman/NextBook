@@ -13,30 +13,32 @@
 
 <jsp:include page="/resources/js/main/bookFavoriteButton.js.jsp"/>
 
-<div id="book-slider">
-<c:forEach var="book" items="${last_books}">
-    <div class="book-default">
-        <div class="book-preview">
-            <button class="button but-orange"><a href="/bookInfo/${book.id}#read-book"><spring:message code="book.preview"/></a></button>
-        </div>
-        <div class="gInfo-book">
-        <a href="/bookInfo/${book.id}"><img src="/book/getCover/${book.id}/1" onerror="this.src='/resources/images/no-cover.png'"/>
-        </a></div>
-            <h3><a href="/bookInfo/${book.id}" class="book-name">${book.name}</a></h3>
-            <div class="book-detail">
-                <hr/>
-        <%--<br/><spring:message code="book.year"/>: ${book.yearOfPublication}
-        <br/><spring:message code="book.description"/>: ${book.description}
-        <br/><spring:message code="book.publisher"/>: ${book.publisher.name}<br/>--%>
-                <div class="add-cart"></div>
-            <c:choose>
-                <c:when test="${book.favorite}"> <button class="deleteFavorite" id="favorite/${book.id}"><span>-</span><spring:message code="book.favorites.deletefromfavorites" /></button></c:when>
-                <c:otherwise><button class="addFavorite" id="favorite/${book.id}"><span>+</span><spring:message code="book.favorites.addtofavorites" /></button></c:otherwise>
-             </c:choose>
-         </div>
+<c:if test="${last_books ne null}">
+    <div id="book-slider">
+        <c:forEach var="book" items="${last_books}">
+            <div class="book-default">
+                <div class="book-preview">
+                    <button class="button but-orange"><a href="/bookInfo/${book.id}#read-book">Preview</a></button>
+                </div>
+                <div class="gInfo-book">
+                <a href="/bookInfo/${book.id}"><img src="/book/getCover/${book.id}/1" onerror="this.src='/resources/images/no-cover.png'"/>
+                </a></div>
+                    <h3><a href="/bookInfo/${book.id}" class="book-name">${book.name}</a></h3>
+                    <div class="book-detail">
+                        <hr/>
+                <%--<br/><spring:message code="book.year"/>: ${book.yearOfPublication}
+                <br/><spring:message code="book.description"/>: ${book.description}
+                <br/><spring:message code="book.publisher"/>: ${book.publisher.name}<br/>--%>
+                        <div class="add-cart"></div>
+                    <c:choose>
+                        <c:when test="${book.favorite}"> <button class="deleteFavorite" id="favorite/${book.id}"><span>-</span><spring:message code="book.favorites.deletefromfavorites" /></button></c:when>
+                        <c:otherwise><button class="addFavorite" id="favorite/${book.id}"><span>+</span><spring:message code="book.favorites.addtofavorites" /></button></c:otherwise>
+                     </c:choose>
+                 </div>
+            </div>
+        </c:forEach>
     </div>
-</c:forEach>
-    </div>
+</c:if>
 <div class="clear"></div>
 
 <div class="right-nav more-book"><a href="/catalog/all"><button class="button but-orange"><spring:message code="catalog.more"/></button></a></div>
