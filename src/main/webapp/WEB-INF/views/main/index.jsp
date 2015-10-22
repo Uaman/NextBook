@@ -20,17 +20,19 @@
     <script type="text/javascript" src="/resources/js/jquery.nivo.slider.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('#book-slider').bxSlider({
-                displaySlideQty: 6,
-                moveSlideQty: 2,
-                auto: false,
-                autoControls: false,
-                autoHover: true,
-                pager: false,
-                speed: 300,
-                pause: 3000,
-                controls: true
-            });
+            <c:if test="${numberOfLastBooks ne 0}">
+                $('#book-slider').bxSlider({
+                    displaySlideQty: 6,
+                    moveSlideQty: 2,
+                    auto: false,
+                    autoControls: false,
+                    autoHover: true,
+                    pager: false,
+                    speed: 300,
+                    pause: 3000,
+                    controls: true
+                });
+            </c:if>
 
             $('#slider').nivoSlider();
         });
