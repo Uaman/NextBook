@@ -26,4 +26,10 @@ public interface IFavoritesProvider {
     List<Favorites> getAllFavorites(User user);
     boolean isFavorite(int userId, int bookId);
     boolean hasFavorites(User user);
+    /**
+     *
+     * @param user
+     * @return int - number of books in user`s favorites
+     */
+    int countOfUserFavorites(User user);
 }
