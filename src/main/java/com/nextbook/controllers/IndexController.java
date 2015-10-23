@@ -65,6 +65,7 @@ public class IndexController {
         List<Book> books = bookProvider.getBooksByCriterion(bookCriterion);
         List<BookPreview> lastBooks = bookProvider.booksToBookPreviews(books, locale);
         model.addAttribute("last_books", lastBooks);
+        model.addAttribute("numberOfLastBooks", lastBooks.size());
         return "main/index";
     }
 
