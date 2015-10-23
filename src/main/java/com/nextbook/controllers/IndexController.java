@@ -1,6 +1,7 @@
 package com.nextbook.controllers;
 
 import com.nextbook.domain.criterion.BookCriterion;
+import com.nextbook.domain.entities.BookEntity;
 import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.forms.user.RegisterUserForm;
 import com.nextbook.domain.pojo.*;
@@ -84,4 +85,5 @@ public class IndexController {
         statisticUtil.registrationEvent(user);
         return user != null;
     }
+
 }

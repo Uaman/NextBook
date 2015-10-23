@@ -73,7 +73,7 @@
               <div class="search-top-container">
                 <div class="search-top"></div>
                 <div class="search-form">
-                  <form id="search_mini_form" action="" method="get">
+                  <form id="search_mini_form" action="search" method="get">
                     <div class="form-search">
                       <input id="search" type="text" name="q" value="" class="input-text" autocomplete="off" placeholder="Search book">
                       <button type="submit" title="Пошук"></button>
