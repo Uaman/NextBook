@@ -1,4 +1,4 @@
-package com.nextbook.domain;
+package com.nextbook.domain.response;
 
 /**
  * Created with IntelliJ IDEA.

@@ -84,6 +84,26 @@
                 <jsp:include page="../../views/catalog/book-filter.jsp"/></li>
               </ul>
             </nav>
+<<<<<<< HEAD
+=======
+            <div class="top-dropdowns">
+              <div class="my-cart-container">
+                <div class="my-cart"></div>
+                <div class="cart-content">Your cart is empty</div>
+              </div>
+              <div class="search-top-container">
+                <div class="search-top"></div>
+                <div class="search-form">
+                  <form id="search_mini_form" action="search" method="get">
+                    <div class="form-search">
+                      <input id="search" type="text" name="q" value="" class="input-text" autocomplete="off" placeholder="Search book">
+                      <button type="submit" title="Пошук"></button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+>>>>>>> 07569f28b9504d2ee623577e2ff53112d2c31696
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ import com.nextbook.domain.pojo.Category;
 import com.nextbook.domain.pojo.SubCategory;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.domain.preview.CategoryPreview;
+import com.nextbook.domain.request.CatalogRequest;
 import com.nextbook.services.ICategoryProvider;
 import com.nextbook.services.ISubCategoryProvider;
 import com.nextbook.services.impl.BookProvider;
@@ -98,25 +99,4 @@ public class CatalogController {
         return result;
     }
 
-}
-
-class CatalogRequest {
-    private int category;
-    private int subCategory;
-
-    public int getCategory() {
-        return category;
-    }
-
-    public void setCategory(int category) {
-        this.category = category;
-    }
-
-    public int getSubCategory() {
-        return subCategory;
-    }
-
-    public void setSubCategory(int subCategory) {
-        this.subCategory = subCategory;
-    }
 }

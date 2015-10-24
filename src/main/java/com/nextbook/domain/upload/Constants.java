@@ -5,6 +5,8 @@ package com.nextbook.domain.upload;
  */
 public class Constants {
 
+    public static final String SOLR_SERVER = "http://solr-nextbook.cloudapp.net/solr/nextbook/";
+
     public static final String USER_PASSWORD = "upass";
     public static final String OWNER_PASSWORD = "opass";
 
