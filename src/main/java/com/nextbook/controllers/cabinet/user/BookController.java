@@ -6,7 +6,6 @@ import com.nextbook.domain.enums.Cover;
 import com.nextbook.domain.criterion.AuthorCriterion;
 import com.nextbook.domain.forms.book.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
-import com.nextbook.domain.preview.AuthorPreview;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import com.nextbook.utils.StatisticUtil;
@@ -50,6 +49,8 @@ public class BookController {
     private StatisticUtil statisticUtil;
     @Inject
     private IFavoritesProvider favoritesProvider;
+    @Inject
+    private ICommonMethodsProvider methodsProvider;
 
     @RequestMapping(value = "/new-book", method = RequestMethod.GET)
     public String newBook(){
@@ -62,7 +63,7 @@ public class BookController {
             // redirect to page where user can create publication
             return "redirect:/publisher/new";
         }
-        Book book = defaultBook(user, publisher);
+        Book book = bookProvider.defaultBook(publisher);
         book = bookProvider.updateBook(book);
         if(book == null)
             return "redirect:/cabinet/profile";
@@ -88,44 +89,9 @@ public class BookController {
             return "redirect:/publisher/view?publisherId="+publisher.getId();
         model.addAttribute("subCategories", subCategoryProvider.getAll());
         model.addAttribute("book", book);
-        model.addAttribute("authors", formAuthorsInLocale(book.getBookToAuthor(), locale.getLanguage()));
+        model.addAttribute("authors", methodsProvider.formAuthorsInLocale(book.getBookToAuthor(), locale.getLanguage()));
         model.addAttribute("numberOfPhotos", bookStorageProvider.getNumberOfPhotosInGallery(book.getId()));
         return "book/add-book";
-    }
-
-    private List<AuthorPreview> formAuthorsInLocale(List<BookAuthor> authors, String language){
-        List<AuthorPreview> result = new ArrayList<AuthorPreview>();
-        if(authors != null) {
-            for (BookAuthor bookAuthor : authors) {
-                String name;
-                Author author = bookAuthor.getAuthor();
-                if (language.equals("uk")) {
-                    name = author.getFirstNameUa() + ' ' + author.getLastNameUa();
-                } else if (language.equals("ru")) {
-                    name = author.getFirstNameRu() + ' ' + author.getLastNameRu();
-                } else {
-                    name = author.getFirstNameEn() + ' ' + author.getLastNameEn();
-                }
-                result.add(new AuthorPreview(author.getId(), name));
-            }
-        }
-        return result;
-    }
-
-    private Book defaultBook(User user, Publisher publisher){
-        Book book = new Book();
-        book.setUaName("");
-        SubCategory subCategory = new SubCategory();
-        subCategory.setId(1);
-        book.setSubCategory(subCategory);
-        book.setYearOfPublication(0);
-        book.setPublisher(publisher);
-        book.setLanguage("");
-        book.setTypeOfBook(BookTypeEnum.ELECTRONIC);
-        book.setDescriptionUa("");
-        book.setIsbn("");
-
-        return book;
     }
 
     @RequestMapping(value = "/edit-book", method = RequestMethod.POST, headers = "Accept=application/json")
@@ -141,7 +107,7 @@ public class BookController {
         if(storageLink == null)
             return -1;
         book.setLinkToStorage(storageLink);
-        copyBookFromBookForm(book, bookRegisterForm);
+        bookProvider.copyBookFromBookForm(book, bookRegisterForm);
         bookProvider.updateBook(book);
         return 1;
     }
@@ -171,53 +137,6 @@ public class BookController {
         }
     }
 
-    private void copyBookFromBookForm(Book book, BookRegisterForm bookRegisterForm){
-        book.setIsbn(bookRegisterForm.getIsbn());
-        book.setUaName(bookRegisterForm.getUaName());
-        book.setEnName(bookRegisterForm.getEnName());
-        book.setRuName(bookRegisterForm.getRuName());
-        book.setEighteenPlus(bookRegisterForm.isEighteenPlus());
-        book.setYearOfPublication(bookRegisterForm.getYearOfPublication());
-        book.setLanguage(bookRegisterForm.getLanguage());
-        book.setTypeOfBook(bookRegisterForm.getTypeOfBook());
-        book.setNumberOfPages(bookRegisterForm.getNumberOfPages());
-        book.setDescriptionUa(bookRegisterForm.getDescriptionUa());
-        book.setDescriptionEn(bookRegisterForm.getDescriptionEn());
-        book.setDescriptionRu(bookRegisterForm.getDescriptionRu());
-        book.setSubCategory(subCategoryProvider.getById(bookRegisterForm.getSubCategoryId()));
-
-        List<String> keywords = bookRegisterForm.getKeywords();
-        for(String s : keywords){
-            Keyword keyword = keywordProvider.getByName(s);
-            if(keyword == null) {
-                keyword = new Keyword();
-                keyword.setKeyword(s);
-                keyword = keywordProvider.update(keyword);
-            }
-            if(!book.getKeywords().contains(keyword)) {
-                BookKeyword bookKeyword = new BookKeyword();
-                bookKeyword.setBook(book);
-                bookKeyword.setKeyword(keyword);
-                book.addKeyword(keyword);
-                bookProvider.updateBookToKeyword(bookKeyword);
-            }
-        }
-
-        for(Integer id : bookRegisterForm.getAuthors()) {
-            if(id == null)
-                continue;
-            Author author = authorProvider.getById(id);
-            if(author != null) {
-                BookAuthor bookAuthor = new BookAuthor();
-                bookAuthor.setAuthor(author);
-                bookAuthor.setBook(book);
-                bookAuthor = bookProvider.updateBookToAuthor(bookAuthor);
-                if(bookAuthor != null)
-                    book.addAuthor(bookAuthor.getAuthor());
-            }
-        }
-    }
-
     @RequestMapping(value = "/authors-auto-complete/{keyword}", method = RequestMethod.POST)
     public @ResponseBody List<ResponseForAutoComplete> authorsAutoComplete(@PathVariable("keyword") String keyword,
                                                           Locale locale){
@@ -225,26 +144,8 @@ public class BookController {
             return new ArrayList<ResponseForAutoComplete>();
         List<Author> authors = authorProvider.getAuthorsByCriterion(new AuthorCriterion(keyword));
         String language = locale.getLanguage();
-        List<ResponseForAutoComplete> response = formAuthorsForAutoComplete(authors, language);
+        List<ResponseForAutoComplete> response = methodsProvider.formAuthorsForAutoComplete(authors, language);
         return response;
-    }
-
-    private List<ResponseForAutoComplete> formAuthorsForAutoComplete(List<Author> authors, String language){
-        List<ResponseForAutoComplete> result = new ArrayList<ResponseForAutoComplete>();
-        if(authors != null) {
-            for (Author author : authors) {
-                String value;
-                if (language.equals("uk")) {
-                    value = author.getFirstNameUa() + ' ' + author.getLastNameUa();
-                } else if (language.equals("ru")) {
-                    value = author.getFirstNameRu() + ' ' + author.getLastNameRu();
-                } else {
-                    value = author.getFirstNameEn() + ' ' + author.getLastNameEn();
-                }
-                result.add(new ResponseForAutoComplete(author.getId(), value));
-            }
-        }
-        return result;
     }
 
     @RequestMapping(value = "/keywords-auto-complete/{keyword}", method = RequestMethod.POST)
@@ -287,7 +188,7 @@ public class BookController {
             return -1;
         User user = sessionUtils.getCurrentUser();
         Book book = bookProvider.getBookById(bookId);
-        if(!checkBookToUser(user, book))
+        if(!methodsProvider.checkBookToUser(user, book))
             return -1;
         Iterator<String> itr =  request.getFileNames();
         MultipartFile multipartFile = request.getFile(itr.next());
@@ -300,7 +201,7 @@ public class BookController {
                                   @PathVariable("photoId") int photoId){
         User user = sessionUtils.getCurrentUser();
         Book book = bookProvider.getBookById(bookId);
-        if(!checkBookToUser(user, book))
+        if(!methodsProvider.checkBookToUser(user, book))
             return -1;
         boolean success = bookStorageProvider.deleteGalleryPhoto(bookId, photoId);
         if(!success)
@@ -340,18 +241,8 @@ public class BookController {
     public @ResponseBody boolean deleteKeyword(@PathVariable("bookId") int bookId,
                                                @PathVariable("keywordId") int keywordId){
         User user = sessionUtils.getCurrentUser();
-        if(user == null)
-            return false;
-
-        Publisher publisher = publisherProvider.getPublisherByUser(user);
-        if(publisher == null)
-            return false;
-
         Book book = bookProvider.getBookById(bookId);
-        if(book == null)
-            return false;
-
-        if(book.getPublisher().getId() != publisher.getId())
+        if(!methodsProvider.checkBookToUser(user, book))
             return false;
         boolean success = bookProvider.deleteBookToKeyword(bookId, keywordId);
         return success;
@@ -376,16 +267,6 @@ public class BookController {
             return false;
         boolean success = bookProvider.deleteBookToAuthor(bookId, authorId);
         return success;
-    }
-
-    private boolean checkBookToUser(User user, Book book){
-        if(user == null || book == null)
-            return false;
-        Publisher publisher = publisherProvider.getPublisherByUser(user);
-        if(publisher == null)
-            return false;
-
-        return book.getPublisher().getId() == publisher.getId();
     }
 
     @RequestMapping(value = "/add-favorite/{id}")

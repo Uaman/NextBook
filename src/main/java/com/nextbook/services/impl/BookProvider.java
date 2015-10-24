@@ -2,12 +2,13 @@ package com.nextbook.services.impl;
 
 import com.nextbook.dao.IBookDao;
 import com.nextbook.domain.criterion.BookCriterion;
+import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.enums.QueryType;
 import com.nextbook.domain.enums.Status;
+import com.nextbook.domain.forms.book.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
-import com.nextbook.services.IBookProvider;
-import com.nextbook.services.IFavoritesProvider;
+import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,13 @@ import java.util.Locale;
  */
 @Service
 public class BookProvider implements IBookProvider{
+
+    @Inject
+    private IAuthorProvider authorProvider;
+    @Inject
+    private ISubCategoryProvider subCategoryProvider;
+    @Inject
+    private IKeywordProvider keywordProvider;
 
     @Inject
     private IBookDao bookDao;
@@ -182,5 +190,69 @@ public class BookProvider implements IBookProvider{
         book.setStatus(Status.READY_FOR_REVIEW);
         book = updateBook(book);
         return book;
+    }
+
+    @Override
+    public Book defaultBook( Publisher publisher){
+        Book book = new Book();
+        book.setUaName("");
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(1);
+        book.setSubCategory(subCategory);
+        book.setYearOfPublication(0);
+        book.setPublisher(publisher);
+        book.setLanguage("");
+        book.setTypeOfBook(BookTypeEnum.ELECTRONIC);
+        book.setDescriptionUa("");
+        book.setIsbn("");
+
+        return book;
+    }
+
+    public void copyBookFromBookForm(Book book, BookRegisterForm bookRegisterForm){
+        book.setIsbn(bookRegisterForm.getIsbn());
+        book.setUaName(bookRegisterForm.getUaName());
+        book.setEnName(bookRegisterForm.getEnName());
+        book.setRuName(bookRegisterForm.getRuName());
+        book.setEighteenPlus(bookRegisterForm.isEighteenPlus());
+        book.setYearOfPublication(bookRegisterForm.getYearOfPublication());
+        book.setLanguage(bookRegisterForm.getLanguage());
+        book.setTypeOfBook(bookRegisterForm.getTypeOfBook());
+        book.setNumberOfPages(bookRegisterForm.getNumberOfPages());
+        book.setDescriptionUa(bookRegisterForm.getDescriptionUa());
+        book.setDescriptionEn(bookRegisterForm.getDescriptionEn());
+        book.setDescriptionRu(bookRegisterForm.getDescriptionRu());
+        book.setSubCategory(subCategoryProvider.getById(bookRegisterForm.getSubCategoryId()));
+
+        List<String> keywords = bookRegisterForm.getKeywords();
+        for(String s : keywords){
+            Keyword keyword = keywordProvider.getByName(s);
+            if(keyword == null) {
+                keyword = new Keyword();
+                keyword.setKeyword(s);
+                keyword = keywordProvider.update(keyword);
+            }
+            if(!book.getKeywords().contains(keyword)) {
+                BookKeyword bookKeyword = new BookKeyword();
+                bookKeyword.setBook(book);
+                bookKeyword.setKeyword(keyword);
+                book.addKeyword(keyword);
+                updateBookToKeyword(bookKeyword);
+            }
+        }
+
+        for(Integer id : bookRegisterForm.getAuthors()) {
+            if(id == null)
+                continue;
+            Author author = authorProvider.getById(id);
+            if(author != null) {
+                BookAuthor bookAuthor = new BookAuthor();
+                bookAuthor.setAuthor(author);
+                bookAuthor.setBook(book);
+                bookAuthor = updateBookToAuthor(bookAuthor);
+                if(bookAuthor != null)
+                    book.addAuthor(bookAuthor.getAuthor());
+            }
+        }
     }
 }

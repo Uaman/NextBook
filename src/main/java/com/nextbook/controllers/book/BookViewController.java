@@ -1,10 +1,10 @@
 package com.nextbook.controllers.book;
 
-import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.domain.preview.CommentPreview;
 import com.nextbook.domain.upload.Constants;
+import com.nextbook.domain.request.*;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +31,11 @@ public class BookViewController {
     @Autowired
     private IBookStorageProvider bookStorageProvider;
     @Autowired
-    private IPublisherProvider publisherProvider;
-    @Autowired
-    private IOrderProvider orderProvider;
-    @Autowired
     private ICommentsProvider commentsProvider;
     @Autowired
     private IFavoritesProvider favoritesProvider;
+    @Autowired
+    private ICommonMethodsProvider methodsProvider;
 
     @RequestMapping(value = "/{bookId}", method = RequestMethod.GET)
     public String infoBook(@PathVariable("bookId")int bookId, Model model,Locale locale, HttpServletRequest request){
@@ -48,9 +46,9 @@ public class BookViewController {
         BookPreview preview = new BookPreview(book,locale);
         model.addAttribute("book",preview);
         model.addAttribute("type",book.getTypeOfBook());
-        model.addAttribute("category",getCategoryLocated(book.getSubCategory().getCategory(),locale));
+        model.addAttribute("category", methodsProvider.getCategoryLocated(book.getSubCategory().getCategory(),locale));
         model.addAttribute("keywords", book.getKeywords());
-        model.addAttribute("bookName", bookNameInLocale(book, locale));
+        model.addAttribute("bookName", methodsProvider.bookNameInLocale(book, locale));
         model.addAttribute("shareLink", HOST_NAME+"bookInfo/"+bookId);
         model.addAttribute("numberOfPhotos", bookStorageProvider.getNumberOfPhotosInGallery(book.getId()));
         if(user != null){
@@ -58,7 +56,7 @@ public class BookViewController {
             if(comment != null)
                 preview.getComments().add(new CommentPreview(comment));
         }
-        if(userBuyBook(user, book)){
+        if(methodsProvider.userBuyBook(user, book)){
             model.addAttribute("urlToFile", book.getLinkToStorage());
             model.addAttribute("pass", Constants.USER_PASSWORD);
         } else {
@@ -85,51 +83,6 @@ public class BookViewController {
         Comment comment = new Comment(user, book, commentText);
         comment = commentsProvider.update(comment);
         return comment;
-    }
-
-    private String getCategoryLocated(Category category,Locale locate){
-        String locatedCategory = "";
-        if (locate.getLanguage().equals("uk")) {
-            locatedCategory = category.getNameUa();
-        } else if (locate.getLanguage().equals("ru")) {
-            locatedCategory = category.getNameRu();
-        } else {
-            locatedCategory = category.getNameEn();
-        }
-        return locatedCategory;
-    }
-
-    private String bookNameInLocale(Book book, Locale locale){
-        String bookName;
-        if (locale.getLanguage().equals("uk")) {
-            bookName = book.getUaName();
-        } else if (locale.getLanguage().equals("ru")) {
-            bookName = book.getRuName();
-        } else {
-            bookName = book.getEnName();
-        }
-        return bookName;
-    }
-
-    private boolean userBuyBook(User user, Book book){
-        if(user == null)
-            return false;
-
-        Publisher publisher = publisherProvider.getPublisherByUser(user);
-        if(publisher != null && publisher.getId() == book.getPublisher().getId())
-            return true;
-
-        //check if admin or moderator
-        if(user.getRole().getId() == 4 || user.getRole().getId() == 5)
-            return true;
-
-        if(book.getStatus() != Status.ACTIVE)
-            return false;
-
-        Order order = orderProvider.getOrderByUserAndBook(user, book);
-        if(order != null && order.isPaid())
-            return true;
-        return false;
     }
 
     /**
@@ -192,26 +145,4 @@ public class BookViewController {
     }
 
     private static final String HOST_NAME = "http://nextbookdemo.azurewebsites.net/";
-}
-
-
-class CreateCommentRequest{
-    private String text;
-    private int bookId;
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public int getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
-    }
 }

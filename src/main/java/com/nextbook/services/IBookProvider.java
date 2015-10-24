@@ -1,10 +1,8 @@
 package com.nextbook.services;
 
 import com.nextbook.domain.criterion.BookCriterion;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.User;
-import com.nextbook.domain.pojo.BookAuthor;
-import com.nextbook.domain.pojo.BookKeyword;
+import com.nextbook.domain.forms.book.BookRegisterForm;
+import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
 import org.springframework.stereotype.Service;
 
@@ -61,4 +59,8 @@ public interface IBookProvider {
     Book adminDeactivateBook(Book book);
 
     Book publisherSendBookForReview(Book book);
+
+    Book defaultBook(Publisher publisher);
+
+    void copyBookFromBookForm(Book book, BookRegisterForm bookRegisterForm);
 }
