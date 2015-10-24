@@ -18,6 +18,7 @@
     <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=latin-ext,cyrillic-ext' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
+    <script src="/resources/js/spin/spin.js"></script>
     <jsp:include page="/resources/js/main/sign.up.js.jsp"></jsp:include>
 </head>
 <body>
@@ -55,6 +56,29 @@
 
     </div>
   </div>
+
+          <div id="send-popup" class="popup-default block-info" style="display: none;">
+              <span class="block-title"></span>
+              <div class="block-content">
+                  <spring:message code="add.book.please.wait"/>
+                  <div id="spin" style="margin-top: 100px;"></div>
+              </div>
+          </div>
+          <div id="registration-ok" class="popup-default block-login" style="display: none;">
+              <span class="block-title"><spring:message code="global.signIn" /></span>
+              <div class="block-content">
+                  Well done. now you can log in using this email and password
+                  <button class="close but-close but-gray" title='<spring:message code="button.close"/>'>x</button>
+              </div>
+          </div>
+
+          <div id="problems-with-service" class="popup-default block-login" style="display: none;">
+              <span class="block-title"><spring:message code="global.signIn" /></span>
+              <div class="block-content">
+                  Oooops.. We have some problems. please wait for a while
+                  <button class="close but-close but-gray" title='<spring:message code="button.close"/>'>x</button>
+              </div>
+          </div>
 
    <jsp:include page="signinPopup.jsp"/>
 </body>

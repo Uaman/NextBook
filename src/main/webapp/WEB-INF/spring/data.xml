@@ -80,4 +80,6 @@
 
     <bean id="dozerBeanMapper" class="com.nextbook.utils.DozerMapperFactory" factory-method="getDozerBeanMapper" />
 
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+
 </beans>

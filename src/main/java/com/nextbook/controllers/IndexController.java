@@ -3,12 +3,15 @@ package com.nextbook.controllers;
 import com.nextbook.domain.criterion.BookCriterion;
 import com.nextbook.domain.entities.BookEntity;
 import com.nextbook.domain.enums.Status;
+import com.nextbook.domain.exceptions.EmailAlreadyExistsException;
 import com.nextbook.domain.forms.user.RegisterUserForm;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
+import com.nextbook.domain.response.ResponseOnAjaxRegistration;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import com.nextbook.utils.StatisticUtil;
+import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.validation.*;
 import java.util.*;
 
 /**
@@ -42,15 +46,14 @@ public class IndexController {
     private StatisticUtil statisticUtil;
     @Inject
     private Md5PasswordEncoder md5PasswordEncoder;
+    @Inject
+    private Validator validator;
+    @Inject
+    private MessageSource messageSource;
 
     @RequestMapping(value = "/signin")
     public String login(Model model) {
         return "auth/signin";
-    }
-
-    @RequestMapping(value = "/signup")
-    public String signUp(Model model) {
-        return "auth/signup";
     }
 
     @RequestMapping(value = {"/"})
@@ -70,20 +73,42 @@ public class IndexController {
         return "main/index";
     }
 
+    @RequestMapping(value = "/signup")
+    public String signUp(Model model) {
+        model.addAttribute("maxEmailLength", RegisterUserForm.MAX_EMAIL_LENGTH);
+        model.addAttribute("maxNameLength", RegisterUserForm.MAX_NAME_LENGTH);
+        model.addAttribute("minNameLength", RegisterUserForm.MIN_NAME_LENGTH);
+        model.addAttribute("maxPasswordLength", RegisterUserForm.MAX_PASSWORD_LENGTH);
+        model.addAttribute("minPasswordLength", RegisterUserForm.MIN_PASSWORD_LENGTH);
+        return "auth/signup";
+    }
+
     @RequestMapping(value = "/register", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("isAnonymous()")
-    public @ResponseBody boolean addUser(@RequestBody RegisterUserForm form) {
-        User user = new User();
-        user.setName(form.getName());
-        user.setEmail(form.getEmail());
-        user.setPassword(md5PasswordEncoder.encodePassword(form.getPassword(), null));
-        user.setActive(true);
-        Role role = new Role();
-        role.setId(1);
-        user.setRole(role);
-        user = userProvider.update(user);
-        statisticUtil.registrationEvent(user);
-        return user != null;
+    public @ResponseBody ResponseOnAjaxRegistration addUser(@RequestBody RegisterUserForm form, Locale locale) {
+        ResponseOnAjaxRegistration<RegisterUserForm> response = new ResponseOnAjaxRegistration<RegisterUserForm>(validator.validate(form), messageSource, locale);
+        if(!response.hasErrors()) {
+            User user = new User();
+            user.setName(form.getName());
+            user.setEmail(form.getEmail());
+            user.setPassword(md5PasswordEncoder.encodePassword(form.getPassword(), null));
+            user.setActive(true);
+
+            try {
+                user = userProvider.registerNewUser(user);
+                if(user == null){
+                    response.setCode(ResponseOnAjaxRegistration.PROBLEMS_WITH_SERVICE);
+                } else {
+                    statisticUtil.registrationEvent(user);
+                }
+                response.setCode(ResponseOnAjaxRegistration.OK);
+            } catch (EmailAlreadyExistsException e) {
+                response.addError(messageSource.getMessage("sign.up.error.email.already.exists", null, locale));
+            }
+        } else {
+            response.setCode(ResponseOnAjaxRegistration.PROBLEMS_WITH_VALIDATION);
+        }
+        return response;
     }
 
 }

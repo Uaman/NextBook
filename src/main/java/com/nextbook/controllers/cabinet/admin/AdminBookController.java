@@ -1,6 +1,6 @@
 package com.nextbook.controllers.cabinet.admin;
 
-import com.nextbook.domain.ResponseForAutoComplete;
+import com.nextbook.domain.response.ResponseForAutoComplete;
 import com.nextbook.domain.enums.*;
 import com.nextbook.domain.criterion.AuthorCriterion;
 import com.nextbook.domain.criterion.BookCriterion;

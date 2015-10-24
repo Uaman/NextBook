@@ -22,17 +22,18 @@
             rules:{
                 name: {
                     required: true,
-                    minlength: 3,
-                    maxlength: 30
+                    minlength: ${minNameLength},
+                    maxlength: ${maxNameLength}
                 },
                 email: {
                     required: true,
-                    emailRegex: true
+                    emailRegex: true,
+                    maxlength: ${maxEmailLength}
                 },
                 password: {
                     required: true,
-                    minlength: 6,
-                    maxlength: 30
+                    minlength: ${minPasswordLength},
+                    maxlength: ${maxPasswordLength}
                 },
                 confirm_pass: {
                     required: true,
@@ -42,16 +43,17 @@
             messages: {
                 name: {
                     required: '<spring:message code="sign.up.error.blank.name" />',
-                    minlength: '<spring:message code="sign.up.error.min.length.name" />',
-                    maxlength: '<spring:message code="sign.up.error.max.length.name" />'
+                    minlength: '<spring:message code="sign.up.error.length.name" />',
+                    maxlength: '<spring:message code="sign.up.error.length.name" />'
                 },
                 email: {
-                    required: '<spring:message code="sign.up.error.blank.email" />'
+                    required: '<spring:message code="sign.up.error.blank.email" />',
+                    maxlength: '<spring:message code="sign.up.error.length.email" />'
                 },
                 password: {
                     required: '<spring:message code="sign.up.error.blank.password" />',
-                    minlength: '<spring:message code="sign.up.error.min.length.password" />',
-                    maxlength: '<spring:message code="sign.up.error.max.length.password" />'
+                    minlength: '<spring:message code="sign.up.error.length.password" />',
+                    maxlength: '<spring:message code="sign.up.error.length.password" />'
                 },
                 confirm_pass: {
                     required: '<spring:message code="sign.up.error.blank.password.confirm" />'
@@ -60,6 +62,10 @@
             errorLabelContainer: $("div.errorblock ul"),
             wrapper: 'li',
             submitHandler: function(form) {
+                var spinner = new Spinner(opts).spin(document.getElementById('spin'));
+                $('#send-popup').show();
+                $('.shadow').show();
+                $('.errorblock ul').empty();
                 var data = formData();
                 console.log(data);
                 $.ajax({
@@ -72,14 +78,28 @@
                         xhr.setRequestHeader("Content-Type", "application/json");
                     },
                     success: function(response) {
-                        if(response){
-                            window.location.href = '/signin';
+                        spinner.stop();
+                        $('.close').trigger('click');
+                        if(response.code == 1){
+                            $('#registration-ok').show();
+                            $('.shadow').show();
+                        } else if(response.code == 0){
+                            $('#problems-with-service').show();
+                            $('.shadow').show();
                         } else {
-                            alert('we have some problems with your registration');
+                            $('.errorblock ul').show();
+                            console.log(response.errors);
+                            for(var i = 0; i < response.errors.length; ++i){
+                                $('.errorblock ul').append('<li>'+response.errors[i]+'</li>');
+                            }
                         }
                     },
                     error: function(e){
-                        alert(e);
+                        spinner.stop();
+                        $('.close').trigger('click');
+                        $('#problems-with-service').show();
+                        $('.shadow').show();
+                        console.log(e);
                     }
                 });
             }
@@ -90,9 +110,32 @@
         var data = {
             name: $('#name').val(),
             email: $('#email').val(),
-            roleId: $('#roleId').val(),
             password: $('#password').val()
         };
         return data;
     }
+
+
+    var opts = {
+        lines: 12             // The number of lines to draw
+        , length: 7             // The length of each line
+        , width: 5              // The line thickness
+        , radius: 10            // The radius of the inner circle
+        , scale: 1.0            // Scales overall size of the spinner
+        , corners: 1            // Roundness (0..1)
+        , color: '#000'         // #rgb or #rrggbb
+        , opacity: 1/4          // Opacity of the lines
+        , rotate: 0             // Rotation offset
+        , direction: 1          // 1: clockwise, -1: counterclockwise
+        , speed: 1              // Rounds per second
+        , trail: 100            // Afterglow percentage
+        , fps: 20               // Frames per second when using setTimeout()
+        , zIndex: 2e9           // Use a high z-index by default
+        , className: 'spinner'  // CSS class to assign to the element
+        , top: '50%'            // center vertically
+        , left: '50%'           // center horizontally
+        , shadow: false         // Whether to render a shadow
+        , hwaccel: false        // Whether to use hardware acceleration (might be buggy)
+        , position: 'absolute'  // Element positioning
+    };
 </script>
