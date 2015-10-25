@@ -11,6 +11,9 @@ import com.nextbook.domain.response.ResponseOnAjaxRegistration;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import com.nextbook.utils.StatisticUtil;
+import com.thetransactioncompany.cors.HTTPMethod;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
 import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
@@ -19,7 +22,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.*;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -51,11 +57,6 @@ public class IndexController {
     @Inject
     private MessageSource messageSource;
 
-    @RequestMapping(value = "/signin")
-    public String login(Model model) {
-        return "auth/signin";
-    }
-
     @RequestMapping(value = {"/"})
     public String desktop(Model model, Locale locale) {
         int booksQuantity = bookProvider.getCountByCriterion(new BookCriterion.Builder().status(Status.ACTIVE).build());
@@ -73,14 +74,33 @@ public class IndexController {
         return "main/index";
     }
 
+    @RequestMapping(value = "/login/error")
+    public void loginError(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String referer = request.getHeader("Referer");
+            if (referer.indexOf("?")==-1)
+                response.sendRedirect(referer+"?loginerror=true");
+            else if (!referer.contains("loginerror=true"))
+                response.sendRedirect(referer+"&loginerror=true");
+            else
+                response.sendRedirect(referer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @RequestMapping(value = "/signup")
     public String signUp(Model model) {
-        model.addAttribute("maxEmailLength", RegisterUserForm.MAX_EMAIL_LENGTH);
-        model.addAttribute("maxNameLength", RegisterUserForm.MAX_NAME_LENGTH);
-        model.addAttribute("minNameLength", RegisterUserForm.MIN_NAME_LENGTH);
-        model.addAttribute("maxPasswordLength", RegisterUserForm.MAX_PASSWORD_LENGTH);
-        model.addAttribute("minPasswordLength", RegisterUserForm.MIN_PASSWORD_LENGTH);
-        return "auth/signup";
+        if (sessionUtils.getCurrentUser()==null) {
+            model.addAttribute("maxEmailLength", RegisterUserForm.MAX_EMAIL_LENGTH);
+            model.addAttribute("maxNameLength", RegisterUserForm.MAX_NAME_LENGTH);
+            model.addAttribute("minNameLength", RegisterUserForm.MIN_NAME_LENGTH);
+            model.addAttribute("maxPasswordLength", RegisterUserForm.MAX_PASSWORD_LENGTH);
+            model.addAttribute("minPasswordLength", RegisterUserForm.MIN_PASSWORD_LENGTH);
+            return "auth/signup";
+        } else {
+            return "redirect:/";
+        }
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, headers = "Accept=application/json")

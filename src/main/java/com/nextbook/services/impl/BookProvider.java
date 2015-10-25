@@ -156,12 +156,14 @@ public class BookProvider implements IBookProvider{
     public List<BookPreview> booksToBookPreviews(List<Book> books, Locale locale) {
         ArrayList<BookPreview> res = new ArrayList<BookPreview>();
         User user = sessionUtils.getCurrentUser();
-        for (Book b:books) {
-            BookPreview book = new BookPreview(b, locale);
-            if (user!=null) {
-                book.setFavorite(favoritesProvider.isFavorite(user.getId(), book.getId()));
+        if (books!=null) {
+            for (Book b : books) {
+                BookPreview book = new BookPreview(b, locale);
+                if (user != null) {
+                    book.setFavorite(favoritesProvider.isFavorite(user.getId(), book.getId()));
+                }
+                res.add(book);
             }
-            res.add(book);
         }
         return res;
     }
