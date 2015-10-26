@@ -1,7 +1,6 @@
 package com.nextbook.controllers;
 
 import com.nextbook.domain.criterion.BookCriterion;
-import com.nextbook.domain.entities.BookEntity;
 import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.exceptions.EmailAlreadyExistsException;
 import com.nextbook.domain.forms.user.RegisterUserForm;
@@ -11,9 +10,6 @@ import com.nextbook.domain.response.ResponseOnAjaxRegistration;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import com.nextbook.utils.StatisticUtil;
-import com.thetransactioncompany.cors.HTTPMethod;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
 import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
@@ -84,6 +80,19 @@ public class IndexController {
                 response.sendRedirect(referer+"&loginerror=true");
             else
                 response.sendRedirect(referer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/login/success")
+    public void loginSuccess(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String referer = request.getHeader("Referer");
+            referer = referer.replace("loginerror=true&", "");
+            referer = referer.replace("?loginerror=true", "");
+            referer = referer.replace("&loginerror=true", "");
+            response.sendRedirect(referer);
         } catch (IOException e) {
             e.printStackTrace();
         }
