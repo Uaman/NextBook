@@ -175,7 +175,7 @@ public class BookDAO implements IBookDao {
     }
 
     @Override
-    public boolean isbnExist(String isbn) {
+    public boolean isbnExist(String isbn, Book book) {
         boolean exist = false;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -183,7 +183,7 @@ public class BookDAO implements IBookDao {
             Query query = session.getNamedQuery(BookEntity.getByIsbn);
             query.setParameter("isbn", isbn);
             List<BookEntity> list = query.list();
-            if(list != null && list.size() > 0) {
+            if(list != null && list.size() > 0 && list.get(0).getId() != book.getId()) {
                 exist = true;
             }
             session.getTransaction().commit();

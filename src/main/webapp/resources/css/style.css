@@ -112,21 +112,19 @@ a:hover {
     display: table;
 }
 .grid_6, .grid_12 {
-    display: inline;
+    display: inline-block;
     float: left;
     position: relative;
     margin: 0 15px;
     min-height: 1px;
 }
-.grid_6 {
-    width: 570px;
-}
 .grid_12 {
-    width: 1170px;
+    max-width: 1170px;
+    width: 98%;
 }
 .links {
     float: right;
-    margin: 0;
+    margin: 0 1%;
     padding: 0;
 }
 .links li {
@@ -218,13 +216,12 @@ header a.logo {
     display: inline-block;
 }
 .nav-container nav {
-    width: 750px;
-    margin: 0;
+    /*width: 750px;*/
+    margin: 0 170px 0 0;
     padding: 0;
-    position: relative;
+    position: absolute;
     border: none;
-    float: left;
-    top:7px;
+    top:16px;
 }
 .topmenu {
     position: relative;
@@ -234,7 +231,7 @@ header a.logo {
     font-family: "Myriad Pro",sans-serif;
     font-weight: 700;
     line-height: 36px;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     text-transform: uppercase;
     transition: all 600ms ease-in-out;
     -webkit-transition: all 600ms ease-in-out;
@@ -266,6 +263,7 @@ header a.logo {
     position: absolute;
     margin-left: -10px;
     background-color: #fff;
+    width: 500px;
 }
 .nav-container .categories:after {
     content: '';
@@ -274,7 +272,7 @@ header a.logo {
     background-color: #e0e0e0;
     height: 87%;
     position: absolute;
-    left: 48.5%;
+    left: 49.5%;
 }
 .nav-container .categories:before {
     content: '';
@@ -282,9 +280,9 @@ header a.logo {
     width: 80%;
     position: absolute;
     right: 3px;
-    top: -4px;
-    border-bottom: 1px solid rgba(224, 224, 224, 0.31);
-    border-top: 3px solid rgba(240, 240, 240, 0.34);
+    top: 0;
+    border-bottom: 1px solid rgba(237, 237, 237, 0.56);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.09);
 }
 .topmenu li:hover > .categories {
     display: inline-block;
@@ -304,12 +302,12 @@ header a.logo {
     -webkit-transition: all 600ms ease-in-out;
     -moz-transition: all 600ms ease-in-out;
     -o-transition: all 600ms ease-in-out;
-    width: 41%;
+    width: 43%;
     float: left;
     font-weight: normal;
     font-family: Arial, serif;
     font-size: 12px;
-    margin: 0 2%;
+    margin: 0 1%;
 }
 .nav-container .categories a {
     color:#322c29 !important;
@@ -323,10 +321,8 @@ header a.logo {
 }
 
 .top-dropdowns {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    margin-top: -20px;
+    margin: 31px 1% 0 0;
+    float: right;
 }
 
 /********* Search & Cart *********/
@@ -348,6 +344,20 @@ header a.logo {
     -moz-border-radius: 100%;
     border-radius: 100%;
     cursor: pointer;
+}
+.cart-block {
+    float: right;
+}
+.cart-block span {
+    color: #373230;
+    font-size: 14px;
+    font-family: "Myriad Pro",sans-serif;
+    font-weight: 700;
+    line-height: 36px;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    float: right;
+    margin-left: 5px;
 }
 .my-cart {
     background-image:url('../images/icon_cart.png');
@@ -395,6 +405,7 @@ header a.logo {
 }
 .search-form, .cart-content {
     top: 45px;
+    right: -25px;
 }
 .search-top:after, .links li ul:before, .my-cart:after {
     content: "";
@@ -666,6 +677,7 @@ header a.logo {
 
 .main-container, .footer-container .product-slider-container {
     background-color: #ffffff;
+    padding-bottom: 3em;
 }
 .col-main, .col-main-left, .col-main-right {
     border: none;
@@ -806,6 +818,7 @@ header a.logo {
     padding: 0;
     display: inline-block;
     width: 100%;
+    margin: 0;
 }
 .errorblock ul li {
     list-style: none;
@@ -813,9 +826,12 @@ header a.logo {
     text-align: left;
     margin-bottom: .5em;
 }
+.errorblock ul li:first-child {
+    margin-top: 10px;
+}
 
 .block-login .errorblock li {
-    background: url("../images/error_arrow.png") no-repeat left top;
+    background: url("../images/error_arrow.png") no-repeat left center;
     padding-left: 13px;
 }
 /********* /Error block********/
@@ -948,8 +964,14 @@ header a.logo {
     width: 100%;
     border-top: 1px solid #ececea;
 }
+.social-content {
+    float: left;
+    margin-left: 2%;
+}
 .footer-info ul.social {
     margin: 10px 0 0;
+    display: inline-block;
+    padding: 0;
 }
 .footer-info ul.social li {
     float: left;
@@ -1017,7 +1039,7 @@ address {
 
 .partners {
     float: right;
-    margin-right: 66px;
+    margin-right: 2%;
     text-align: right;
     margin-top: -10px;
 }
@@ -1029,7 +1051,11 @@ address {
     letter-spacing: -0.05em;
     color: rgb(0,0,0);
     color: rgba(0,0,0,0.75);
-    margin: 0 0 24px;
+    display: inline-block;
+}
+.partners ul {
+    float: right;
+    padding: 0 5px;
 }
 .partners li {
     float: left;
@@ -1039,6 +1065,36 @@ address {
 }
 /************ /Footer *************/
 
+/************ Top scroll button ************/
+
+#toTop {
+    position:fixed;
+    z-index:99;
+    bottom:50px;
+    right:15px;
+    background: url('../images/arrow_totop.png')top center no-repeat rgba(51,51,51,0.2);
+    width: 64px;
+    height: 64px;
+    border: 1px solid rgba(157, 157, 157, 0.45);
+    padding: 25px 5px 5px 5px;
+    cursor: pointer;
+    color: rgba(157, 157, 157, 0.8);
+    text-decoration: none;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    font-weight: bold;
+    box-sizing: border-box;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 20px;
+}
+#toTop:hover {
+    color: rgba(140,140,140, 1);
+    background-color: rgba(51,51,51,0.3);
+}
+
+/************ /Top scroll button **************/
 
 /************* Media screen **********/
 @media screen and (max-width: 480px) {
@@ -1077,5 +1133,17 @@ address {
     }
     .left-box {
         border-right: none;
+    }
+    .links, .grid_6, .social-content, .partners, .partners h4, .partners ul {
+        float: none;
+        text-align: center;
+        display: block;
+    }
+    .social-content, .partners {
+        margin: 0;
+    }
+    .partners li {
+        display: inline-block;
+        float: none;
     }
 }

@@ -15,7 +15,6 @@
   <div class="top-switch-bg">
     <div class="row clearfix">
       <div class="grid_6"><%--language-switch--%></div>
-      <div class="grid_6">
         <ul class="links">
 
           <security:authorize access="isAnonymous()">
@@ -28,11 +27,11 @@
           </security:authorize>
 
           <security:authorize access="@Secure.isPublisher()">
-            <li><a href="/book/new-book">Add book</a></li>
+            <li><a href="/book/new-book"><spring:message code="user.page.add.book"/></a></li>
           </security:authorize>
 
           <security:authorize access="@Secure.isAdmin()">
-            <li><a href="#">Management</a>
+            <li><a href="#"><spring:message code="user.page.management"/></a>
               <ul>
                 <li><a href="/admin/books/all"><spring:message code="books.manageBooks" /></a></li>
                 <li><a href="/admin/users/all"><spring:message code="users.manageUsers" /></a></li>
@@ -47,7 +46,6 @@
           </security:authorize>
 
         </ul>
-      </div>
     </div>
   </div>
   <div class="header-wrapper">
@@ -57,14 +55,37 @@
           <a href="/" class="logo">
             <img src="<c:url value='../../../resources/images/logo.png'/>"/>
           </a>
+          <div class="top-dropdowns">
+            <div class="cart-block">
+              <span><spring:message code="cart.title"/>(0)</span>
+              <div class="my-cart-container">
+                <div class="my-cart"></div>
+                <div class="cart-content"><spring:message code="cart.empty"/></div>
+              </div>
+            </div>
+
+            <div class="search-top-container">
+              <div class="search-top"></div>
+              <div class="search-form">
+                <form id="search_mini_form" action="" method="get">
+                  <div class="form-search">
+                    <input id="search" type="text" name="q" value="" class="input-text" autocomplete="off" placeholder="<spring:message code='search.book'/>">
+                    <button type="submit" title="<spring:message code='search.title'/>"></button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
           <div class="nav-container">
             <nav>
               <ul class="topmenu">
-                <li class="level0"><a href="/">Home</a></li>
-                <li class="level0"><a href="#">All categories</a>
+                <li class="level0"><a href="/"><spring:message code="global.home"/></a></li>
+                <li class="level0"><a href="#"><spring:message code="catalog.all.category"/></a>
                 <jsp:include page="../../views/catalog/book-filter.jsp"/></li>
               </ul>
             </nav>
+<%--<<<<<<< HEAD
+=======
             <div class="top-dropdowns">
               <div class="my-cart-container">
                 <div class="my-cart"></div>
@@ -82,6 +103,7 @@
                 </div>
               </div>
             </div>
+>>>>>>> 07569f28b9504d2ee623577e2ff53112d2c31696--%>
           </div>
         </div>
       </div>

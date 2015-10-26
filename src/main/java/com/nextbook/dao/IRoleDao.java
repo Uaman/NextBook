@@ -11,7 +11,6 @@ import java.util.List;
  * Date: 8/3/2015
  * Time: 5:52 PM
  */
-@Repository
 public interface IRoleDao {
 
     List<Role> getAll();

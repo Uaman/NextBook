@@ -2,6 +2,7 @@ package com.nextbook.domain.forms.book;
 
 import com.nextbook.domain.enums.BookTypeEnum;
 
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +16,11 @@ public class BookRegisterForm {
 
     private int bookId;
 
+    @NotNull(message = "book.registration.isbn.require")
+    @Pattern(message = "book.registration.isbn.format", regexp = "(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$")
     private String isbn;
 
+    @NotNull(message = "book.registration.name.ua.require")
     private String uaName;
 
     private String enName;
@@ -25,14 +29,19 @@ public class BookRegisterForm {
 
     private boolean eighteenPlus;
 
+    @Min(value = MIN_YEAR_OF_PUBLICATION, message = "book.registration.year.value")
+    @Max(value = MAX_YEAR_OF_PUBLICATION, message = "book.registration.year.value")
     private int yearOfPublication;
 
     private String language;
 
+    @NotNull(message = "book.registration.type.choose.one")
     private BookTypeEnum typeOfBook;
 
     private int numberOfPages;
 
+    @NotNull(message = "book.registration.description.ua.require")
+    @Size(min = MIN_DESCRIPTION_LENGTH, message = "book.registration.description.ua.length")
     private String descriptionUa;
 
     private String descriptionEn;
@@ -41,12 +50,10 @@ public class BookRegisterForm {
 
     private int subCategoryId;
 
-    //private int numberOfImagesForCover;
-
-    //private int numberOfImagesInGallery;
-
+    @Size(min = MIN_NUMBER_OF_KEYWORDS, message = "book.registration.keywords.min.count")
     private List<String> keywords = new ArrayList<String>();
 
+    @Size(min = MIN_NUMBER_OF_AUTHORS, message = "book.registration.author.require")
     private List<Integer> authors;
 
     public int getBookId() {
@@ -152,23 +159,7 @@ public class BookRegisterForm {
     public void setDescriptionRu(String descriptionRu) {
         this.descriptionRu = descriptionRu;
     }
-/*
-    public int getNumberOfImagesForCover() {
-        return numberOfImagesForCover;
-    }
 
-    public void setNumberOfImagesForCover(int numberOfImagesForCover) {
-        this.numberOfImagesForCover = numberOfImagesForCover;
-    }
-
-    public int getNumberOfImagesInGallery() {
-        return numberOfImagesInGallery;
-    }
-
-    public void setNumberOfImagesInGallery(int numberOfImagesInGallery) {
-        this.numberOfImagesInGallery = numberOfImagesInGallery;
-    }
-*/
     public List<String> getKeywords() {
         return keywords;
     }
@@ -192,4 +183,13 @@ public class BookRegisterForm {
     public void setAuthors(List<Integer> authors) {
         this.authors = authors;
     }
+
+
+    public static final int MIN_YEAR_OF_PUBLICATION = 1000;
+    public static final int MAX_YEAR_OF_PUBLICATION = 3000;
+
+    public static final int MIN_DESCRIPTION_LENGTH = 50;
+
+    public static final int MIN_NUMBER_OF_KEYWORDS = 5;
+    public static final int MIN_NUMBER_OF_AUTHORS = 1;
 }
