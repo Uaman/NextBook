@@ -65,7 +65,7 @@
               </div>
           </div>
           <div id="registration-ok" class="popup-default block-login" style="display: none;">
-              <span class="block-title"><spring:message code="global.signIn" /></span>
+              <span class="block-title">WooHoo</span>
               <div class="block-content">
                   Well done. now you can log in using this email and password
                   <button class="close but-close but-gray" title='<spring:message code="button.close"/>'>x</button>
@@ -73,7 +73,7 @@
           </div>
 
           <div id="problems-with-service" class="popup-default block-login" style="display: none;">
-              <span class="block-title"><spring:message code="global.signIn" /></span>
+              <span class="block-title">Error</span>
               <div class="block-content">
                   Oooops.. We have some problems. please wait for a while
                   <button class="close but-close but-gray" title='<spring:message code="button.close"/>'>x</button>

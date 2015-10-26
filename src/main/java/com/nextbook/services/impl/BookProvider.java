@@ -5,6 +5,7 @@ import com.nextbook.domain.criterion.BookCriterion;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.enums.QueryType;
 import com.nextbook.domain.enums.Status;
+import com.nextbook.domain.exceptions.IsbnAlreadyExistsException;
 import com.nextbook.domain.forms.book.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
@@ -63,15 +64,19 @@ public class BookProvider implements IBookProvider{
     }
 
     @Override
-    public Book updateBook(Book book) {
+    public Book updateBook(Book book) throws IsbnAlreadyExistsException{
         if(book == null)
             return null;
+        if(isbnExist(book.getIsbn(), book))
+            throw new IsbnAlreadyExistsException();
         return bookDao.updateBook(book);
     }
 
     @Override
-    public boolean isbnExist(String isbn) {
-        return bookDao.isbnExist(isbn);
+    public boolean isbnExist(String isbn, Book book) {
+        if(isbn == null || isbn.equals("") || book == null)
+            return false;
+        return bookDao.isbnExist(isbn, book);
     }
 
     @Override
@@ -147,7 +152,11 @@ public class BookProvider implements IBookProvider{
 
         book.setRating(newRating);
         book.setVoted(numberOfVoted);
-        book = updateBook(book);
+        try {
+            book = updateBook(book);
+        } catch (IsbnAlreadyExistsException e) {
+            e.printStackTrace();
+        }
 
         return book;
     }
@@ -171,7 +180,11 @@ public class BookProvider implements IBookProvider{
         if(book == null)
             return null;
         book.setStatus(Status.ACTIVE);
-        book = updateBook(book);
+        try {
+            book = updateBook(book);
+        } catch (IsbnAlreadyExistsException e) {
+            e.printStackTrace();
+        }
         return book;
     }
 
@@ -180,7 +193,11 @@ public class BookProvider implements IBookProvider{
         if(book == null)
             return null;
         book.setStatus(Status.NOT_ACTIVE);
-        book = updateBook(book);
+        try {
+            book = updateBook(book);
+        } catch (IsbnAlreadyExistsException e) {
+            e.printStackTrace();
+        }
         return book;
     }
 
@@ -188,12 +205,16 @@ public class BookProvider implements IBookProvider{
         if(book == null)
             return null;
         book.setStatus(Status.READY_FOR_REVIEW);
-        book = updateBook(book);
+        try {
+            book = updateBook(book);
+        } catch (IsbnAlreadyExistsException e) {
+            e.printStackTrace();
+        }
         return book;
     }
 
     @Override
-    public Book defaultBook( Publisher publisher){
+    public Book defaultBook(Publisher publisher){
         Book book = new Book();
         book.setUaName("");
         SubCategory subCategory = new SubCategory();
@@ -205,7 +226,7 @@ public class BookProvider implements IBookProvider{
         book.setTypeOfBook(BookTypeEnum.ELECTRONIC);
         book.setDescriptionUa("");
         book.setIsbn("");
-
+        book.setStatus(Status.NEW);
         return book;
     }
 

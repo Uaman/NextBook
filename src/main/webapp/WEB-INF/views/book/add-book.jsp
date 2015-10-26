@@ -282,6 +282,21 @@
         <button class="close but-close but-gray">x</button>
     </div>
 </div>
+<div id="registration-ok" class="popup-default block-login" style="display: none;">
+    <span class="block-title">Woohoo</span>
+    <div class="block-content">
+        Well done. Now you can move to your <br/><a href="/publisher/view?publisherId=${publisherId}">publisher cabinet</a><br/> and send book to admin for review
+        <button class="close but-close but-gray" title='<spring:message code="button.close"/>'>x</button>
+    </div>
+</div>
+
+<div id="problems-with-service" class="popup-default block-login" style="display: none;">
+    <span class="block-title">Error</span>
+    <div class="block-content">
+        Oooops.. We have some problems. please wait for a while
+        <button class="close but-close but-gray" title='<spring:message code="button.close"/>'>x</button>
+    </div>
+</div>
 <div class="shadow" style="display: none;"></div>
 </body>
 </html>
