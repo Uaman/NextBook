@@ -84,7 +84,7 @@
                 <jsp:include page="../../views/catalog/book-filter.jsp"/></li>
               </ul>
             </nav>
-<<<<<<< HEAD
+<%--<<<<<<< HEAD
 =======
             <div class="top-dropdowns">
               <div class="my-cart-container">
@@ -103,7 +103,7 @@
                 </div>
               </div>
             </div>
->>>>>>> 07569f28b9504d2ee623577e2ff53112d2c31696
+>>>>>>> 07569f28b9504d2ee623577e2ff53112d2c31696--%>
           </div>
         </div>
       </div>
