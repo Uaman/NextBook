@@ -13,8 +13,8 @@
 
   <div class="header-container">
 	<div class="top-switch-bg">
-      <div class="row clearfix">
-        <div class="grid_6"><%--language-switch--%></div>
+		<div class="row clearfix">
+			<div class="grid_6"><%--language-switch--%></div>
           <ul class="links">
 
             <security:authorize access="isAnonymous()">
@@ -46,44 +46,45 @@
             </security:authorize>
 
           </ul>
-    </div>
-    </div>
-    <div class="header-wrapper">
-      <header>
-        <div class="row clearfix">
-          <div class="grid_12">
-            <a href="/" class="logo">
-              <img src="<c:url value='../../../resources/images/logo.png'/>"/>
-            </a>
-            <div class="top-dropdowns">
-              <div class="cart-block">
-                <span><spring:message code="cart.title"/>(0)</span>
-                <div class="my-cart-container">
-                  <div class="my-cart"></div>
-                  <div class="cart-content"><spring:message code="cart.empty"/></div>
-                </div>
-              </div>
-              <div class="search-top-container">
-                <div class="search-top"></div>
-                <div class="search-form">
-                  <form id="search_mini_form" action="search" method="get">
-                    <div class="form-search">
-                      <input id="search" type="text" name="q" value="" class="input-text" autocomplete="off" placeholder="<spring:message code='search.book'/>">
-                      <button type="submit" title="<spring:message code='search.title'/>"></button>
-                    </div>
-                  </form>
-                </div>
+		</div>
+	</div>
+  <div class="header-wrapper">
+    <header>
+      <div class="row clearfix">
+        <div class="grid_12">
+          <a href="/" class="logo">
+            <img src="<c:url value='../../../resources/images/logo.png'/>"/>
+          </a>
+          <div class="top-dropdowns">
+            <div class="cart-block">
+              <span><spring:message code="cart.title"/>(0)</span>
+              <div class="my-cart-container">
+                <div class="my-cart"></div>
+                <div class="cart-content"><spring:message code="cart.empty"/></div>
               </div>
             </div>
-            <div class="nav-container">
-              <nav>
-                <ul class="topmenu">
-                  <li class="level0"><a href="/"><spring:message code="global.home"/></a></li>
-                  <li class="level0"><a href="#"><spring:message code="catalog.all.category"/></a>
-                  <jsp:include page="../../views/catalog/book-filter.jsp"/></li>
-                </ul>
-              </nav>
+
+            <div class="search-top-container">
+              <div class="search-top"></div>
+              <div class="search-form">
+                <form id="search_mini_form" action="" method="get">
+                  <div class="form-search">
+                    <input id="search" type="text" name="q" value="" class="input-text" autocomplete="off" placeholder="<spring:message code='search.book'/>">
+                    <button type="submit" title="<spring:message code='search.title'/>"></button>
+                  </div>
+                </form>
+              </div>
             </div>
+          </div>
+          <div class="nav-container">
+            <nav>
+              <ul class="topmenu">
+                <li class="level0"><a href="/"><spring:message code="global.home"/></a></li>
+                <li class="level0"><a href="#"><spring:message code="catalog.all.category"/></a>
+                <jsp:include page="../../views/catalog/book-filter.jsp"/></li>
+              </ul>
+            </nav>
+			</div>
           </div>
         </div>
       </header>

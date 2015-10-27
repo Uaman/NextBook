@@ -14,7 +14,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
         <intercept-url pattern="/register*" access="isAnonymous()"/>
 
         <form-login login-processing-url="/static/j_spring_security_check" login-page="/" authentication-failure-handler-ref="authenticationFailureHandler"
-                    default-target-url="/" always-use-default-target="false" authentication-success-handler-ref="authenticationSuccessHandler"/>
+                    authentication-success-handler-ref="authenticationSuccessHandler"/>
         <logout logout-url="/static/j_spring_security_logout" logout-success-url="/"/>
         <http-basic />
         <anonymous username="guest" granted-authority="ROLE_ANONYMOUS"/>
@@ -36,7 +36,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 
     <beans:bean name="authenticationSuccessHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-        <beans:property name="useReferer" value="true" />
+        <beans:property name="defaultTargetUrl" value="/login/success"/>
     </beans:bean>
 
     <beans:bean name="authenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">

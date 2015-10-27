@@ -1,6 +1,7 @@
 package com.nextbook.services;
 
 import com.nextbook.domain.criterion.BookCriterion;
+import com.nextbook.domain.exceptions.IsbnAlreadyExistsException;
 import com.nextbook.domain.forms.book.BookRegisterForm;
 import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
@@ -26,9 +27,9 @@ public interface IBookProvider {
 
     boolean deleteBook(int bookId);
 
-    Book updateBook(Book book);
+    Book updateBook(Book book) throws IsbnAlreadyExistsException;
 
-    boolean isbnExist(String isbn);
+    boolean isbnExist(String isbn, Book book);
 
     List<Book> getBooksByCriterion(BookCriterion criterion);
 

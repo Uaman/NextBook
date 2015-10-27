@@ -14,7 +14,6 @@ import java.util.List;
  * Date: 10/12/2015
  * Time: 1:02 AM
  */
-@Repository
 public interface ICommentsDAO {
 
     Comment getById(int id);

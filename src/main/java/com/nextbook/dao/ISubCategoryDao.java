@@ -11,7 +11,6 @@ import java.util.List;
  * Date: 7/23/2015
  * Time: 10:05 PM
  */
-@Repository
 public interface ISubCategoryDao {
     List<SubCategory> getAll();
     List<SubCategory> getAllByCategoryId(int categoryId);
