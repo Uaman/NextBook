@@ -35,6 +35,7 @@
 
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
+    <link rel="icon" href="/resources/favicon.ico" type="image/x-icon" />
     <jsp:include page="../../../resources/js/book/add.book.js.jsp"/>
     <style>
         .author, .keyword{
@@ -283,5 +284,7 @@
     </div>
 </div>
 <div class="shadow" style="display: none;"></div>
+<jsp:include page="../main/footer-block.jsp"/>
+<jsp:include page="../../template/default/footer.jsp"/>
 </body>
 </html>

@@ -25,7 +25,7 @@
     </footer>
 
 <!-- top scroll -->
-<%--<script type="text/javascript">
+<script type="text/javascript">
     $(function(){
         $.fn.scrollToTop=function(){
             $(this).hide().removeAttr("href");
@@ -47,4 +47,4 @@
     });
     $(function() {$("#toTop").scrollToTop();});
 </script>
-<a href="#" id="toTop">Top</a>--%>
+<a href="#" id="toTop">Top</a>

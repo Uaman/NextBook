@@ -45,6 +45,7 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/bx_styles/bx_styles.css"/>
     <link rel="stylesheet" href="/resources/css/nivo-slider/nivo-slider.css" type="text/css" media="screen" />
+    <link rel="icon" href="/resources/favicon.ico" type="image/x-icon" />
 </head>
 <body>
 <div class="wrapper index">

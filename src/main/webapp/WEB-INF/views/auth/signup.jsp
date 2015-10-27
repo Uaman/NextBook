@@ -18,6 +18,7 @@
     <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&subset=latin-ext,cyrillic-ext' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
+    <link rel="icon" href="/resources/favicon.ico" type="image/x-icon" />
     <script src="/resources/js/spin/spin.js"></script>
     <jsp:include page="/resources/js/main/sign.up.js.jsp"></jsp:include>
 </head>
