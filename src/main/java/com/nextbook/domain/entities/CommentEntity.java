@@ -1,5 +1,6 @@
 package com.nextbook.domain.entities;
 
+import com.nextbook.dao.base.objects.GetableById;
 import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.enums.StatusChangedBy;
 
@@ -18,7 +19,7 @@ import javax.persistence.*;
         @NamedQuery(name = CommentEntity.GET_ALL_COMMENTS_FOR_USER, query = "SELECT comment FROM CommentEntity comment WHERE comment.user.id = :user_id"),
         @NamedQuery(name = CommentEntity.GET_ALL_COMMENTS_FOR_BOOK, query = "SELECT comment FROM CommentEntity comment WHERE comment.book.id = :book_id")
 })
-public class CommentEntity {
+public class CommentEntity implements GetableById{
 
     public static final String GET_ALL_COMMENTS_FOR_USER = "CommentEntity.getAllCommentsForUser";
     public static final String GET_ALL_COMMENTS_FOR_BOOK = "CommentEntity.getAllCommentsForBook";
@@ -49,6 +50,15 @@ public class CommentEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "CHANGED_BY")
     private StatusChangedBy changedBy;
+
+    public CommentEntity() {
+    }
+
+    public CommentEntity(UserEntity user, BookEntity book, String commentText) {
+        this.user = user;
+        this.book = book;
+        this.comment = commentText;
+    }
 
     public int getId() {
         return id;

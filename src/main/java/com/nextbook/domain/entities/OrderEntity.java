@@ -1,5 +1,7 @@
 package com.nextbook.domain.entities;
 
+import com.nextbook.dao.base.objects.GetableById;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -13,7 +15,7 @@ import java.util.*;
         @NamedQuery(name = OrderEntity.getAllOrders, query = "SELECT o FROM OrderEntity o"),
         @NamedQuery(name = OrderEntity.getOrdersByUser, query = "SELECT o FROM OrderEntity o WHERE o.user.id=:u_id")
 })
-public class OrderEntity{
+public class OrderEntity implements GetableById{
 
     public static final String getAllOrders = "OrderEntity.getAllOrders";
     public static final String getOrdersByUser = "OrderEntity.getOrdersByUser";

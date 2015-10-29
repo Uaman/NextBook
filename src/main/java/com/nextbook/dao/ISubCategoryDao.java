@@ -1,6 +1,6 @@
 package com.nextbook.dao;
 
-import com.nextbook.domain.pojo.SubCategory;
+import com.nextbook.domain.entities.SubCategoryEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,8 +13,8 @@ import java.util.List;
  */
 @Repository
 public interface ISubCategoryDao {
-    List<SubCategory> getAll();
-    List<SubCategory> getAllByCategoryId(int categoryId);
-    SubCategory getById(int subCategoryId);
-    SubCategory getByLink(String link);
+    List<SubCategoryEntity> getAll();
+    List<SubCategoryEntity> getAllByCategoryId(int categoryId);
+    SubCategoryEntity getById(int subCategoryId);
+    SubCategoryEntity getByLink(String link);
 }

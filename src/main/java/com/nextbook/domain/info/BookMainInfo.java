@@ -1,10 +1,7 @@
 package com.nextbook.domain.info;
 
+import com.nextbook.domain.entities.*;
 import com.nextbook.domain.enums.BookTypeEnum;
-import com.nextbook.domain.pojo.Author;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.BookAuthor;
-import com.nextbook.domain.pojo.Keyword;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,18 +57,18 @@ public class BookMainInfo {
 
     }
 
-    public BookMainInfo(Book book, String lang) {
+    public BookMainInfo(BookEntity book, String lang) {
         id = book.getId();
         isbn = book.getIsbn();
         uaName = book.getUaName();
         enName = book.getEnName();
         ruName = book.getRuName();
-        if (book.getSubCategory()!=null)
-            subCategory = book.getSubCategory().getNameUa();
+        if (book.getSubCategoryEntity()!=null)
+            subCategory = book.getSubCategoryEntity().getNameUa();
         eighteenPlus = book.isEighteenPlus();
         yearOfPublication = book.getYearOfPublication();
-        if (book.getPublisher()!=null)
-            publisher = book.getPublisher().getNameUa();
+        if (book.getPublisherEntity()!=null)
+            publisher = book.getPublisherEntity().getNameUa();
         language = book.getLanguage();
         typeOfBook = book.getTypeOfBook();
         numberOfPages = book.getNumberOfPages();
@@ -83,8 +80,8 @@ public class BookMainInfo {
         numberOfImagesForCover = book.getNumberOfImagesForCover();
         numberOfImagesInGallery = book.getNumberOfImagesInGallery();
         if (book.getBookToAuthor()!=null) {
-            for(BookAuthor bookAuthor : book.getBookToAuthor()) {
-                Author author = bookAuthor.getAuthor();
+            for(BookAuthorEntity bookAuthor : book.getBookToAuthor()) {
+                AuthorEntity author = bookAuthor.getAuthor();
                 String name;
                 if (lang.equals("uk")) {
                     name = author.getFirstNameUa() + ' ' + author.getLastNameUa();
@@ -96,9 +93,9 @@ public class BookMainInfo {
                 this.author += name;
             }
         }
-        if (book.getKeywords()!=null)
-            for (Keyword keyword:book.getKeywords())
-                keywords.add(keyword.getKeyword());
+        if (book.getBookToKeywords()!=null)
+            for (BookKeywordEntity keyword:book.getBookToKeywords())
+                keywords.add(keyword.getKeyword().getKeyword());
     }
 
     @Override

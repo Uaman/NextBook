@@ -2,11 +2,11 @@ package com.nextbook.services.impl;
 
 import com.nextbook.dao.IBookDao;
 import com.nextbook.domain.criterion.BookCriterion;
+import com.nextbook.domain.entities.*;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.enums.QueryType;
 import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.forms.book.BookRegisterForm;
-import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
@@ -41,17 +41,17 @@ public class BookProvider implements IBookProvider{
     private IFavoritesProvider favoritesProvider;
 
     @Override
-    public Book getBookById(int bookId) {
+    public BookEntity getBookById(int bookId) {
         return bookDao.getBookById(bookId);
     }
 
     @Override
-    public List<Book> getAllBooks() {
+    public List<BookEntity> getAllBooks() {
         return bookDao.getAllBooks();
     }
 
     @Override
-    public boolean deleteBook(Book book) {
+    public boolean deleteBook(BookEntity book) {
         if(book == null)
             return false;
         return deleteBook(book.getId());
@@ -63,7 +63,7 @@ public class BookProvider implements IBookProvider{
     }
 
     @Override
-    public Book updateBook(Book book) {
+    public BookEntity updateBook(BookEntity book) {
         if(book == null)
             return null;
         return bookDao.updateBook(book);
@@ -75,7 +75,7 @@ public class BookProvider implements IBookProvider{
     }
 
     @Override
-    public List<Book> getBooksByCriterion(BookCriterion criterion) {
+    public List<BookEntity> getBooksByCriterion(BookCriterion criterion) {
         if(criterion == null)
             return null;
         criterion.setQueryType(QueryType.GET);
@@ -83,17 +83,17 @@ public class BookProvider implements IBookProvider{
     }
 
     @Override
-    public List<Book> getAllPublisherBooks(int publisherId) {
+    public List<BookEntity> getAllPublisherBooks(int publisherId) {
         return bookDao.getAllPublisherBooks(publisherId);
     }
 
     @Override
-    public BookKeyword getBookToKeyword(int bookId, int keywordId) {
+    public BookKeywordEntity getBookToKeyword(int bookId, int keywordId) {
         return bookDao.getBookToKeyword(bookId, keywordId);
     }
 
     @Override
-    public BookKeyword updateBookToKeyword(BookKeyword bookKeyword) {
+    public BookKeywordEntity updateBookToKeyword(BookKeywordEntity bookKeyword) {
         if(bookKeyword == null)
             return null;
         return bookDao.updateBookToKeyword(bookKeyword);
@@ -105,12 +105,12 @@ public class BookProvider implements IBookProvider{
     }
 
     @Override
-    public BookAuthor getBookToAuthor(int bookId, int authorId) {
+    public BookAuthorEntity getBookToAuthor(int bookId, int authorId) {
         return bookDao.getBookToAuthor(bookId, authorId);
     }
 
     @Override
-    public BookAuthor updateBookToAuthor(BookAuthor bookAuthor) {
+    public BookAuthorEntity updateBookToAuthor(BookAuthorEntity bookAuthor) {
         if(bookAuthor == null)
             return null;
         return bookDao.updateBookToAuthor(bookAuthor);
@@ -133,12 +133,12 @@ public class BookProvider implements IBookProvider{
     public int getBooksQuantity() { return bookDao.getBooksQuantity(); }
 
     @Override
-    public Book userStarBook(User user, Book book, float mark) {
+    public BookEntity userStarBook(UserEntity user, BookEntity book, float mark) {
         if (user == null || book == null)
             return null;
 
-        UserStarsBook userStarsBook = new UserStarsBook(user, book, mark);
-        userStarsBook = bookDao.userStarsBook(userStarsBook);
+        UserStarsBookEntity userStarsBook = new UserStarsBookEntity(user, book, mark);
+        userStarsBook = bookDao.userStarsBookUpdate(userStarsBook);
         if (userStarsBook == null)
             return null;
 
@@ -153,10 +153,10 @@ public class BookProvider implements IBookProvider{
     }
 
     @Override
-    public List<BookPreview> booksToBookPreviews(List<Book> books, Locale locale) {
+    public List<BookPreview> booksToBookPreviews(List<BookEntity> books, Locale locale) {
         ArrayList<BookPreview> res = new ArrayList<BookPreview>();
-        User user = sessionUtils.getCurrentUser();
-        for (Book b:books) {
+        UserEntity user = sessionUtils.getCurrentUser();
+        for (BookEntity b:books) {
             BookPreview book = new BookPreview(b, locale);
             if (user!=null) {
                 book.setFavorite(favoritesProvider.isFavorite(user.getId(), book.getId()));
@@ -167,7 +167,7 @@ public class BookProvider implements IBookProvider{
     }
 
     @Override
-    public Book adminActivateBook(Book book) {
+    public BookEntity adminActivateBook(BookEntity book) {
         if(book == null)
             return null;
         book.setStatus(Status.ACTIVE);
@@ -176,7 +176,7 @@ public class BookProvider implements IBookProvider{
     }
 
     @Override
-    public Book adminDeactivateBook(Book book) {
+    public BookEntity adminDeactivateBook(BookEntity book) {
         if(book == null)
             return null;
         book.setStatus(Status.NOT_ACTIVE);
@@ -184,7 +184,8 @@ public class BookProvider implements IBookProvider{
         return book;
     }
 
-    public Book publisherSendBookForReview(Book book){
+    @Override
+    public BookEntity publisherSendBookForReview(BookEntity book){
         if(book == null)
             return null;
         book.setStatus(Status.READY_FOR_REVIEW);
@@ -193,14 +194,15 @@ public class BookProvider implements IBookProvider{
     }
 
     @Override
-    public Book defaultBook( Publisher publisher){
-        Book book = new Book();
+    public BookEntity defaultBook(PublisherEntity publisher){
+        BookEntity book = new BookEntity();
         book.setUaName("");
-        SubCategory subCategory = new SubCategory();
+        SubCategoryEntity subCategory = new SubCategoryEntity();
+
         subCategory.setId(1);
-        book.setSubCategory(subCategory);
+        book.setSubCategoryEntity(subCategory);
         book.setYearOfPublication(0);
-        book.setPublisher(publisher);
+        book.setPublisherEntity(publisher);
         book.setLanguage("");
         book.setTypeOfBook(BookTypeEnum.ELECTRONIC);
         book.setDescriptionUa("");
@@ -209,7 +211,8 @@ public class BookProvider implements IBookProvider{
         return book;
     }
 
-    public void copyBookFromBookForm(Book book, BookRegisterForm bookRegisterForm){
+    @Override
+    public void copyBookFromBookForm(BookEntity book, BookRegisterForm bookRegisterForm){
         book.setIsbn(bookRegisterForm.getIsbn());
         book.setUaName(bookRegisterForm.getUaName());
         book.setEnName(bookRegisterForm.getEnName());
@@ -222,21 +225,21 @@ public class BookProvider implements IBookProvider{
         book.setDescriptionUa(bookRegisterForm.getDescriptionUa());
         book.setDescriptionEn(bookRegisterForm.getDescriptionEn());
         book.setDescriptionRu(bookRegisterForm.getDescriptionRu());
-        book.setSubCategory(subCategoryProvider.getById(bookRegisterForm.getSubCategoryId()));
+        book.setSubCategoryEntity(subCategoryProvider.getById(bookRegisterForm.getSubCategoryId()));
 
         List<String> keywords = bookRegisterForm.getKeywords();
         for(String s : keywords){
-            Keyword keyword = keywordProvider.getByName(s);
+            KeywordEntity keyword = keywordProvider.getByName(s);
             if(keyword == null) {
-                keyword = new Keyword();
+                keyword = new KeywordEntity();
                 keyword.setKeyword(s);
                 keyword = keywordProvider.update(keyword);
             }
-            if(!book.getKeywords().contains(keyword)) {
-                BookKeyword bookKeyword = new BookKeyword();
+            if(!book.getBookToKeywords().contains(keyword)) {
+                BookKeywordEntity bookKeyword = new BookKeywordEntity();
                 bookKeyword.setBook(book);
                 bookKeyword.setKeyword(keyword);
-                book.addKeyword(keyword);
+                book.getBookToKeywords().add(bookKeyword);
                 updateBookToKeyword(bookKeyword);
             }
         }
@@ -244,14 +247,14 @@ public class BookProvider implements IBookProvider{
         for(Integer id : bookRegisterForm.getAuthors()) {
             if(id == null)
                 continue;
-            Author author = authorProvider.getById(id);
+            AuthorEntity author = authorProvider.getById(id);
             if(author != null) {
-                BookAuthor bookAuthor = new BookAuthor();
+                BookAuthorEntity bookAuthor = new BookAuthorEntity();
                 bookAuthor.setAuthor(author);
                 bookAuthor.setBook(book);
                 bookAuthor = updateBookToAuthor(bookAuthor);
                 if(bookAuthor != null)
-                    book.addAuthor(bookAuthor.getAuthor());
+                    book.getBookToAuthor().add(bookAuthor);
             }
         }
     }

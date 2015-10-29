@@ -1,7 +1,7 @@
 package com.nextbook.services.impl;
 
 import com.nextbook.dao.IRoleDao;
-import com.nextbook.domain.pojo.Role;
+import com.nextbook.domain.entities.RoleEntity;
 import com.nextbook.services.IRoleProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class RoleProvider implements IRoleProvider{
     private IRoleDao roleDao;
 
     @Override
-    public List<Role> getAll(){
+    public List<RoleEntity> getAll(){
         return roleDao.getAll();
     }
 

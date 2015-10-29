@@ -1,10 +1,10 @@
 package com.nextbook.domain.criterion;
 
+import com.nextbook.domain.entities.BookEntity;
+import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.enums.StatusChangedBy;
 import com.nextbook.domain.filters.CommentsFilter;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.User;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,9 +22,9 @@ public class CommentsCriterion {
 
     private long timeTo;
 
-    private Book book;
+    private BookEntity book;
 
-    private User user;
+    private UserEntity user;
 
     private int from;
 
@@ -75,19 +75,19 @@ public class CommentsCriterion {
         this.timeTo = timeTo;
     }
 
-    public Book getBook() {
+    public BookEntity getBook() {
         return book;
     }
 
-    public void setBook(Book book) {
+    public void setBook(BookEntity book) {
         this.book = book;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 

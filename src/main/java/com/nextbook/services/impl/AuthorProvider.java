@@ -2,7 +2,7 @@ package com.nextbook.services.impl;
 
 import com.nextbook.dao.IAuthorDao;
 import com.nextbook.domain.criterion.AuthorCriterion;
-import com.nextbook.domain.pojo.Author;
+import com.nextbook.domain.entities.AuthorEntity;
 import com.nextbook.services.IAuthorProvider;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class AuthorProvider implements IAuthorProvider{
     private IAuthorDao authorDao;
 
     @Override
-    public Author updateAuthor(Author author) {
+    public AuthorEntity updateAuthor(AuthorEntity author) {
         if(author == null)
             return null;
         return authorDao.updateAuthor(author);
@@ -34,26 +34,26 @@ public class AuthorProvider implements IAuthorProvider{
     }
 
     @Override
-    public Author getById(int authorId) {
+    public AuthorEntity getById(int authorId) {
         return authorDao.getById(authorId);
     }
 
     @Override
-    public List<Author> getAll() {
+    public List<AuthorEntity> getAll() {
         return authorDao.getFromMax(0, 0);
     }
 
     @Override
-    public List<Author> getFromMax(int from, int max) {
+    public List<AuthorEntity> getFromMax(int from, int max) {
         return authorDao.getFromMax(from, max);
     }
     @Override
-    public List<Author> getAuthorsByCriterion(AuthorCriterion criterion) {
+    public List<AuthorEntity> getAuthorsByCriterion(AuthorCriterion criterion) {
         return authorDao.getAuthorsByCriterion(criterion);
     }
 
     @Override
-    public Author getByFirstAndLastName(String fName, String lName) {
+    public AuthorEntity getByFirstAndLastName(String fName, String lName) {
         if(!validString(fName) || !validString(lName))
             return  null;
         return authorDao.getByFirstAndLastName(fName, lName);

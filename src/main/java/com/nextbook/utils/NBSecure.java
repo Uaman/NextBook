@@ -1,16 +1,10 @@
 package com.nextbook.utils;
 
-import com.nextbook.domain.pojo.Permission;
-import com.nextbook.domain.pojo.User;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.nextbook.domain.entities.PermissionEntity;
+import com.nextbook.domain.entities.UserEntity;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import java.util.Collection;
 
 /**
  * Created by Polomani on 09.08.2015.
@@ -43,9 +37,9 @@ public class NBSecure {
     }
 
     public boolean hasRole (String s) {
-        User user = sessionUtils.getCurrentUser();
+        UserEntity user = sessionUtils.getCurrentUser();
         if (user==null) return false;
-        for (Permission p :user.getRole().getPermissions()) {
+        for (PermissionEntity p :user.getRoleEntity().getPermissions()) {
             if (p.getName().equals(s))
                 return true;
         }

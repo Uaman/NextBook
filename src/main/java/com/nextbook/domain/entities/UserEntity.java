@@ -1,6 +1,6 @@
 package com.nextbook.domain.entities;
 
-import com.nextbook.domain.pojo.Role;
+import com.nextbook.dao.base.objects.GetableById;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
@@ -21,7 +21,7 @@ import java.util.Set;
         @NamedQuery(name = UserEntity.getAllUsers, query = "SELECT user FROM UserEntity user"),
         @NamedQuery(name = UserEntity.getUserByEmail, query = "SELECT user FROM UserEntity user WHERE user.email=:email")
         })
-public class UserEntity {
+public class UserEntity implements GetableById {
 
     public static final String getAllUsers = "getAllUsers";
     public static final String getUserByEmail = "getUserByEmail";

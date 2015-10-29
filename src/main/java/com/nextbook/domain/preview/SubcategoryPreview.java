@@ -1,9 +1,7 @@
 package com.nextbook.domain.preview;
 
-import com.nextbook.domain.pojo.SubCategory;
+import com.nextbook.domain.entities.SubCategoryEntity;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -16,7 +14,7 @@ public class SubcategoryPreview {
     private String name;
     private String link;
 
-    public SubcategoryPreview(SubCategory s, Locale locale) {
+    public SubcategoryPreview(SubCategoryEntity s, Locale locale) {
         this.id = s.getId();
         if (locale.getLanguage().equals("uk")) {
             this.name = s.getNameUa();

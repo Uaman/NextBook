@@ -1,10 +1,10 @@
 package com.nextbook.domain.criterion;
 
+import com.nextbook.domain.entities.AuthorEntity;
+import com.nextbook.domain.entities.CategoryEntity;
+import com.nextbook.domain.entities.PublisherEntity;
+import com.nextbook.domain.entities.SubCategoryEntity;
 import com.nextbook.domain.enums.*;
-import com.nextbook.domain.pojo.Author;
-import com.nextbook.domain.pojo.Category;
-import com.nextbook.domain.pojo.Publisher;
-import com.nextbook.domain.pojo.SubCategory;
 
 /**
  * Created by Polomani on 27.07.2015.
@@ -15,21 +15,21 @@ public class BookCriterion {
 
     private int max;
 
-    private Category category;
+    private CategoryEntity category;
 
-    private SubCategory subCategory;
+    private SubCategoryEntity subCategory;
 
     private EighteenPlus eighteenPlus;
 
     private int yearOfPublication;
 
-    private Publisher publisher;
+    private PublisherEntity publisher;
 
     private BookTypeEnum bookType;
 
     private int numberOfPages;
 
-    private Author author;
+    private AuthorEntity author;
 
     private OrderDirectionEnum orderDirection;
 
@@ -57,19 +57,19 @@ public class BookCriterion {
         this.max = max;
     }
 
-    public Category getCategory() {
+    public CategoryEntity getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryEntity category) {
         this.category = category;
     }
 
-    public SubCategory getSubCategory() {
+    public SubCategoryEntity getSubCategory() {
         return subCategory;
     }
 
-    public void setSubCategory(SubCategory subCategory) {
+    public void setSubCategory(SubCategoryEntity subCategory) {
         this.subCategory = subCategory;
     }
 
@@ -89,11 +89,11 @@ public class BookCriterion {
         this.yearOfPublication = yearOfPublication;
     }
 
-    public Publisher getPublisher() {
+    public PublisherEntity getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(Publisher publisher) {
+    public void setPublisher(PublisherEntity publisher) {
         this.publisher = publisher;
     }
 
@@ -113,11 +113,11 @@ public class BookCriterion {
         this.numberOfPages = numberOfPages;
     }
 
-    public Author getAuthor() {
+    public AuthorEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(Author author) {
+    public void setAuthor(AuthorEntity author) {
         this.author = author;
     }
 
@@ -175,12 +175,12 @@ public class BookCriterion {
             return this;
         }
 
-        public Builder category(Category category){
+        public Builder category(CategoryEntity category){
             this.bookCriterion.setCategory(category);
             return this;
         }
 
-        public Builder subcategory(SubCategory subcategory){
+        public Builder subcategory(SubCategoryEntity subcategory){
             this.bookCriterion.setSubCategory(subcategory);
             return this;
         }
@@ -195,7 +195,7 @@ public class BookCriterion {
             return this;
         }
 
-        public Builder publisher(Publisher publisher){
+        public Builder publisher(PublisherEntity publisher){
             this.bookCriterion.setPublisher(publisher);
             return this;
         }
@@ -210,7 +210,7 @@ public class BookCriterion {
             return this;
         }
 
-        public Builder author(Author author){
+        public Builder author(AuthorEntity author){
             this.bookCriterion.setAuthor(author);
             return this;
         }

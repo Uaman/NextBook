@@ -1,7 +1,7 @@
 package com.nextbook.dao;
 
 import com.nextbook.domain.criterion.UserCriterion;
-import com.nextbook.domain.pojo.User;
+import com.nextbook.domain.entities.UserEntity;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ import java.util.List;
  */
 public interface IUserDao {
 
-    User getById(int userId);
+    UserEntity getById(int userId);
 
-    User update(User user);
+    UserEntity update(UserEntity user);
 
     /**
      * pass (0, 0) to get all
@@ -23,11 +23,11 @@ public interface IUserDao {
      * @param max - max number
      * @return
      */
-    List<User> getAll(int from, int max);
+    List<UserEntity> getAll(int from, int max);
 
     boolean delete(int userId);
 
-    public List<User> getUsersByCriterion(UserCriterion criterion);
+    public List<UserEntity> getUsersByCriterion(UserCriterion criterion);
 
-    public User getUserByEmail(String email);
+    public UserEntity getUserByEmail(String email);
 }

@@ -2,10 +2,10 @@ package com.nextbook.controllers;
 
 import com.nextbook.domain.criterion.BookCriterion;
 import com.nextbook.domain.entities.BookEntity;
+import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.exceptions.EmailAlreadyExistsException;
 import com.nextbook.domain.forms.user.RegisterUserForm;
-import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.domain.response.ResponseOnAjaxRegistration;
 import com.nextbook.services.*;
@@ -66,7 +66,7 @@ public class IndexController {
                 .status(Status.ACTIVE)
                 .build();
 
-        List<Book> books = bookProvider.getBooksByCriterion(bookCriterion);
+        List<BookEntity> books = bookProvider.getBooksByCriterion(bookCriterion);
         List<BookPreview> lastBooks = bookProvider.booksToBookPreviews(books, locale);
         model.addAttribute("last_books", lastBooks);
         model.addAttribute("numberOfLastBooks", lastBooks.size());
@@ -88,7 +88,7 @@ public class IndexController {
     public @ResponseBody ResponseOnAjaxRegistration addUser(@RequestBody RegisterUserForm form, Locale locale) {
         ResponseOnAjaxRegistration<RegisterUserForm> response = new ResponseOnAjaxRegistration<RegisterUserForm>(validator.validate(form), messageSource, locale);
         if(!response.hasErrors()) {
-            User user = new User();
+            UserEntity user = new UserEntity();
             user.setName(form.getName());
             user.setEmail(form.getEmail());
             user.setPassword(md5PasswordEncoder.encodePassword(form.getPassword(), null));

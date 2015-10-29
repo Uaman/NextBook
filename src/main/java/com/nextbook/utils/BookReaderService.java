@@ -3,26 +3,19 @@ package com.nextbook.utils;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.User;
+import com.nextbook.domain.entities.BookEntity;
+import com.nextbook.domain.entities.UserEntity;
 
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
 import java.io.*;
-import java.math.BigInteger;
 import java.net.URL;
-import java.security.*;
-import java.security.spec.RSAPrivateKeySpec;
-import java.security.spec.RSAPublicKeySpec;
 
 /**
  * Created by KutsykV on 05.09.2015.
  */
 public class BookReaderService {
 
-    private Book book;
-    private User user;
+    private BookEntity book;
+    private UserEntity user;
     private String key;
     private final static String bookDir = "temp_book";
 
@@ -30,7 +23,7 @@ public class BookReaderService {
 
     }
 
-    public Book getBookForUser(User user, Book book) {
+    public BookEntity getBookForUser(UserEntity user, BookEntity book) {
         String key = buildKey(user, book);
         File bookCopy = createLocalCopy(book.getLinkToStorage(), key);
         String encodedFileName = setPasswordToPdfFile(user, bookCopy.getPath());
@@ -39,11 +32,11 @@ public class BookReaderService {
         return null;
     }
 
-    private String buildKey(User user, Book book) {
+    private String buildKey(UserEntity user, BookEntity book) {
         return user.getId() + "-" + book.getLinkToStorage();
     }
 
-    public String setPasswordToPdfFile(User user, String fileName) {
+    public String setPasswordToPdfFile(UserEntity user, String fileName) {
         String fileNameResult = bookDir+File.separator+fileName.substring(fileName.lastIndexOf("."+1))+"_encoded.pdf";
         try {
             PdfReader reader = new PdfReader(fileNameResult);

@@ -2,9 +2,9 @@ package com.nextbook.services.impl;
 
 import com.nextbook.dao.IUserDao;
 import com.nextbook.domain.criterion.UserCriterion;
+import com.nextbook.domain.entities.RoleEntity;
+import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.exceptions.EmailAlreadyExistsException;
-import com.nextbook.domain.pojo.Role;
-import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
 import org.springframework.stereotype.Service;
 
@@ -24,33 +24,33 @@ public class UserProvider implements IUserProvider{
     private IUserDao userDao;
 
     @Override
-    public User getById(int userId) {
+    public UserEntity getById(int userId) {
         return userDao.getById(userId);
     }
 
     @Override
-    public List<User> getFromMax(int from, int max) {
+    public List<UserEntity> getFromMax(int from, int max) {
         return userDao.getAll(from, max);
     }
 
     @Override
-    public User registerNewUser(User user) throws EmailAlreadyExistsException{
-        User userByEmail = getUserByEmail(user.getEmail());
+    public UserEntity registerNewUser(UserEntity user) throws EmailAlreadyExistsException{
+        UserEntity userByEmail = getUserByEmail(user.getEmail());
         if(userByEmail != null)
             throw new EmailAlreadyExistsException();
-        Role role = new Role();
+        RoleEntity role = new RoleEntity();
         role.setId(USER_ROLE_ID);
-        user.setRole(role);
+        user.setRoleEntity(role);
         return update(user);
     }
 
     @Override
-    public User update(User user) {
+    public UserEntity update(UserEntity user) {
         return userDao.update(user);
     }
 
     @Override
-    public List<User> getAll() {
+    public List<UserEntity> getAll() {
         return userDao.getAll(0, 0);
     }
 
@@ -60,12 +60,12 @@ public class UserProvider implements IUserProvider{
     }
 
     @Override
-    public List<User> getUsersByCriterion(UserCriterion criterion) {
+    public List<UserEntity> getUsersByCriterion(UserCriterion criterion) {
         return userDao.getUsersByCriterion(criterion);
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public UserEntity getUserByEmail(String email) {
         return userDao.getUserByEmail(email);
     }
 

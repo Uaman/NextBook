@@ -1,11 +1,11 @@
 package com.nextbook.controllers.cabinet.user;
 
+import com.nextbook.domain.entities.*;
 import com.nextbook.domain.response.ResponseForAutoComplete;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.enums.Cover;
 import com.nextbook.domain.criterion.AuthorCriterion;
 import com.nextbook.domain.forms.book.BookRegisterForm;
-import com.nextbook.domain.pojo.*;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import com.nextbook.utils.StatisticUtil;
@@ -54,16 +54,16 @@ public class BookController {
 
     @RequestMapping(value = "/new-book", method = RequestMethod.GET)
     public String newBook(){
-        User user = sessionUtils.getCurrentUser();
+        UserEntity user = sessionUtils.getCurrentUser();
         if(user == null){
             return "redirect:/";
         }
-        Publisher publisher = publisherProvider.getPublisherByUser(user);
+        PublisherEntity publisher = publisherProvider.getPublisherByUser(user);
         if(publisher == null){
             // redirect to page where user can create publication
             return "redirect:/publisher/new";
         }
-        Book book = bookProvider.defaultBook(publisher);
+        BookEntity book = bookProvider.defaultBook(publisher);
         book = bookProvider.updateBook(book);
         if(book == null)
             return "redirect:/cabinet/profile";
@@ -73,19 +73,19 @@ public class BookController {
     @RequestMapping(value = "/edit-book", method = RequestMethod.GET)
     public String addBook(@RequestParam("bookId")int bookId,
                           Model model, Locale locale){
-        User user = sessionUtils.getCurrentUser();
+        UserEntity user = sessionUtils.getCurrentUser();
         if(user == null){
             return "redirect:/";
         }
-        Publisher publisher = publisherProvider.getPublisherByUser(user);
+        PublisherEntity publisher = publisherProvider.getPublisherByUser(user);
         if(publisher == null){
             // redirect to page where user can create publication
             return "redirect:/publisher/new";
         }
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
         if(book == null)
             return "redirect:/cabinet/profile";
-        if(book.getPublisher().getId() != publisher.getId())
+        if(book.getPublisherEntity().getId() != publisher.getId())
             return "redirect:/publisher/view?publisherId="+publisher.getId();
         model.addAttribute("subCategories", subCategoryProvider.getAll());
         model.addAttribute("book", book);
@@ -97,10 +97,10 @@ public class BookController {
     @RequestMapping(value = "/edit-book", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody int saveBook(@RequestBody BookRegisterForm bookRegisterForm,
                                       Principal principal){
-        User user = sessionUtils.getCurrentUser();
+        UserEntity user = sessionUtils.getCurrentUser();
         if(user == null)
             return -1;
-        Book book = bookProvider.getBookById(bookRegisterForm.getBookId());
+        BookEntity book = bookProvider.getBookById(bookRegisterForm.getBookId());
         if(book == null)
             return -1;
         String storageLink = bookStorageProvider.uploadBookToStorage(book.getId());
@@ -142,7 +142,7 @@ public class BookController {
                                                           Locale locale){
         if(keyword.equals(""))
             return new ArrayList<ResponseForAutoComplete>();
-        List<Author> authors = authorProvider.getAuthorsByCriterion(new AuthorCriterion(keyword));
+        List<AuthorEntity> authors = authorProvider.getAuthorsByCriterion(new AuthorCriterion(keyword));
         String language = locale.getLanguage();
         List<ResponseForAutoComplete> response = methodsProvider.formAuthorsForAutoComplete(authors, language);
         return response;
@@ -153,10 +153,10 @@ public class BookController {
                                                           Locale locale){
         if(keyword.equals(""))
             return new ArrayList<ResponseForAutoComplete>();
-        List<Keyword> keywords = keywordProvider.getListByKeyword(keyword);
+        List<KeywordEntity> keywords = keywordProvider.getListByKeyword(keyword);
         List<ResponseForAutoComplete> response = new ArrayList<ResponseForAutoComplete>();
         if(keywords != null) {
-            for (Keyword k : keywords) {
+            for (KeywordEntity k : keywords) {
                 response.add(new ResponseForAutoComplete(k.getId(), k.getKeyword()));
             }
         }
@@ -186,8 +186,8 @@ public class BookController {
                                         @RequestParam(value = "bookId", required = true) Integer bookId) {
         if (bookId == null || bookId == 0)
             return -1;
-        User user = sessionUtils.getCurrentUser();
-        Book book = bookProvider.getBookById(bookId);
+        UserEntity user = sessionUtils.getCurrentUser();
+        BookEntity book = bookProvider.getBookById(bookId);
         if(!methodsProvider.checkBookToUser(user, book))
             return -1;
         Iterator<String> itr =  request.getFileNames();
@@ -199,8 +199,8 @@ public class BookController {
     @RequestMapping(value = "/delete-gallery-image/{bookId}/{photoId}", method = RequestMethod.POST)
     public @ResponseBody int deleteGalleryImage(@PathVariable("bookId") int bookId,
                                   @PathVariable("photoId") int photoId){
-        User user = sessionUtils.getCurrentUser();
-        Book book = bookProvider.getBookById(bookId);
+        UserEntity user = sessionUtils.getCurrentUser();
+        BookEntity book = bookProvider.getBookById(bookId);
         if(!methodsProvider.checkBookToUser(user, book))
             return -1;
         boolean success = bookStorageProvider.deleteGalleryPhoto(bookId, photoId);
@@ -212,7 +212,7 @@ public class BookController {
     private boolean saveCover(int bookId, MultipartFile file, Cover cover){
         if(file == null)
             return false;
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
         boolean success = bookStorageProvider.uploadCoversToLocalStorage(bookId, file, cover);
@@ -222,7 +222,7 @@ public class BookController {
     private boolean saveBook(int bookId, MultipartFile file){
         if(file == null)
             return false;
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
 
         if(book == null)
             return false;
@@ -240,8 +240,8 @@ public class BookController {
     @RequestMapping(value = "/delete-keyword/{bookId}/{keywordId}", method = RequestMethod.POST)
     public @ResponseBody boolean deleteKeyword(@PathVariable("bookId") int bookId,
                                                @PathVariable("keywordId") int keywordId){
-        User user = sessionUtils.getCurrentUser();
-        Book book = bookProvider.getBookById(bookId);
+        UserEntity user = sessionUtils.getCurrentUser();
+        BookEntity book = bookProvider.getBookById(bookId);
         if(!methodsProvider.checkBookToUser(user, book))
             return false;
         boolean success = bookProvider.deleteBookToKeyword(bookId, keywordId);
@@ -251,19 +251,19 @@ public class BookController {
     @RequestMapping(value = "/delete-author/{bookId}/{authorId}", method = RequestMethod.POST)
     public @ResponseBody boolean deleteAuthor(@PathVariable("bookId") int bookId,
                                                @PathVariable("authorId") int authorId){
-        User user = sessionUtils.getCurrentUser();
+        UserEntity user = sessionUtils.getCurrentUser();
         if(user == null)
             return false;
 
-        Publisher publisher = publisherProvider.getPublisherByUser(user);
+        PublisherEntity publisher = publisherProvider.getPublisherByUser(user);
         if(publisher == null)
             return false;
 
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
 
-        if(book.getPublisher().getId() != publisher.getId())
+        if(book.getPublisherEntity().getId() != publisher.getId())
             return false;
         boolean success = bookProvider.deleteBookToAuthor(bookId, authorId);
         return success;
@@ -271,13 +271,13 @@ public class BookController {
 
     @RequestMapping(value = "/add-favorite/{id}")
     public @ResponseBody int addToFavorite(@PathVariable int id){
-        Book book = bookProvider.getBookById(id);
+        BookEntity book = bookProvider.getBookById(id);
         if (book==null)
             return -1;
-        User user = sessionUtils.getCurrentUser();
+        UserEntity user = sessionUtils.getCurrentUser();
         if (user==null)
             return 0;
-        Favorites favorites = new Favorites();
+        FavoritesEntity favorites = new FavoritesEntity();
         favorites.setBook(book);
         favorites.setUser(user);
         favoritesProvider.addToUserFavorites(favorites);
@@ -286,10 +286,10 @@ public class BookController {
 
     @RequestMapping(value = "/delete-favorite/{id}")
     public @ResponseBody int deleteFavorite(@PathVariable int id){
-        Book book = bookProvider.getBookById(id);
+        BookEntity book = bookProvider.getBookById(id);
         if (book==null)
             return -1;
-        User user = sessionUtils.getCurrentUser();
+        UserEntity user = sessionUtils.getCurrentUser();
         if (user==null)
             return 0;
         return favoritesProvider.deleteFromUserFavorites(user.getId(), book.getId())?1:-1;
@@ -297,10 +297,10 @@ public class BookController {
 
     @RequestMapping(value = "/is-favorite/{id}")
     public @ResponseBody int isFavorite(@PathVariable int id){
-        Book book = bookProvider.getBookById(id);
+        BookEntity book = bookProvider.getBookById(id);
         if (book==null)
             return -1;
-        User user = sessionUtils.getCurrentUser();
+        UserEntity user = sessionUtils.getCurrentUser();
         if (user==null)
             return 0;
         return favoritesProvider.isFavorite(user.getId(), book.getId())?1:0;

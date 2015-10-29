@@ -1,8 +1,7 @@
 package com.nextbook.services.impl;
 
 import com.nextbook.dao.IKeywordDao;
-import com.nextbook.dao.impl.KeywordDAO;
-import com.nextbook.domain.pojo.Keyword;
+import com.nextbook.domain.entities.KeywordEntity;
 import com.nextbook.services.IKeywordProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,21 +21,21 @@ public class KeywordProvider implements IKeywordProvider {
     private IKeywordDao keywordDao;
 
     @Override
-    public Keyword getByName(String keyword) {
+    public KeywordEntity getByName(String keyword) {
         if(keyword == null)
             return null;
         return keywordDao.getByName(keyword);
     }
 
     @Override
-    public Keyword update(Keyword keyword) {
+    public KeywordEntity update(KeywordEntity keyword) {
         if(keyword == null)
             return null;
         return keywordDao.update(keyword);
     }
 
     @Override
-    public List<Keyword> getListByKeyword(String keyword) {
+    public List<KeywordEntity> getListByKeyword(String keyword) {
         if(keyword == null || keyword.equals(""))
             return null;
         return keywordDao.getListByKeyword(keyword);

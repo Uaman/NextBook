@@ -1,5 +1,7 @@
 package com.nextbook.domain.entities;
 
+import com.google.common.primitives.Bytes;
+import com.nextbook.dao.base.objects.GetableById;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.enums.Status;
 
@@ -23,7 +25,7 @@ import java.util.List;
         @NamedQuery(name = BookEntity.getBooksByPublisherId, query = "SELECT book FROM BookEntity book WHERE book.publisherEntity.id=:id"),
         @NamedQuery(name = BookEntity.getBooksQuantity, query = "SELECT COUNT(book) FROM BookEntity book")
 })
-public class BookEntity {
+public class BookEntity implements GetableById{
 
     public static final String getBooksQuantity = "getBooksQuantity";
     public static final String getAllBooks = "getAllBooks";

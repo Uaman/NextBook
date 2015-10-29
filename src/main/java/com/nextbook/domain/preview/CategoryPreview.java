@@ -1,7 +1,7 @@
 package com.nextbook.domain.preview;
 
-import com.nextbook.domain.pojo.Category;
-import com.nextbook.domain.pojo.SubCategory;
+import com.nextbook.domain.entities.CategoryEntity;
+import com.nextbook.domain.entities.SubCategoryEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class CategoryPreview {
 
     private List<SubcategoryPreview> subcategories;
 
-    public CategoryPreview(Category c, Locale locale) {
+    public CategoryPreview(CategoryEntity c, Locale locale) {
         this.id = c.getId();
         if (locale.getLanguage().equals("uk")) {
             this.name = c.getNameUa();
@@ -30,8 +30,8 @@ public class CategoryPreview {
         }
         link = c.getNameEn().toLowerCase().replaceAll(" ", "_");
         subcategories = new ArrayList<SubcategoryPreview>();
-        List<SubCategory> ss = c.getSubCategory();
-        for (SubCategory s:c.getSubCategory()) {
+        List<SubCategoryEntity> ss = c.getSubCategoryEntity();
+        for (SubCategoryEntity s:c.getSubCategoryEntity()) {
             subcategories.add(new SubcategoryPreview(s, locale));
         }
     }

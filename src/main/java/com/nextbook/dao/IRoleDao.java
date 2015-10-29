@@ -1,6 +1,6 @@
 package com.nextbook.dao;
 
-import com.nextbook.domain.pojo.Role;
+import com.nextbook.domain.entities.RoleEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,6 +14,6 @@ import java.util.List;
 @Repository
 public interface IRoleDao {
 
-    List<Role> getAll();
+    List<RoleEntity> getAll();
 
 }

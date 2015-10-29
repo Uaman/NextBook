@@ -1,6 +1,8 @@
 package com.nextbook.domain.entities;
 
 
+import com.nextbook.dao.base.objects.GetableById;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.List;
         @NamedQuery(name = PublisherEntity.GET_ALL, query = "SELECT publisher FROM PublisherEntity publisher"),
         @NamedQuery(name = PublisherEntity.GET_PUBLISHERS_QUANTITY, query = "SELECT COUNT(publisher) FROM PublisherEntity publisher")
 })
-public class PublisherEntity {
+public class PublisherEntity implements GetableById{
 
     public static final String GET_BY_ID = "getPublisherById";
     public static final String GET_ALL = "getAllPublishers";

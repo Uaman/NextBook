@@ -599,9 +599,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
-                    <url>${database.url}</url>
-                    <user>${database.login}</user>
-                    <password>${database.password}</password>
+                    <url>jdbc:mysql://localhost:3306/nextbook</url>
+                    <user>root</user>
+                    <password>root</password>
                     <schemas>
                         <schema>nextbook</schema>
                     </schemas>

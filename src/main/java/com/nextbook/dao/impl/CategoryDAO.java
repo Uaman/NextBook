@@ -1,93 +1,46 @@
 package com.nextbook.dao.impl;
 
+import com.nextbook.dao.Dao;
 import com.nextbook.dao.ICategoryDAO;
 import com.nextbook.domain.entities.CategoryEntity;
-import com.nextbook.domain.entities.SubCategoryEntity;
-import com.nextbook.domain.pojo.Category;
-import com.nextbook.domain.pojo.SubCategory;
-import com.nextbook.utils.DozerMapperFactory;
-import com.nextbook.utils.HibernateUtil;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import javax.inject.Inject;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by Polomani on 26.09.2015.
  */
-@Repository
+@Service
+@Transactional
 public class CategoryDAO implements ICategoryDAO {
 
+    @Inject
+    private Dao baseDao;
 
     @Override
-    public Category getById(int id) {
-        Category result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            CategoryEntity entity = (CategoryEntity) session.load(CategoryEntity.class, id);
-            result = DozerMapperFactory.getDozerBeanMapper().map(entity, Category.class);
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public CategoryEntity getById(int id) {
+        return baseDao.getById(CategoryEntity.class, id);
     }
 
     @Override
-    public List<Category> getAll() {
-        List<Category> result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            Query query = session.getNamedQuery(CategoryEntity.getAll);
-            List<CategoryEntity> entities = query.list();
-            if (entities.size() > 0) {
-                result = new ArrayList<Category>();
-                for (CategoryEntity entity : entities) {
-                    if (entity != null) {
-                        try {
-                            Category temp = DozerMapperFactory.getDozerBeanMapper().map(entity, Category.class);
-                            if (temp != null)
-                                result.add(temp);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public List<CategoryEntity> getAll(){
+        return baseDao.getAll(CategoryEntity.class);
     }
 
     @Override
-    public Category getByLink(String link) {
-        Category result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            Query query = session.getNamedQuery(CategoryEntity.getByLink);
-            query.setParameter("link", link);
-            List<CategoryEntity> entities = query.list();
-            if (entities.size() > 0) {
-                result = DozerMapperFactory.getDozerBeanMapper().map(entities.get(0), Category.class);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public CategoryEntity getByLink(final String link) {
+        List<CategoryEntity> result =
+                baseDao.executeNamedQueryWithParams(
+                CategoryEntity.class,
+                CategoryEntity.getByLink,
+                new HashMap<String, Object>(){{
+                    put("link",link);
+                }});
+        return (result == null || result.isEmpty()) ? null : result.get(0);
     }
 }

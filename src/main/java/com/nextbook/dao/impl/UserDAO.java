@@ -1,16 +1,15 @@
 package com.nextbook.dao.impl;
 
+import com.nextbook.dao.Dao;
 import com.nextbook.dao.IUserDao;
 import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.criterion.UserCriterion;
-import com.nextbook.domain.pojo.User;
-import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,129 +23,43 @@ import java.util.Map;
 @Repository
 public class UserDAO implements IUserDao{
 
+    @Inject
+    private Dao baseDao;
+
     @Override
-    public User getById(int userId) {
-        User result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            UserEntity entity = (UserEntity) session.load(UserEntity.class, userId);
-            result = DozerMapperFactory.getDozerBeanMapper().map(entity, User.class);
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public UserEntity getById(int userId) {
+        return baseDao.getById(UserEntity.class, userId);
     }
 
     @Override
-    public User update(User user) {
-        User result = null;
-        if(user != null) {
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            try {
-                session.beginTransaction();
-                UserEntity entity = DozerMapperFactory.getDozerBeanMapper().map(user, UserEntity.class);
-                entity = (UserEntity) session.merge(entity);
-                result = DozerMapperFactory.getDozerBeanMapper().map(entity, User.class);
-                session.getTransaction().commit();
-            } catch (Exception e) {
-                if(session != null && session.getTransaction().isActive())
-                    session.getTransaction().rollback();
-                e.printStackTrace();
-            } finally {
-                if (session != null && session.isOpen())
-                    session.close();
-            }
-        }
-        return result;
+    public UserEntity update(UserEntity user) {
+        return baseDao.attachWithMerge(user);
     }
 
     @Override
-    public List<User> getAll(int from, int max) {
-        List<User> result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            List<UserEntity> entities = null;
-            session.beginTransaction();
-            Query query = session.getNamedQuery(UserEntity.getAllUsers);
-            if(from > 0)
-                query.setFirstResult(from);
-            if(max > 0)
-                query.setMaxResults(max);
-            entities = query.list();
-            if(entities.size() > 0) {
-                result = new ArrayList<User>();
-                for (UserEntity entity : entities) {
-                    if (entity != null) {
-                        try {
-                            User temp = DozerMapperFactory.getDozerBeanMapper().map(entity, User.class);
-                            if (temp != null)
-                                result.add(temp);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public List<UserEntity> getAll(int from, int max) {
+        List<UserEntity> result =
+                baseDao.executeNamedQueryWithParams(
+                        UserEntity.class,
+                        UserEntity.getAllUsers,
+                        from,
+                        max);
+        return (result == null || result.isEmpty()) ? null : result;
     }
 
     @Override
     public boolean delete(int userId) {
-        boolean deleted = false;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try{
-            session.beginTransaction();
-            UserEntity toDelete = (UserEntity)session.load(UserEntity.class, userId);
-            if(toDelete != null){
-                session.delete(toDelete);
-            }
-            session.getTransaction().commit();
-            deleted = true;
-        } catch (Exception e){
-            if(session != null && session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return deleted;
+        return baseDao.deleteById(UserEntity.class, userId);
     }
 
     @Override
-    public List<User> getUsersByCriterion(UserCriterion criterion) {
-        List<User> result = null;
+    public List<UserEntity> getUsersByCriterion(UserCriterion criterion) {
+        List<UserEntity> result = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            List<UserEntity> entities = null;
             session.beginTransaction();
             Query query = createQueryFromCriterion(session, criterion);
-            entities = query.list();
-            if(entities.size() > 0) {
-                result = new ArrayList<User>();
-                for (UserEntity entity : entities) {
-                    if (entity != null) {
-                        try {
-                            User temp = DozerMapperFactory.getDozerBeanMapper().map(entity, User.class);
-                            if (temp != null)
-                                result.add(temp);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
+            result =  query.list();
         } catch (Exception e){
             e.printStackTrace();
         } finally {
@@ -157,27 +70,15 @@ public class UserDAO implements IUserDao{
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        User result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            Query query = session.getNamedQuery(UserEntity.getUserByEmail);
-            query.setParameter("email", email);
-            List<Object> list = query.list();
-
-            if(list != null && list.size() > 0) {
-                UserEntity entity = (UserEntity) list.get(0);
-                result = DozerMapperFactory.getDozerBeanMapper().map(entity, User.class);
-            }
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public UserEntity getUserByEmail(final String email) {
+        List<UserEntity> result =
+                baseDao.executeNamedQueryWithParams(
+                        UserEntity.class,
+                        UserEntity.getUserByEmail,
+                        new HashMap<String, Object>(){{
+                            put("email", email);
+                        }});
+        return (result == null || result.isEmpty()) ? null : result.get(0);
     }
 
     private Query createQueryFromCriterion(Session session, UserCriterion criterion){

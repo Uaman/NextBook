@@ -1,5 +1,7 @@
 package com.nextbook.domain.entities;
 
+import com.nextbook.dao.base.objects.GetableById;
+
 import javax.persistence.*;
 
 /**
@@ -12,7 +14,7 @@ import javax.persistence.*;
         @NamedQuery(name = FavoritesEntity.getByUserAndBook, query = "SELECT favorite FROM FavoritesEntity favorite WHERE favorite.book.id=:bookId AND favorite.user.id=:userId"),
         @NamedQuery(name = FavoritesEntity.getFavoritesCount, query = "SELECT COUNT(favorite) FROM FavoritesEntity favorite WHERE favorite.user.id=:userId")
 })
-public class FavoritesEntity {
+public class FavoritesEntity implements GetableById{
     public static final String getAllFavorites = "getAllFavorites";
     public static final String getByUserAndBook = "getByUserAndBook";
     public static final String getFavoritesCount = "getFavoritesCount";

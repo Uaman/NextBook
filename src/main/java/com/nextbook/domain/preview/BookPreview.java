@@ -1,6 +1,8 @@
 package com.nextbook.domain.preview;
 
-import com.nextbook.domain.pojo.*;
+import com.nextbook.domain.entities.BookAuthorEntity;
+import com.nextbook.domain.entities.BookEntity;
+import com.nextbook.domain.entities.CommentEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +39,7 @@ public class BookPreview {
 
     private boolean favorite;
 
-
-    public BookPreview(Book b, Locale locale) {
+    public BookPreview(BookEntity b, Locale locale) {
         this.id = b.getId();
         this.yearOfPublication = b.getYearOfPublication();
         this.pages = b.getNumberOfPages();
@@ -46,22 +47,22 @@ public class BookPreview {
         if (locale.getLanguage().equals("uk")) {
             this.name = b.getUaName();
             this.description = b.getDescriptionUa();
-            this.subCategory = b.getSubCategory().getNameUa();
+            this.subCategory = b.getSubCategoryEntity().getNameUa();
         } else if (locale.getLanguage().equals("ru")) {
             this.name = b.getRuName();
             this.description = b.getDescriptionRu();
-            this.subCategory = b.getSubCategory().getNameRu();
+            this.subCategory = b.getSubCategoryEntity().getNameRu();
         } else {
             this.name = b.getEnName();
             this.description = b.getDescriptionEn();
-            this.subCategory = b.getSubCategory().getNameEn();
+            this.subCategory = b.getSubCategoryEntity().getNameEn();
         }
         this.authors = new ArrayList<AuthorPreview>();
-        for (Author a:b.getAuthors())
-            this.authors.add(new AuthorPreview(a, locale));
-        this.publisher = new PublisherPreview(b.getPublisher(), locale);
+        for (BookAuthorEntity a:b.getBookToAuthor())
+            this.authors.add(new AuthorPreview(a.getAuthor(), locale));
+        this.publisher = new PublisherPreview(b.getPublisherEntity(), locale);
         this.comments = new ArrayList<CommentPreview>();
-        for(Comment comment : b.getComments())
+        for(CommentEntity comment : b.getComments())
             this.comments.add(new CommentPreview(comment));
 
         this.rating = b.getRating();

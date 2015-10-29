@@ -1,7 +1,6 @@
 package com.nextbook.dao;
 
-import com.nextbook.domain.pojo.Category;
-import com.nextbook.domain.pojo.SubCategory;
+import com.nextbook.domain.entities.CategoryEntity;
 
 import java.util.List;
 
@@ -10,9 +9,9 @@ import java.util.List;
  */
 public interface ICategoryDAO {
 
-    Category getById(int id);
+    CategoryEntity getById(int id);
 
-    List<Category> getAll();
+    List<CategoryEntity> getAll();
 
-    Category getByLink(String link);
+    CategoryEntity getByLink(String link);
 }

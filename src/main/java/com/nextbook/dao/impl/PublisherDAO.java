@@ -1,19 +1,18 @@
 package com.nextbook.dao.impl;
 
+import com.google.common.collect.Maps;
+import com.nextbook.dao.Dao;
 import com.nextbook.dao.IPublisherDao;
 import com.nextbook.domain.entities.PublisherEntity;
 import com.nextbook.domain.criterion.PublisherCriterion;
 import com.nextbook.domain.entities.UserEntity;
-import com.nextbook.domain.pojo.Publisher;
-import com.nextbook.domain.pojo.User;
-import org.dozer.DozerBeanMapper;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,155 +23,52 @@ public class PublisherDAO implements IPublisherDao {
 
     @Inject
     private SessionFactory sessionFactory;
+
     @Inject
-    private DozerBeanMapper dozerBeanMapper;
+    private Dao baseDao;
 
     @Override
-    public Publisher updatePublisher(Publisher publisher) {
-        Publisher result = null;
-        if(publisher != null) {
-            Session session = sessionFactory.openSession();
-            try {
-                session.beginTransaction();
-                PublisherEntity entity = dozerBeanMapper.map(publisher, PublisherEntity.class);
-                session.saveOrUpdate(entity);
-                entity = (PublisherEntity) session.merge(entity);
-                result = dozerBeanMapper.map(entity, Publisher.class);
-                session.getTransaction().commit();
-            } catch (Exception e) {
-                if(session != null && session.getTransaction().isActive())
-                    session.getTransaction().rollback();
-                e.printStackTrace();
-            } finally {
-                if (session != null && session.isOpen())
-                    session.close();
-            }
-        }
-        return result;
+    public PublisherEntity updatePublisher(PublisherEntity publisher) {
+        return baseDao.attachWithMerge(publisher);
     }
 
     @Override
     public boolean deletePublisher(int id) {
-        boolean deleted = false;
-        Session session = sessionFactory.openSession();
-        try{
-            session.beginTransaction();
-            Query query = session.getNamedQuery(PublisherEntity.GET_BY_ID);
-            query.setParameter("id", id);
-            List<PublisherEntity> list = query.list();
-            if(list != null && list.size() > 0) {
-                session.delete(list.get(0));
-            }
-            session.getTransaction().commit();
-            deleted = true;
-        } catch (Exception e){
-            if(session != null && session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return deleted;
+        return baseDao.deleteById(PublisherEntity.class, id);
     }
 
     @Override
-    public Publisher getPublisherById(int id) {
-        Publisher result = null;
-        Session session = sessionFactory.openSession();
-        try{
-            session.beginTransaction();
-            Query query = session.getNamedQuery(PublisherEntity.GET_BY_ID);
-            query.setParameter("id", id);
-            List<PublisherEntity> list = query.list();
-            if(list != null && list.size() > 0) {
-                result = dozerBeanMapper.map(list.get(0), Publisher.class);
-            }
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public PublisherEntity getPublisherById(int id) {
+        return baseDao.getById(PublisherEntity.class, id);
     }
 
     @Override
-    public List<Publisher> getAllPublishers(int from, int max) {
-        List<Publisher> result = null;
-        Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
-            Query query = session.getNamedQuery(PublisherEntity.GET_ALL);
-            if(from > 0)
-                query.setFirstResult(from);
-            if(max > 0)
-                query.setMaxResults(max);
-            List<PublisherEntity> entities = query.list();
-            if(entities.size() > 0) {
-                result = new ArrayList<Publisher>();
-                for (PublisherEntity entity : entities) {
-                    if (entity != null) {
-                        try {
-                            Publisher temp = dozerBeanMapper.map(entity, Publisher.class);
-                            if (temp != null)
-                                result.add(temp);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public List<PublisherEntity> getAllPublishers(int from, int max) {
+        List<PublisherEntity> result =
+                baseDao.executeNamedQueryWithParams(
+                        PublisherEntity.class,
+                        PublisherEntity.GET_ALL,
+                        from,
+                        max);
+        return (result == null || result.isEmpty()) ? null : result;
     }
 
     @Override
     public int getPublishersQuantity() {
-        int result = 0;
-        Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
-            Query query = session.getNamedQuery(PublisherEntity.GET_PUBLISHERS_QUANTITY);
-            result = ((Long) query.iterate().next()).intValue();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+        return baseDao.executeCountNamedQueryWithParams
+                                (PublisherEntity.class,
+                                PublisherEntity.GET_PUBLISHERS_QUANTITY,
+                                Maps.<String, Object>newHashMap());
     }
 
     @Override
-    public List<Publisher> getPublishersByCriterion(PublisherCriterion criterion) {
-        List<Publisher> result = null;
+    public List<PublisherEntity> getPublishersByCriterion(PublisherCriterion criterion) {
+        List<PublisherEntity> result = null;
         Session session = sessionFactory.openSession();
         try {
-            List<PublisherEntity> entities = null;
             session.beginTransaction();
             Query query = createQueryFromCriterion(session, criterion);
-            entities = query.list();
-            result = new ArrayList<Publisher>();
-            if(entities.size() > 0) {
-                for (PublisherEntity entity : entities) {
-                    if (entity != null) {
-                        try {
-                            Publisher temp = dozerBeanMapper.map(entity, Publisher.class);
-                            if (temp != null)
-                                result.add(temp);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
+            result = query.list();
         } catch (Exception e){
             e.printStackTrace();
         } finally {
@@ -228,28 +124,19 @@ public class PublisherDAO implements IPublisherDao {
     }
 
     @Override
-    public Publisher getPublisherByUser(User user) {
-        Publisher result = null;
-        Session session = sessionFactory.openSession();
-
-        try{
-            UserEntity userEntity = dozerBeanMapper.map(user, UserEntity.class);
-            if(userEntity != null){
-                Query query = session.createSQLQuery("SELECT DISTINCT(PUBLISHER.ID) FROM PUBLISHER JOIN USERS_TO_PUBLISHER ON PUBLISHER.ID=USERS_TO_PUBLISHER.PUBLISHER_ID WHERE USERS_TO_PUBLISHER.USER_ID= :user_id");
-                query.setParameter("user_id", userEntity.getId());
-                List<Integer> ids = query.list();
-                if(ids != null && ids.size() > 0) {
-                    result = getPublisherById(ids.get(0));
-                }
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-
-        return result;
+    public PublisherEntity getPublisherByUser(final UserEntity user) {
+        List<Integer> publisherIds  =
+                baseDao.executeNamedQueryWithParams(
+                        Integer.class,
+                                "SELECT DISTINCT(PUBLISHER.ID)" +
+                                "FROM PUBLISHER JOIN USERS_TO_PUBLISHER" +
+                                " ON PUBLISHER.ID=USERS_TO_PUBLISHER.PUBLISHER_ID" +
+                                " WHERE USERS_TO_PUBLISHER.USER_ID= :user_id",
+                        new HashMap<String, Object>(){{
+                            put("user_id", user.getId());
+                        }});
+        return  publisherIds != null && ! publisherIds.isEmpty()
+                ? getPublisherById(publisherIds.get(0)) : null;
     }
 
 }

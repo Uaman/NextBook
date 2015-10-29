@@ -1,7 +1,7 @@
 package com.nextbook.controllers;
 
+import com.nextbook.domain.entities.AuthorEntity;
 import com.nextbook.domain.forms.author.AuthorRegisterForm;
-import com.nextbook.domain.pojo.Author;
 import com.nextbook.services.IAuthorProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,7 +27,7 @@ public class AuthorsController {
     @RequestMapping(value = "/new-author", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("isAuthenticated()")
     public @ResponseBody boolean newAuthor(@RequestBody AuthorRegisterForm authorRegisterForm) {
-        Author author = new Author();
+        AuthorEntity author = new AuthorEntity();
         author.setFirstNameEn(authorRegisterForm.getFirstNameEn());
         author.setFirstNameUa(authorRegisterForm.getFirstNameUa());
         author.setFirstNameRu(authorRegisterForm.getFirstNameRu());

@@ -1,6 +1,6 @@
 package com.nextbook.domain.entities;
 
-import com.nextbook.domain.pojo.Book;
+import com.nextbook.dao.base.objects.GetableById;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.List;
                 "OR (author.firstNameEn=:fName AND author.lastNameEn=:lName) OR (author.firstNameRu=:fName AND author.lastNameRu=:lName)")
 })
 
-public class AuthorEntity {
+public class AuthorEntity implements GetableById{
 
     public static final String getById = "getAuthorById";
     public static final String getAllUsers = "getAllAuthors";

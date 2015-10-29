@@ -1,5 +1,8 @@
 package com.nextbook.domain.entities;
 
+import com.nextbook.dao.base.objects.Getable;
+import com.nextbook.dao.base.objects.GetableById;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +18,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = RoleEntity.getAll, query = "SELECT role FROM RoleEntity role")
 })
-public class RoleEntity {
+public class RoleEntity implements Getable {
 
     public static final String getAll = "getAllRoles";
 

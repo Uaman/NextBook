@@ -1,6 +1,6 @@
 package com.nextbook.domain.preview;
 
-import com.nextbook.domain.pojo.Author;
+import com.nextbook.domain.entities.AuthorEntity;
 
 import java.util.Locale;
 
@@ -25,7 +25,7 @@ public class AuthorPreview {
         this.name = name;
     }
 
-    public AuthorPreview(Author a, Locale locale) {
+    public AuthorPreview(AuthorEntity a, Locale locale) {
         this.id = a.getId();
         if (locale.getLanguage().equals("uk")) {
             this.name = a.getFirstNameUa() + " " +a.getLastNameUa();

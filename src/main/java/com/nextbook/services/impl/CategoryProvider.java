@@ -1,7 +1,7 @@
 package com.nextbook.services.impl;
 
 import com.nextbook.dao.ICategoryDAO;
-import com.nextbook.domain.pojo.Category;
+import com.nextbook.domain.entities.CategoryEntity;
 import com.nextbook.services.ICategoryProvider;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +17,16 @@ public class CategoryProvider implements ICategoryProvider{
     private ICategoryDAO categoryDao;
 
     @Override
-    public Category getById(int id) {
+    public CategoryEntity getById(int id) {
         return categoryDao.getById(id);
     }
 
-    public List<Category> getAll() {
+    public List<CategoryEntity> getAll() {
         return categoryDao.getAll();
     }
 
     @Override
-    public Category getByLink(String link) {
+    public CategoryEntity getByLink(String link) {
         return categoryDao.getByLink(link);
     }
 }

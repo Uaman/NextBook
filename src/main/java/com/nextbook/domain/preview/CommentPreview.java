@@ -1,8 +1,8 @@
 package com.nextbook.domain.preview;
 
+import com.nextbook.domain.entities.CommentEntity;
+import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.enums.Status;
-import com.nextbook.domain.pojo.Comment;
-import com.nextbook.domain.pojo.User;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +14,7 @@ public class CommentPreview {
 
     private int id;
 
-    private User user;
+    private UserEntity user;
 
     private String comment;
 
@@ -24,7 +24,7 @@ public class CommentPreview {
 
     public CommentPreview(){}
 
-    public CommentPreview(Comment comment){
+    public CommentPreview(CommentEntity comment){
         this.id = comment.getId();
         this.user = comment.getUser();
         this.comment = comment.getComment();
@@ -48,11 +48,11 @@ public class CommentPreview {
         this.id = id;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 

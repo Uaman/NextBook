@@ -1,18 +1,13 @@
 package com.nextbook.dao.impl;
 
-import com.google.common.collect.Lists;
 import com.nextbook.dao.Dao;
 import com.nextbook.dao.ISubCategoryDao;
 import com.nextbook.domain.entities.SubCategoryEntity;
-import com.nextbook.domain.pojo.SubCategory;
-import com.nextbook.utils.DozerMapperFactory;
-import com.nextbook.utils.HibernateUtil;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,104 +17,43 @@ import java.util.List;
  * Time: 10:06 PM
  */
 @Repository
+@Transactional
 public class SubCategoryDao implements ISubCategoryDao{
 
     @Inject
     private Dao baseDao;
 
     @Override
-    public List<SubCategory> getAll() {
-        List<SubCategory> result = Lists.newArrayList();
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            for(SubCategoryEntity entity: baseDao.getAll(session, SubCategoryEntity.class)){
-                if (entity != null)
-                    result.add(DozerMapperFactory.getDozerBeanMapper().map(entity, SubCategory.class));
-            }
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public List<SubCategoryEntity> getAll(){
+        return baseDao.getAll(SubCategoryEntity.class);
     }
 
     @Override
-    public SubCategory getById(int subCategoryId) {
-        SubCategory result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try{
-            session.beginTransaction();
-            Query query = session.getNamedQuery(SubCategoryEntity.getById);
-            query.setParameter("id", subCategoryId);
-            List<SubCategoryEntity> list = query.list();
-            if(list != null && list.size() > 0){
-                result = DozerMapperFactory.getDozerBeanMapper().map(list.get(0), SubCategory.class);
-            }
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public SubCategoryEntity getById(int subCategoryId) {
+        return baseDao.getById(SubCategoryEntity.class, subCategoryId);
     }
 
     @Override
-    public List<SubCategory> getAllByCategoryId(int categoryId) {
-        List<SubCategory> result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            Query query = session.getNamedQuery(SubCategoryEntity.getAllByCategoryId);
-            query.setParameter("id", categoryId);
-            List<SubCategoryEntity> entities = query.list();
-            if(entities.size() > 0) {
-                result = new ArrayList<SubCategory>();
-                for (SubCategoryEntity entity : entities) {
-                    if (entity != null) {
-                        try {
-                            SubCategory temp = DozerMapperFactory.getDozerBeanMapper().map(entity, SubCategory.class);
-                            if (temp != null)
-                                result.add(temp);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public List<SubCategoryEntity> getAllByCategoryId(final int categoryId) {
+        List<SubCategoryEntity> result =
+                baseDao.executeNamedQueryWithParams(
+                        SubCategoryEntity.class,
+                        SubCategoryEntity.getAllByCategoryId,
+                        new HashMap<String, Object>(){{
+                            put("id", categoryId);
+                        }});
+        return (result == null || result.isEmpty()) ? null : result;
     }
 
     @Override
-    public SubCategory getByLink(String link) {
-        SubCategory result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try{
-            session.beginTransaction();
-            Query query = session.getNamedQuery(SubCategoryEntity.getSubcategoryByLink);
-            query.setParameter("link", link);
-            List<SubCategoryEntity> list = query.list();
-            if(list != null && list.size() > 0){
-                result = DozerMapperFactory.getDozerBeanMapper().map(list.get(0), SubCategory.class);
-            }
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public SubCategoryEntity getByLink(final String link) {
+        List<SubCategoryEntity> result =
+                baseDao.executeNamedQueryWithParams(
+                        SubCategoryEntity.class,
+                        SubCategoryEntity.getSubcategoryByLink,
+                        new HashMap<String, Object>(){{
+                            put("link", link);
+                        }});
+        return (result == null || result.isEmpty()) ? null : result.get(0);
     }
 }

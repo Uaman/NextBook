@@ -1,8 +1,8 @@
 package com.nextbook.controllers.cabinet.admin;
 
 import com.nextbook.domain.criterion.AuthorCriterion;
+import com.nextbook.domain.entities.AuthorEntity;
 import com.nextbook.domain.forms.admin.AdminAuthorForm;
-import com.nextbook.domain.pojo.Author;
 import com.nextbook.services.IAuthorProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,16 +25,16 @@ public class AdminAuthorController {
     @RequestMapping(value = "/all")
     @PreAuthorize("@Secure.isAdmin()")
     public String authors(Model model) {
-        List<Author> authors = authorProvider.getAll();
+        List<AuthorEntity> authors = authorProvider.getAll();
         model.addAttribute("authors", authors);
         return "admin/authors/authors";
     }
     
     @RequestMapping(value = "/update-author", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("@Secure.isAdmin()")
-    public @ResponseBody Author updateAuthor(@RequestBody AdminAuthorForm adminAuthorForm) {
-        Author author = authorProvider.getById(adminAuthorForm.getId());
-        if (author == null) author = new Author();
+    public @ResponseBody AuthorEntity updateAuthor(@RequestBody AdminAuthorForm adminAuthorForm) {
+        AuthorEntity author = authorProvider.getById(adminAuthorForm.getId());
+        if (author == null) author = new AuthorEntity();
             author.setFirstNameEn(adminAuthorForm.getFirstNameEn());
             author.setFirstNameUa(adminAuthorForm.getFirstNameUa());
             author.setFirstNameRu(adminAuthorForm.getFirstNameRu());
@@ -48,7 +48,7 @@ public class AdminAuthorController {
     @RequestMapping(value="/edit-author/{id}")
     @PreAuthorize("@Secure.isAdmin()")
     public String updatePublisherPage(@PathVariable("id") int id, Model model) {
-        Author author = authorProvider.getById(id);
+        AuthorEntity author = authorProvider.getById(id);
         if (author==null) {
             model.addAttribute("edit", false);
         } else {
@@ -75,10 +75,10 @@ public class AdminAuthorController {
     @RequestMapping(value = "/authors-filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody
-    List<Author> filter(@RequestBody AuthorCriterion authorCriterion){
-        List<Author> result = authorProvider.getAuthorsByCriterion(authorCriterion);
+    List<AuthorEntity> filter(@RequestBody AuthorCriterion authorCriterion){
+        List<AuthorEntity> result = authorProvider.getAuthorsByCriterion(authorCriterion);
         if(result == null)
-            result = new ArrayList<Author>();
+            result = new ArrayList<AuthorEntity>();
         return result;
     }
 }

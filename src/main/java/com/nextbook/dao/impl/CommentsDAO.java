@@ -1,19 +1,19 @@
 package com.nextbook.dao.impl;
 
+import com.nextbook.dao.Dao;
 import com.nextbook.dao.ICommentsDAO;
+import com.nextbook.domain.entities.BookEntity;
 import com.nextbook.domain.entities.CommentEntity;
+import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.enums.StatusChangedBy;
 import com.nextbook.domain.criterion.CommentsCriterion;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.Comment;
-import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import com.nextbook.domain.pojo.User;
 import org.springframework.stereotype.Repository;
 
+import javax.inject.Inject;
 import java.util.*;
 
 /**
@@ -25,139 +25,56 @@ import java.util.*;
 @Repository
 public class CommentsDAO implements ICommentsDAO {
 
+    @Inject
+    private Dao baseDao;
+
     @Override
-    public Comment getById(int id) {
-        Comment result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            CommentEntity entity = (CommentEntity) session.load(CommentEntity.class, id);
-            result = DozerMapperFactory.getDozerBeanMapper().map(entity, Comment.class);
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public CommentEntity getById(int id) {
+        return baseDao.getById(CommentEntity.class, id);
     }
 
     @Override
-    public Comment update(Comment comment) {
-        Comment result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            CommentEntity entity = DozerMapperFactory.getDozerBeanMapper().map(comment, CommentEntity.class);
-            entity = (CommentEntity) session.merge(entity);
-            result = DozerMapperFactory.getDozerBeanMapper().map(entity, Comment.class);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            if(session != null && session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public CommentEntity update(CommentEntity comment) {
+        return baseDao.attachWithMerge(comment);
     }
 
     @Override
-    public List<Comment> userComments(User user){
-        List<Comment> result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            Query query = session.getNamedQuery(CommentEntity.GET_ALL_COMMENTS_FOR_USER);
-            query.setParameter("user_id", user.getId());
-            List<CommentEntity> list = query.list();
-            if(list != null && list.size() > 0){
-                result = new ArrayList<Comment>();
-                for(CommentEntity entity : list) {
-                    Comment comment = DozerMapperFactory.getDozerBeanMapper().map(entity, Comment.class);
-                    result.add(comment);
-                }
-            }
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            if(session != null && session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public List<CommentEntity> userComments(final UserEntity user){
+        List<CommentEntity> result =
+                baseDao.executeNamedQueryWithParams(
+                        CommentEntity.class,
+                        CommentEntity.GET_ALL_COMMENTS_FOR_USER,
+                        new HashMap<String, Object>() {{
+                            put("user_id", user.getId());
+                        }});
+        return (result == null || result.isEmpty()) ? null : result;
     }
 
     @Override
-    public List<Comment> bookComments(Book book) {
-        List<Comment> result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            Query query = session.getNamedQuery(CommentEntity.GET_ALL_COMMENTS_FOR_BOOK);
-            query.setParameter("book_id", book.getId());
-            List<CommentEntity> list = query.list();
-            if(list != null && list.size() > 0){
-                result = new ArrayList<Comment>();
-                for(CommentEntity entity : list) {
-                    Comment comment = DozerMapperFactory.getDozerBeanMapper().map(entity, Comment.class);
-                    result.add(comment);
-                }
-            }
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            if(session != null && session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    public List<CommentEntity> bookComments(final BookEntity book) {
+        List<CommentEntity> result =
+                baseDao.executeNamedQueryWithParams(
+                        CommentEntity.class,
+                        CommentEntity.GET_ALL_COMMENTS_FOR_BOOK,
+                        new HashMap<String, Object>() {{
+                            put("book_id", book.getId());
+                        }});
+        return (result == null || result.isEmpty()) ? null : result;
     }
 
     @Override
-    public boolean removeComment(Comment comment) {
-        boolean deleted = false;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try{
-            session.beginTransaction();
-            CommentEntity toDelete = DozerMapperFactory.getDozerBeanMapper().map(comment, CommentEntity.class);
-            if(toDelete != null){
-                session.delete(toDelete);
-            }
-            session.getTransaction().commit();
-            deleted = true;
-        } catch (Exception e){
-            if(session != null && session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return deleted;
+    public boolean removeComment(CommentEntity comment) {
+        return baseDao.deleteById(CommentEntity.class, comment.getId());
     }
 
     @Override
-    public List<Comment> getCommentsByCriterion(CommentsCriterion criterion) {
-        List<Comment> result = null;
+    public List<CommentEntity> getCommentsByCriterion(CommentsCriterion criterion) {
+        List<CommentEntity> result = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
             Query query = buildQueryByCriterion(session, criterion);
-            List<CommentEntity> list = query.list();
-            if(list != null && list.size() > 0){
-                result = new ArrayList<Comment>();
-                for(CommentEntity entity : list) {
-                    Comment comment = DozerMapperFactory.getDozerBeanMapper().map(entity, Comment.class);
-                    result.add(comment);
-                }
-            }
+            result = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
             if(session != null && session.getTransaction().isActive())

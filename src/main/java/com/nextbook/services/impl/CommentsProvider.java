@@ -1,12 +1,12 @@
 package com.nextbook.services.impl;
 
 import com.nextbook.dao.ICommentsDAO;
+import com.nextbook.domain.entities.BookEntity;
+import com.nextbook.domain.entities.CommentEntity;
+import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.enums.StatusChangedBy;
 import com.nextbook.domain.criterion.CommentsCriterion;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.Comment;
-import com.nextbook.domain.pojo.User;
 import com.nextbook.services.ICommentsProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,40 +26,40 @@ public class CommentsProvider implements ICommentsProvider {
     private ICommentsDAO commentsDAO;
 
     @Override
-    public Comment getById(int id) {
+    public CommentEntity getById(int id) {
         return commentsDAO.getById(id);
     }
 
     @Override
-    public Comment update(Comment comment) {
+    public CommentEntity update(CommentEntity comment) {
         if(comment == null)
             return null;
         return commentsDAO.update(comment);
     }
 
     @Override
-    public List<Comment> userComments(User user) {
+    public List<CommentEntity> userComments(UserEntity user) {
         if(user == null)
             return null;
         return commentsDAO.userComments(user);
     }
 
     @Override
-    public List<Comment> bookComments(Book book) {
+    public List<CommentEntity> bookComments(BookEntity book) {
         if(book == null)
             return null;
         return commentsDAO.bookComments(book);
     }
 
     @Override
-    public boolean removeComment(Comment comment) {
+    public boolean removeComment(CommentEntity comment) {
         if(comment == null)
             return false;
         return commentsDAO.removeComment(comment);
     }
 
     @Override
-    public Comment publisherActivateComment(Comment comment) {
+    public CommentEntity publisherActivateComment(CommentEntity comment) {
         if(comment == null)
             return null;
         comment.setStatus(Status.ACTIVE);
@@ -68,7 +68,7 @@ public class CommentsProvider implements ICommentsProvider {
     }
 
     @Override
-    public Comment publisherDeactivateComment(Comment comment) {
+    public CommentEntity publisherDeactivateComment(CommentEntity comment) {
         if(comment == null)
             return null;
         comment.setStatus(Status.NOT_ACTIVE);
@@ -77,7 +77,7 @@ public class CommentsProvider implements ICommentsProvider {
     }
 
     @Override
-    public Comment adminActivateComment(Comment comment) {
+    public CommentEntity adminActivateComment(CommentEntity comment) {
         if(comment == null)
             return null;
         comment.setStatus(Status.ACTIVE);
@@ -86,7 +86,7 @@ public class CommentsProvider implements ICommentsProvider {
     }
 
     @Override
-    public Comment adminDeactivateComment(Comment comment) {
+    public CommentEntity adminDeactivateComment(CommentEntity comment) {
         if(comment == null)
             return null;
         comment.setStatus(Status.NOT_ACTIVE);
@@ -95,7 +95,7 @@ public class CommentsProvider implements ICommentsProvider {
     }
 
     @Override
-    public List<Comment> getCommentsByCriterion(CommentsCriterion criterion) {
+    public List<CommentEntity> getCommentsByCriterion(CommentsCriterion criterion) {
         if(criterion == null)
             return null;
         return commentsDAO.getCommentsByCriterion(criterion);

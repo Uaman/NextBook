@@ -1,9 +1,9 @@
 package com.nextbook.controllers.cabinet.admin;
 
 import com.nextbook.domain.criterion.UserCriterion;
+import com.nextbook.domain.entities.RoleEntity;
+import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.forms.admin.UserEditForm;
-import com.nextbook.domain.pojo.Role;
-import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IRoleProvider;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.SessionUtils;
@@ -65,13 +65,13 @@ public class AdminUserController {
     @RequestMapping(value = "/update-user", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody boolean updateUser(@RequestBody UserEditForm form){
-        User user = userProvider.getById(form.getId());
+        UserEntity user = userProvider.getById(form.getId());
         if (user != null) {
             user.setName(form.getName());
             user.setEmail(form.getEmail());
-            Role role = new Role();
+            RoleEntity role = new RoleEntity();
             role.setId(form.getRoleId());
-            user.setRole(role);
+            user.setRoleEntity(role);
             user = userProvider.update(user);
             return user != null;
         }
@@ -80,12 +80,13 @@ public class AdminUserController {
 
     @RequestMapping(value = "/users-filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@Secure.isAdmin()")
-    public @ResponseBody List<User> filter(@RequestBody UserCriterion userCriterion,
+    public @ResponseBody
+    List<UserEntity> filter(@RequestBody UserCriterion userCriterion,
                                            HttpServletResponse response){
-        List<User> result = userProvider.getUsersByCriterion(userCriterion);
+        List<UserEntity> result = userProvider.getUsersByCriterion(userCriterion);
         response.setStatus(HttpServletResponse.SC_OK);
         if(result == null)
-            result = new ArrayList<User>();
+            result = new ArrayList<UserEntity>();
         return result;
     }
 
@@ -107,7 +108,7 @@ public class AdminUserController {
     @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody int activateUser(@PathVariable("userId") int userId,
                                           @PathVariable("status") boolean status) {
-        User user = userProvider.getById(userId);
+        UserEntity user = userProvider.getById(userId);
         if(user == null)
             return -1;
         user.setActive(status);
@@ -119,7 +120,7 @@ public class AdminUserController {
     @PreAuthorize("@Secure.isAdmin()")
     public String editUser(@RequestParam("userId") int userId,
                            Model model){
-        User user = userProvider.getById(userId);
+        UserEntity user = userProvider.getById(userId);
         if(user == null)
             return "redirect:/admin/users/all";
         model.addAttribute("user", user);

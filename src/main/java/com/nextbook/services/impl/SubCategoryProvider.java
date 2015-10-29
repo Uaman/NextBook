@@ -1,8 +1,7 @@
 package com.nextbook.services.impl;
 
 import com.nextbook.dao.ISubCategoryDao;
-import com.nextbook.dao.impl.SubCategoryDao;
-import com.nextbook.domain.pojo.SubCategory;
+import com.nextbook.domain.entities.SubCategoryEntity;
 import com.nextbook.services.ISubCategoryProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,22 +21,22 @@ public class SubCategoryProvider implements ISubCategoryProvider{
     private ISubCategoryDao subCategoryDao;
 
     @Override
-    public List<SubCategory> getAll() {
+    public List<SubCategoryEntity> getAll(){
         return subCategoryDao.getAll();
     }
 
     @Override
-    public SubCategory getById(int subCategoryId) {
+    public SubCategoryEntity getById(int subCategoryId) {
         return subCategoryDao.getById(subCategoryId);
     }
 
     @Override
-    public List<SubCategory> getAllByCategoryId(int categoryId) {
+    public List<SubCategoryEntity> getAllByCategoryId(int categoryId) {
         return subCategoryDao.getAllByCategoryId(categoryId);
     }
 
     @Override
-    public SubCategory getByLink(String link) {
+    public SubCategoryEntity getByLink(String link) {
         return subCategoryDao.getByLink(link);
     }
 }
