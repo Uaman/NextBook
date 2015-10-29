@@ -1,6 +1,9 @@
 package com.nextbook.controllers.cabinet.admin;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import com.nextbook.domain.entities.*;
+import com.nextbook.domain.exceptions.IsbnAlreadyExistsException;
 import com.nextbook.domain.response.ResponseForAutoComplete;
 import com.nextbook.domain.enums.*;
 import com.nextbook.domain.criterion.AuthorCriterion;
@@ -129,7 +132,11 @@ public class AdminBookController {
             return -1;
         book.setLinkToStorage(storageLink);
         copyBookFromBookForm(book, bookRegisterForm);
-        bookProvider.updateBook(book);
+        try {
+            bookProvider.updateBook(book);
+        } catch (IsbnAlreadyExistsException e) {
+            e.printStackTrace();
+        }
         return 1;
     }
 
@@ -300,7 +307,7 @@ public class AdminBookController {
     public @ResponseBody boolean isbnExist(@PathVariable("isbn") String isbn){
         if(isbn == null)
             return false;
-        return bookProvider.isbnExist(isbn);
+        return bookProvider.isbnExist(isbn, null);
     }
 
     @PreAuthorize("@Secure.isAdmin()")

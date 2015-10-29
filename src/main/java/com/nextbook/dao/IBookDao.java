@@ -29,7 +29,7 @@ public interface IBookDao {
 
     BookEntity updateBook(BookEntity book);
 
-    boolean isbnExist(String isbn);
+    boolean isbnExist(String isbn, BookEntity entity);
 
     List<BookEntity> getBooksByCriterion(BookCriterion criterion);
 

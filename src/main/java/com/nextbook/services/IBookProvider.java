@@ -2,6 +2,7 @@ package com.nextbook.services;
 
 import com.nextbook.domain.criterion.BookCriterion;
 import com.nextbook.domain.entities.*;
+import com.nextbook.domain.exceptions.IsbnAlreadyExistsException;
 import com.nextbook.domain.forms.book.BookRegisterForm;
 import com.nextbook.domain.preview.BookPreview;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,9 @@ public interface IBookProvider {
 
     boolean deleteBook(int bookId);
 
-    BookEntity updateBook(BookEntity book);
+    BookEntity updateBook(BookEntity book) throws IsbnAlreadyExistsException;
 
-    boolean isbnExist(String isbn);
+    boolean isbnExist(String isbn, BookEntity book);
 
     List<BookEntity> getBooksByCriterion(BookCriterion criterion);
 

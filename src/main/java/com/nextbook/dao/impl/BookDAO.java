@@ -114,7 +114,7 @@ public class BookDAO implements IBookDao {
     }
 
     @Override
-    public boolean isbnExist(final String isbn) {
+    public boolean isbnExist(final String isbn, BookEntity book) {
         List<BookEntity> result =
                 baseDao.executeNamedQueryWithParams(
                         BookEntity.class,
@@ -122,7 +122,7 @@ public class BookDAO implements IBookDao {
                         new HashMap<String, Object>() {{
                             put("isbn", isbn);
                         }});
-        return !(result == null || result.isEmpty());
+        return !(result == null || result.isEmpty()) && result.get(0).getId() != book.getId();
     }
 
     @Override

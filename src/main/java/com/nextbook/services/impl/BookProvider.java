@@ -6,6 +6,7 @@ import com.nextbook.domain.entities.*;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.enums.QueryType;
 import com.nextbook.domain.enums.Status;
+import com.nextbook.domain.exceptions.IsbnAlreadyExistsException;
 import com.nextbook.domain.forms.book.BookRegisterForm;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.services.*;
@@ -63,15 +64,19 @@ public class BookProvider implements IBookProvider{
     }
 
     @Override
-    public BookEntity updateBook(BookEntity book) {
+    public BookEntity updateBook(BookEntity book) throws IsbnAlreadyExistsException{
         if(book == null)
             return null;
+        if(isbnExist(book.getIsbn(), book))
+            throw new IsbnAlreadyExistsException();
         return bookDao.updateBook(book);
     }
 
     @Override
-    public boolean isbnExist(String isbn) {
-        return bookDao.isbnExist(isbn);
+    public boolean isbnExist(String isbn, BookEntity book) {
+        if(isbn == null || isbn.equals("") || book == null)
+            return false;
+        return bookDao.isbnExist(isbn, book);
     }
 
     @Override
@@ -147,7 +152,11 @@ public class BookProvider implements IBookProvider{
 
         book.setRating(newRating);
         book.setVoted(numberOfVoted);
-        book = updateBook(book);
+        try {
+            book = updateBook(book);
+        } catch (IsbnAlreadyExistsException e) {
+            e.printStackTrace();
+        }
 
         return book;
     }
@@ -156,12 +165,14 @@ public class BookProvider implements IBookProvider{
     public List<BookPreview> booksToBookPreviews(List<BookEntity> books, Locale locale) {
         ArrayList<BookPreview> res = new ArrayList<BookPreview>();
         UserEntity user = sessionUtils.getCurrentUser();
-        for (BookEntity b:books) {
-            BookPreview book = new BookPreview(b, locale);
-            if (user!=null) {
-                book.setFavorite(favoritesProvider.isFavorite(user.getId(), book.getId()));
+        if (books!=null) {
+            for (BookEntity b : books) {
+                BookPreview book = new BookPreview(b, locale);
+                if (user != null) {
+                    book.setFavorite(favoritesProvider.isFavorite(user.getId(), book.getId()));
+                }
+                res.add(book);
             }
-            res.add(book);
         }
         return res;
     }
@@ -171,7 +182,11 @@ public class BookProvider implements IBookProvider{
         if(book == null)
             return null;
         book.setStatus(Status.ACTIVE);
-        book = updateBook(book);
+        try {
+            book = updateBook(book);
+        } catch (IsbnAlreadyExistsException e) {
+            e.printStackTrace();
+        }
         return book;
     }
 
@@ -180,7 +195,11 @@ public class BookProvider implements IBookProvider{
         if(book == null)
             return null;
         book.setStatus(Status.NOT_ACTIVE);
-        book = updateBook(book);
+        try {
+            book = updateBook(book);
+        } catch (IsbnAlreadyExistsException e) {
+            e.printStackTrace();
+        }
         return book;
     }
 
@@ -189,7 +208,11 @@ public class BookProvider implements IBookProvider{
         if(book == null)
             return null;
         book.setStatus(Status.READY_FOR_REVIEW);
-        book = updateBook(book);
+        try {
+            book = updateBook(book);
+        } catch (IsbnAlreadyExistsException e) {
+            e.printStackTrace();
+        }
         return book;
     }
 
@@ -207,7 +230,7 @@ public class BookProvider implements IBookProvider{
         book.setTypeOfBook(BookTypeEnum.ELECTRONIC);
         book.setDescriptionUa("");
         book.setIsbn("");
-
+        book.setStatus(Status.NEW);
         return book;
     }
 

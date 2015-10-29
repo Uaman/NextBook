@@ -1,15 +1,20 @@
 package com.nextbook.controllers.cabinet.user;
 
+import org.springframework.context.MessageSource;
+
 import com.nextbook.domain.entities.*;
+import com.nextbook.domain.exceptions.IsbnAlreadyExistsException;
 import com.nextbook.domain.response.ResponseForAutoComplete;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.enums.Cover;
 import com.nextbook.domain.criterion.AuthorCriterion;
 import com.nextbook.domain.forms.book.BookRegisterForm;
+import com.nextbook.domain.response.ResponseOnAjaxRegistration;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import com.nextbook.utils.StatisticUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +23,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Validator;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
@@ -51,6 +57,10 @@ public class BookController {
     private IFavoritesProvider favoritesProvider;
     @Inject
     private ICommonMethodsProvider methodsProvider;
+    @Inject
+    private Validator validator;
+    @Inject
+    private MessageSource messageSource;
 
     @RequestMapping(value = "/new-book", method = RequestMethod.GET)
     public String newBook(){
@@ -64,7 +74,12 @@ public class BookController {
             return "redirect:/publisher/new";
         }
         BookEntity book = bookProvider.defaultBook(publisher);
-        book = bookProvider.updateBook(book);
+
+        try {
+            book = bookProvider.updateBook(book);
+        } catch (IsbnAlreadyExistsException e) {
+            e.printStackTrace();
+        }
         if(book == null)
             return "redirect:/cabinet/profile";
         return "redirect:/book/edit-book?bookId="+book.getId();
@@ -87,6 +102,7 @@ public class BookController {
             return "redirect:/cabinet/profile";
         if(book.getPublisherEntity().getId() != publisher.getId())
             return "redirect:/publisher/view?publisherId="+publisher.getId();
+        model.addAttribute("publisherId", publisher.getId());
         model.addAttribute("subCategories", subCategoryProvider.getAll());
         model.addAttribute("book", book);
         model.addAttribute("authors", methodsProvider.formAuthorsInLocale(book.getBookToAuthor(), locale.getLanguage()));
@@ -95,21 +111,36 @@ public class BookController {
     }
 
     @RequestMapping(value = "/edit-book", method = RequestMethod.POST, headers = "Accept=application/json")
-    public @ResponseBody int saveBook(@RequestBody BookRegisterForm bookRegisterForm,
-                                      Principal principal){
-        UserEntity user = sessionUtils.getCurrentUser();
-        if(user == null)
-            return -1;
-        BookEntity book = bookProvider.getBookById(bookRegisterForm.getBookId());
-        if(book == null)
-            return -1;
-        String storageLink = bookStorageProvider.uploadBookToStorage(book.getId());
-        if(storageLink == null)
-            return -1;
-        book.setLinkToStorage(storageLink);
-        bookProvider.copyBookFromBookForm(book, bookRegisterForm);
-        bookProvider.updateBook(book);
-        return 1;
+    public @ResponseBody ResponseOnAjaxRegistration saveBook(@RequestBody BookRegisterForm bookRegisterForm,
+                                                             Locale locale){
+        ResponseOnAjaxRegistration<BookRegisterForm> response =
+                new ResponseOnAjaxRegistration<BookRegisterForm>(validator.validate(bookRegisterForm), messageSource, locale);
+        if(!response.hasErrors()) {
+            UserEntity user = sessionUtils.getCurrentUser();
+            BookEntity book = bookProvider.getBookById(bookRegisterForm.getBookId());
+            if (methodsProvider.checkBookToUser(user, book)) {
+                String storageLink = bookStorageProvider.uploadBookToStorage(book.getId());
+                if (storageLink != null) {
+                    book.setLinkToStorage(storageLink);
+                    bookProvider.copyBookFromBookForm(book, bookRegisterForm);
+                    try {
+                        book = bookProvider.updateBook(book);
+                        if(book == null) {
+                            response.setCode(ResponseOnAjaxRegistration.PROBLEMS_WITH_SERVICE);
+                        } else {
+                            response.setCode(ResponseOnAjaxRegistration.OK);
+                        }
+                    } catch (IsbnAlreadyExistsException e) {
+                        response.addError(messageSource.getMessage("book.registration.isbn.exist", null, locale));
+                    }
+                } else {
+                    response.setCode(ResponseOnAjaxRegistration.PROBLEMS_WITH_SERVICE);
+                }
+            } else {
+                response.addError(messageSource.getMessage("user.book.access", null, locale));
+            }
+        }
+        return response;
     }
 
     @RequestMapping(value = "/getCover/{bookId}/{coverPage}", method = RequestMethod.GET)
@@ -229,14 +260,14 @@ public class BookController {
         boolean success = bookStorageProvider.uploadBookToLocalStorage(bookId, file);
         return success;
     }
-
+/*
     @RequestMapping(value = "/check-isbn/{isbn}", method = RequestMethod.POST)
     public @ResponseBody boolean isbnExist(@PathVariable("isbn") String isbn){
         if(isbn == null)
             return false;
         return bookProvider.isbnExist(isbn);
     }
-
+*/
     @RequestMapping(value = "/delete-keyword/{bookId}/{keywordId}", method = RequestMethod.POST)
     public @ResponseBody boolean deleteKeyword(@PathVariable("bookId") int bookId,
                                                @PathVariable("keywordId") int keywordId){
@@ -252,19 +283,10 @@ public class BookController {
     public @ResponseBody boolean deleteAuthor(@PathVariable("bookId") int bookId,
                                                @PathVariable("authorId") int authorId){
         UserEntity user = sessionUtils.getCurrentUser();
-        if(user == null)
-            return false;
-
-        PublisherEntity publisher = publisherProvider.getPublisherByUser(user);
-        if(publisher == null)
-            return false;
-
         BookEntity book = bookProvider.getBookById(bookId);
-        if(book == null)
+        if(!methodsProvider.checkBookToUser(user, book))
             return false;
 
-        if(book.getPublisherEntity().getId() != publisher.getId())
-            return false;
         boolean success = bookProvider.deleteBookToAuthor(bookId, authorId);
         return success;
     }
