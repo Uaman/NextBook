@@ -5,6 +5,7 @@ import com.nextbook.dao.IFavoritesDao;
 import com.nextbook.domain.entities.FavoritesEntity;
 import com.nextbook.domain.entities.UserEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -20,12 +21,12 @@ public class FavoritesDao implements IFavoritesDao {
     @Inject
     private Dao baseDao;
 
-    @Override
+    @Transactional
     public FavoritesEntity addToUserFavorites(FavoritesEntity favorite) {
         return baseDao.attachWithMerge(favorite);
     }
 
-    @Override
+    @Transactional
     public boolean isFavorite(final int userId, final int bookId) {
         List<FavoritesEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -38,7 +39,7 @@ public class FavoritesDao implements IFavoritesDao {
         return !(result == null || result.isEmpty());
     }
 
-    @Override
+    @Transactional
     public boolean deleteFromUserFavorites(final int userId, final int bookId) {
         return baseDao.deleteByNamedQueryWithParams(
                 FavoritesEntity.class,
@@ -49,7 +50,7 @@ public class FavoritesDao implements IFavoritesDao {
                 }});
     }
 
-    @Override
+    @Transactional
     public List<FavoritesEntity> getAllFavorites(final UserEntity user) {
         List<FavoritesEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -61,12 +62,12 @@ public class FavoritesDao implements IFavoritesDao {
         return (result == null || result.isEmpty()) ? null : result;
     }
 
-    @Override
+    @Transactional
     public boolean hasFavorites(UserEntity user) {
         return getQuantityOfUserFavorites(user) != 0;
     }
 
-    @Override
+    @Transactional
     public int getQuantityOfUserFavorites(final UserEntity user){
         int result =
                 baseDao.executeCountNamedQueryWithParams(

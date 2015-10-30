@@ -5,6 +5,7 @@ import com.nextbook.domain.entities.SubCategoryEntity;
 import com.nextbook.services.ISubCategoryProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,22 +21,22 @@ public class SubCategoryProvider implements ISubCategoryProvider{
     @Autowired
     private ISubCategoryDao subCategoryDao;
 
-    @Override
+    @Transactional
     public List<SubCategoryEntity> getAll(){
         return subCategoryDao.getAll();
     }
 
-    @Override
+    @Transactional
     public SubCategoryEntity getById(int subCategoryId) {
         return subCategoryDao.getById(subCategoryId);
     }
 
-    @Override
+    @Transactional
     public List<SubCategoryEntity> getAllByCategoryId(int categoryId) {
         return subCategoryDao.getAllByCategoryId(categoryId);
     }
 
-    @Override
+    @Transactional
     public SubCategoryEntity getByLink(String link) {
         return subCategoryDao.getByLink(link);
     }

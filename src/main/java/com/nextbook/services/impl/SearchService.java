@@ -12,6 +12,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 /**
@@ -24,7 +25,7 @@ public class SearchService implements ISearchService {
     @Autowired
     private IBookProvider bookProvider;
 
-    @Override
+    @Transactional
     public Set<BookEntity> find(String query, int per_page, int page) {
         Set<BookEntity> result = new HashSet<BookEntity>();
         findInContent(query, result, per_page, page);

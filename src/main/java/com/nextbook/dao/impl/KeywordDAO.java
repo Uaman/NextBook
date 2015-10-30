@@ -23,7 +23,7 @@ public class KeywordDAO implements IKeywordDao{
     @Inject
     private Dao baseDao;
 
-    @Override
+    @Transactional
     public KeywordEntity getByName(final String keyword) {
         List<KeywordEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -35,12 +35,12 @@ public class KeywordDAO implements IKeywordDao{
         return (result == null || result.isEmpty()) ? null : result.get(0);
     }
 
-    @Override
+    @Transactional
     public KeywordEntity update(KeywordEntity keyword) {
         return baseDao.attachWithMerge(keyword);
     }
 
-    @Override
+    @Transactional
     public List<KeywordEntity> getListByKeyword(final String keyword) {
         List<KeywordEntity> result =
                 baseDao.executeNamedQueryWithParams(

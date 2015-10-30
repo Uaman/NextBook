@@ -33,12 +33,12 @@ public class BookDAO implements IBookDao {
     @Inject
     private Dao baseDao;
 
-    @Override
+    @Transactional
     public BookEntity getBookById(int bookId) {
         return baseDao.getById(BookEntity.class, bookId);
     }
 
-    @Override
+    @Transactional
     public List<BookEntity> getAllBooks() {
         List<BookEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -49,7 +49,7 @@ public class BookDAO implements IBookDao {
         return (result == null || result.isEmpty()) ? null : result;
     }
 
-    @Override
+    @Transactional
     public int getBooksQuantity() {
         int result = 0;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -66,7 +66,7 @@ public class BookDAO implements IBookDao {
         return result;
     }
 
-    @Override
+    @Transactional
     public int getCountByCriterion(BookCriterion criterion){
         int result = 0;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -83,7 +83,7 @@ public class BookDAO implements IBookDao {
         return result;
     }
 
-    @Override
+    @Transactional
     public boolean deleteBook(int bookId) {
         boolean deleted = false;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -108,12 +108,12 @@ public class BookDAO implements IBookDao {
         return deleted;
     }
 
-    @Override
+    @Transactional
     public BookEntity updateBook(BookEntity book) {
         return baseDao.attachWithMerge(book);
     }
 
-    @Override
+    @Transactional
     public boolean isbnExist(final String isbn, BookEntity book) {
         List<BookEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -125,7 +125,7 @@ public class BookDAO implements IBookDao {
         return !(result == null || result.isEmpty()) && result.get(0).getId() != book.getId();
     }
 
-    @Override
+    @Transactional
     public List<BookEntity> getBooksByCriterion(BookCriterion criterion) {
         List<BookEntity> entities = null;
         Session session = sessionFactory.openSession();
@@ -142,7 +142,7 @@ public class BookDAO implements IBookDao {
         return entities;
     }
 
-    @Override
+    @Transactional
     public List<BookEntity> getAllPublisherBooks(final int publisherId) {
         List<BookEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -154,7 +154,7 @@ public class BookDAO implements IBookDao {
         return (result == null || result.isEmpty()) ? null : result;
     }
 
-    @Override
+    @Transactional
     public BookKeywordEntity getBookToKeyword(final int bookId, final int keywordId){
         List<BookKeywordEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -167,12 +167,12 @@ public class BookDAO implements IBookDao {
         return (result == null || result.isEmpty()) ? null : result.get(0);
     }
 
-    @Override
+    @Transactional
     public BookKeywordEntity updateBookToKeyword(BookKeywordEntity bookKeyword){
         return baseDao.attachWithMerge(bookKeyword);
     }
 
-    @Override
+    @Transactional
     public boolean deleteBookToKeyword(final int bookId, final int keywordId) {
         return baseDao.deleteByNamedQueryWithParams(
                 BookKeywordEntity.class,
@@ -183,7 +183,7 @@ public class BookDAO implements IBookDao {
                 }});
     }
 
-    @Override
+    @Transactional
     public BookAuthorEntity getBookToAuthor(final int bookId, final int authorId) {
         List<BookAuthorEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -196,12 +196,12 @@ public class BookDAO implements IBookDao {
         return (result == null || result.isEmpty()) ? null : result.get(0);
     }
 
-    @Override
+    @Transactional
     public BookAuthorEntity updateBookToAuthor(BookAuthorEntity bookAuthor){
         return baseDao.attachWithMerge(bookAuthor);
     }
 
-    @Override
+    @Transactional
     public boolean deleteBookToAuthor(final int bookId, final int authorId) {
         return baseDao.deleteByNamedQueryWithParams(
                         BookAuthorEntity.class,
@@ -212,7 +212,7 @@ public class BookDAO implements IBookDao {
                         }});
     }
 
-    @Override
+    @Transactional
     public UserStarsBookEntity userStarsBookUpdate(UserStarsBookEntity userStarsBook) {
         return baseDao.attachWithMerge(userStarsBook);
     }

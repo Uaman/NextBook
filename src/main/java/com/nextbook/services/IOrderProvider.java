@@ -13,7 +13,6 @@ import java.util.List;
  * Date: 10/1/2015
  * Time: 1:46 PM
  */
-@Service
 public interface IOrderProvider {
 
     /**

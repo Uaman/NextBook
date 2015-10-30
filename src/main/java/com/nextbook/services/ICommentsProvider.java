@@ -14,7 +14,6 @@ import java.util.List;
  * Date: 10/12/2015
  * Time: 1:14 AM
  */
-@Service
 public interface ICommentsProvider {
 
     CommentEntity getById(int id);

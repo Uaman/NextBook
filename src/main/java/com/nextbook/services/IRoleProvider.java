@@ -11,7 +11,6 @@ import java.util.List;
  * Date: 8/3/2015
  * Time: 5:51 PM
  */
-@Service
 public interface IRoleProvider {
 
     List<RoleEntity> getAll();

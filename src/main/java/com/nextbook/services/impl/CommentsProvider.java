@@ -10,6 +10,7 @@ import com.nextbook.domain.criterion.CommentsCriterion;
 import com.nextbook.services.ICommentsProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,40 +26,40 @@ public class CommentsProvider implements ICommentsProvider {
     @Autowired
     private ICommentsDAO commentsDAO;
 
-    @Override
+    @Transactional
     public CommentEntity getById(int id) {
         return commentsDAO.getById(id);
     }
 
-    @Override
+    @Transactional
     public CommentEntity update(CommentEntity comment) {
         if(comment == null)
             return null;
         return commentsDAO.update(comment);
     }
 
-    @Override
+    @Transactional
     public List<CommentEntity> userComments(UserEntity user) {
         if(user == null)
             return null;
         return commentsDAO.userComments(user);
     }
 
-    @Override
+    @Transactional
     public List<CommentEntity> bookComments(BookEntity book) {
         if(book == null)
             return null;
         return commentsDAO.bookComments(book);
     }
 
-    @Override
+    @Transactional
     public boolean removeComment(CommentEntity comment) {
         if(comment == null)
             return false;
         return commentsDAO.removeComment(comment);
     }
 
-    @Override
+    @Transactional
     public CommentEntity publisherActivateComment(CommentEntity comment) {
         if(comment == null)
             return null;
@@ -67,7 +68,7 @@ public class CommentsProvider implements ICommentsProvider {
         return commentsDAO.update(comment);
     }
 
-    @Override
+    @Transactional
     public CommentEntity publisherDeactivateComment(CommentEntity comment) {
         if(comment == null)
             return null;
@@ -76,7 +77,7 @@ public class CommentsProvider implements ICommentsProvider {
         return commentsDAO.update(comment);
     }
 
-    @Override
+    @Transactional
     public CommentEntity adminActivateComment(CommentEntity comment) {
         if(comment == null)
             return null;
@@ -85,7 +86,7 @@ public class CommentsProvider implements ICommentsProvider {
         return commentsDAO.update(comment);
     }
 
-    @Override
+    @Transactional
     public CommentEntity adminDeactivateComment(CommentEntity comment) {
         if(comment == null)
             return null;
@@ -94,7 +95,7 @@ public class CommentsProvider implements ICommentsProvider {
         return commentsDAO.update(comment);
     }
 
-    @Override
+    @Transactional
     public List<CommentEntity> getCommentsByCriterion(CommentsCriterion criterion) {
         if(criterion == null)
             return null;

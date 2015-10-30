@@ -7,6 +7,7 @@ import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.exceptions.EmailAlreadyExistsException;
 import com.nextbook.services.IUserProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -23,17 +24,17 @@ public class UserProvider implements IUserProvider{
     @Inject
     private IUserDao userDao;
 
-    @Override
+    @Transactional
     public UserEntity getById(int userId) {
         return userDao.getById(userId);
     }
 
-    @Override
+    @Transactional
     public List<UserEntity> getFromMax(int from, int max) {
         return userDao.getAll(from, max);
     }
 
-    @Override
+    @Transactional
     public UserEntity registerNewUser(UserEntity user) throws EmailAlreadyExistsException{
         UserEntity userByEmail = getUserByEmail(user.getEmail());
         if(userByEmail != null)
@@ -44,27 +45,27 @@ public class UserProvider implements IUserProvider{
         return update(user);
     }
 
-    @Override
+    @Transactional
     public UserEntity update(UserEntity user) {
         return userDao.update(user);
     }
 
-    @Override
+    @Transactional
     public List<UserEntity> getAll() {
         return userDao.getAll(0, 0);
     }
 
-    @Override
+    @Transactional
     public boolean delete(int userId) {
         return userDao.delete(userId);
     }
 
-    @Override
+    @Transactional
     public List<UserEntity> getUsersByCriterion(UserCriterion criterion) {
         return userDao.getUsersByCriterion(criterion);
     }
 
-    @Override
+    @Transactional
     public UserEntity getUserByEmail(String email) {
         return userDao.getUserByEmail(email);
     }

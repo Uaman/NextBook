@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -27,22 +28,22 @@ public class PublisherDAO implements IPublisherDao {
     @Inject
     private Dao baseDao;
 
-    @Override
+    @Transactional
     public PublisherEntity updatePublisher(PublisherEntity publisher) {
         return baseDao.attachWithMerge(publisher);
     }
 
-    @Override
+    @Transactional
     public boolean deletePublisher(int id) {
         return baseDao.deleteById(PublisherEntity.class, id);
     }
 
-    @Override
+    @Transactional
     public PublisherEntity getPublisherById(int id) {
         return baseDao.getById(PublisherEntity.class, id);
     }
 
-    @Override
+    @Transactional
     public List<PublisherEntity> getAllPublishers(int from, int max) {
         List<PublisherEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -53,7 +54,7 @@ public class PublisherDAO implements IPublisherDao {
         return (result == null || result.isEmpty()) ? null : result;
     }
 
-    @Override
+    @Transactional
     public int getPublishersQuantity() {
         return baseDao.executeCountNamedQueryWithParams
                                 (PublisherEntity.class,
@@ -61,7 +62,7 @@ public class PublisherDAO implements IPublisherDao {
                                 Maps.<String, Object>newHashMap());
     }
 
-    @Override
+    @Transactional
     public List<PublisherEntity> getPublishersByCriterion(PublisherCriterion criterion) {
         List<PublisherEntity> result = null;
         Session session = sessionFactory.openSession();
@@ -123,7 +124,7 @@ public class PublisherDAO implements IPublisherDao {
         return s != null && !s.equals("");
     }
 
-    @Override
+    @Transactional
     public PublisherEntity getPublisherByUser(final UserEntity user) {
         List<Integer> publisherIds  =
                 baseDao.executeNamedQueryWithParams(
