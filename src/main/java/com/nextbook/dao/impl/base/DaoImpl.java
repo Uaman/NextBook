@@ -22,7 +22,7 @@ public class DaoImpl implements Dao, AttachingService {
 
     @Inject
     private SessionFactory sessionFactory;
-
+    
     @Override
     public <T extends Getable> List<T> getAll(Class<T> tClass){
         return getSession().createCriteria(tClass).list();
