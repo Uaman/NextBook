@@ -5,6 +5,7 @@ import com.nextbook.domain.criterion.AuthorCriterion;
 import com.nextbook.domain.entities.AuthorEntity;
 import com.nextbook.services.IAuthorProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -21,38 +22,38 @@ public class AuthorProvider implements IAuthorProvider{
     @Inject
     private IAuthorDao authorDao;
 
-    @Override
+    @Transactional
     public AuthorEntity updateAuthor(AuthorEntity author) {
         if(author == null)
             return null;
         return authorDao.updateAuthor(author);
     }
 
-    @Override
+    @Transactional
     public boolean deleteAuthor(int authorId) {
         return authorDao.deleteAuthor(authorId);
     }
 
-    @Override
+    @Transactional
     public AuthorEntity getById(int authorId) {
         return authorDao.getById(authorId);
     }
 
-    @Override
+    @Transactional
     public List<AuthorEntity> getAll() {
         return authorDao.getFromMax(0, 0);
     }
 
-    @Override
+    @Transactional
     public List<AuthorEntity> getFromMax(int from, int max) {
         return authorDao.getFromMax(from, max);
     }
-    @Override
+    @Transactional
     public List<AuthorEntity> getAuthorsByCriterion(AuthorCriterion criterion) {
         return authorDao.getAuthorsByCriterion(criterion);
     }
 
-    @Override
+    @Transactional
     public AuthorEntity getByFirstAndLastName(String fName, String lName) {
         if(!validString(fName) || !validString(lName))
             return  null;

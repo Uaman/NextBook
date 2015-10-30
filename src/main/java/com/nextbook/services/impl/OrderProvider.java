@@ -7,6 +7,7 @@ import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.services.IOrderProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,29 +24,29 @@ public class OrderProvider implements IOrderProvider{
     @Autowired
     private IOrderDao orderDao;
 
-    @Override
+    @Transactional
     public OrderEntity getById(int orderId) {
         return orderDao.getById(orderId);
     }
 
-    @Override
+    @Transactional
     public OrderEntity updateOrder(OrderEntity currentOrder) {
         return orderDao.updateOrder(currentOrder);
     }
 
-    @Override
+    @Transactional
     public boolean delete(int orderId) {
         return orderDao.delete(orderId);
     }
 
-    @Override
+    @Transactional
     public List<OrderEntity> getOrdersForUser(UserEntity user) {
         if(user == null)
             return null;
         return orderDao.getOrdersForUser(user);
     }
 
-    @Override
+    @Transactional
     public OrderEntity getOrderByUserAndBook(UserEntity user, BookEntity book) {
         if(user == null || book == null)
             return null;

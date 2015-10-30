@@ -4,6 +4,7 @@ import com.nextbook.dao.ICategoryDAO;
 import com.nextbook.domain.entities.CategoryEntity;
 import com.nextbook.services.ICategoryProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -16,7 +17,7 @@ public class CategoryProvider implements ICategoryProvider{
     @Inject
     private ICategoryDAO categoryDao;
 
-    @Override
+    @Transactional
     public CategoryEntity getById(int id) {
         return categoryDao.getById(id);
     }
@@ -25,7 +26,7 @@ public class CategoryProvider implements ICategoryProvider{
         return categoryDao.getAll();
     }
 
-    @Override
+    @Transactional
     public CategoryEntity getByLink(String link) {
         return categoryDao.getByLink(link);
     }

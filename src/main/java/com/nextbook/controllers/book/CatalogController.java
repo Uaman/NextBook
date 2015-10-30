@@ -8,9 +8,9 @@ import com.nextbook.domain.enums.Status;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.domain.preview.CategoryPreview;
 import com.nextbook.domain.request.CatalogRequest;
+import com.nextbook.services.IBookProvider;
 import com.nextbook.services.ICategoryProvider;
 import com.nextbook.services.ISubCategoryProvider;
-import com.nextbook.services.impl.BookProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,7 @@ import java.util.Locale;
 public class CatalogController {
 
     @Inject
-    private BookProvider bookProvider;
+    private IBookProvider bookProvider;
     @Inject
     private ICategoryProvider categoryProvider;
     @Inject

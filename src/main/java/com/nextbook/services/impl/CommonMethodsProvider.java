@@ -9,6 +9,7 @@ import com.nextbook.services.IOrderProvider;
 import com.nextbook.services.IPublisherProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class CommonMethodsProvider implements ICommonMethodsProvider {
     @Autowired
     private IOrderProvider orderProvider;
 
-    @Override
+    @Transactional
     public List<AuthorPreview> formAuthorsInLocale(List<BookAuthorEntity> authors, String language){
         List<AuthorPreview> result = new ArrayList<AuthorPreview>();
         if(authors != null) {
@@ -46,7 +47,7 @@ public class CommonMethodsProvider implements ICommonMethodsProvider {
         return result;
     }
 
-    @Override
+    @Transactional
     public List<ResponseForAutoComplete> formAuthorsForAutoComplete(List<AuthorEntity> authors, String language){
         List<ResponseForAutoComplete> result = new ArrayList<ResponseForAutoComplete>();
         if(authors != null) {
@@ -65,7 +66,7 @@ public class CommonMethodsProvider implements ICommonMethodsProvider {
         return result;
     }
 
-    @Override
+    @Transactional
     public boolean checkBookToUser(UserEntity user, BookEntity book){
         if(user == null || book == null)
             return false;
@@ -76,7 +77,7 @@ public class CommonMethodsProvider implements ICommonMethodsProvider {
         return book.getPublisherEntity().getId() == publisher.getId();
     }
 
-    @Override
+    @Transactional
     public boolean userBuyBook(UserEntity user, BookEntity book){
         if(user == null)
             return false;
@@ -98,7 +99,7 @@ public class CommonMethodsProvider implements ICommonMethodsProvider {
         return false;
     }
 
-    @Override
+    @Transactional
     public String getCategoryLocated(CategoryEntity category, Locale locate){
         String locatedCategory = "";
         if (locate.getLanguage().equals("uk")) {
@@ -111,7 +112,7 @@ public class CommonMethodsProvider implements ICommonMethodsProvider {
         return locatedCategory;
     }
 
-    @Override
+    @Transactional
     public String bookNameInLocale(BookEntity book, Locale locale){
         String bookName;
         if (locale.getLanguage().equals("uk")) {

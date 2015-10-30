@@ -8,6 +8,7 @@ import com.nextbook.utils.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -26,22 +27,22 @@ public class AuthorDao implements IAuthorDao{
     @Inject
     private Dao baseDao;
 
-    @Override
+    @Transactional
     public AuthorEntity updateAuthor(AuthorEntity author) {
         return baseDao.attachWithMerge(author);
     }
 
-    @Override
+    @Transactional
     public boolean deleteAuthor(int authorId) {
         return baseDao.deleteById(AuthorEntity.class, authorId);
     }
 
-    @Override
+    @Transactional
     public AuthorEntity getById(int authorId) {
         return baseDao.getById(AuthorEntity.class, authorId);
     }
 
-    @Override
+    @Transactional
     public List<AuthorEntity> getFromMax(int from, int max) {
         List<AuthorEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -51,7 +52,7 @@ public class AuthorDao implements IAuthorDao{
                         max);
         return (result == null || result.isEmpty()) ? null : result;
     }
-    @Override
+    @Transactional
     public List<AuthorEntity> getAuthorsByCriterion(AuthorCriterion criterion) {
         List<AuthorEntity> result = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -68,7 +69,7 @@ public class AuthorDao implements IAuthorDao{
         return result;
     }
 
-    @Override
+    @Transactional
     public AuthorEntity getByFirstAndLastName(final String fName, final String lName) {
         List<AuthorEntity> result =
                 baseDao.executeNamedQueryWithParams(

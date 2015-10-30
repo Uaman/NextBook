@@ -12,6 +12,7 @@ import com.nextbook.utils.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -28,17 +29,17 @@ public class CommentsDAO implements ICommentsDAO {
     @Inject
     private Dao baseDao;
 
-    @Override
+    @Transactional
     public CommentEntity getById(int id) {
         return baseDao.getById(CommentEntity.class, id);
     }
 
-    @Override
+    @Transactional
     public CommentEntity update(CommentEntity comment) {
         return baseDao.attachWithMerge(comment);
     }
 
-    @Override
+    @Transactional
     public List<CommentEntity> userComments(final UserEntity user){
         List<CommentEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -50,7 +51,7 @@ public class CommentsDAO implements ICommentsDAO {
         return (result == null || result.isEmpty()) ? null : result;
     }
 
-    @Override
+    @Transactional
     public List<CommentEntity> bookComments(final BookEntity book) {
         List<CommentEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -62,12 +63,12 @@ public class CommentsDAO implements ICommentsDAO {
         return (result == null || result.isEmpty()) ? null : result;
     }
 
-    @Override
+    @Transactional
     public boolean removeComment(CommentEntity comment) {
         return baseDao.deleteById(CommentEntity.class, comment.getId());
     }
 
-    @Override
+    @Transactional
     public List<CommentEntity> getCommentsByCriterion(CommentsCriterion criterion) {
         List<CommentEntity> result = null;
         Session session = HibernateUtil.getSessionFactory().openSession();

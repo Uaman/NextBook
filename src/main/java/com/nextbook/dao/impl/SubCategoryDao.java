@@ -23,17 +23,17 @@ public class SubCategoryDao implements ISubCategoryDao{
     @Inject
     private Dao baseDao;
 
-    @Override
+    @Transactional
     public List<SubCategoryEntity> getAll(){
         return baseDao.getAll(SubCategoryEntity.class);
     }
 
-    @Override
+    @Transactional
     public SubCategoryEntity getById(int subCategoryId) {
         return baseDao.getById(SubCategoryEntity.class, subCategoryId);
     }
 
-    @Override
+    @Transactional
     public List<SubCategoryEntity> getAllByCategoryId(final int categoryId) {
         List<SubCategoryEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -45,7 +45,7 @@ public class SubCategoryDao implements ISubCategoryDao{
         return (result == null || result.isEmpty()) ? null : result;
     }
 
-    @Override
+    @Transactional
     public SubCategoryEntity getByLink(final String link) {
         List<SubCategoryEntity> result =
                 baseDao.executeNamedQueryWithParams(

@@ -11,7 +11,6 @@ import java.util.List;
  * Date: 7/23/2015
  * Time: 10:04 PM
  */
-@Service
 public interface ISubCategoryProvider {
     List<SubCategoryEntity> getAll();
     List<SubCategoryEntity> getAllByCategoryId(int categoryId);

@@ -11,7 +11,6 @@ import java.util.List;
  * Date: 7/27/2015
  * Time: 7:24 PM
  */
-@Service
 public interface IKeywordProvider {
 
     KeywordEntity getByName(String keyword);

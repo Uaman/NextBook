@@ -12,6 +12,7 @@ import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.services.*;
 import com.nextbook.utils.SessionUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -41,29 +42,29 @@ public class BookProvider implements IBookProvider{
     @Inject
     private IFavoritesProvider favoritesProvider;
 
-    @Override
+    @Transactional
     public BookEntity getBookById(int bookId) {
         return bookDao.getBookById(bookId);
     }
 
-    @Override
+    @Transactional
     public List<BookEntity> getAllBooks() {
         return bookDao.getAllBooks();
     }
 
-    @Override
+    @Transactional
     public boolean deleteBook(BookEntity book) {
         if(book == null)
             return false;
         return deleteBook(book.getId());
     }
 
-    @Override
+    @Transactional
     public boolean deleteBook(int bookId) {
         return bookDao.deleteBook(bookId);
     }
 
-    @Override
+    @Transactional
     public BookEntity updateBook(BookEntity book) throws IsbnAlreadyExistsException{
         if(book == null)
             return null;
@@ -72,14 +73,14 @@ public class BookProvider implements IBookProvider{
         return bookDao.updateBook(book);
     }
 
-    @Override
+    @Transactional
     public boolean isbnExist(String isbn, BookEntity book) {
         if(isbn == null || isbn.equals("") || book == null)
             return false;
         return bookDao.isbnExist(isbn, book);
     }
 
-    @Override
+    @Transactional
     public List<BookEntity> getBooksByCriterion(BookCriterion criterion) {
         if(criterion == null)
             return null;
@@ -87,46 +88,46 @@ public class BookProvider implements IBookProvider{
         return bookDao.getBooksByCriterion(criterion);
     }
 
-    @Override
+    @Transactional
     public List<BookEntity> getAllPublisherBooks(int publisherId) {
         return bookDao.getAllPublisherBooks(publisherId);
     }
 
-    @Override
+    @Transactional
     public BookKeywordEntity getBookToKeyword(int bookId, int keywordId) {
         return bookDao.getBookToKeyword(bookId, keywordId);
     }
 
-    @Override
+    @Transactional
     public BookKeywordEntity updateBookToKeyword(BookKeywordEntity bookKeyword) {
         if(bookKeyword == null)
             return null;
         return bookDao.updateBookToKeyword(bookKeyword);
     }
 
-    @Override
+    @Transactional
     public boolean deleteBookToKeyword(int bookId, int keywordId) {
         return bookDao.deleteBookToKeyword(bookId, keywordId);
     }
 
-    @Override
+    @Transactional
     public BookAuthorEntity getBookToAuthor(int bookId, int authorId) {
         return bookDao.getBookToAuthor(bookId, authorId);
     }
 
-    @Override
+    @Transactional
     public BookAuthorEntity updateBookToAuthor(BookAuthorEntity bookAuthor) {
         if(bookAuthor == null)
             return null;
         return bookDao.updateBookToAuthor(bookAuthor);
     }
 
-    @Override
+    @Transactional
     public boolean deleteBookToAuthor(int bookId, int authorId) {
         return bookDao.deleteBookToAuthor(bookId, authorId);
     }
 
-    @Override
+    @Transactional
     public int getCountByCriterion(BookCriterion criterion) {
         if(criterion == null)
             return 0;
@@ -134,10 +135,10 @@ public class BookProvider implements IBookProvider{
         return bookDao.getCountByCriterion(criterion);
     }
 
-    @Override
+    @Transactional
     public int getBooksQuantity() { return bookDao.getBooksQuantity(); }
 
-    @Override
+    @Transactional
     public BookEntity userStarBook(UserEntity user, BookEntity book, float mark) {
         if (user == null || book == null)
             return null;
@@ -161,7 +162,7 @@ public class BookProvider implements IBookProvider{
         return book;
     }
 
-    @Override
+    @Transactional
     public List<BookPreview> booksToBookPreviews(List<BookEntity> books, Locale locale) {
         ArrayList<BookPreview> res = new ArrayList<BookPreview>();
         UserEntity user = sessionUtils.getCurrentUser();
@@ -177,7 +178,7 @@ public class BookProvider implements IBookProvider{
         return res;
     }
 
-    @Override
+    @Transactional
     public BookEntity adminActivateBook(BookEntity book) {
         if(book == null)
             return null;
@@ -190,7 +191,7 @@ public class BookProvider implements IBookProvider{
         return book;
     }
 
-    @Override
+    @Transactional
     public BookEntity adminDeactivateBook(BookEntity book) {
         if(book == null)
             return null;
@@ -203,7 +204,7 @@ public class BookProvider implements IBookProvider{
         return book;
     }
 
-    @Override
+    @Transactional
     public BookEntity publisherSendBookForReview(BookEntity book){
         if(book == null)
             return null;
@@ -216,7 +217,7 @@ public class BookProvider implements IBookProvider{
         return book;
     }
 
-    @Override
+    @Transactional
     public BookEntity defaultBook(PublisherEntity publisher){
         BookEntity book = new BookEntity();
         book.setUaName("");
@@ -234,7 +235,7 @@ public class BookProvider implements IBookProvider{
         return book;
     }
 
-    @Override
+    @Transactional
     public void copyBookFromBookForm(BookEntity book, BookRegisterForm bookRegisterForm){
         book.setIsbn(bookRegisterForm.getIsbn());
         book.setUaName(bookRegisterForm.getUaName());

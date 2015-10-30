@@ -6,6 +6,7 @@ import com.nextbook.domain.entities.BookEntity;
 import com.nextbook.domain.entities.OrderEntity;
 import com.nextbook.domain.entities.UserEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -20,22 +21,22 @@ public class OrderDao implements IOrderDao {
     @Inject
     private Dao baseDao;
 
-    @Override
+    @Transactional
     public OrderEntity getById(int orderId) {
         return baseDao.getById(OrderEntity.class, orderId);
     }
 
-    @Override
+    @Transactional
     public OrderEntity updateOrder(OrderEntity currentOrder) {
         return baseDao.attachWithMerge(currentOrder);
     }
 
-    @Override
+    @Transactional
     public boolean delete(int orderId) {
         return baseDao.deleteById(OrderEntity.class, orderId);
     }
 
-    @Override
+    @Transactional
     public List<OrderEntity> getOrdersForUser(final UserEntity currentUser) {
         List<OrderEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -47,7 +48,7 @@ public class OrderDao implements IOrderDao {
         return (result == null || result.isEmpty()) ? null : result;
     }
 
-    @Override
+    @Transactional
     public OrderEntity getOrderByUserAndBook(final UserEntity user, final BookEntity book){
         List<Integer> result =
                 baseDao.executeNamedQueryWithParams(

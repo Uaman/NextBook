@@ -7,6 +7,7 @@ import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.services.IFavoritesProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,31 +20,31 @@ public class FavoritesProvider implements IFavoritesProvider {
     @Autowired
     private IFavoritesDao favoriteDao;
 
-    @Override
+    @Transactional
     public FavoritesEntity addToUserFavorites(FavoritesEntity favorite) {
         return favoriteDao.addToUserFavorites(favorite);
     }
 
-    @Override
+    @Transactional
     public boolean deleteFromUserFavorites(int userId, int bookId) {
         return favoriteDao.deleteFromUserFavorites(userId,bookId);
     }
 
-    @Override
+    @Transactional
     public List<FavoritesEntity> getAllFavorites(UserEntity user) {
         return favoriteDao.getAllFavorites(user);
     }
 
-    @Override
+    @Transactional
     public boolean isFavorite(int userId, int bookId) {
         return favoriteDao.isFavorite(userId, bookId);
     }
 
-    @Override
+    @Transactional
     public boolean hasFavorites(UserEntity user){
         return favoriteDao.hasFavorites(user);
     }
-    @Override
+    @Transactional
     public int countOfUserFavorites(UserEntity user){
         return favoriteDao.getQuantityOfUserFavorites(user);
     }

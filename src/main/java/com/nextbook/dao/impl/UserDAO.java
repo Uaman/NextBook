@@ -8,6 +8,7 @@ import com.nextbook.utils.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -26,17 +27,17 @@ public class UserDAO implements IUserDao{
     @Inject
     private Dao baseDao;
 
-    @Override
+    @Transactional
     public UserEntity getById(int userId) {
         return baseDao.getById(UserEntity.class, userId);
     }
 
-    @Override
+    @Transactional
     public UserEntity update(UserEntity user) {
         return baseDao.attachWithMerge(user);
     }
 
-    @Override
+    @Transactional
     public List<UserEntity> getAll(int from, int max) {
         List<UserEntity> result =
                 baseDao.executeNamedQueryWithParams(
@@ -47,12 +48,12 @@ public class UserDAO implements IUserDao{
         return (result == null || result.isEmpty()) ? null : result;
     }
 
-    @Override
+    @Transactional
     public boolean delete(int userId) {
         return baseDao.deleteById(UserEntity.class, userId);
     }
 
-    @Override
+    @Transactional
     public List<UserEntity> getUsersByCriterion(UserCriterion criterion) {
         List<UserEntity> result = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -69,7 +70,7 @@ public class UserDAO implements IUserDao{
         return result;
     }
 
-    @Override
+    @Transactional
     public UserEntity getUserByEmail(final String email) {
         List<UserEntity> result =
                 baseDao.executeNamedQueryWithParams(

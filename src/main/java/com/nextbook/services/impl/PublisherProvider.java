@@ -6,6 +6,7 @@ import com.nextbook.domain.entities.PublisherEntity;
 import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.services.IPublisherProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -19,49 +20,49 @@ public class PublisherProvider implements IPublisherProvider{
     @Inject
     private IPublisherDao publisherDAO;
 
-    @Override
+    @Transactional
     public PublisherEntity updatePublisher(PublisherEntity publisher) {
         return publisherDAO.updatePublisher(publisher);
     }
 
-    @Override
+    @Transactional
     public boolean deletePublisher(int id) {
         return publisherDAO.deletePublisher(id);
     }
 
-    @Override
+    @Transactional
     public boolean deletePublisher(PublisherEntity publisher) {
         return publisherDAO.deletePublisher(publisher.getId());
     }
 
-    @Override
+    @Transactional
     public PublisherEntity getPublisherById(int id) {
         return publisherDAO.getPublisherById(id);
     }
 
-    @Override
+    @Transactional
     public List<PublisherEntity> getAllPublishers(int from, int max) {
         return publisherDAO.getAllPublishers(from, max);
     }
 
-    @Override
+    @Transactional
     public List<PublisherEntity> getAll(){
         return getAllPublishers(0, 0);
     }
 
-    @Override
+    @Transactional
     public List<PublisherEntity> getPublishersByCriterion(PublisherCriterion criterion) {
         return publisherDAO.getPublishersByCriterion(criterion);
     }
 
-    @Override
+    @Transactional
     public PublisherEntity getPublisherByUser(UserEntity user) {
         if(user == null)
             return null;
         return publisherDAO.getPublisherByUser(user);
     }
 
-    @Override
+    @Transactional
     public int getPublishersQuantity() {
         return publisherDAO.getPublishersQuantity();
     }
