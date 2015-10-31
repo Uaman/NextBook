@@ -126,18 +126,33 @@ public class PublisherDAO implements IPublisherDao {
 
     @Transactional
     public PublisherEntity getPublisherByUser(final UserEntity user) {
-        List<Integer> publisherIds  =
-                baseDao.executeNamedQueryWithParams(
-                        Integer.class,
-                                "SELECT DISTINCT(PUBLISHER.ID)" +
-                                "FROM PUBLISHER JOIN USERS_TO_PUBLISHER" +
-                                " ON PUBLISHER.ID=USERS_TO_PUBLISHER.PUBLISHER_ID" +
-                                " WHERE USERS_TO_PUBLISHER.USER_ID= :user_id",
-                        new HashMap<String, Object>(){{
-                            put("user_id", user.getId());
-                        }});
-        return  publisherIds != null && ! publisherIds.isEmpty()
-                ? getPublisherById(publisherIds.get(0)) : null;
+        return user.getPublisher();
+//        List<Integer> publisherIds  =
+//                baseDao.executeQueryWithParams(
+//                        Integer.class,
+//                        "SELECT DISTINCT(PUBLISHER.ID) " +
+//                                "FROM PUBLISHER JOIN USERS_TO_PUBLISHER " +
+//                                "ON PUBLISHER.ID=USERS_TO_PUBLISHER.PUBLISHER_ID " +
+//                                "WHERE USERS_TO_PUBLISHER.USER_ID=:user_id",
+//                        new HashMap<String, Object>(){{
+//                            put("user_id", user.getId());
+//                        }});
+//        return  publisherIds != null && ! publisherIds.isEmpty()
+//                ? getPublisherById(publisherIds.get(0)) : null;
+//        "SELECT publisher FROM PublisherEntity publisher " +
+//                "WHERE :user IN (publisher.users)",
+
+
+//        List<PublisherEntity> allPublishers = baseDao.getAll(PublisherEntity.class);
+//                sessionFactory.getCurrentSession().createQuery("from PublisherEntity").list();
+//        for(PublisherEntity publisherEntity: allPublishers) {
+//            System.out.println("COOL: "+publisherEntity);
+//            if (publisherEntity.getUsers().contains(user)) {
+//                System.out.println("HERE: "+publisherEntity);
+//                return publisherEntity;
+//            }
+//        }
+//        return user.getPublisherEntity();
     }
 
 }

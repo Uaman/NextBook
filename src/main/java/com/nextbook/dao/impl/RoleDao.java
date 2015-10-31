@@ -23,6 +23,11 @@ public class RoleDao implements IRoleDao{
 
     @Transactional
     public List<RoleEntity> getAll() {
-        return baseDao.getAll(RoleEntity.class);
+        try {
+            return baseDao.getAll(RoleEntity.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

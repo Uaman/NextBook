@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Polomani on 26.09.2015.
@@ -28,8 +30,13 @@ public class CategoryDAO implements ICategoryDAO {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    public List<CategoryEntity> getAll(){
-        return baseDao.getAll(CategoryEntity.class);
+    public Set<CategoryEntity> getAll(){
+        try {
+            return new HashSet<CategoryEntity>(baseDao.getAll(CategoryEntity.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

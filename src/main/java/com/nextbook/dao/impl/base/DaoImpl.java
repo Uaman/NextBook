@@ -4,6 +4,7 @@ import com.nextbook.dao.Dao;
 import com.nextbook.dao.base.objects.Getable;
 import com.nextbook.dao.base.objects.GetableById;
 import com.nextbook.dao.AttachingService;
+import com.nextbook.domain.entities.UserEntity;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,8 +25,10 @@ public class DaoImpl implements Dao, AttachingService {
     private SessionFactory sessionFactory;
 
     @Override
-    public <T extends Getable> List<T> getAll(Class<T> tClass){
-        return getSession().createCriteria(tClass).list();
+    public <T extends Getable> List<T> getAll(Class<T> tClass) throws Exception {
+        String fullClassName = tClass.newInstance().getClass().getName();
+        fullClassName = fullClassName.substring(fullClassName.lastIndexOf(".")+1, fullClassName.length());
+            return getSession().createQuery("from "+fullClassName).list();
     }
     @Override
     public <T extends GetableById> T getById(Class<T> tClass, int id){
@@ -38,6 +41,19 @@ public class DaoImpl implements Dao, AttachingService {
             (Class<T> categoryEntityClass, String getByLink, HashMap<String, Object> params) {
         validateTransaction();
         Query query = getSession().getNamedQuery(getByLink);
+        for(String name : params.keySet()){
+            query.setParameter(name, params.get(name));
+        }
+        return query.list();
+    }
+
+    @Override
+    public <T> List<T> executeQueryWithParams
+            (Class<T> categoryEntityClass, String queryString, HashMap<String, Object> params) {
+        validateTransaction();
+        Query query = getSession().createSQLQuery(queryString);
+//        Query query = getSession().createQuery("SELECT publisher FROM PublisherEntity publisher " +
+//                "WHERE :user IN (publisher.users)");
         for(String name : params.keySet()){
             query.setParameter(name, params.get(name));
         }

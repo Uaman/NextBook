@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Polomani on 24.07.2015.
@@ -97,7 +98,7 @@ public class PublishersController {
         if(!publisher.getUsers().contains(user))
             return "redirect:/";
         List<BookEntity> books = bookProvider.getAllPublisherBooks(publisher.getId());
-        List<UserEntity> users = publisher.getUsers();
+        Set<UserEntity> users = publisher.getUsers();
         model.addAttribute("books", books);
         model.addAttribute("users", users);
         model.addAttribute("publisherId", publisher.getId());

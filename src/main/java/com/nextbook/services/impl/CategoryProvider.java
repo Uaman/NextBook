@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Polomani on 26.09.2015.
@@ -22,7 +23,7 @@ public class CategoryProvider implements ICategoryProvider{
         return categoryDao.getById(id);
     }
 
-    public List<CategoryEntity> getAll() {
+    public Set<CategoryEntity> getAll() {
         return categoryDao.getAll();
     }
 

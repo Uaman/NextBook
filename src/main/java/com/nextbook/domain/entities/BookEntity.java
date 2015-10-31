@@ -313,5 +313,37 @@ public class BookEntity implements GetableById{
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("BookEntity{");
+        sb.append("id=").append(id);
+        sb.append(", isbn='").append(isbn).append('\'');
+        sb.append(", uaName='").append(uaName).append('\'');
+        sb.append(", enName='").append(enName).append('\'');
+        sb.append(", ruName='").append(ruName).append('\'');
+        sb.append(", subCategoryEntity=").append(subCategoryEntity);
+        sb.append(", eighteenPlus=").append(eighteenPlus);
+        sb.append(", yearOfPublication=").append(yearOfPublication);
+        sb.append(", publisherEntity=").append(publisherEntity);
+        sb.append(", language='").append(language).append('\'');
+        sb.append(", typeOfBook=").append(typeOfBook);
+        sb.append(", numberOfPages=").append(numberOfPages);
+        sb.append(", descriptionUa='").append(descriptionUa).append('\'');
+        sb.append(", descriptionEn='").append(descriptionEn).append('\'');
+        sb.append(", descriptionRu='").append(descriptionRu).append('\'');
+        sb.append(", link='").append(link).append('\'');
+        sb.append(", linkToStorage='").append(linkToStorage).append('\'');
+        sb.append(", numberOfImagesForCover=").append(numberOfImagesForCover);
+        sb.append(", numberOfImagesInGallery=").append(numberOfImagesInGallery);
+        sb.append(", rating=").append(rating);
+        sb.append(", voted=").append(voted);
+        sb.append(", status=").append(status);
+        sb.append(", comments=").append(comments);
+        sb.append(", bookToKeywords=").append(bookToKeywords);
+        sb.append(", bookToAuthor=").append(bookToAuthor);
+        sb.append('}');
+        return sb.toString();
+    }
 }
 

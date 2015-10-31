@@ -25,7 +25,12 @@ public class SubCategoryDao implements ISubCategoryDao{
 
     @Transactional
     public List<SubCategoryEntity> getAll(){
-        return baseDao.getAll(SubCategoryEntity.class);
+        try {
+            return baseDao.getAll(SubCategoryEntity.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Transactional
