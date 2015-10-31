@@ -1,5 +1,6 @@
 package com.nextbook.controllers.cabinet.user;
 
+import org.hibernate.Hibernate;
 import org.springframework.context.MessageSource;
 
 import com.nextbook.domain.entities.*;
@@ -98,6 +99,8 @@ public class BookController {
             return "redirect:/publisher/new";
         }
         BookEntity book = bookProvider.getBookById(bookId);
+        System.out.println(book.toString());
+        Hibernate.initialize(book.getPublisherEntity());
         if(book == null)
             return "redirect:/cabinet/profile";
         if(book.getPublisherEntity().getId() != publisher.getId())

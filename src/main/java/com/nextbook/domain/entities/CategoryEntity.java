@@ -45,7 +45,7 @@ public class CategoryEntity implements GetableById, Getable{
     @Column(name = "NAME_RU")
     private String nameRu;
 
-    @OneToMany(mappedBy="categoryEntity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="categoryEntity", fetch = FetchType.EAGER)
     private List<SubCategoryEntity> subCategoryEntity =  new ArrayList<SubCategoryEntity>();
 
     public String getNameUa() {

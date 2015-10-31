@@ -1,12 +1,9 @@
 package com.nextbook.domain.entities;
 
 import com.nextbook.dao.base.objects.GetableById;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -55,11 +52,19 @@ public class UserEntity implements GetableById {
     )
     private Set<AdressesEntity> deliveryAdressesEnt = new HashSet<AdressesEntity>();
 
+    @ManyToOne
+    @JoinTable(name="users_to_publisher",
+            joinColumns={@JoinColumn(name="user_id")},
+            inverseJoinColumns={@JoinColumn(name="publisher_id")})
+    private PublisherEntity publisher;
 
-    //@ManyToOne
-    //@JoinTable(name = "users_to_publisher", joinColumns = {@JoinColumn(name = "USER_ID")}, inverseJoinColumns = {@JoinColumn(name = "PUBLISHER_ID")})
-    //private PublisherEntity publisherEntity;
+    public PublisherEntity getPublisher() {
+        return publisher;
+    }
 
+    public void setPublisher(PublisherEntity publisher) {
+        this.publisher = publisher;
+    }
 
     public static String getGetAllUsers() {
         return getAllUsers;

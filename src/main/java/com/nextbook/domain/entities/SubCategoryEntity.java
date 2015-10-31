@@ -2,6 +2,7 @@ package com.nextbook.domain.entities;
 
 import com.nextbook.dao.base.objects.Getable;
 import com.nextbook.dao.base.objects.GetableById;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -43,6 +44,7 @@ public class SubCategoryEntity implements Getable, GetableById {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CATEGORY_ID", nullable = false)
+    @JsonIgnore
     private CategoryEntity categoryEntity;
 
     @Column(name = "NAME_EN")

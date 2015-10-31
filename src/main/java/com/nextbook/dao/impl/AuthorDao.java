@@ -52,6 +52,7 @@ public class AuthorDao implements IAuthorDao{
                         max);
         return (result == null || result.isEmpty()) ? null : result;
     }
+
     @Transactional
     public List<AuthorEntity> getAuthorsByCriterion(AuthorCriterion criterion) {
         List<AuthorEntity> result = null;
