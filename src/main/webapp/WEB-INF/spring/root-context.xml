@@ -33,6 +33,10 @@
 	<!--</aop:config>-->
 
 
+	<bean id="liqPay" class="com.nextbook.utils.CustomLiqPay">
+		<constructor-arg name="privateKey" value="${liqpay.privateKey}"></constructor-arg>
+		<constructor-arg name="publicKey" value="${liqpay.publicKey}"></constructor-arg>
+	</bean>
 
 	<bean
 			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

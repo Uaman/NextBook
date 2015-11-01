@@ -128,12 +128,12 @@ public class Order {
         this.dateOfOrder = dateOfOrder;
     }
 
-    public TypeOfPayment getTypeOfPaument() {
+    public TypeOfPayment getTypeOfPayment() {
         return typeOfPayment;
     }
 
-    public void setTypeOfPaument(TypeOfPayment typeOfPaument) {
-        this.typeOfPayment = typeOfPaument;
+    public void setTypeOfPayment(TypeOfPayment typeOfPayment) {
+        this.typeOfPayment = typeOfPayment;
     }
 
     public String getDescription() {
