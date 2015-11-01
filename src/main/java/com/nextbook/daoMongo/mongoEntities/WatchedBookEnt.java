@@ -1,42 +1,30 @@
 package com.nextbook.daoMongo.mongoEntities;
 
-import org.bson.BSONObject;
-import org.bson.BsonDocument;
-import org.bson.Document;
-//import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 
 /**
  * Created by Dima on 30.09.2015.
  */
-public class WatchedBookEnt extends Document {
+public class WatchedBookEnt {
 
-
+    @Id
     private String documentId;
 
     private int userID;
 
     private int bookId;
 
-    private long actionTime;
+    private Date actionTime;
 
-    private String typeOfAction;
+    private TypeOfAction typeOfAction;
 
-    public WatchedBookEnt(int userID, int bookId, long actionTime, String typeOfAction) {
+    public WatchedBookEnt(int userID, int bookId, Date actionTime, TypeOfAction typeOfAction) {
         this.userID = userID;
         this.bookId = bookId;
         this.actionTime = actionTime;
         this.typeOfAction = typeOfAction;
-    }
-
-    public Document getDocument(){
-        Document entity = new Document();
-        entity.append("userID",this.getUserID());
-        entity.append("bookId",this.getBookId());
-        entity.append("actionTime",this.getActionTime());
-        entity.append("action",this.getTypeOfAction());
-        return entity;
     }
 
     public String getDocumentId() {
@@ -63,19 +51,19 @@ public class WatchedBookEnt extends Document {
         this.bookId = bookId;
     }
 
-    public long getActionTime() {
+    public Date getActionTime() {
         return actionTime;
     }
 
-    public void setActionTime(long actionTime) {
+    public void setActionTime(Date actionTime) {
         this.actionTime = actionTime;
     }
 
-    public String getTypeOfAction() {
+    public TypeOfAction getTypeOfAction() {
         return typeOfAction;
     }
 
-    public void setTypeOfAction(String typeOfAction) {
+    public void setTypeOfAction(TypeOfAction typeOfAction) {
         this.typeOfAction = typeOfAction;
     }
 }

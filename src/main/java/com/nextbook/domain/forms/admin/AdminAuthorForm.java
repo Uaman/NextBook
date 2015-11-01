@@ -1,6 +1,6 @@
 package com.nextbook.domain.forms.admin;
 
-import com.nextbook.domain.pojo.Book;
+import com.nextbook.domain.entities.BookEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class AdminAuthorForm {
 
     private String lastNameRu;
 
-    private List<Book> books = new ArrayList<Book>();
+    private List<BookEntity> books = new ArrayList<BookEntity>();
 
     public int getId() {
         return id;
@@ -82,11 +82,11 @@ public class AdminAuthorForm {
         this.lastNameRu = lastNameRu;
     }
 
-    public List<Book> getBooks() {
+    public List<BookEntity> getBooks() {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(List<BookEntity> books) {
         this.books = books;
     }
 

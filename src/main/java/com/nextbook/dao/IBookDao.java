@@ -2,10 +2,10 @@ package com.nextbook.dao;
 
 
 import com.nextbook.domain.criterion.BookCriterion;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.BookAuthor;
-import com.nextbook.domain.pojo.BookKeyword;
-import com.nextbook.domain.pojo.UserStarsBook;
+import com.nextbook.domain.entities.BookAuthorEntity;
+import com.nextbook.domain.entities.BookEntity;
+import com.nextbook.domain.entities.BookKeywordEntity;
+import com.nextbook.domain.entities.UserStarsBookEntity;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ import java.util.List;
  */
 public interface IBookDao {
 
-    Book getBookById(int bookId);
+    BookEntity getBookById(int bookId);
 
-    List<Book> getAllBooks();
+    List<BookEntity> getAllBooks();
 
     int getBooksQuantity();
 
@@ -27,25 +27,25 @@ public interface IBookDao {
 
     boolean deleteBook(int bookId);
 
-    Book updateBook(Book book);
+    BookEntity updateBook(BookEntity book);
 
-    boolean isbnExist(String isbn, Book book);
+    boolean isbnExist(String isbn, BookEntity entity);
 
-    List<Book> getBooksByCriterion(BookCriterion criterion);
+    List<BookEntity> getBooksByCriterion(BookCriterion criterion);
 
-    List<Book> getAllPublisherBooks(int publisherId);
+    List<BookEntity> getAllPublisherBooks(int publisherId);
 
-    BookKeyword getBookToKeyword(int bookId, int keywordId);
+    BookKeywordEntity getBookToKeyword(int bookId, int keywordId);
 
-    BookKeyword updateBookToKeyword(BookKeyword bookKeyword);
+    BookKeywordEntity updateBookToKeyword(BookKeywordEntity bookKeyword);
 
     boolean deleteBookToKeyword(int bookId, int keywordId);
 
-    BookAuthor getBookToAuthor(int bookId, int authorId);
+    BookAuthorEntity getBookToAuthor(int bookId, int authorId);
 
-    BookAuthor updateBookToAuthor(BookAuthor bookAuthor);
+    BookAuthorEntity updateBookToAuthor(BookAuthorEntity bookAuthor);
 
     boolean deleteBookToAuthor(int bookId, int authorId);
 
-    UserStarsBook userStarsBook(UserStarsBook userStarsBook);
+    UserStarsBookEntity userStarsBookUpdate(UserStarsBookEntity userStarsBook);
 }

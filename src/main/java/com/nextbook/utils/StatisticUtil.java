@@ -1,14 +1,13 @@
 package com.nextbook.utils;
 
 import com.google.gson.Gson;
-import com.nextbook.domain.pojo.User;
+import com.nextbook.domain.entities.UserEntity;
 import io.keen.client.java.JavaKeenClientBuilder;
 import io.keen.client.java.KeenClient;
 import io.keen.client.java.KeenProject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,32 +39,32 @@ public class StatisticUtil {
         KeenClient.client().setDefaultProject(getProject());
     }
 
-    public void deleteEvent(User who, Object object){
+    public void deleteEvent(UserEntity who, Object object){
         Map<String, Object> deleteEvent = new HashMap<String, Object>();
         deleteEvent.put("user_id", who.getId());
-        deleteEvent.put("user_role", who.getRole());
+        deleteEvent.put("user_role", who.getRoleEntity());
         deleteEvent.put("object", gson.toJson(object));
         addEvent("Delete", deleteEvent);
     }
 
-    public void registrationEvent(User newUser){
+    public void registrationEvent(UserEntity newUser){
         Map<String, Object> addEvent = new HashMap<String, Object>();
         addEvent.put("new_user", gson.toJson(newUser));
         addEvent("Registration", addEvent);
     }
 
-    public void addEvent(User who, Object object){
+    public void addEvent(UserEntity who, Object object){
         Map<String, Object> addEvent = new HashMap<String, Object>();
         addEvent.put("user_id", who.getId());
-        addEvent.put("user_role", who.getRole());
+        addEvent.put("user_role", who.getRoleEntity());
         addEvent.put("object", gson.toJson(object));
         addEvent("Add", addEvent);
     }
 
-    public void uploadEvent(User who, MultipartFile file){
+    public void uploadEvent(UserEntity who, MultipartFile file){
         Map<String, Object> addEvent = new HashMap<String, Object>();
         addEvent.put("user_id", who.getId());
-        addEvent.put("user_role", who.getRole());
+        addEvent.put("user_role", who.getRoleEntity());
         String fileName = file.getOriginalFilename();
         String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
         addEvent.put("file_name", fileName);
@@ -74,10 +73,10 @@ public class StatisticUtil {
         addEvent("Upload", addEvent);
     }
 
-    public void updateEvent(User who, Object oldObject, Object newObject){
+    public void updateEvent(UserEntity who, Object oldObject, Object newObject){
         Map<String, Object> addEvent = new HashMap<String, Object>();
         addEvent.put("user_id", who.getId());
-        addEvent.put("user_role", who.getRole());
+        addEvent.put("user_role", who.getRoleEntity());
         addEvent.put("before", gson.toJson(oldObject));
         addEvent.put("after", gson.toJson(newObject));
         addEvent("Update", addEvent);

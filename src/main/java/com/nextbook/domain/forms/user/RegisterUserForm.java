@@ -2,6 +2,7 @@ package com.nextbook.domain.forms.user;
 
 
 import javax.validation.constraints.*;
+
 import org.hibernate.validator.constraints.Email;
 
 /**

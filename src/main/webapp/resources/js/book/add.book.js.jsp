@@ -229,21 +229,13 @@ $(document).ready(function(){
                     xhr.setRequestHeader("Accept", "application/json");
                     xhr.setRequestHeader("Content-Type", "application/json");
                 },
-                success: function(response){
+                success: function(data){
                     spinner.stop();
-                    $('.close').trigger('click');
-                    if(response.code == 1){
-                        $('#registration-ok').show();
-                        $('.shadow').show();
-                    } else if(response.code == 0){
-                        $('#problems-with-service').show();
-                        $('.shadow').show();
+                    $('#send-popup').hide();
+                    if(data == 1){
+                        $('#success').show();
                     } else {
-                        $('.errorblock ul').show();
-                        console.log(response.errors);
-                        for(var i = 0; i < response.errors.length; ++i){
-                            $('.errorblock ul').append('<li>'+response.errors[i]+'</li>');
-                        }
+                        $('#error').show();
                     }
                 },
                 error: function(e){

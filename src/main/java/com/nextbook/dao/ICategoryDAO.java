@@ -1,18 +1,18 @@
 package com.nextbook.dao;
 
-import com.nextbook.domain.pojo.Category;
-import com.nextbook.domain.pojo.SubCategory;
+import com.nextbook.domain.entities.CategoryEntity;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Polomani on 26.09.2015.
  */
 public interface ICategoryDAO {
 
-    Category getById(int id);
+    CategoryEntity getById(int id);
 
-    List<Category> getAll();
+    Set<CategoryEntity> getAll();
 
-    Category getByLink(String link);
+    CategoryEntity getByLink(String link);
 }

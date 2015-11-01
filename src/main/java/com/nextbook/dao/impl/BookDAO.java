@@ -1,26 +1,19 @@
 package com.nextbook.dao.impl;
 
+import com.nextbook.dao.Dao;
 import com.nextbook.dao.IBookDao;
-import com.nextbook.domain.entities.BookAuthorEntity;
-import com.nextbook.domain.entities.BookEntity;
-import com.nextbook.domain.entities.BookKeywordEntity;
-import com.nextbook.domain.entities.UserStarsBookEntity;
+import com.nextbook.domain.entities.*;
 import com.nextbook.domain.enums.BookTypeEnum;
 import com.nextbook.domain.enums.EighteenPlus;
 import com.nextbook.domain.criterion.BookCriterion;
 import com.nextbook.domain.enums.QueryType;
 import com.nextbook.domain.enums.Status;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.BookAuthor;
-import com.nextbook.domain.pojo.BookKeyword;
-import com.nextbook.domain.pojo.UserStarsBook;
-import com.nextbook.utils.DozerMapperFactory;
 import com.nextbook.utils.HibernateUtil;
-import org.dozer.DozerBeanMapper;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -31,68 +24,32 @@ import java.util.*;
  * Date: 7/23/2015
  * Time: 4:47 PM
  */
-@Repository
+@Service
+@Transactional
 public class BookDAO implements IBookDao {
 
     @Inject
     private SessionFactory sessionFactory;
     @Inject
-    private DozerBeanMapper dozerBeanMapper;
+    private Dao baseDao;
 
-    @Override
-    public Book getBookById(int bookId) {
-        Book result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            Query query = session.getNamedQuery(BookEntity.getById);
-            query.setParameter("id", bookId);
-            List<BookEntity> list = query.list();
-            if(list != null && list.size() > 0) {
-                result = DozerMapperFactory.getDozerBeanMapper().map(list.get(0), Book.class);
-            }
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    @Transactional
+    public BookEntity getBookById(int bookId) {
+        return baseDao.getById(BookEntity.class, bookId);
     }
 
-    @Override
-    public List<Book> getAllBooks() {
-        List<Book> result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            Query query = session.getNamedQuery(BookEntity.getAllBooks);
-            List<BookEntity> entities = query.list();
-            if(entities.size() > 0) {
-                result = new ArrayList<Book>();
-                for (BookEntity entity : entities) {
-                    if (entity != null) {
-                        try {
-                            Book temp = DozerMapperFactory.getDozerBeanMapper().map(entity, Book.class);
-                            if (temp != null)
-                                result.add(temp);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    @Transactional
+    public List<BookEntity> getAllBooks() {
+        List<BookEntity> result =
+                baseDao.executeNamedQueryWithParams(
+                        BookEntity.class,
+                        BookEntity.getAllBooks,
+                        new HashMap<String, Object>() {{
+                        }});
+        return (result == null || result.isEmpty()) ? null : result;
     }
 
-    @Override
+    @Transactional
     public int getBooksQuantity() {
         int result = 0;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -109,7 +66,7 @@ public class BookDAO implements IBookDao {
         return result;
     }
 
-    @Override
+    @Transactional
     public int getCountByCriterion(BookCriterion criterion){
         int result = 0;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -126,7 +83,7 @@ public class BookDAO implements IBookDao {
         return result;
     }
 
-    @Override
+    @Transactional
     public boolean deleteBook(int bookId) {
         boolean deleted = false;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -151,267 +108,113 @@ public class BookDAO implements IBookDao {
         return deleted;
     }
 
-    @Override
-    public Book updateBook(Book book) {
-        Book result = null;
-        if(book != null) {
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            try {
-                session.beginTransaction();
-                BookEntity entity = DozerMapperFactory.getDozerBeanMapper().map(book, BookEntity.class);
-                entity = (BookEntity) session.merge(entity);
-                result = DozerMapperFactory.getDozerBeanMapper().map(entity, Book.class);
-                session.getTransaction().commit();
-            } catch (Exception e) {
-                if(session != null && session.getTransaction().isActive())
-                    session.getTransaction().rollback();
-                e.printStackTrace();
-            } finally {
-                if (session != null && session.isOpen())
-                    session.close();
-            }
-        }
-        return result;
+    @Transactional
+    public BookEntity updateBook(BookEntity book) {
+        return baseDao.attachWithMerge(book);
     }
 
-    @Override
-    public boolean isbnExist(String isbn, Book book) {
-        boolean exist = false;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            Query query = session.getNamedQuery(BookEntity.getByIsbn);
-            query.setParameter("isbn", isbn);
-            List<BookEntity> list = query.list();
-            if(list != null && list.size() > 0 && list.get(0).getId() != book.getId()) {
-                exist = true;
-            }
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return exist;
+    @Transactional
+    public boolean isbnExist(final String isbn, BookEntity book) {
+        List<BookEntity> result =
+                baseDao.executeNamedQueryWithParams(
+                        BookEntity.class,
+                        BookEntity.getByIsbn,
+                        new HashMap<String, Object>() {{
+                            put("isbn", isbn);
+                        }});
+        return !(result == null || result.isEmpty()) && result.get(0).getId() != book.getId();
     }
 
-    @Override
-    public List<Book> getBooksByCriterion(BookCriterion criterion) {
-        List<Book> result = null;
+    @Transactional
+    public List<BookEntity> getBooksByCriterion(BookCriterion criterion) {
+        List<BookEntity> entities = null;
         Session session = sessionFactory.openSession();
         try {
-            List<BookEntity> entities = null;
             session.beginTransaction();
             Query query = createQueryFromCriterion(session, criterion);
             entities = query.list();
-            result = new ArrayList<Book>();
-            if(entities.size() > 0) {
-                for (BookEntity entity : entities) {
-                    if (entity != null) {
-                        try {
-                            Book temp = dozerBeanMapper.map(entity, Book.class);
-                            if (temp != null)
-                                result.add(temp);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
         } catch (Exception e){
             e.printStackTrace();
         } finally {
             if(session != null && session.isOpen())
                 session.close();
         }
-        return result;
+        return entities;
     }
 
-    @Override
-    public List<Book> getAllPublisherBooks(int publisherId) {
-        List<Book> result = null;
-
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            Query query = session.getNamedQuery(BookEntity.getBooksByPublisherId);
-            query.setParameter("id", publisherId);
-            List<BookEntity> list = query.list();
-            if(list != null && list.size() > 0){
-                result = new ArrayList<Book>();
-                for(BookEntity entity : list){
-                    Book temp = DozerMapperFactory.getDozerBeanMapper().map(entity, Book.class);
-                    if(temp != null)
-                        result.add(temp);
-                }
-            }
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-
-        return result;
+    @Transactional
+    public List<BookEntity> getAllPublisherBooks(final int publisherId) {
+        List<BookEntity> result =
+                baseDao.executeNamedQueryWithParams(
+                        BookEntity.class,
+                        BookEntity.getBooksByPublisherId,
+                        new HashMap<String, Object>() {{
+                            put("id", publisherId);
+                        }});
+        return (result == null || result.isEmpty()) ? null : result;
     }
 
-    @Override
-    public BookKeyword getBookToKeyword(int bookId, int keywordId){
-        BookKeyword result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try{
-            Query query = session.getNamedQuery(BookKeywordEntity.getByBookAndKeywordIds);
-            query.setParameter("bookId", bookId);
-            query.setParameter("keywordId", keywordId);
-            List<BookKeywordEntity> list = query.list();
-            if(list != null && list.size() > 0){
-                result = DozerMapperFactory.getDozerBeanMapper().map(list.get(0), BookKeyword.class);
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    @Transactional
+    public BookKeywordEntity getBookToKeyword(final int bookId, final int keywordId){
+        List<BookKeywordEntity> result =
+                baseDao.executeNamedQueryWithParams(
+                        BookKeywordEntity.class,
+                        BookKeywordEntity.getByBookAndKeywordIds,
+                        new HashMap<String, Object>(){{
+                            put("bookId", bookId);
+                            put("keywordId", keywordId);
+                        }});
+        return (result == null || result.isEmpty()) ? null : result.get(0);
     }
 
-    @Override
-    public BookKeyword updateBookToKeyword(BookKeyword bookKeyword){
-        BookKeyword result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            BookKeywordEntity entity = DozerMapperFactory.getDozerBeanMapper().map(bookKeyword, BookKeywordEntity.class);
-            entity = (BookKeywordEntity) session.merge(entity);
-            result = DozerMapperFactory.getDozerBeanMapper().map(entity, BookKeyword.class);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            if(session != null && session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    @Transactional
+    public BookKeywordEntity updateBookToKeyword(BookKeywordEntity bookKeyword){
+        return baseDao.attachWithMerge(bookKeyword);
     }
 
-    @Override
-    public boolean deleteBookToKeyword(int bookId, int keywordId) {
-        boolean deleted = false;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try{
-            session.beginTransaction();
-            Query query = session.getNamedQuery(BookKeywordEntity.getByBookAndKeywordIds);
-            query.setParameter("bookId", bookId);
-            query.setParameter("keywordId", keywordId);
-            List<BookKeywordEntity> list = query.list();
-            if(list != null && list.size() > 0) {
-                session.delete(list.get(0));
-            }
-            session.getTransaction().commit();
-            deleted = true;
-        } catch (Exception e){
-            if(session != null && session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return deleted;
+    @Transactional
+    public boolean deleteBookToKeyword(final int bookId, final int keywordId) {
+        return baseDao.deleteByNamedQueryWithParams(
+                BookKeywordEntity.class,
+                BookKeywordEntity.getByBookAndKeywordIds,
+                new HashMap<String, Object>() {{
+                    put("bookId", bookId);
+                    put("keywordId", keywordId);
+                }});
     }
 
-    @Override
-    public BookAuthor getBookToAuthor(int bookId, int authorId) {
-        BookAuthor result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try{
-            Query query = session.getNamedQuery(BookAuthorEntity.getByBookAndAuthorIds);
-            query.setParameter("bookId", bookId);
-            query.setParameter("authorId", authorId);
-            List<BookAuthorEntity> list = query.list();
-            if(list != null && list.size() > 0){
-                result = DozerMapperFactory.getDozerBeanMapper().map(list.get(0), BookAuthor.class);
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    @Transactional
+    public BookAuthorEntity getBookToAuthor(final int bookId, final int authorId) {
+        List<BookAuthorEntity> result =
+                baseDao.executeNamedQueryWithParams(
+                        BookAuthorEntity.class,
+                        BookAuthorEntity.getByBookAndAuthorIds,
+                        new HashMap<String, Object>(){{
+                            put("bookId", bookId);
+                            put("authorId", authorId);
+                        }});
+        return (result == null || result.isEmpty()) ? null : result.get(0);
     }
 
-    @Override
-    public BookAuthor updateBookToAuthor(BookAuthor bookAuthor){
-        BookAuthor result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            BookAuthorEntity entity = DozerMapperFactory.getDozerBeanMapper().map(bookAuthor, BookAuthorEntity.class);
-            entity = (BookAuthorEntity) session.merge(entity);
-            result = DozerMapperFactory.getDozerBeanMapper().map(entity, BookAuthor.class);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            if(session != null && session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    @Transactional
+    public BookAuthorEntity updateBookToAuthor(BookAuthorEntity bookAuthor){
+        return baseDao.attachWithMerge(bookAuthor);
     }
 
-    @Override
-    public boolean deleteBookToAuthor(int bookId, int authorId) {
-        boolean deleted = false;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try{
-            session.beginTransaction();
-            Query query = session.getNamedQuery(BookAuthorEntity.getByBookAndAuthorIds);
-            query.setParameter("bookId", bookId);
-            query.setParameter("authorId", authorId);
-            List<BookAuthorEntity> list = query.list();
-            if(list != null && list.size() > 0) {
-                session.delete(list.get(0));
-            }
-            session.getTransaction().commit();
-            deleted = true;
-        } catch (Exception e){
-            if(session != null && session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return deleted;
+    @Transactional
+    public boolean deleteBookToAuthor(final int bookId, final int authorId) {
+        return baseDao.deleteByNamedQueryWithParams(
+                        BookAuthorEntity.class,
+                        BookAuthorEntity.getByBookAndAuthorIds,
+                        new HashMap<String, Object>() {{
+                            put("bookId", bookId);
+                            put("authorId", authorId);
+                        }});
     }
 
-    @Override
-    public UserStarsBook userStarsBook(UserStarsBook userStarsBook) {
-        UserStarsBook result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try{
-            session.beginTransaction();
-            UserStarsBookEntity entity = DozerMapperFactory.getDozerBeanMapper().map(userStarsBook, UserStarsBookEntity.class);
-            entity = (UserStarsBookEntity)session.merge(entity);
-            result = DozerMapperFactory.getDozerBeanMapper().map(entity, UserStarsBook.class);
-            session.getTransaction().commit();
-        } catch (Exception e){
-            if(session != null && session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            if(session != null && session.isOpen())
-                session.close();
-        }
-        return result;
+    @Transactional
+    public UserStarsBookEntity userStarsBookUpdate(UserStarsBookEntity userStarsBook) {
+        return baseDao.attachWithMerge(userStarsBook);
     }
 
     private Query createQueryFromCriterion(Session session, BookCriterion criterion) {

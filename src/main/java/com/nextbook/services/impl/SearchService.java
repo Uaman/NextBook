@@ -1,11 +1,9 @@
 package com.nextbook.services.impl;
 
 import com.nextbook.domain.entities.BookEntity;
-import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.upload.Constants;
 import com.nextbook.services.IBookProvider;
 import com.nextbook.services.ISearchService;
-import com.nextbook.utils.DozerMapperFactory;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -14,6 +12,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 /**
@@ -26,7 +25,7 @@ public class SearchService implements ISearchService {
     @Autowired
     private IBookProvider bookProvider;
 
-    @Override
+    @Transactional
     public Set<BookEntity> find(String query, int per_page, int page) {
         Set<BookEntity> result = new HashSet<BookEntity>();
         findInContent(query, result, per_page, page);
@@ -48,8 +47,8 @@ public class SearchService implements ISearchService {
                     break;
                 doc = iter.next();
                 String id = doc.getFieldValue("book_id").toString();
-                Book book = bookProvider.getBookById(Integer.parseInt(id));
-                result.add(DozerMapperFactory.getDozerBeanMapper().map(book, BookEntity.class));
+                BookEntity book = bookProvider.getBookById(Integer.parseInt(id));
+                result.add(book);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,6 +1,6 @@
 package com.nextbook.utils;
 
-import com.nextbook.domain.pojo.User;
+import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.services.IUserProvider;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,7 +19,7 @@ public class SessionUtils {
     @Inject
     private IUserProvider userProvider;
 
-    public User getCurrentUser ()
+    public UserEntity getCurrentUser ()
     {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {

@@ -3,7 +3,6 @@ package com.nextbook.services.impl;
 import com.itextpdf.text.pdf.*;
 import com.microsoft.azure.storage.*;
 import com.nextbook.domain.enums.Cover;
-import com.nextbook.domain.pojo.Book;
 import com.nextbook.domain.upload.Constants;
 import com.microsoft.azure.storage.blob.*;
 import com.nextbook.services.IBookProvider;
@@ -11,6 +10,7 @@ import com.nextbook.services.IBookStorageProvider;
 import com.nextbook.utils.FilesUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +22,7 @@ import java.security.InvalidKeyException;
 /**
  * Created by KutsykV on 06.06.2015.
  */
+@Service
 public class BookStorageProvider implements IBookStorageProvider {
 
     @Autowired

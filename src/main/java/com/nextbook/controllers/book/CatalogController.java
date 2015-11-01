@@ -1,10 +1,10 @@
 package com.nextbook.controllers.book;
 
 import com.nextbook.domain.criterion.BookCriterion;
+import com.nextbook.domain.entities.BookEntity;
+import com.nextbook.domain.entities.CategoryEntity;
+import com.nextbook.domain.entities.SubCategoryEntity;
 import com.nextbook.domain.enums.Status;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.Category;
-import com.nextbook.domain.pojo.SubCategory;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.domain.preview.CategoryPreview;
 import com.nextbook.domain.request.CatalogRequest;
@@ -76,7 +76,7 @@ public class CatalogController {
 
     private void initCategoryList(Locale locale) {
         categories = new ArrayList<CategoryPreview>();
-        for (Category cat : categoryProvider.getAll())
+        for (CategoryEntity cat : categoryProvider.getAll())
             categories.add(new CategoryPreview(cat, locale));
     }
 
@@ -84,13 +84,13 @@ public class CatalogController {
     public
     @ResponseBody
     List<BookPreview> getBooksByCriterion(@RequestParam(required = false) CatalogRequest catalogRequest, Locale locale) {
-        List<Book> resultBooks = null;
+        List<BookEntity> resultBooks = null;
         BookCriterion.Builder builder = new BookCriterion.Builder().status(Status.ACTIVE);
         if (catalogRequest == null)
             resultBooks = bookProvider.getBooksByCriterion(builder.build());
         else {
             if (catalogRequest.getSubCategory() > 0) {
-                SubCategory subCategory = subCategoryProvider.getById(catalogRequest.getSubCategory());
+                SubCategoryEntity subCategory = subCategoryProvider.getById(catalogRequest.getSubCategory());
                 builder.subcategory(subCategory);
             }
             resultBooks = bookProvider.getBooksByCriterion(builder.build());

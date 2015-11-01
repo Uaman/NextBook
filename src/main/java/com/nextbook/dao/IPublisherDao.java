@@ -1,8 +1,8 @@
 package com.nextbook.dao;
 
 import com.nextbook.domain.criterion.PublisherCriterion;
-import com.nextbook.domain.pojo.Publisher;
-import com.nextbook.domain.pojo.User;
+import com.nextbook.domain.entities.PublisherEntity;
+import com.nextbook.domain.entities.UserEntity;
 
 import java.util.List;
 
@@ -12,18 +12,17 @@ import java.util.List;
 
 public interface IPublisherDao {
 
-    public Publisher updatePublisher(Publisher publisher);
+    PublisherEntity updatePublisher(PublisherEntity publisher);
 
     public boolean deletePublisher(int id);
 
-    public Publisher getPublisherById (int id);
+    public PublisherEntity getPublisherById(int id);
 
-    List<Publisher> getAllPublishers(int from, int max);
+    List<PublisherEntity> getAllPublishers(int from, int max);
 
     int getPublishersQuantity();
 
-    List<Publisher> getPublishersByCriterion(PublisherCriterion criterion);
+    List<PublisherEntity> getPublishersByCriterion(PublisherCriterion criterion);
 
-    Publisher getPublisherByUser(User user);
-
+    PublisherEntity getPublisherByUser(UserEntity user);
 }

@@ -1,6 +1,6 @@
 package com.nextbook.domain.preview;
 
-import com.nextbook.domain.pojo.Publisher;
+import com.nextbook.domain.entities.PublisherEntity;
 
 import java.util.Locale;
 
@@ -13,7 +13,7 @@ public class PublisherPreview {
 
     private String name;
 
-    public PublisherPreview(Publisher publisher, Locale locale) {
+    public PublisherPreview(PublisherEntity publisher, Locale locale) {
         if (locale.getLanguage().equals("uk")) {
             this.name = publisher.getNameUa();
         } else if (locale.getLanguage().equals("ru")) {

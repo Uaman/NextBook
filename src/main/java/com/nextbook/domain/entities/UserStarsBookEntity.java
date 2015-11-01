@@ -1,5 +1,7 @@
 package com.nextbook.domain.entities;
 
+import com.nextbook.dao.base.objects.GetableById;
+
 import javax.persistence.*;
 
 /**
@@ -11,7 +13,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user_vote_for_book")
-public class UserStarsBookEntity {
+public class UserStarsBookEntity implements GetableById{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,6 +30,15 @@ public class UserStarsBookEntity {
 
     @Column(name = "MARK")
     private float mark;
+
+    public UserStarsBookEntity() {
+    }
+
+    public UserStarsBookEntity(UserEntity user, BookEntity book, float mark) {
+        this.user = user;
+        this.book = book;
+        this.mark = mark;
+    }
 
 
     public int getId() {

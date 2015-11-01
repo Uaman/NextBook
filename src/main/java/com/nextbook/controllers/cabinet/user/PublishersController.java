@@ -1,24 +1,20 @@
 package com.nextbook.controllers.cabinet.user;
 
-import com.nextbook.domain.enums.Status;
+import com.nextbook.domain.entities.*;
 import com.nextbook.domain.forms.publishers.SimplePublisherForm;
-import com.nextbook.domain.pojo.*;
 import com.nextbook.services.IBookProvider;
 import com.nextbook.services.ICommentsProvider;
 import com.nextbook.services.IPublisherProvider;
 import com.nextbook.services.IUserProvider;
 import com.nextbook.utils.SessionUtils;
-import org.apache.http.HttpResponse;
-import org.omg.CORBA.Request;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Polomani on 24.07.2015.
@@ -40,17 +36,17 @@ public class PublishersController {
 
     @RequestMapping(value="/new")
      public String addPublisher() {
-        User user = sessionUtils.getCurrentUser();
+        UserEntity user = sessionUtils.getCurrentUser();
         if (publisherProvider.getPublisherByUser(user)!=null)
             return "redirect:/cabinet/profile";
-        Publisher publisher = new Publisher();
+        PublisherEntity publisher = new PublisherEntity();
         publisher.setDescription("");
         publisher.setNameUa("");
-        publisher.addUser(user);
+        publisher.getUsers().add(user);
         publisher = publisherProvider.updatePublisher(publisher);
-        Role publisherRole = new Role();
+        RoleEntity publisherRole = new RoleEntity();
         publisherRole.setId(3);
-        user.setRole(publisherRole);
+        user.setRoleEntity(publisherRole);
         user = userProvider.update(user);
         return "redirect:/publisher/update?publisherId="+publisher.getId();
     }
@@ -61,8 +57,8 @@ public class PublishersController {
     //cause he has no role publication. resign in resolve it
     public String updatePublisher(Model model,
                                   @RequestParam("publisherId") int id) {
-        Publisher publisher = publisherProvider.getPublisherById(id);
-        Publisher upublisher = publisherProvider.getPublisherByUser(sessionUtils.getCurrentUser());
+        PublisherEntity publisher = publisherProvider.getPublisherById(id);
+        PublisherEntity upublisher = publisherProvider.getPublisherByUser(sessionUtils.getCurrentUser());
         if (publisher==null || upublisher==null || publisher.getId() != upublisher.getId())
             return "redirect:/cabinet/profile";
         model.addAttribute("publisher", publisher);
@@ -72,12 +68,12 @@ public class PublishersController {
     @RequestMapping(value="/update", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("@Secure.isPublisher()")
     public @ResponseBody int updatePublisher(@RequestBody SimplePublisherForm form) {
-        User user = sessionUtils.getCurrentUser();
+        UserEntity user = sessionUtils.getCurrentUser();
         if(user == null)
             return -1;
 
-        Publisher userPublisher = publisherProvider.getPublisherByUser(user);
-        Publisher publisher = publisherProvider.getPublisherById(form.getId());
+        PublisherEntity userPublisher = publisherProvider.getPublisherByUser(user);
+        PublisherEntity publisher = publisherProvider.getPublisherById(form.getId());
         if(userPublisher == null || publisher == null || userPublisher.getId() != publisher.getId())
             return -1;
 
@@ -93,16 +89,16 @@ public class PublishersController {
     @RequestMapping(value="/view", method = RequestMethod.GET)
     public String publisherPreview(@RequestParam("publisherId") int id,
                                    Model model) {
-        User user = sessionUtils.getCurrentUser();
+        UserEntity user = sessionUtils.getCurrentUser();
         if(user == null)
             return "redirect:/";
-        Publisher publisher = publisherProvider.getPublisherById(id);
+        PublisherEntity publisher = publisherProvider.getPublisherById(id);
         if(publisher == null)
             return "redirect:/";
         if(!publisher.getUsers().contains(user))
             return "redirect:/";
-        List<Book> books = bookProvider.getAllPublisherBooks(publisher.getId());
-        List<User> users = publisher.getUsers();
+        List<BookEntity> books = bookProvider.getAllPublisherBooks(publisher.getId());
+        Set<UserEntity> users = publisher.getUsers();
         model.addAttribute("books", books);
         model.addAttribute("users", users);
         model.addAttribute("publisherId", publisher.getId());
@@ -111,14 +107,14 @@ public class PublishersController {
 
     @RequestMapping(value="/all")
     public @ResponseBody
-    List<Publisher> getAllPublishers(@RequestParam (defaultValue = "0") int from, @RequestParam (defaultValue = "0")  int max) {
+    List<PublisherEntity> getAllPublishers(@RequestParam (defaultValue = "0") int from, @RequestParam (defaultValue = "0")  int max) {
         return publisherProvider.getAllPublishers(from, max);
     }
 
     @PreAuthorize("@Secure.isPublisher()")
     @RequestMapping(value = "/activateComment/{commentId}", method = RequestMethod.POST)
     public @ResponseBody boolean activateComment(@PathVariable("commentId") int commentId){
-        Comment comment = commentsProvider.getById(commentId);
+        CommentEntity comment = commentsProvider.getById(commentId);
         if(comment == null)
             return false;
         comment = commentsProvider.publisherActivateComment(comment);
@@ -129,7 +125,7 @@ public class PublishersController {
     @PreAuthorize("@Secure.isPublisher()")
     @RequestMapping(value = "/deactivateComment/{commentId}", method = RequestMethod.POST)
     public @ResponseBody boolean deactivateComment(@PathVariable("commentId") int commentId){
-        Comment comment = commentsProvider.getById(commentId);
+        CommentEntity comment = commentsProvider.getById(commentId);
         if(comment == null)
             return false;
         comment = commentsProvider.publisherDeactivateComment(comment);
@@ -140,7 +136,7 @@ public class PublishersController {
     @PreAuthorize("@Secure.isPublisher()")
     @RequestMapping(value = "/sendBookForReview/{bookId}", method = RequestMethod.POST)
     public @ResponseBody boolean sendBookForReview(@PathVariable("bookId") int bookId){
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
         book = bookProvider.publisherSendBookForReview(book);
         return book != null;
     }

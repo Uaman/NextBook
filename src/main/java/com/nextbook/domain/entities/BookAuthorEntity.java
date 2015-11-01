@@ -1,5 +1,7 @@
 package com.nextbook.domain.entities;
 
+import com.nextbook.dao.base.objects.GetableById;
+
 import javax.persistence.*;
 
 /**
@@ -14,7 +16,7 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(name = BookAuthorEntity.getByBookAndAuthorIds, query = "SELECT bookKeyword FROM BookAuthorEntity bookKeyword WHERE bookKeyword.book.id=:bookId AND bookKeyword.author.id=:authorId")
 })
-public class BookAuthorEntity {
+public class BookAuthorEntity implements GetableById{
 
     public static final String getByBookAndAuthorIds = "getByBookAndAuthorIds";
 

@@ -1,5 +1,8 @@
 package com.nextbook.domain.entities;
 
+import com.nextbook.dao.base.objects.Getable;
+import com.nextbook.dao.base.objects.GetableById;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +20,7 @@ import java.util.List;
         @NamedQuery(name = CategoryEntity.getAll, query = "SELECT category FROM CategoryEntity category"),
         @NamedQuery(name = CategoryEntity.getByLink, query = "SELECT category FROM CategoryEntity category WHERE category.link=:link")
 })
-public class CategoryEntity {
+public class CategoryEntity implements GetableById, Getable{
 
     public static final String getAll = "getAllCategories";
     public static final String getByLink = "getByLink";
@@ -42,7 +45,7 @@ public class CategoryEntity {
     @Column(name = "NAME_RU")
     private String nameRu;
 
-    @OneToMany(mappedBy="categoryEntity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="categoryEntity", fetch = FetchType.EAGER)
     private List<SubCategoryEntity> subCategoryEntity =  new ArrayList<SubCategoryEntity>();
 
     public String getNameUa() {

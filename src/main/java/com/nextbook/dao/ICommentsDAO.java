@@ -1,9 +1,9 @@
 package com.nextbook.dao;
 
 import com.nextbook.domain.criterion.CommentsCriterion;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.Comment;
-import com.nextbook.domain.pojo.User;
+import com.nextbook.domain.entities.BookEntity;
+import com.nextbook.domain.entities.CommentEntity;
+import com.nextbook.domain.entities.UserEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,18 +14,19 @@ import java.util.List;
  * Date: 10/12/2015
  * Time: 1:02 AM
  */
+@Repository
 public interface ICommentsDAO {
 
-    Comment getById(int id);
+    CommentEntity getById(int id);
 
-    Comment update(Comment comment);
+    CommentEntity update(CommentEntity comment);
 
-    List<Comment> userComments(User user);
+    List<CommentEntity> userComments(UserEntity user);
 
-    List<Comment> bookComments(Book book);
+    List<CommentEntity> bookComments(BookEntity book);
 
-    boolean removeComment(Comment comment);
+    boolean removeComment(CommentEntity comment);
 
-    List<Comment> getCommentsByCriterion(CommentsCriterion criterion);
+    List<CommentEntity> getCommentsByCriterion(CommentsCriterion criterion);
 
 }

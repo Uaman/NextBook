@@ -1,8 +1,8 @@
 package com.nextbook.services;
 
 import com.nextbook.domain.criterion.UserCriterion;
+import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.exceptions.EmailAlreadyExistsException;
-import com.nextbook.domain.pojo.User;
 
 import java.util.List;
 
@@ -14,19 +14,19 @@ import java.util.List;
  */
 public interface IUserProvider {
 
-    User getById(int userId);
+    UserEntity getById(int userId);
 
-    List<User> getFromMax(int from, int max);
+    List<UserEntity> getFromMax(int from, int max);
 
-    User registerNewUser(User user) throws EmailAlreadyExistsException;
+    UserEntity registerNewUser(UserEntity user) throws EmailAlreadyExistsException;
 
-    User update(User user);
+    UserEntity update(UserEntity user);
 
-    List<User> getAll();
+    List<UserEntity> getAll();
 
     boolean delete(int userId);
 
-    List<User> getUsersByCriterion(UserCriterion criterion);
+    List<UserEntity> getUsersByCriterion(UserCriterion criterion);
 
-    public User getUserByEmail(String email);
+    public UserEntity getUserByEmail(String email);
 }

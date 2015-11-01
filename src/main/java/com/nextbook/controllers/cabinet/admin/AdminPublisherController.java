@@ -1,9 +1,9 @@
 package com.nextbook.controllers.cabinet.admin;
 
 import com.nextbook.domain.criterion.PublisherCriterion;
+import com.nextbook.domain.entities.PublisherEntity;
+import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.forms.publishers.SimplePublisherForm;
-import com.nextbook.domain.pojo.Publisher;
-import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IPublisherProvider;
 import com.nextbook.services.IUserProvider;
 import org.springframework.http.MediaType;
@@ -31,13 +31,13 @@ public class AdminPublisherController {
     @RequestMapping(value="/update", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody
-    Publisher updatePublisher(@RequestBody SimplePublisherForm form) {
-        Publisher result = null;
-        Publisher publisher = null;
+    PublisherEntity updatePublisher(@RequestBody SimplePublisherForm form) {
+        PublisherEntity result = null;
+        PublisherEntity publisher = null;
         if (form.getId()!=0)
             publisher = publisherProvider.getPublisherById(form.getId());
         if (publisher==null)
-            publisher = new Publisher();
+            publisher = new PublisherEntity();
         publisher.setNameEn(form.getNameEn());
         publisher.setNameRu(form.getNameRu());
         publisher.setNameUa(form.getNameUa());
@@ -49,7 +49,7 @@ public class AdminPublisherController {
     @RequestMapping(value="/edit-publisher/{id}")
     @PreAuthorize("@Secure.isAdmin()")
     public String updatePublisherPage(@PathVariable int id, Model model) {
-        Publisher publisher = publisherProvider.getPublisherById(id);
+        PublisherEntity publisher = publisherProvider.getPublisherById(id);
         if (publisher==null) {
             model.addAttribute("edit", false);
         } else {
@@ -65,23 +65,23 @@ public class AdminPublisherController {
                                       @RequestParam(required = false, defaultValue = "0") int user,
                                       @RequestParam(required = false) String action,
                                       Model model) {
-        Publisher publ = publisherProvider.getPublisherById(publisher);
+        PublisherEntity publ = publisherProvider.getPublisherById(publisher);
         if (publ==null) {
             return "404";
         } else {
             if (user != 0) {
-                User us = userProvider.getById(user);
+                UserEntity us = userProvider.getById(user);
                 if (us != null && action!=null) {
-                    if (action.equals("add")) publ.addUser(us);
-                    if (action.equals("delete")) publ.deleteUser(user);
+                    if (action.equals("add")) publ.getUsers().add(us);
+                    if (action.equals("delete")) publ.getUsers().remove(us);
                     publisherProvider.updatePublisher(publ);
                 }
             }
-            List<User> users = userProvider.getAll();
-            List<User> allUsers = new ArrayList<User>();
-            List<User> publisherUsers = new ArrayList<User>();
-            List<User> anotherPublisherUsers = new ArrayList<User>();
-            for (User u:users) {
+            List<UserEntity> users = userProvider.getAll();
+            List<UserEntity> allUsers = new ArrayList<UserEntity>();
+            List<UserEntity> publisherUsers = new ArrayList<UserEntity>();
+            List<UserEntity> anotherPublisherUsers = new ArrayList<UserEntity>();
+            for (UserEntity u:users) {
                 if (isUserInPubisher(u, publ)) {
                     publisherUsers.add(u);
                 } else if (publisherProvider.getPublisherByUser(u)==null){
@@ -98,8 +98,8 @@ public class AdminPublisherController {
         return "/admin/publishers/manage-users";
     }
 
-    public boolean isUserInPubisher(User user, Publisher publisher) {
-        for (User userp:publisher.getUsers()) {
+    public boolean isUserInPubisher(UserEntity user, PublisherEntity publisher) {
+        for (UserEntity userp:publisher.getUsers()) {
             if (user.getId().equals(userp.getId())) {
                 return true;
             }
@@ -125,7 +125,7 @@ public class AdminPublisherController {
     @RequestMapping(value="/{id}")
     @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody
-    Publisher getPublisherById(@PathVariable int id) {
+    PublisherEntity getPublisherById(@PathVariable int id) {
         return publisherProvider.getPublisherById(id);
     }
 
@@ -141,12 +141,12 @@ public class AdminPublisherController {
     @RequestMapping(value="/add-user")
     @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody boolean addUserToPublisher(@RequestParam int publisherID, @RequestParam int userID) {
-        Publisher publisher = publisherProvider.getPublisherById(publisherID);
+        PublisherEntity publisher = publisherProvider.getPublisherById(publisherID);
         boolean res = false;
         if (publisher!=null) {
-            User user = userProvider.getById(userID);
+            UserEntity user = userProvider.getById(userID);
             if (user!=null && publisherProvider.getPublisherByUser(user)==null) {
-                publisher.addUser(user);
+                publisher.getUsers().add(user);
                 publisherProvider.updatePublisher(publisher);
                 res = true;
             }
@@ -158,9 +158,9 @@ public class AdminPublisherController {
     @RequestMapping(value="/delete-user")
     @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody boolean deleteUserFromPublisher(@RequestParam int publisherID, @RequestParam int userID) {
-        Publisher publisher = publisherProvider.getPublisherById(publisherID);
+        PublisherEntity publisher = publisherProvider.getPublisherById(publisherID);
         if (publisher!=null) {
-            publisher.deleteUser(userID);
+            publisher.getUsers().remove(userProvider.getById(userID));
             publisherProvider.updatePublisher(publisher);
             return true;
         }
@@ -170,7 +170,7 @@ public class AdminPublisherController {
     @RequestMapping(value="/filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@Secure.isAdmin()")
     public @ResponseBody
-    List<Publisher> getPublishersByCriterion(@RequestBody PublisherCriterion criterion) {
+    List<PublisherEntity> getPublishersByCriterion(@RequestBody PublisherCriterion criterion) {
         return publisherProvider.getPublishersByCriterion(criterion);
     }
 

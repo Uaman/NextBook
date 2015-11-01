@@ -1,7 +1,7 @@
 package com.nextbook.services;
 
-import com.nextbook.domain.pojo.Favorites;
-import com.nextbook.domain.pojo.User;
+import com.nextbook.domain.entities.FavoritesEntity;
+import com.nextbook.domain.entities.UserEntity;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface IFavoritesProvider {
      * @param favorite - of the user
      * @return true if book was added to favorites
      */
-    Favorites addToUserFavorites(Favorites favorite);
+    FavoritesEntity addToUserFavorites(FavoritesEntity favorite);
 
     /**
      *
@@ -23,13 +23,13 @@ public interface IFavoritesProvider {
      * @return true if book was removed from favorites
      */
     boolean deleteFromUserFavorites(int userId, int bookId);
-    List<Favorites> getAllFavorites(User user);
+    List<FavoritesEntity> getAllFavorites(UserEntity user);
     boolean isFavorite(int userId, int bookId);
-    boolean hasFavorites(User user);
+    boolean hasFavorites(UserEntity user);
     /**
      *
      * @param user
      * @return int - number of books in user`s favorites
      */
-    int countOfUserFavorites(User user);
+    int countOfUserFavorites(UserEntity user);
 }

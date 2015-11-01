@@ -1,9 +1,8 @@
 package com.nextbook.services;
 
-import com.nextbook.domain.pojo.*;
+import com.nextbook.domain.entities.*;
 import com.nextbook.domain.preview.AuthorPreview;
 import com.nextbook.domain.response.ResponseForAutoComplete;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
@@ -11,19 +10,17 @@ import java.util.Locale;
 /**
  * Created by oleh on 24.10.2015.
  */
-@Service
 public interface ICommonMethodsProvider {
 
-    List<AuthorPreview> formAuthorsInLocale(List<BookAuthor> authors, String language);
+    List<AuthorPreview> formAuthorsInLocale(List<BookAuthorEntity> authors, String language);
 
-    List<ResponseForAutoComplete> formAuthorsForAutoComplete(List<Author> authors, String language);
+    List<ResponseForAutoComplete> formAuthorsForAutoComplete(List<AuthorEntity> authors, String language);
 
-    boolean checkBookToUser(User user, Book book);
+    boolean checkBookToUser(UserEntity user, BookEntity book);
 
-    boolean userBuyBook(User user, Book book);
+    boolean userBuyBook(UserEntity user, BookEntity book);
 
-    public String getCategoryLocated(Category category, Locale locate);
+    String getCategoryLocated(CategoryEntity category, Locale locate);
 
-    public String bookNameInLocale(Book book, Locale locale);
-
+    String bookNameInLocale(BookEntity book, Locale locale);
 }

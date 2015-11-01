@@ -9,7 +9,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="s" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -45,7 +44,6 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/popup.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/bx_styles/bx_styles.css"/>
     <link rel="stylesheet" href="/resources/css/nivo-slider/nivo-slider.css" type="text/css" media="screen" />
-    <link rel="icon" href="/resources/favicon.ico" type="image/x-icon" />
 </head>
 <body>
 <div class="wrapper index">
@@ -65,11 +63,10 @@
     </div>
 
     <div class="row">
-        <div class="page-title"><h2><spring:message code="catalog.new"/></h2></div>
+        <div class="page-title"><h2>New</h2></div>
             <jsp:include page="book-shelf.jsp"/>
     </div>
 </div>
-<jsp:include page="footer-block.jsp"/>
 <jsp:include page="../../template/default/footer.jsp"/>
 </body>
 </html>

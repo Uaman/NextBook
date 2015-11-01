@@ -1,6 +1,6 @@
 package com.nextbook.services;
 
-import com.nextbook.domain.pojo.Role;
+import com.nextbook.domain.entities.RoleEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +11,8 @@ import java.util.List;
  * Date: 8/3/2015
  * Time: 5:51 PM
  */
-@Service
 public interface IRoleProvider {
 
-    List<Role> getAll();
+    List<RoleEntity> getAll();
 
 }

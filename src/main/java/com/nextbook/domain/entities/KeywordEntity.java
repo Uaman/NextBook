@@ -1,5 +1,7 @@
 package com.nextbook.domain.entities;
 
+import com.nextbook.dao.base.objects.GetableById;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
         @NamedQuery(name = KeywordEntity.getByKeyword, query = "SELECT keyword FROM KeywordEntity keyword WHERE keyword.keyword=:keyword"),
         @NamedQuery(name = KeywordEntity.getKeywordsByPart, query = "SELECT keyword FROM KeywordEntity keyword WHERE keyword.keyword LIKE :keyword")
 })
-public class KeywordEntity {
+public class KeywordEntity implements GetableById{
 
     public static final String getByKeyword = "getKeywordByName";
     public static final String getKeywordsByPart = "getKeywordByKeyword";

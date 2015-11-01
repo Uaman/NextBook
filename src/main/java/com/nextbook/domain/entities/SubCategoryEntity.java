@@ -1,6 +1,8 @@
 package com.nextbook.domain.entities;
 
-import com.nextbook.dao.base.objects.BaseDataObject;
+import com.nextbook.dao.base.objects.Getable;
+import com.nextbook.dao.base.objects.GetableById;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -19,7 +21,7 @@ import javax.persistence.*;
         @NamedQuery(name = SubCategoryEntity.getAllByCategoryId, query = "SELECT subCategory FROM SubCategoryEntity subCategory WHERE subCategory.categoryEntity.id=:id"),
         @NamedQuery(name = SubCategoryEntity.getSubcategoryByLink, query = "SELECT subCategory FROM SubCategoryEntity subCategory WHERE subCategory.link=:link")
 })
-public class SubCategoryEntity extends BaseDataObject {
+public class SubCategoryEntity implements Getable, GetableById {
 
     public static final String getAll = "getAllSubCategories";
     public static final String getById = "getSubCategoryById";
@@ -42,6 +44,7 @@ public class SubCategoryEntity extends BaseDataObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CATEGORY_ID", nullable = false)
+    @JsonIgnore
     private CategoryEntity categoryEntity;
 
     @Column(name = "NAME_EN")

@@ -65,13 +65,11 @@
             <version>${org.springframework-version}</version>
         </dependency>
 
-
         <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver</artifactId>
-            <version>3.0.4</version>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>1.2.0.RELEASE</version>
         </dependency>
-
 
         <!-- Apache Commons Upload -->
         <dependency>
@@ -601,7 +599,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
-                    <url>jdbc:mysql://localhost:3306/</url>
+                    <url>jdbc:mysql://localhost:3306/nextbook</url>
                     <user>root</user>
                     <password>root</password>
                     <schemas>

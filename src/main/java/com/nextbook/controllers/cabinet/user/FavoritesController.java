@@ -1,7 +1,7 @@
 package com.nextbook.controllers.cabinet.user;
 
-import com.nextbook.domain.pojo.Favorites;
-import com.nextbook.domain.pojo.User;
+import com.nextbook.domain.entities.FavoritesEntity;
+import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.preview.BookPreview;
 import com.nextbook.services.IFavoritesProvider;
 import com.nextbook.utils.SessionUtils;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +30,14 @@ public class FavoritesController {
     @RequestMapping(value = "/")
     @PreAuthorize("isAuthenticated()")
     public String getFavorites(Model model,Locale locate) {
-        User user = sessionUtils.getCurrentUser();
+        UserEntity user = sessionUtils.getCurrentUser();
         if(user == null)
             return "redirect:/";
-        List<Favorites> favoritesList = favoritesProvider.getAllFavorites(user);
+        List<FavoritesEntity> favoritesList = favoritesProvider.getAllFavorites(user);
         if(favoritesList == null)
             return "redirect:/cabinet/profile";
         List<BookPreview> bookPreviews = new ArrayList<BookPreview>();
-        for(Favorites fav:favoritesList){
+        for(FavoritesEntity fav:favoritesList){
             bookPreviews.add(new BookPreview(fav.getBook(),locate));
         }
         model.addAttribute("favorites",bookPreviews);
@@ -47,7 +46,7 @@ public class FavoritesController {
     @RequestMapping(value="/delete/{id}")
     @PreAuthorize("isAuthenticated()")
     public String deletePublisher(@PathVariable int id) {
-        User user = sessionUtils.getCurrentUser();
+        UserEntity user = sessionUtils.getCurrentUser();
         if(user == null)
             return "redirect:/";
         favoritesProvider.deleteFromUserFavorites(user.getId(),id);

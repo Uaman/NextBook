@@ -1,11 +1,9 @@
 package com.nextbook.dao;
 
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.Favorites;
-import com.nextbook.domain.pojo.User;
+import com.nextbook.domain.entities.FavoritesEntity;
+import com.nextbook.domain.entities.UserEntity;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Stacy on 10/9/15.
@@ -16,7 +14,7 @@ public interface IFavoritesDao {
      * @param favorite
      * @return
      */
-    Favorites addToUserFavorites(Favorites favorite);
+    FavoritesEntity addToUserFavorites(FavoritesEntity favorite);
 
     /**
      *
@@ -33,13 +31,15 @@ public interface IFavoritesDao {
      * @return
      */
     boolean deleteFromUserFavorites(int userId, int bookId);
-    List<Favorites> getAllFavorites(User user);
-    boolean hasFavorites(User user);
+
+    List<FavoritesEntity> getAllFavorites(UserEntity user);
+
+    boolean hasFavorites(UserEntity user);
 
     /**
      *
      * @param user
      * @return int - number of books in user`s favorites
      */
-    int getQuantityOfUserFavorites(User user);
+    int getQuantityOfUserFavorites(UserEntity user);
 }

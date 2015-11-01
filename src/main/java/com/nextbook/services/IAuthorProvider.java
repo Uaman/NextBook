@@ -1,7 +1,7 @@
 package com.nextbook.services;
 
 import com.nextbook.domain.criterion.AuthorCriterion;
-import com.nextbook.domain.pojo.Author;
+import com.nextbook.domain.entities.AuthorEntity;
 import java.util.*;
 
 /**
@@ -9,7 +9,7 @@ import java.util.*;
  */
 public interface IAuthorProvider {
 
-    Author updateAuthor(Author author);
+    AuthorEntity updateAuthor(AuthorEntity author);
 
     /**
      * All books connected with specific author need to be removed too, when this method is called?
@@ -18,12 +18,12 @@ public interface IAuthorProvider {
      */
     boolean deleteAuthor(int authorId);
 
-    Author getById(int authorId);
+    AuthorEntity getById(int authorId);
 
-    List<Author> getAll();
+    List<AuthorEntity> getAll();
 
-    List<Author> getFromMax(int from, int max);
-    List<Author> getAuthorsByCriterion(AuthorCriterion criterion);
+    List<AuthorEntity> getFromMax(int from, int max);
+    List<AuthorEntity> getAuthorsByCriterion(AuthorCriterion criterion);
 
-    Author getByFirstAndLastName(String fName, String lName);
+    AuthorEntity getByFirstAndLastName(String fName, String lName);
 }

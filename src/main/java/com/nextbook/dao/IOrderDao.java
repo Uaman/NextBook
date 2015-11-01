@@ -1,8 +1,8 @@
 package com.nextbook.dao;
 
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.Order;
-import com.nextbook.domain.pojo.User;
+import com.nextbook.domain.entities.BookEntity;
+import com.nextbook.domain.entities.OrderEntity;
+import com.nextbook.domain.entities.UserEntity;
 
 import java.util.List;
 
@@ -11,13 +11,13 @@ import java.util.List;
  */
 public interface IOrderDao {
 
-    Order getById(int orderId);
+    OrderEntity getById(int orderId);
 
-    Order updateOrder(Order currentOrder);
+    OrderEntity updateOrder(OrderEntity currentOrder);
 
     boolean delete(int orderId);
 
-    List<Order> getOrdersForUser(User currentUser);
+    List<OrderEntity> getOrdersForUser(UserEntity currentUser);
 
-    Order getOrderByUserAndBook(User user, Book book);
+    OrderEntity getOrderByUserAndBook(UserEntity user, BookEntity book);
 }

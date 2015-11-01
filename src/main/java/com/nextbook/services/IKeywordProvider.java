@@ -1,6 +1,6 @@
 package com.nextbook.services;
 
-import com.nextbook.domain.pojo.Keyword;
+import com.nextbook.domain.entities.KeywordEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,13 +11,12 @@ import java.util.List;
  * Date: 7/27/2015
  * Time: 7:24 PM
  */
-@Service
 public interface IKeywordProvider {
 
-    Keyword getByName(String keyword);
+    KeywordEntity getByName(String keyword);
 
-    Keyword update(Keyword keyword);
+    KeywordEntity update(KeywordEntity keyword);
 
-    List<Keyword> getListByKeyword(String keyword);
+    List<KeywordEntity> getListByKeyword(String keyword);
 
 }

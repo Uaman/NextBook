@@ -1,7 +1,6 @@
 package com.nextbook.dao;
 
-import com.nextbook.domain.pojo.Keyword;
-import org.springframework.stereotype.Repository;
+import com.nextbook.domain.entities.KeywordEntity;
 
 import java.util.List;
 
@@ -13,9 +12,9 @@ import java.util.List;
  */
 public interface IKeywordDao {
 
-    Keyword getByName(String keyword);
+    KeywordEntity getByName(String keyword);
 
-    Keyword update(Keyword keyword);
+    KeywordEntity update(KeywordEntity keyword);
 
-    List<Keyword> getListByKeyword(String keyword);
+    List<KeywordEntity> getListByKeyword(String keyword);
 }

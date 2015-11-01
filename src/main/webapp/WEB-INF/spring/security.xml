@@ -10,11 +10,15 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
     <!--<http access-denied-page="/error403.jsp">-->
         <intercept-url pattern="/documents*" access="@Secure.isAdmin()"/>
         <intercept-url pattern="/admin*" access="@Secure.isAdmin()"/>
-        <intercept-url pattern="/cabinet*" access="isAuthenticated()"/>
-        <intercept-url pattern="/register*" access="isAnonymous()"/>
 
-        <form-login login-processing-url="/static/j_spring_security_check" login-page="/" authentication-failure-handler-ref="authenticationFailureHandler"
-                    authentication-success-handler-ref="authenticationSuccessHandler"/>
+        <intercept-url pattern="/cabinet*" access="isAuthenticated()"/>
+
+        <intercept-url pattern="/signup*" access="isAnonymous()"/>
+        <intercept-url pattern="/register*" access="isAnonymous()"/>
+        <intercept-url pattern="/signin*" access="isAnonymous()"/>
+
+        <form-login login-processing-url="/static/j_spring_security_check" login-page="/signin"
+                    authentication-failure-url="/signin?error=true" default-target-url="/" always-use-default-target="false" authentication-success-handler-ref="authenticationSuccessHandler"/>
         <logout logout-url="/static/j_spring_security_logout" logout-success-url="/"/>
         <http-basic />
         <anonymous username="guest" granted-authority="ROLE_ANONYMOUS"/>
@@ -36,13 +40,9 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 
     <beans:bean name="authenticationSuccessHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-        <beans:property name="defaultTargetUrl" value="/login/success"/>
+        <beans:property name="useReferer" value="true" />
     </beans:bean>
 
-    <beans:bean name="authenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
-        <beans:property name="useForward" value="true" />
-        <beans:property name="defaultFailureUrl" value="/login/error"/>
-    </beans:bean>
 
     <authentication-manager>
         <authentication-provider user-service-ref="userService">

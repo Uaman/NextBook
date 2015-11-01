@@ -1,7 +1,7 @@
 package com.nextbook.dao;
 
 import com.nextbook.domain.criterion.AuthorCriterion;
-import com.nextbook.domain.pojo.Author;
+import com.nextbook.domain.entities.AuthorEntity;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface IAuthorDao {
 
-    Author updateAuthor(Author author);
+    AuthorEntity updateAuthor(AuthorEntity author);
 
     /**
      * All books connected with specific author need to be removed too, when this method is called?
@@ -22,11 +22,11 @@ public interface IAuthorDao {
      */
     boolean deleteAuthor(int authorId);
 
-    Author getById(int authorId);
+    AuthorEntity getById(int authorId);
 
-    List<Author> getFromMax(int from, int max);
+    List<AuthorEntity> getFromMax(int from, int max);
 
-    List<Author> getAuthorsByCriterion(AuthorCriterion criterion);
+    List<AuthorEntity> getAuthorsByCriterion(AuthorCriterion criterion);
 
-    Author getByFirstAndLastName(String fName, String lName);
+    AuthorEntity getByFirstAndLastName(String fName, String lName);
 }

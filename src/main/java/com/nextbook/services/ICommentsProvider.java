@@ -1,9 +1,9 @@
 package com.nextbook.services;
 
 import com.nextbook.domain.criterion.CommentsCriterion;
-import com.nextbook.domain.pojo.Book;
-import com.nextbook.domain.pojo.Comment;
-import com.nextbook.domain.pojo.User;
+import com.nextbook.domain.entities.BookEntity;
+import com.nextbook.domain.entities.CommentEntity;
+import com.nextbook.domain.entities.UserEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,28 +14,27 @@ import java.util.List;
  * Date: 10/12/2015
  * Time: 1:14 AM
  */
-@Service
 public interface ICommentsProvider {
 
-    Comment getById(int id);
+    CommentEntity getById(int id);
 
-    Comment update(Comment comment);
+    CommentEntity update(CommentEntity comment);
 
-    List<Comment> userComments(User user);
+    List<CommentEntity> userComments(UserEntity user);
 
-    List<Comment> bookComments(Book book);
+    List<CommentEntity> bookComments(BookEntity book);
 
-    boolean removeComment(Comment comment);
+    boolean removeComment(CommentEntity comment);
 
-    Comment publisherActivateComment(Comment comment);
+    CommentEntity publisherActivateComment(CommentEntity comment);
 
-    Comment publisherDeactivateComment(Comment comment);
+    CommentEntity publisherDeactivateComment(CommentEntity comment);
 
-    Comment adminActivateComment(Comment comment);
+    CommentEntity adminActivateComment(CommentEntity comment);
 
-    Comment adminDeactivateComment(Comment comment);
+    CommentEntity adminDeactivateComment(CommentEntity comment);
 
-    List<Comment> getCommentsByCriterion(CommentsCriterion criterion);
+    List<CommentEntity> getCommentsByCriterion(CommentsCriterion criterion);
 
 }
 

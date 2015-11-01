@@ -2,11 +2,12 @@ package com.nextbook.services.impl;
 
 import com.nextbook.dao.IUserDao;
 import com.nextbook.domain.criterion.UserCriterion;
+import com.nextbook.domain.entities.RoleEntity;
+import com.nextbook.domain.entities.UserEntity;
 import com.nextbook.domain.exceptions.EmailAlreadyExistsException;
-import com.nextbook.domain.pojo.Role;
-import com.nextbook.domain.pojo.User;
 import com.nextbook.services.IUserProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -23,49 +24,49 @@ public class UserProvider implements IUserProvider{
     @Inject
     private IUserDao userDao;
 
-    @Override
-    public User getById(int userId) {
+    @Transactional
+    public UserEntity getById(int userId) {
         return userDao.getById(userId);
     }
 
-    @Override
-    public List<User> getFromMax(int from, int max) {
+    @Transactional
+    public List<UserEntity> getFromMax(int from, int max) {
         return userDao.getAll(from, max);
     }
 
-    @Override
-    public User registerNewUser(User user) throws EmailAlreadyExistsException{
-        User userByEmail = getUserByEmail(user.getEmail());
+    @Transactional
+    public UserEntity registerNewUser(UserEntity user) throws EmailAlreadyExistsException{
+        UserEntity userByEmail = getUserByEmail(user.getEmail());
         if(userByEmail != null)
             throw new EmailAlreadyExistsException();
-        Role role = new Role();
+        RoleEntity role = new RoleEntity();
         role.setId(USER_ROLE_ID);
-        user.setRole(role);
+        user.setRoleEntity(role);
         return update(user);
     }
 
-    @Override
-    public User update(User user) {
+    @Transactional
+    public UserEntity update(UserEntity user) {
         return userDao.update(user);
     }
 
-    @Override
-    public List<User> getAll() {
+    @Transactional
+    public List<UserEntity> getAll() {
         return userDao.getAll(0, 0);
     }
 
-    @Override
+    @Transactional
     public boolean delete(int userId) {
         return userDao.delete(userId);
     }
 
-    @Override
-    public List<User> getUsersByCriterion(UserCriterion criterion) {
+    @Transactional
+    public List<UserEntity> getUsersByCriterion(UserCriterion criterion) {
         return userDao.getUsersByCriterion(criterion);
     }
 
-    @Override
-    public User getUserByEmail(String email) {
+    @Transactional
+    public UserEntity getUserByEmail(String email) {
         return userDao.getUserByEmail(email);
     }
 

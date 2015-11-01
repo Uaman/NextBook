@@ -1,5 +1,8 @@
 package com.nextbook.controllers.cabinet.admin;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
+import com.nextbook.domain.entities.*;
 import com.nextbook.domain.exceptions.IsbnAlreadyExistsException;
 import com.nextbook.domain.response.ResponseForAutoComplete;
 import com.nextbook.domain.enums.*;
@@ -9,7 +12,6 @@ import com.nextbook.domain.criterion.CommentsCriterion;
 import com.nextbook.domain.filters.AdminPageBooksFilter;
 import com.nextbook.domain.filters.CommentsFilter;
 import com.nextbook.domain.forms.book.BookRegisterForm;
-import com.nextbook.domain.pojo.*;
 import com.nextbook.domain.preview.AuthorPreview;
 import com.nextbook.domain.upload.Constants;
 import com.nextbook.services.*;
@@ -90,7 +92,7 @@ public class AdminBookController {
     @RequestMapping(value = "/edit-book", method = RequestMethod.GET)
     public String addBook(@RequestParam("bookId")int bookId,
                           Model model, Locale locale){
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
         if(book == null)
             return "redirect:/cabinet/profile";
         model.addAttribute("subCategories", subCategoryProvider.getAll());
@@ -100,12 +102,12 @@ public class AdminBookController {
         return "admin/books/add-book";
     }
 
-    private List<AuthorPreview> formAuthorsInLocale(List<BookAuthor> authors, String language){
+    private List<AuthorPreview> formAuthorsInLocale(List<BookAuthorEntity> authors, String language){
         List<AuthorPreview> result = new ArrayList<AuthorPreview>();
         if(authors != null) {
-            for (BookAuthor bookAuthor : authors) {
+            for (BookAuthorEntity bookAuthor : authors) {
                 String name;
-                Author author = bookAuthor.getAuthor();
+                AuthorEntity author = bookAuthor.getAuthor();
                 if (language.equals("uk")) {
                     name = author.getFirstNameUa() + ' ' + author.getLastNameUa();
                 } else if (language.equals("ru")) {
@@ -122,7 +124,7 @@ public class AdminBookController {
     @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/edit-book", method = RequestMethod.POST, headers = "Accept=application/json")
     public @ResponseBody int editBook(@RequestBody BookRegisterForm bookRegisterForm){
-        Book book = bookProvider.getBookById(bookRegisterForm.getBookId());
+        BookEntity book = bookProvider.getBookById(bookRegisterForm.getBookId());
         if(book == null)
             return -1;
         String storageLink = bookStorageProvider.uploadBookToStorage(book.getId());
@@ -138,7 +140,7 @@ public class AdminBookController {
         return 1;
     }
 
-    private void copyBookFromBookForm(Book book, BookRegisterForm bookRegisterForm){
+    private void copyBookFromBookForm(BookEntity book, BookRegisterForm bookRegisterForm){
         book.setIsbn(bookRegisterForm.getIsbn());
         book.setUaName(bookRegisterForm.getUaName());
         book.setEnName(bookRegisterForm.getEnName());
@@ -151,21 +153,21 @@ public class AdminBookController {
         book.setDescriptionUa(bookRegisterForm.getDescriptionUa());
         book.setDescriptionEn(bookRegisterForm.getDescriptionEn());
         book.setDescriptionRu(bookRegisterForm.getDescriptionRu());
-        book.setSubCategory(subCategoryProvider.getById(bookRegisterForm.getSubCategoryId()));
+        book.setSubCategoryEntity(subCategoryProvider.getById(bookRegisterForm.getSubCategoryId()));
 
         List<String> keywords = bookRegisterForm.getKeywords();
         for(String s : keywords){
-            Keyword keyword = keywordProvider.getByName(s);
+            KeywordEntity keyword = keywordProvider.getByName(s);
             if(keyword == null) {
-                keyword = new Keyword();
+                keyword = new KeywordEntity();
                 keyword.setKeyword(s);
                 keyword = keywordProvider.update(keyword);
             }
-            if(!book.getKeywords().contains(keyword)) {
-                BookKeyword bookKeyword = new BookKeyword();
+            if(!book.getBookToKeywords().contains(keyword)) {
+                BookKeywordEntity bookKeyword = new BookKeywordEntity();
                 bookKeyword.setBook(book);
                 bookKeyword.setKeyword(keyword);
-                book.addKeyword(keyword);
+                book.getBookToKeywords().add(bookKeyword);
                 bookProvider.updateBookToKeyword(bookKeyword);
             }
         }
@@ -173,24 +175,24 @@ public class AdminBookController {
         for(Integer id : bookRegisterForm.getAuthors()) {
             if(id == null)
                 continue;
-            Author author = authorProvider.getById(id);
+            AuthorEntity author = authorProvider.getById(id);
             if(author != null) {
-                BookAuthor bookAuthor = new BookAuthor();
+                BookAuthorEntity bookAuthor = new BookAuthorEntity();
                 bookAuthor.setAuthor(author);
                 bookAuthor.setBook(book);
                 bookAuthor = bookProvider.updateBookToAuthor(bookAuthor);
                 if(bookAuthor != null)
-                    book.addAuthor(bookAuthor.getAuthor());
+                    book.getBookToAuthor().add(bookAuthor);
             }
         }
     }
 
     @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping (value = "/filter", method = RequestMethod.POST, headers = "Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody List<Book> getBooksByCriterion(@RequestBody BookCriterion criterion,
+    @ResponseBody List<BookEntity> getBooksByCriterion(@RequestBody BookCriterion criterion,
                                                  Locale locale) {
         String language = locale.getLanguage();
-        List<Book> books = bookProvider.getBooksByCriterion(criterion);
+        List<BookEntity> books = bookProvider.getBooksByCriterion(criterion);
 //        List<BookMainInfo> res = new ArrayList<BookMainInfo>();
 //        if (books!=null)
 //            for (Book book: books)
@@ -204,16 +206,16 @@ public class AdminBookController {
                                                                            Locale locale){
         if(keyword.equals(""))
             return new ArrayList<ResponseForAutoComplete>();
-        List<Author> authors = authorProvider.getAuthorsByCriterion(new AuthorCriterion(keyword));
+        List<AuthorEntity> authors = authorProvider.getAuthorsByCriterion(new AuthorCriterion(keyword));
         String language = locale.getLanguage();
         List<ResponseForAutoComplete> response = formAuthorsForAutoComplete(authors, language);
         return response;
     }
 
-    private List<ResponseForAutoComplete> formAuthorsForAutoComplete(List<Author> authors, String language){
+    private List<ResponseForAutoComplete> formAuthorsForAutoComplete(List<AuthorEntity> authors, String language){
         List<ResponseForAutoComplete> result = new ArrayList<ResponseForAutoComplete>();
         if(authors != null) {
-            for (Author author : authors) {
+            for (AuthorEntity author : authors) {
                 String value;
                 if (language.equals("uk")) {
                     value = author.getFirstNameUa() + ' ' + author.getLastNameUa();
@@ -234,10 +236,10 @@ public class AdminBookController {
                                                                             Locale locale){
         if(keyword.equals(""))
             return new ArrayList<ResponseForAutoComplete>();
-        List<Keyword> keywords = keywordProvider.getListByKeyword(keyword);
+        List<KeywordEntity> keywords = keywordProvider.getListByKeyword(keyword);
         List<ResponseForAutoComplete> response = new ArrayList<ResponseForAutoComplete>();
         if(keywords != null) {
-            for (Keyword k : keywords) {
+            for (KeywordEntity k : keywords) {
                 response.add(new ResponseForAutoComplete(k.getId(), k.getKeyword()));
             }
         }
@@ -268,7 +270,7 @@ public class AdminBookController {
     private boolean saveCover(int bookId, MultipartFile file, Cover cover){
         if(file == null)
             return false;
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
         boolean success = bookStorageProvider.uploadCoversToLocalStorage(bookId, file, cover);
@@ -278,7 +280,7 @@ public class AdminBookController {
     private boolean saveBook(int bookId, MultipartFile file){
         if(file == null)
             return false;
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
         boolean success = bookStorageProvider.uploadBookToLocalStorage(bookId, file);
@@ -291,7 +293,7 @@ public class AdminBookController {
                                     @RequestParam(value = "bookId", required = true) Integer bookId) {
         if (bookId == null || bookId == 0)
             return -1;
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
         if(book == null)
             return -1;
         Iterator<String> itr =  request.getFileNames();
@@ -323,7 +325,7 @@ public class AdminBookController {
     public String viewBook(@PathVariable("id") int bookId,
                            Model model){
 
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
         if(book == null)
             return "redirect:/admin/books/all";
 
@@ -339,7 +341,7 @@ public class AdminBookController {
     @RequestMapping(value = "/delete-keyword/{bookId}/{keywordId}", method = RequestMethod.POST)
     public @ResponseBody boolean deleteKeyword(@PathVariable("bookId") int bookId,
                                                @PathVariable("keywordId") int keywordId){
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
         boolean success = bookProvider.deleteBookToKeyword(bookId, keywordId);
@@ -350,7 +352,7 @@ public class AdminBookController {
     @RequestMapping(value = "/delete-author/{bookId}/{authorId}", method = RequestMethod.POST)
     public @ResponseBody boolean deleteAuthor(@PathVariable("bookId") int bookId,
                                               @PathVariable("authorId") int authorId){
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
         if(book == null)
             return false;
         boolean success = bookProvider.deleteBookToAuthor(bookId, authorId);
@@ -362,7 +364,7 @@ public class AdminBookController {
     public String allComments(@ModelAttribute("commentsCriterion") CommentsFilter filter,
                               Model model){
         CommentsCriterion criterion = copyFromCommentsFilter(filter);
-        List<Comment> comments = commentsProvider.getCommentsByCriterion(criterion);
+        List<CommentEntity> comments = commentsProvider.getCommentsByCriterion(criterion);
         model.addAttribute("comments", comments);
 
         copyFromCommentsCriterion(criterion, filter);
@@ -403,7 +405,7 @@ public class AdminBookController {
     @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/activateComment/{commentId}", method = RequestMethod.POST)
     public @ResponseBody boolean activateComment(@PathVariable("commentId") int commentId){
-        Comment comment = commentsProvider.getById(commentId);
+        CommentEntity comment = commentsProvider.getById(commentId);
         if(comment == null)
             return false;
         comment = commentsProvider.adminActivateComment(comment);
@@ -414,7 +416,7 @@ public class AdminBookController {
     @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/deactivateComment/{commentId}", method = RequestMethod.POST)
     public @ResponseBody boolean deactivateComment(@PathVariable("commentId") int commentId){
-        Comment comment = commentsProvider.getById(commentId);
+        CommentEntity comment = commentsProvider.getById(commentId);
         if(comment == null)
             return false;
         comment = commentsProvider.adminDeactivateComment(comment);
@@ -425,7 +427,7 @@ public class AdminBookController {
     @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/deleteComment/{commentId}", method = RequestMethod.POST)
     public @ResponseBody boolean deleteComment(@PathVariable("commentId") int commentId){
-        Comment comment = commentsProvider.getById(commentId);
+        CommentEntity comment = commentsProvider.getById(commentId);
         if(comment == null)
             return false;
 
@@ -437,12 +439,12 @@ public class AdminBookController {
     @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/deactivateAllUserComments", method = RequestMethod.GET)
     public String deactivateAllUserComments(@RequestParam("userId") int userId){
-        User user = userProvider.getById(userId);
+        UserEntity user = userProvider.getById(userId);
         if(user != null) {
             CommentsCriterion criterion = new CommentsCriterion();
             criterion.setUser(user);
-            List<Comment> userComments = commentsProvider.getCommentsByCriterion(criterion);
-            for(Comment comment : userComments){
+            List<CommentEntity> userComments = commentsProvider.getCommentsByCriterion(criterion);
+            for(CommentEntity comment : userComments){
                 commentsProvider.adminDeactivateComment(comment);
             }
         }
@@ -452,7 +454,7 @@ public class AdminBookController {
     @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/activateBook/{bookId}", method = RequestMethod.POST)
     public @ResponseBody boolean activateBook(@PathVariable("bookId") int bookId){
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
         book = bookProvider.adminActivateBook(book);
         return book != null;
     }
@@ -460,7 +462,7 @@ public class AdminBookController {
     @PreAuthorize("@Secure.isAdmin()")
     @RequestMapping(value = "/deactivateBook/{bookId}", method = RequestMethod.POST)
     public @ResponseBody boolean deactivateBook(@PathVariable("bookId") int bookId){
-        Book book = bookProvider.getBookById(bookId);
+        BookEntity book = bookProvider.getBookById(bookId);
         book = bookProvider.adminDeactivateBook(book);
         return book != null;
     }
