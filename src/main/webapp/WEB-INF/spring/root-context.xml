@@ -20,6 +20,24 @@
 	<!-- Определяем папки, в которых будем автоматически искать бины-компоненты (@Component, @Service)  -->
 	<context:component-scan base-package="com.nextbook"/>
 
+	<aop:aspectj-autoproxy />
+
+	<context:component-scan base-package="com.nextbook.daoMongo.MongoJDBC" />
+
+	<bean id="mongo_logger" class="com.nextbook.daoMongo.MongoJDBC.ViewEventSaverDaoJDBC"/>
+
+	<!--<aop:config>-->
+		<!--<aop:after-returning-->
+				<!--pointcut="execution(* com.nextbook.controllers.book.BookViewController.infoBook(..))"-->
+				<!--method="saveWatchedBookEnt"/>-->
+	<!--</aop:config>-->
+
+
+	<bean id="liqPay" class="com.nextbook.utils.CustomLiqPay">
+		<constructor-arg name="privateKey" value="${liqpay.privateKey}"></constructor-arg>
+		<constructor-arg name="publicKey" value="${liqpay.publicKey}"></constructor-arg>
+	</bean>
+
 	<bean
 			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 
